@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" />
     </modules>
   </component>

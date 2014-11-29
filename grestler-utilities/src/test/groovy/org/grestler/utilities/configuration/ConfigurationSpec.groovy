@@ -3,7 +3,7 @@ package org.grestler.utilities.configuration
 import spock.lang.Specification
 
 /**
- * Specification for org.steamflake.utilities.configuration.Configuration.
+ * Specification for org.grestler.utilities.configuration.Configuration.
  */
 class ConfigurationSpec extends Specification {
 

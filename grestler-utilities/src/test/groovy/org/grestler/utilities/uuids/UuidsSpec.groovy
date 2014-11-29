@@ -3,7 +3,7 @@ package org.grestler.utilities.uuids
 import spock.lang.Specification
 
 /**
- * Specification for org.steamflake.utilities.uuids.Uuids
+ * Specification for org.grestler.utilities.uuids.Uuids
  */
 class UuidsSpec extends Specification {
 
