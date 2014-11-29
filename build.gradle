@@ -1,0 +1,27 @@
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: "groovy"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+
+        // Log4j 2
+        def log4j2Version = '2.0'
+        compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
+
+
+        // Spock
+        def spockVersion = '0.7-groovy-2.0'
+        testCompile( group: 'org.spockframework', name: 'spock-core', version: spockVersion )
+
+    }
+
+    sourceCompatibility = 1.8
+
+    version = '0.1.0-alpha'
+
+}

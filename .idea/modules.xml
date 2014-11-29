@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" />
+    </modules>
+  </component>
+</project>
+
