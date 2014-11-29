@@ -1,4 +1,9 @@
-package org.grestler.restserver;
+//
+// (C) Copyright 2014 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+package org.grestler.application;
 
 import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.util.log.Logger;

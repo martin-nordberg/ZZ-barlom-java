@@ -1,5 +1,9 @@
+//
+// (C) Copyright 2014 Martin E. Nordberg III
+// Apache 2.0 License
+//
 
-package org.grestler.restserver;
+package org.grestler.restserver.filters;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;

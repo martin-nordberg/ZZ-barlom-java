@@ -1,4 +1,9 @@
-package org.grestler.restserver;
+//
+// (C) Copyright 2014 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+package org.grestler.webutils.filters;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -17,17 +22,17 @@ public class ThreadNameFilter
     @Override
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException, ServletException {
 
-        // determine the request URL
+        // Determine the request URL.
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI();
         if ( httpRequest.getQueryString() != null ) {
             path += "?" + httpRequest.getQueryString();
         }
 
-        // set the thread name
+        // Set the thread name.
         Thread.currentThread().setName( path );
 
-        // pass along the request
+        // Pass along the request.
         chain.doFilter( request, response );
     }
 

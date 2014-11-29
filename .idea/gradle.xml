@@ -10,8 +10,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/grestler-adminserver" />
             <option value="$PROJECT_DIR$/grestler-restserver" />
             <option value="$PROJECT_DIR$/grestler-utilities" />
+            <option value="$PROJECT_DIR$/grestler-webutils" />
           </set>
         </option>
       </GradleProjectSettings>

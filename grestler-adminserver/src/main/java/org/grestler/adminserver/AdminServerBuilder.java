@@ -1,0 +1,84 @@
+package org.grestler.adminserver;
+
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.grestler.webutils.filters.ThreadNameFilter;
+import org.grestler.webutils.servlets.ShutdownServlet;
+
+import javax.servlet.DispatcherType;
+import java.net.MalformedURLException;
+import java.util.EnumSet;
+
+/**
+ * Builder class creates and configures the admin server.
+ */
+public class AdminServerBuilder {
+
+    /**
+     * Creates a Jetty server for administration.
+     * @return the newly created server.
+     * @throws java.net.MalformedURLException if the configuration is broken.
+     */
+    public static Server makeAdminServer() throws MalformedURLException {
+
+        int adminPort = 8081;  // TBD: configurable
+
+        // Create the server itself.
+        Server result = new Server();
+
+        // Configure the server connection.
+        ServerConnector connector = new ServerConnector( result );
+        connector.setPort( adminPort );
+        result.setConnectors( new Connector[]{ connector } );
+
+        // TBD: serve static content
+        // ContextHandler fileServerContext = makeFileServerContextHandler( tbd:config );
+
+        // Serve dynamic content plus a shutdown handler.
+        ServletContextHandler adminServerContext = makeAdminServerContextHandler();
+
+        // Combine the two contexts plus a shutdown handler.
+        ContextHandlerCollection contexts = new ContextHandlerCollection();
+        contexts.setHandlers( new Handler[]{ adminServerContext } );
+
+        // Configure the server with its contexts.
+        result.setHandler( contexts );
+
+        return result;
+
+    }
+
+    /**
+     * Creates the context handler for the admin server.
+     * @return the new context handler.
+     */
+    private static ServletContextHandler makeAdminServerContextHandler() {
+
+        // Set the context for dynamic content
+        ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
+        result.setContextPath( "/grestleradmin" );
+
+        // Add a shutdown servlet for the dynamic content.
+        // TBD: Any other stuff needed for admin ...
+        ServletHolder servletHolder = new ServletHolder( new ShutdownServlet() );
+        result.addServlet( servletHolder, "/exit" );
+
+        // Add a raw H2 SQL console.
+//        servletHolder = new ServletHolder( new org.h2.server.web.WebServlet() );
+//        servletHolder.setInitParameter( "webAllowOthers", "true" );
+//        result.addServlet( servletHolder, "/h2console/*" );
+
+        // Rename request threads for better logging.
+        result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
+
+        return result;
+
+    }
+
+
+}

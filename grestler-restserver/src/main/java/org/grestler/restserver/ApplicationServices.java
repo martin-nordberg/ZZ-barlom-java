@@ -1,5 +1,11 @@
+//
+// (C) Copyright 2014 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
 package org.grestler.restserver;
 
+import org.grestler.restserver.filters.CacheControlFilter;
 import org.grestler.restserver.json.StuffMapper;
 import org.grestler.restserver.services.HelloService;
 

@@ -4,7 +4,7 @@ buildDir = '../build/grestler-restserver'
 dependencies {
 
     // Other Modules
-    compile project( ':grestler-utilities' )
+    compile project( ':grestler-webutils' )
 
     // Jetty
     def jettyVersion = '9.2.1.v20140609'
@@ -26,5 +26,5 @@ dependencies {
 
 apply plugin:'application'
 
-mainClassName = "org.grestler.restserver.Application"
+mainClassName = "org.grestler.application.Application"
 
