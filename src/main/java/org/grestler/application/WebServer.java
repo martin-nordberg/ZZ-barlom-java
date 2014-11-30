@@ -37,7 +37,7 @@ public class WebServer
         Runnable stopAppServer = () -> {
             try {
                 Thread.sleep( 1000 );
-                WebServer.appServer.stop();
+                WebServer.restServer.stop();
             } catch ( Exception e ) {
                 LOG.error( "Failed shutdown.", e );
             }
@@ -68,32 +68,33 @@ public class WebServer
     public void run() throws Exception {
 
         // Build the app server.
-        WebServer.appServer = RestServerBuilder.makeRestServer();
+        WebServer.restServer = RestServerBuilder.makeRestServer();
 
         // Build the admin server.
         WebServer.adminServer = AdminServerBuilder.makeAdminServer();
 
         // Start the servers.
         LOG.info( "Starting application server ..." );
-        WebServer.appServer.start();
+        WebServer.restServer.start();
         LOG.info( "Starting admin server ..." );
         WebServer.adminServer.start();
 
         // Set up graceful shut down.
-        WebServer.appServer.setStopTimeout( 5000 );
+        WebServer.restServer.setStopTimeout( 5000 );
         WebServer.adminServer.setStopTimeout( 5000 );
 
         ShutdownServlet.registerWebServer( this );
 
-        // Hang out until the app server is stopped.
-        WebServer.appServer.join();
+        // Hang out until both servers are stopped.
+        WebServer.restServer.join();
+        WebServer.adminServer.join();
 
     }
 
     private static final Logger LOG = LogManager.getLogger();
 
     /** App server for static content and REST web services. */
-    private static Server appServer;
+    private static Server restServer;
 
     /** Admin server for control tasks. */
     private static Server adminServer;

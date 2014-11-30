@@ -4,9 +4,12 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 import org.grestler.webutils.filters.ThreadNameFilter;
 import org.grestler.webutils.servlets.ShutdownServlet;
 
@@ -36,15 +39,15 @@ public class AdminServerBuilder {
         connector.setPort( adminPort );
         result.setConnectors( new Connector[]{ connector } );
 
-        // TBD: serve static content
-        // ContextHandler fileServerContext = makeFileServerContextHandler( tbd:config );
+        // Serve static content.
+        ContextHandler staticContext = makeStaticContextHandler();
 
         // Serve dynamic content plus a shutdown handler.
-        ServletContextHandler adminServerContext = makeAdminServerContextHandler();
+        ServletContextHandler dynamicContext = makeDynamicContextHandler();
 
         // Combine the two contexts plus a shutdown handler.
         ContextHandlerCollection contexts = new ContextHandlerCollection();
-        contexts.setHandlers( new Handler[]{ adminServerContext } );
+        contexts.setHandlers( new Handler[]{ staticContext, dynamicContext } );
 
         // Configure the server with its contexts.
         result.setHandler( contexts );
@@ -57,7 +60,7 @@ public class AdminServerBuilder {
      * Creates the context handler for the admin server.
      * @return the new context handler.
      */
-    private static ServletContextHandler makeAdminServerContextHandler() {
+    private static ServletContextHandler makeDynamicContextHandler() {
 
         // Set the context for dynamic content
         ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
@@ -77,6 +80,27 @@ public class AdminServerBuilder {
         result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
 
         return result;
+
+    }
+
+    /**
+     * Creates the static file server context handler.
+     * @return the new context handler.
+     * @throws MalformedURLException if things are configured incorrectly.
+     */
+    private static ContextHandler makeStaticContextHandler() throws MalformedURLException {
+
+        // Set the context for static content.
+        ContextHandler fileServerContext = new ContextHandler();
+        fileServerContext.setContextPath( "/grestler" );
+
+        // Set the source for static content.
+        ResourceHandler fileResourceHandler = new ResourceHandler();
+        fileResourceHandler.setCacheControl( "max-age=3600,public" );
+        fileResourceHandler.setBaseResource( Resource.newResource( "/home/mnordberg/Workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp" ) );
+        fileServerContext.setHandler( fileResourceHandler );
+
+        return fileServerContext;
 
     }
 

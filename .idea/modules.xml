@@ -3,10 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" group="grestler-server" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" group="grestler-server" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" group="ui" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" group="ui" />
       <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" filepath="$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" group="grestler-server" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" filepath="$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" group="ui" />
     </modules>
   </component>
 </project>
