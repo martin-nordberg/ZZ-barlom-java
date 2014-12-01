@@ -1,0 +1,9 @@
+
+buildDir = '../build/grestler-dbutilities'
+
+dependencies {
+
+    // Other Modules
+    compile project( ':grestler-utilities' )
+
+}

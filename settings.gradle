@@ -8,3 +8,9 @@ include 'grestler-adminserver'
 
 include 'grestler-webutils'
 
+include 'grestler-metamodel'
+
+include 'grestler-h2database'
+
+include 'grestler-dbutilities'
+

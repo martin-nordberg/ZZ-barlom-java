@@ -9,16 +9,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.grestler.adminserver.AdminServerBuilder;
+import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.RestServerBuilder;
 import org.grestler.webutils.servlets.ShutdownServlet;
-
-import java.io.Closeable;
 
 /**
  * Jetty web server initial configuration and start up.
  */
 public class WebServer
-    implements Closeable {
+    implements AutoCloseable {
 
     /**
      * Constructs a new web server.
@@ -65,13 +64,13 @@ public class WebServer
      * Starts the app server and admin server of Grestler. Does not return until they are stopped.
      * @throws Exception If Jetty servers do not start properly.
      */
-    public void run() throws Exception {
+    public void run( IDataSource dataSource ) throws Exception {
 
         // Build the app server.
-        WebServer.restServer = RestServerBuilder.makeRestServer();
+        WebServer.restServer = RestServerBuilder.makeRestServer( dataSource );
 
         // Build the admin server.
-        WebServer.adminServer = AdminServerBuilder.makeAdminServer();
+        WebServer.adminServer = AdminServerBuilder.makeAdminServer( dataSource );
 
         // Start the servers.
         LOG.info( "Starting application server ..." );

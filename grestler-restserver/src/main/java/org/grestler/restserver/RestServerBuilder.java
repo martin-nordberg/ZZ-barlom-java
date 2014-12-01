@@ -1,3 +1,8 @@
+//
+// (C) Copyright 2014 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
 package org.grestler.restserver;
 
 import org.eclipse.jetty.server.Connector;
@@ -10,6 +15,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.grestler.dbutilities.IDataSource;
 import org.grestler.webutils.filters.ThreadNameFilter;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
@@ -27,7 +33,7 @@ public class RestServerBuilder {
      * @return the newly created server.
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
-    public static Server makeRestServer() throws MalformedURLException {
+    public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
 
         int appPort = 8080;  // TBD: configurable
 

@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" group="application" />
       <module fileurl="file://$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" group="user-interface" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-dbutilities/grestler-dbutilities.iml" filepath="$PROJECT_DIR$/grestler-dbutilities/grestler-dbutilities.iml" group="persistence" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-h2database/grestler-h2database.iml" filepath="$PROJECT_DIR$/grestler-h2database/grestler-h2database.iml" group="persistence" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-metamodel/grestler-metamodel.iml" filepath="$PROJECT_DIR$/grestler-metamodel/grestler-metamodel.iml" group="metamodel" />
       <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" group="user-interface" />
       <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" group="system" />
       <module fileurl="file://$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" filepath="$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" group="user-interface" />

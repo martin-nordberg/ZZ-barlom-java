@@ -27,6 +27,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: junit-dep-4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: groovy-all-2.0.5" level="project" />
     <orderEntry type="module" module-name="grestler-webutils" exported="" />
+    <orderEntry type="module" module-name="grestler-dbutilities" exported="" />
   </component>
 </module>
 

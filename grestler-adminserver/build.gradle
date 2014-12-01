@@ -4,6 +4,7 @@ buildDir = '../build/grestler-adminserver'
 dependencies {
 
     // Other Modules
+    compile project( ':grestler-dbutilities' )
     compile project( ':grestler-webutils' )
 
     // Jetty

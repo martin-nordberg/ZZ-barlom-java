@@ -34,6 +34,7 @@
     <orderEntry type="library" exported="" name="Gradle: commons-io-2.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jcip-annotations-1.0" level="project" />
     <orderEntry type="module" module-name="grestler-webutils" exported="" />
+    <orderEntry type="module" module-name="grestler-dbutilities" exported="" />
   </component>
 </module>
 

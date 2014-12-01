@@ -7,6 +7,9 @@ package org.grestler.application;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.IDataSourceDefinition;
+import org.grestler.h2database.H2DataSourceDefinition;
 
 /**
  * Grestler main program.
@@ -21,12 +24,17 @@ public class Application {
 
         LOG.info( "Application started." );
 
-        //try ( H2DataSource dataSource = new H2DataSource() ) {
+        // Configure the data source.
+        // TODO: support different back ends
+        IDataSourceDefinition dataSourceDefinition = new H2DataSourceDefinition();
+
+        // Create the data source ...
+        try ( IDataSource dataSource = dataSourceDefinition.makeDataSource() ) {
 
             // Run the web server.
-            new WebServer().run();
+            new WebServer().run( dataSource );
 
-        //}
+        }
 
         LOG.info( "Application stopped." );
 

@@ -1,0 +1,31 @@
+
+-----------------
+-- Vertex Type --
+-----------------
+
+-- Table
+CREATE TABLE GRESTLER_VERTEX_TYPE (
+    ID UUID NOT NULL,
+    NAME VARCHAR(256) NOT NULL
+);
+
+-- Primary key
+ALTER TABLE GRESTLER_VERTEX_TYPE ADD CONSTRAINT PK_GRESTLER_VERTEX_TYPE
+    PRIMARY KEY (ID);
+
+
+---------------
+-- Edge Type --
+---------------
+
+-- Table
+CREATE TABLE GRESTLER_EDGE_TYPE (
+    ID UUID NOT NULL,
+    NAME VARCHAR(256) NOT NULL
+);
+
+-- Primary key
+ALTER TABLE GRESTLER_EDGE_TYPE ADD CONSTRAINT PK_GRESTLER_EDGE_TYPE
+    PRIMARY KEY (ID);
+
+

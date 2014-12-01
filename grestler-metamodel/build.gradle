@@ -1,0 +1,9 @@
+
+buildDir = '../build/grestler-metamodel'
+
+dependencies {
+
+    // Other Modules
+    compile project( ':grestler-utilities' )
+
+}

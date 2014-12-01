@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -39,11 +38,11 @@ public class ShutdownServlet
      * TODO: not static
      * @param webServer the web server to shut down.
      */
-    public static void registerWebServer( Closeable webServer ) {
+    public static void registerWebServer( AutoCloseable webServer ) {
         ShutdownServlet.webServer = webServer;
     }
 
     /** The web server to shutdown when this servlet executes. */
-    private static Closeable webServer;
+    private static AutoCloseable webServer;
 
 }

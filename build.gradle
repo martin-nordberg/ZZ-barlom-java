@@ -13,6 +13,7 @@ dependencies {
 
     // Other Modules
     compile project( ':grestler-adminserver' )
+    compile project( ':grestler-h2database' )
     compile project( ':grestler-restserver' )
 
     // Jetty
