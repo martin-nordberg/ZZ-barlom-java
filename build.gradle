@@ -15,10 +15,13 @@ dependencies {
     compile project( ':grestler-adminserver' )
     compile project( ':grestler-restserver' )
 
+    // Jetty
+    def jettyVersion = '9.2.1.v20140609'
+    compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
+
     // Log4j 2
     def log4j2Version = '2.0'
     compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
-
 
     // Spock
     def spockVersion = '0.7-groovy-2.0'

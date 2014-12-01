@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" group="ui" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" group="ui" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" filepath="$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" group="ui" />
+      <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" group="application" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/grestler-adminserver/grestler-adminserver.iml" group="user-interface" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" group="user-interface" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" group="system" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" filepath="$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" group="user-interface" />
     </modules>
   </component>
 </project>

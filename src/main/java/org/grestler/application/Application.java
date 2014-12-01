@@ -8,13 +8,12 @@ package org.grestler.application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.UUID;
-
 /**
  * Grestler main program.
  */
 public class Application {
 
+    /** Executes the Grestler application. */
     public static void main( String[] args ) throws Exception {
 
         // Capture Jetty logging into Log4J2.
@@ -22,10 +21,9 @@ public class Application {
 
         LOG.info( "Application started." );
 
-        LOG.info( "Random UUID: " + UUID.randomUUID().toString() );
-
         //try ( H2DataSource dataSource = new H2DataSource() ) {
 
+            // Run the web server.
             new WebServer().run();
 
         //}
