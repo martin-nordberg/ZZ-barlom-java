@@ -16,10 +16,13 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.restserver.logging.Log4j2RestEasyLogger;
 import org.grestler.webutils.filters.ThreadNameFilter;
+import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
 import javax.servlet.DispatcherType;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.util.EnumSet;
 
@@ -34,6 +37,8 @@ public class RestServerBuilder {
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
     public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
+
+        overrideRESTEasyLoggerInitialization();
 
         int appPort = 8080;  // TODO: configurable
 
@@ -59,6 +64,29 @@ public class RestServerBuilder {
         result.setHandler( contexts );
 
         return result;
+    }
+
+    private static void overrideRESTEasyLoggerInitialization() {
+
+        // Ensure that RESTEasy logging is initialized
+        org.jboss.resteasy.logging.Logger.setLoggerType( Logger.LoggerType.JUL );
+
+        // Override by reflection
+        try {
+            Field field = org.jboss.resteasy.logging.Logger.class.getDeclaredField( "loggerConstructor" );
+            field.setAccessible( true );
+            field.set( null, Log4j2RestEasyLogger.class.getDeclaredConstructor( String.class ) );
+        }
+        catch ( NoSuchFieldException e ) {
+            assert false : "RESTEasy logger field has changed." + e.getMessage();
+        }
+        catch ( NoSuchMethodException e ) {
+            assert false : "Missing RESTEasy logger constructor." + e.getMessage();
+        }
+        catch ( IllegalAccessException e ) {
+            assert false : "Inaccessible RESTEasy logger constructor." + e.getMessage();
+        }
+
     }
 
     /**
