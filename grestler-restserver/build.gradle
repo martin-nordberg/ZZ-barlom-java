@@ -8,18 +8,15 @@ dependencies {
     compile project( ':grestler-webutils' )
 
     // Jetty
-    def jettyVersion = '9.2.1.v20140609'
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
     compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
 
     // RESTEasy (server only)
-    def resteasyVersion = '3.0.8.Final'
     compile( group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: resteasyVersion ) {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
     // JSON-P
-    def jsonpVersion = '1.0.4'
     compile( group: 'org.glassfish', name: 'javax.json', version: jsonpVersion )
 
 }

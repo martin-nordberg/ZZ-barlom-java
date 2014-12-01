@@ -7,7 +7,6 @@ dependencies {
     compile project( ':grestler-utilities' )
 
     // Jetty
-    def jettyVersion = '9.2.1.v20140609'
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
     compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
 

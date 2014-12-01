@@ -8,17 +8,14 @@ dependencies {
     compile project( ':grestler-metamodel' )
 
     // H2
-    def h2Version = '1.4.181'
     compile( group: 'com.h2database', name: 'h2', version: h2Version )
 
     // JOOQ
-    def jooqVersion = '3.5.0'
     compile( group: 'org.jooq', name: 'jooq', version: jooqVersion )
     compile( group: 'org.jooq', name: 'jooq-meta', version: jooqVersion )
     compile( group: 'org.jooq', name: 'jooq-codegen', version: jooqVersion )
 
     // Flyway
-    def flywayVersion = '3.0'
     compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )
 
 }

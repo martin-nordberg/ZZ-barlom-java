@@ -1,11 +1,42 @@
 
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin:'application'
+allprojects {
 
-repositories {
-    mavenCentral()
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+
+    repositories {
+        mavenCentral()
+    }
+
+    // versions of all external libraries used throughout Grestler
+    ext.flywayVersion = '3.1'
+    ext.h2Version = '1.4.182'
+    ext.jettyVersion = '9.2.5.v20141112'
+    ext.jooqVersion = '3.5.0'
+    ext.jsonpVersion = '1.0.4'
+    ext.log4j2Version = '2.1'
+    ext.resteasyVersion = '3.0.10.Final'
+    ext.spockVersion = '0.7-groovy-2.0'
+
+    dependencies {
+
+        // Log4j 2
+        compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
+
+        // Spock
+        testCompile( group: 'org.spockframework', name: 'spock-core', version: spockVersion )
+
+    }
+
+    sourceCompatibility = 1.8
+
+    version = '0.1.0-alpha'
+
 }
+
+
+
+apply plugin:'application'
 
 buildDir = 'build/grestler'
 
@@ -17,52 +48,12 @@ dependencies {
     compile project( ':grestler-restserver' )
 
     // Jetty
-    def jettyVersion = '9.2.1.v20140609'
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
 
-    // Log4j 2
-    def log4j2Version = '2.0'
-    compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
-
-    // Spock
-    def spockVersion = '0.7-groovy-2.0'
-    testCompile( group: 'org.spockframework', name: 'spock-core', version: spockVersion )
-
 }
-
-sourceCompatibility = 1.8
-
-version = '0.1.0-alpha'
 
 mainClassName = "org.grestler.application.Application"
 
 
 
 
-subprojects {
-
-    apply plugin: 'java'
-    apply plugin: 'groovy'
-
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-
-        // Log4j 2
-        def log4j2Version = '2.0'
-        compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
-
-
-        // Spock
-        def spockVersion = '0.7-groovy-2.0'
-        testCompile( group: 'org.spockframework', name: 'spock-core', version: spockVersion )
-
-    }
-
-    sourceCompatibility = 1.8
-
-    version = '0.1.0-alpha'
-
-}

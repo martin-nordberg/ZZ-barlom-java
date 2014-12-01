@@ -35,7 +35,7 @@ public class RestServerBuilder {
      */
     public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
 
-        int appPort = 8080;  // TBD: configurable
+        int appPort = 8080;  // TODO: configurable
 
         // Create the server itself.
         Server result = new Server();
