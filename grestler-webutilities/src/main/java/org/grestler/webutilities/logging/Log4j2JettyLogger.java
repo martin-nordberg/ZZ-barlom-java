@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.application;
+package org.grestler.webutilities.logging;
 
 import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.util.log.Logger;
@@ -11,10 +11,10 @@ import org.eclipse.jetty.util.log.Logger;
 /**
  * Adapter routes Jetty logging into Log4J2.
  */
-public class JettyToLog4J2Logger
+public class Log4j2JettyLogger
     implements Logger {
 
-    public JettyToLog4J2Logger( String name ) {
+    public Log4j2JettyLogger( String name ) {
         this.logger = LogManager.getLogger( name );
     }
 
@@ -42,7 +42,7 @@ public class JettyToLog4J2Logger
 
     @Override
     public Logger getLogger( String name ) {
-        return new JettyToLog4J2Logger( name );
+        return new Log4j2JettyLogger( name );
     }
 
     @Override

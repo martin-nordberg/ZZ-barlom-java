@@ -15,7 +15,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.logging.Log4j2RestEasyLogger;
 import org.grestler.utilities.configuration.Configuration;
-import org.grestler.webutils.filters.ThreadNameFilter;
+import org.grestler.webutilities.filters.ThreadNameFilter;
 import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 

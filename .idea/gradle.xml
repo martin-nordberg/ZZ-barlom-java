@@ -16,7 +16,7 @@
             <option value="$PROJECT_DIR$/grestler-metamodel" />
             <option value="$PROJECT_DIR$/grestler-restserver" />
             <option value="$PROJECT_DIR$/grestler-utilities" />
-            <option value="$PROJECT_DIR$/grestler-webutils" />
+            <option value="$PROJECT_DIR$/grestler-webutilities" />
           </set>
         </option>
       </GradleProjectSettings>

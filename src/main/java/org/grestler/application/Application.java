@@ -11,8 +11,7 @@ import org.grestler.dbutilities.IDataSource;
 import org.grestler.dbutilities.IDataSourceDefinition;
 import org.grestler.h2database.H2DataSourceDefinition;
 import org.grestler.utilities.uuids.Uuids;
-
-import java.util.UUID;
+import org.grestler.webutilities.logging.Log4j2JettyLogger;
 
 /**
  * Grestler main program.
@@ -26,7 +25,7 @@ public class Application {
         experiment();
 
         // Capture Jetty logging into Log4J2.
-        org.eclipse.jetty.util.log.Log.setLog( new org.grestler.application.JettyToLog4J2Logger( "Jetty" ) );
+        org.eclipse.jetty.util.log.Log.setLog( new Log4j2JettyLogger( "Jetty" ) );
 
         LOG.info( "Application started." );
 

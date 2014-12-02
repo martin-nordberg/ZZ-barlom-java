@@ -1,5 +1,5 @@
 
-buildDir = '../build/grestler-webutils'
+buildDir = '../build/grestler-webutilities'
 
 dependencies {
 

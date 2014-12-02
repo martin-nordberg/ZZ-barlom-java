@@ -5,7 +5,7 @@ dependencies {
 
     // Other Modules
     compile project( ':grestler-dbutilities' )
-    compile project( ':grestler-webutils' )
+    compile project( ':grestler-webutilities' )
 
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )

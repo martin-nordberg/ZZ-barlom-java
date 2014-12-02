@@ -17,8 +17,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.utilities.configuration.Configuration;
-import org.grestler.webutils.filters.ThreadNameFilter;
-import org.grestler.webutils.servlets.ShutdownServlet;
+import org.grestler.webutilities.filters.ThreadNameFilter;
+import org.grestler.webutilities.servlets.ShutdownServlet;
 
 import javax.servlet.DispatcherType;
 import java.net.MalformedURLException;

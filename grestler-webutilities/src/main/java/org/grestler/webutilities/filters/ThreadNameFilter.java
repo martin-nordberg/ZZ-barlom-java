@@ -3,14 +3,15 @@
 // Apache 2.0 License
 //
 
-package org.grestler.webutils.filters;
+package org.grestler.webutilities.filters;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Servlet filter sets the current thread name to the request URL.
+ * Servlet filter sets the current thread name to the request URL. This benefit logging and debugging which then double
+ * the request URL in the thread name.
  */
 public class ThreadNameFilter
     implements Filter {
@@ -39,4 +40,5 @@ public class ThreadNameFilter
     @Override
     public void destroy() {
     }
+
 }

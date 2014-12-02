@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.Server;
 import org.grestler.adminserver.AdminServerBuilder;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.RestServerBuilder;
-import org.grestler.webutils.servlets.ShutdownServlet;
+import org.grestler.webutilities.servlets.ShutdownServlet;
 
 /**
  * Jetty web server initial configuration and start up.

@@ -12,7 +12,7 @@ import org.flywaydb.core.internal.util.logging.Log;
 /**
  * Adapter sends Flyway logging to Log4j2.
  */
-class FlywayLog4j2Adapter
+class Log4j2FlywayLogger
     implements Log {
 
     /**
@@ -20,7 +20,7 @@ class FlywayLog4j2Adapter
      *
      * @param clazz the class being logged for.
      */
-    public FlywayLog4j2Adapter( Class<?> clazz ) {
+    public Log4j2FlywayLogger( Class<?> clazz ) {
         this.logger = LogManager.getLogger( clazz );
     }
 

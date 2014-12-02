@@ -9,7 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/grestler-metamodel/grestler-metamodel.iml" filepath="$PROJECT_DIR$/grestler-metamodel/grestler-metamodel.iml" group="metamodel" />
       <module fileurl="file://$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-restserver/grestler-restserver.iml" group="user-interface" />
       <module fileurl="file://$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-utilities/grestler-utilities.iml" group="system" />
-      <module fileurl="file://$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" filepath="$PROJECT_DIR$/grestler-webutils/grestler-webutils.iml" group="user-interface" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-webutilities/grestler-webutilities.iml" filepath="$PROJECT_DIR$/grestler-webutilities/grestler-webutilities.iml" group="user-interface" />
     </modules>
   </component>
 </project>

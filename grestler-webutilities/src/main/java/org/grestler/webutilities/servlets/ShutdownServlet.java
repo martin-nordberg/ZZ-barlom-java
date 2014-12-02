@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.webutils.servlets;
+package org.grestler.webutilities.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

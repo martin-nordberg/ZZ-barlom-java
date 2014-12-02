@@ -23,7 +23,6 @@
     <orderEntry type="library" exported="" name="Gradle: activation-1.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: commons-io-2.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jcip-annotations-1.0" level="project" />
-    <orderEntry type="module" module-name="grestler-webutils" exported="" />
     <orderEntry type="module" module-name="grestler-dbutilities" exported="" />
     <orderEntry type="library" exported="" name="Gradle: log4j-core-2.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jetty-server-9.2.5.v20141112" level="project" />
@@ -35,6 +34,7 @@
     <orderEntry type="library" exported="" name="Gradle: jetty-io-9.2.5.v20141112" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jetty-security-9.2.5.v20141112" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jaxrs-api-3.0.10.Final" level="project" />
+    <orderEntry type="module" module-name="grestler-webutilities" exported="" />
   </component>
 </module>
 

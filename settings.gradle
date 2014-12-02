@@ -1,17 +1,17 @@
 
 rootProject.name = 'grestler'
 
-include 'grestler-utilities'
-
-include 'grestler-restserver'
-
 include 'grestler-adminserver'
 
-include 'grestler-webutils'
-
-include 'grestler-metamodel'
+include 'grestler-dbutilities'
 
 include 'grestler-h2database'
 
-include 'grestler-dbutilities'
+include 'grestler-metamodel'
+
+include 'grestler-restserver'
+
+include 'grestler-utilities'
+
+include 'grestler-webutilities'
 
