@@ -9,11 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.internal.util.logging.LogFactory;
+import org.grestler.dbutilities.flyway.FlywayLog4j2Creator;
 
 import javax.sql.DataSource;
 
 /**
- * Static utility class to update the database schema.
+ * Utility class to update the database schema.
  */
 public final class DatabaseMigration {
 

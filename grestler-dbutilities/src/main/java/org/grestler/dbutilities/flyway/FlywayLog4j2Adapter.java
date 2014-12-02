@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.h2database.migration;
+package org.grestler.dbutilities.flyway;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ import org.flywaydb.core.internal.util.logging.Log;
 /**
  * Adapter sends Flyway logging to Log4j2.
  */
-public class FlywayLog4j2Adapter
+class FlywayLog4j2Adapter
     implements Log {
 
     /**

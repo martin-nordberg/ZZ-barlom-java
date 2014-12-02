@@ -16,6 +16,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.utilities.configuration.Configuration;
 import org.grestler.webutils.filters.ThreadNameFilter;
 import org.grestler.webutils.servlets.ShutdownServlet;
 
@@ -35,7 +36,9 @@ public class AdminServerBuilder {
      */
     public static Server makeAdminServer( IDataSource dataSource ) throws MalformedURLException {
 
-        int adminPort = 8081;  // TBD: configurable
+        // Read the configuration.
+        Configuration config = new Configuration( AdminServerBuilder.class );
+        int adminPort = config.readInt( "adminPort" );
 
         // Create the server itself.
         Server result = new Server();
@@ -103,6 +106,7 @@ public class AdminServerBuilder {
         // Set the source for static content.
         ResourceHandler fileResourceHandler = new ResourceHandler();
         fileResourceHandler.setCacheControl( "max-age=3600,public" );
+        // TODO: Make internal resource
         fileResourceHandler.setBaseResource( Resource.newResource( "/home/mnordberg/Workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp" ) );
         fileServerContext.setHandler( fileResourceHandler );
 

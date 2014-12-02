@@ -9,14 +9,12 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.Resource;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.logging.Log4j2RestEasyLogger;
+import org.grestler.utilities.configuration.Configuration;
 import org.grestler.webutils.filters.ThreadNameFilter;
 import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
@@ -38,27 +36,27 @@ public class RestServerBuilder {
      */
     public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
 
+        // Redirect RESTEasy logging to Log4j2.
         overrideRESTEasyLoggerInitialization();
 
-        int appPort = 8080;  // TODO: configurable
+        // Read the configuration.
+        Configuration config = new Configuration( RestServerBuilder.class );
+        int restPort = config.readInt( "restPort" );
 
         // Create the server itself.
         Server result = new Server();
 
         // Configure the server connection.
         ServerConnector connector = new ServerConnector( result );
-        connector.setPort( appPort );
+        connector.setPort( restPort );
         result.setConnectors( new Connector[]{ connector } );
-
-        // Serve static content.
-        ContextHandler fileServerContext = makeFileServerContextHandler();
 
         // Serve dynamic content.
         ServletContextHandler webServiceContext = makeWebServiceContextHandler();
 
         // Combine the two contexts.
         ContextHandlerCollection contexts = new ContextHandlerCollection();
-        contexts.setHandlers( new Handler[]{ fileServerContext, webServiceContext } );
+        contexts.setHandlers( new Handler[]{ webServiceContext } );
 
         // Configure the server for its contexts
         result.setHandler( contexts );
@@ -108,27 +106,6 @@ public class RestServerBuilder {
         result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
 
         return result;
-
-    }
-
-    /**
-     * Creates the static file server context handler.
-     * @return the new context handler.
-     * @throws MalformedURLException if things are configured incorrectly.
-     */
-    private static ContextHandler makeFileServerContextHandler() throws MalformedURLException {
-
-        // Set the context for static content.
-        ContextHandler fileServerContext = new ContextHandler();
-        fileServerContext.setContextPath( "/grestler" );
-
-        // Set the source for static content.
-        ResourceHandler fileResourceHandler = new ResourceHandler();
-        fileResourceHandler.setCacheControl( "max-age=3600,public" );
-        fileResourceHandler.setBaseResource( Resource.newResource( "/home/mnordberg/Workspace/grestler/GrestlerWebClient" ) );
-        fileServerContext.setHandler( fileResourceHandler );
-
-        return fileServerContext;
 
     }
 

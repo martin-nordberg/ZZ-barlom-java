@@ -10,6 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.dbutilities.IDataSourceDefinition;
 import org.grestler.h2database.H2DataSourceDefinition;
+import org.grestler.utilities.uuids.Uuids;
+
+import java.util.UUID;
 
 /**
  * Grestler main program.
@@ -18,6 +21,9 @@ public class Application {
 
     /** Executes the Grestler application. */
     public static void main( String[] args ) throws Exception {
+
+        // do extra experimental stuff
+        experiment();
 
         // Capture Jetty logging into Log4J2.
         org.eclipse.jetty.util.log.Log.setLog( new org.grestler.application.JettyToLog4J2Logger( "Jetty" ) );
@@ -38,6 +44,10 @@ public class Application {
 
         LOG.info( "Application stopped." );
 
+    }
+
+    private static void experiment() {
+        LOG.info( "UUID: " + Uuids.makeUuidWithReservedBlock() );
     }
 
     private static final Logger LOG = LogManager.getLogger();

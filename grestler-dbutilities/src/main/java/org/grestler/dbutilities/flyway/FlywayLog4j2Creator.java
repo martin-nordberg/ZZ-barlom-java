@@ -3,15 +3,16 @@
 // Apache 2.0 License
 //
 
-package org.grestler.h2database.migration;
+package org.grestler.dbutilities.flyway;
 
 import org.flywaydb.core.internal.util.logging.Log;
 import org.flywaydb.core.internal.util.logging.LogCreator;
+import org.grestler.dbutilities.flyway.FlywayLog4j2Adapter;
 
 /**
  * Flyway logging adapter factory.
  */
-class FlywayLog4j2Creator
+public class FlywayLog4j2Creator
     implements LogCreator {
 
     @Override

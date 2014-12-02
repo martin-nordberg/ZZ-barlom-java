@@ -17,10 +17,8 @@ public class Log4j2RestEasyLogger
     extends Logger {
 
     private transient org.apache.logging.log4j.Logger delegate;
-    private String classname;
 
     public Log4j2RestEasyLogger( String classname ) {
-        this.classname = classname;
         delegate = LogManager.getLogger( classname );
     }
 

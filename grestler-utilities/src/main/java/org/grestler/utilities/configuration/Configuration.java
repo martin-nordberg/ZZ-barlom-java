@@ -51,6 +51,16 @@ public class Configuration {
     }
 
     /**
+     * Reads an integer property for the given key.
+     * @param key the name of the property.
+     * @return the integer value
+     * @throws java.lang.NumberFormatException if the property's value is not an integer.
+     */
+    public int readInt( String key ) {
+        return Integer.parseInt( this.readString( key ) );
+    }
+
+    /**
      * Reads the property for the given key.
      *
      * @param key the key of the property to read.

@@ -6,4 +6,7 @@ dependencies {
     // Other Modules
     compile project( ':grestler-utilities' )
 
+    // Flyway
+    compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )
+
 }
