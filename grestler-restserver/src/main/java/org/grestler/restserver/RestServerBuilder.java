@@ -38,7 +38,7 @@ public class RestServerBuilder {
     public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
 
         // Redirect RESTEasy logging to Log4j2.
-        overrideRESTEasyLoggerInitialization();
+        overrideRestEasyLoggerInitialization();
 
         // Read the configuration.
         Configuration config = new Configuration( RestServerBuilder.class );
@@ -65,7 +65,10 @@ public class RestServerBuilder {
         return result;
     }
 
-    private static void overrideRESTEasyLoggerInitialization() {
+    /**
+     * Connects RESTEasy logging to Log4j2.
+     */
+    private static void overrideRestEasyLoggerInitialization() {
 
         // Ensure that RESTEasy logging is initialized
         org.jboss.resteasy.logging.Logger.setLoggerType( Logger.LoggerType.JUL );

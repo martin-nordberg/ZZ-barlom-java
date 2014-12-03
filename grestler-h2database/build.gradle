@@ -7,13 +7,11 @@ dependencies {
     compile project( ':grestler-dbutilities' )
     compile project( ':grestler-metamodel' )
 
+    // Dalesbred
+    compile( group: 'fi.evident.dalesbred', name: 'dalesbred', version: dalesbredVersion )
+
     // H2
     compile( group: 'com.h2database', name: 'h2', version: h2Version )
-
-    // JOOQ
-    compile( group: 'org.jooq', name: 'jooq', version: jooqVersion )
-    compile( group: 'org.jooq', name: 'jooq-meta', version: jooqVersion )
-    compile( group: 'org.jooq', name: 'jooq-codegen', version: jooqVersion )
 
     // Flyway
     compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )
