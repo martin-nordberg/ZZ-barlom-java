@@ -31,6 +31,7 @@ public class RestServerBuilder {
 
     /**
      * Creates a Jetty server for REST services.
+     * @param dataSource the data source for queries made by the server.
      * @return the newly created server.
      * @throws java.net.MalformedURLException if the configuration is broken.
      */

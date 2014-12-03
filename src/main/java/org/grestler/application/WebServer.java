@@ -32,36 +32,33 @@ public class WebServer
 
         LOG.info( "Preparing to shut down ..." );
 
-        // Define a task to stop the app server.
-        Runnable stopAppServer = () -> {
-            try {
-                Thread.sleep( 1000 );
-                WebServer.restServer.stop();
-            } catch ( Exception e ) {
-                LOG.error( "Failed shutdown.", e );
-            }
-        };
-
-        // Define a task to stop the admin server.
-        Runnable stopAdminServer = () -> {
+        // Define a task to stop the two servers.
+        Runnable stopServers = () -> {
             try {
                 Thread.sleep( 1000 );
                 WebServer.adminServer.stop();
-            } catch ( Exception e ) {
+                LOG.info( "Admin server shut down." );
+
+                Thread.sleep( 500 );
+                WebServer.restServer.stop();
+                LOG.info( "REST server shut down." );
+            }
+            catch ( Exception e ) {
                 LOG.error( "Failed shutdown.", e );
             }
         };
 
-        // Stop the app server in a separate thread.
-        new Thread( stopAppServer ).start();
+        // Stop the servers in a separate thread.
+        final Thread stopThread = new Thread( stopServers );
+        stopThread.setName( "Shutdown" );
 
-        // Stop the admin server in a separate thread.
-        new Thread( stopAdminServer ).start();
+        stopThread.start();
 
     }
 
     /**
      * Starts the app server and admin server of Grestler. Does not return until they are stopped.
+     * @param dataSource the data source for the web servers to query from.
      * @throws Exception If Jetty servers do not start properly.
      */
     public void run( IDataSource dataSource ) throws Exception {
@@ -73,20 +70,23 @@ public class WebServer
         WebServer.adminServer = AdminServerBuilder.makeAdminServer( dataSource );
 
         // Start the servers.
-        LOG.info( "Starting application server ..." );
+        LOG.info( "Starting REST server ..." );
         WebServer.restServer.start();
-        LOG.info( "Starting admin server ..." );
+
+        LOG.info( "Starting Admin server ..." );
         WebServer.adminServer.start();
 
         // Set up graceful shut down.
         WebServer.restServer.setStopTimeout( 5000 );
+        WebServer.restServer.setStopAtShutdown( true );
         WebServer.adminServer.setStopTimeout( 5000 );
+        WebServer.adminServer.setStopAtShutdown( true );
 
         ShutdownServlet.registerWebServer( this );
 
         // Hang out until both servers are stopped.
-        WebServer.restServer.join();
         WebServer.adminServer.join();
+        WebServer.restServer.join();
 
     }
 

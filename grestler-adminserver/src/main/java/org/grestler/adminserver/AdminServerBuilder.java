@@ -31,6 +31,7 @@ public class AdminServerBuilder {
 
     /**
      * Creates a Jetty server for administration.
+     * @param dataSource The data source for queries completed by the admin server.
      * @return the newly created server.
      * @throws java.net.MalformedURLException if the configuration is broken.
      */

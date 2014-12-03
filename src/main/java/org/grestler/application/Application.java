@@ -18,7 +18,11 @@ import org.grestler.webutilities.logging.Log4j2JettyLogger;
  */
 public class Application {
 
-    /** Executes the Grestler application. */
+    /**
+     * Executes the Grestler application.
+     * @param args the command line arguments
+     * @throws Exception if anything goes wrong without handling.
+     */
     public static void main( String[] args ) throws Exception {
 
         // do extra experimental stuff
@@ -45,6 +49,9 @@ public class Application {
 
     }
 
+    /**
+     * Placeholder for extra code when experimenting.
+     */
     private static void experiment() {
         LOG.info( "UUID: " + Uuids.makeUuidWithReservedBlock() );
     }
