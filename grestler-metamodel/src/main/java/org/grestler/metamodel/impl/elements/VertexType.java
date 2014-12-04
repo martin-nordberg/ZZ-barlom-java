@@ -6,7 +6,9 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.revisions.V;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -22,8 +24,8 @@ public class VertexType
      */
     public VertexType( UUID id, String name ) {
         this.id = id;
-        this.name = name;
-        this.superType = this;
+        this.name = new V<>( name );
+        this.superType = new V<>( this );
     }
 
     /**
@@ -34,8 +36,8 @@ public class VertexType
      */
     public VertexType( UUID id, String name, IVertexType superType ) {
         this.id = id;
-        this.name = name;
-        this.superType = superType;
+        this.name = new V<>( name );
+        this.superType = new V<>( superType );
     }
 
     @Override
@@ -45,18 +47,31 @@ public class VertexType
 
     @Override
     public String getName() {
-        return this.name;
+        return this.name.get();
     }
 
     @Override
-    public IVertexType getSuperType() {
-        return this.superType;
+    public Optional<IVertexType> getSuperType() {
+        if ( this.superType.get() == this ) {
+            return Optional.empty();
+        }
+        return Optional.of( this.superType.get() );
+    }
+
+    @Override
+    public void setName( String name ) {
+        this.name.set( name );
+    }
+
+    @Override
+    public void setSuperType( IVertexType superType ) {
+        this.superType.set( superType );
     }
 
     private final UUID id;
 
-    private final String name;
+    private final V<String> name;
 
-    private final IVertexType superType;
+    private final V<IVertexType> superType;
 
 }

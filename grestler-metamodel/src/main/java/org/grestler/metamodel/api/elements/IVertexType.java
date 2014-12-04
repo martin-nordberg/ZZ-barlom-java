@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.api.elements;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -25,6 +26,40 @@ public interface IVertexType {
     /**
      * @return the super type of this vertex type.
      */
-    IVertexType getSuperType();
+    Optional<IVertexType> getSuperType();
+
+    /**
+     * Determines whether this vertex is a direct or indirect subtype of the given vertex type.
+     * @param vertexType the potential super type
+     * @return true if this vertex type is the given type or, recursively, if its super type is a subtype of the given type.
+     */
+    default boolean isSubTypeOf( IVertexType vertexType ) {
+
+        IVertexType v = this;
+        while ( true ) {
+            if ( v == vertexType ) {
+                // success if we encounter the given type somewhere along the chain
+                return true;
+            }
+            if ( !v.getSuperType().isPresent() ) {
+                // root vertex type has no super type
+                return false;
+            }
+            v = v.getSuperType().get();
+        }
+
+    }
+
+    /**
+     * Changes the name of this vertex type.
+     * @param name the new name.
+     */
+    void setName( String name );
+
+    /**
+     * Changes the super type of this vertex type.
+     * @param superType the new super type.
+     */
+    void setSuperType( IVertexType superType );
 
 }

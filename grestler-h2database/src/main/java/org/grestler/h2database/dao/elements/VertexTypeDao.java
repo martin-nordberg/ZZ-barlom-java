@@ -33,10 +33,18 @@ public class VertexTypeDao {
     public void createVertexType( IVertexType vertexType ) {
 
         this.database.withVoidTransaction( tx -> {
-            this.database.update( "INSERT INTO VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)", 
-                vertexType.getId(), vertexType.getName(), vertexType.getSuperType().getId() );
+
+            if ( vertexType.getSuperType().isPresent() ) {
+                this.database.update( "INSERT INTO VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
+                    vertexType.getId(), vertexType.getName(), vertexType.getSuperType().get().getId() );
+            }
+            else {
+                this.database.update( "INSERT INTO VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
+                    vertexType.getId(), vertexType.getName(), vertexType.getId() );
+            }
 
             // TODO: create the corresponding table
+
         } );
 
     }
