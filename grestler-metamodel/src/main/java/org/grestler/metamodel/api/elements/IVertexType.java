@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface IVertexType {
 
     /**
-     * @return the unique ID of the vertex type.
+     * @return the unique ID of this vertex type.
      */
     UUID getId();
 
@@ -29,7 +29,7 @@ public interface IVertexType {
     Optional<IVertexType> getSuperType();
 
     /**
-     * Determines whether this vertex is a direct or indirect subtype of the given vertex type.
+     * Determines whether this vertex type is a direct or indirect subtype of the given vertex type.
      * @param vertexType the potential super type
      * @return true if this vertex type is the given type or, recursively, if its super type is a subtype of the given type.
      */
