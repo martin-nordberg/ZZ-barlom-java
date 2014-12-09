@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.elements;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,26 +19,25 @@ public class VertexType
     implements IVertexType {
 
     /**
-     * Constructs a new top level vertex type.
-     * @param id the unique ID of the type.
-     * @param name the name of the type.
-     */
-    public VertexType( UUID id, String name ) {
-        this.id = id;
-        this.name = new V<>( name );
-        this.superType = new V<>( this );
-    }
-
-    /**
      * Constructs a new vertex type.
      * @param id the unique ID of the type.
      * @param name the name of the type.
      * @param superType the super type.
      */
-    public VertexType( UUID id, String name, IVertexType superType ) {
+    public VertexType( UUID id, String name, Optional<IVertexType> superType ) {
+
+        Objects.requireNonNull( id, "Missing ID" );
+        Objects.requireNonNull( name, "Missing name" );
+
         this.id = id;
         this.name = new V<>( name );
-        this.superType = new V<>( superType );
+        if ( superType.isPresent() ) {
+            this.superType = new V<>( superType.get() );
+        }
+        else {
+            this.superType = new V<>( this );
+        }
+
     }
 
     @Override
@@ -52,20 +52,40 @@ public class VertexType
 
     @Override
     public Optional<IVertexType> getSuperType() {
+
         if ( this.superType.get() == this ) {
             return Optional.empty();
         }
+
         return Optional.of( this.superType.get() );
+
     }
 
-    @Override
+    /**
+     * Changes the name of this vertex type.
+     * @param name the new name (required).
+     */
     public void setName( String name ) {
+
+        Objects.requireNonNull( name, "Missing name" );
+
         this.name.set( name );
+
     }
 
-    @Override
-    public void setSuperType( IVertexType superType ) {
-        this.superType.set( superType );
+    /**
+     * Changes the super type of this vertex type.
+     * @param superType the new super type.
+     */
+    public void setSuperType( Optional<IVertexType> superType ) {
+
+        if ( superType.isPresent() ) {
+            this.superType.set( superType.get() );
+        }
+        else {
+            this.superType.set( this );
+        }
+
     }
 
     private final UUID id;

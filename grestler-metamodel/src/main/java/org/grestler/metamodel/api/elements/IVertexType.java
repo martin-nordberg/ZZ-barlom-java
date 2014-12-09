@@ -50,16 +50,4 @@ public interface IVertexType {
 
     }
 
-    /**
-     * Changes the name of this vertex type.
-     * @param name the new name.
-     */
-    void setName( String name );
-
-    /**
-     * Changes the super type of this vertex type.
-     * @param superType the new super type.
-     */
-    void setSuperType( IVertexType superType );
-
 }

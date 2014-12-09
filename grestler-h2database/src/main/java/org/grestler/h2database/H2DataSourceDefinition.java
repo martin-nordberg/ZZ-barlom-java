@@ -16,7 +16,7 @@ public class H2DataSourceDefinition
     implements IDataSourceDefinition {
 
     @Override
-    public IDataSource makeDataSource() {
+    public H2DataSource makeDataSource() {
         return new H2DataSource();
     }
 

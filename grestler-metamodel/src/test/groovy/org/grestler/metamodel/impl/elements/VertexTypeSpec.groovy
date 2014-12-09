@@ -15,15 +15,15 @@ import spock.lang.Specification
  */
 class VertexTypeSpec extends Specification {
 
-    def id = Uuids.makeUuid();
-    def name = "Example";
+    UUID id = Uuids.makeUuid();
+    String name = "Example";
 
     def "A top level vertex type can be constructed and read"() {
 
         given:
         IVertexType v
         StmTransactionContext.doInTransaction(1) {
-            v = new VertexType( id, name );
+            v = new VertexType( id, name, Optional.empty() );
         }
 
         expect:
@@ -32,6 +32,30 @@ class VertexTypeSpec extends Specification {
             assert v.getName() == name
             assert !v.getSuperType().isPresent();
             assert v.isSubTypeOf( v );
+        }
+
+    }
+
+    def "Vertex type subtypes can be detected correctly"() {
+
+        given:
+        IVertexType v1;
+        IVertexType v2;
+        IVertexType w;
+        StmTransactionContext.doInTransaction(1) {
+            v1 = new VertexType( id, name, Optional.empty() );
+            v2 = new VertexType( id, name, Optional.of(v1) );
+            w = new VertexType( id, name, Optional.empty() );
+        }
+
+        expect:
+        StmTransactionContext.doInTransaction(1) {
+            assert !v1.getSuperType().isPresent();
+            assert v1.isSubTypeOf( v1 );
+            assert v2.getSuperType().get() == v1;
+            assert v2.isSubTypeOf( v1 );
+            assert !v1.isSubTypeOf( v2 );
+            assert !w.isSubTypeOf( v1 );
         }
 
     }
