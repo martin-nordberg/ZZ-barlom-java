@@ -8,15 +8,15 @@ package org.grestler.metamodel.spi.elements;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 
 /**
- * Interface defining vertex type queries.
+ * Interface defining edge type queries.
  */
-public interface IVertexTypeLoader {
+public interface IEdgeTypeLoader {
 
     /**
-     * Loads all vertex types into the metamodel repository.
+     * Loads all edge types into the metamodel repository.
      *
      * @param repository the repository to be loaded.
      */
-    void loadAllVertexTypes( IMetamodelRepositorySpi repository );
+    void loadAllEdgeTypes( IMetamodelRepositorySpi repository );
 
 }

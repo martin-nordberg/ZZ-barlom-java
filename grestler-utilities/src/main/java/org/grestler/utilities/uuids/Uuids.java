@@ -12,8 +12,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Static utility class for generating UUIDs. Generates Version 1 JDK UUIDs. Hopefully more useful for
- * database keys than the random UUIDs produced by the JDK.
+ * Static utility class for generating UUIDs. Generates Version 1 JDK UUIDs. Hopefully more useful for database keys
+ * than the random UUIDs produced by the JDK.
  */
 public class Uuids {
 
@@ -31,9 +31,9 @@ public class Uuids {
     }
 
     /**
-     * Makes a UUID with a block of 256 sequential UUIDs reserved. The next UUID returned by this generator
-     * will be different in its first three bytes, so a remote client can safely create up to 256 UUIDs from the
-     * given one by incrementing only the fourth byte. The fourth byte will be 0x00.
+     * Makes a UUID with a block of 256 sequential UUIDs reserved. The next UUID returned by this generator will be
+     * different in its first three bytes, so a remote client can safely create up to 256 UUIDs from the given one by
+     * incrementing only the fourth byte. The fourth byte will be 0x00.
      *
      * @return a new UUID as a string in the format /^[a-f0-9]{6}00-[a-f0-9]{4}-1[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$/.
      */
@@ -51,14 +51,14 @@ public class Uuids {
         // node
         byte[] macAddress = determineMacAddress();
         long result = macAddress[5];
-        result |= (0xFFL & macAddress[4]) << 8;
-        result |= (0xFFL & macAddress[3]) << 16;
-        result |= (0xFFL & macAddress[2]) << 24;
-        result |= (0xFFL & macAddress[1]) << 32;
-        result |= (0xFFL & macAddress[0]) << 40;
+        result |= ( 0xFFL & macAddress[4] ) << 8;
+        result |= ( 0xFFL & macAddress[3] ) << 16;
+        result |= ( 0xFFL & macAddress[2] ) << 24;
+        result |= ( 0xFFL & macAddress[1] ) << 32;
+        result |= ( 0xFFL & macAddress[0] ) << 40;
 
         // clock sequence - TBD: currently random; store & retrieve a value instead
-        result |= (long) (Math.random() * 0x3FFF) << 48;
+        result |= (long) ( Math.random() * 0x3FFF ) << 48;
 
         // reserved bits
         result |= 0x8000000000000000L;
@@ -100,6 +100,7 @@ public class Uuids {
      * Computes the next time field from the current system time plus any counter increment needed.
      *
      * @param reservedTimeBlock If true, ensure that the next time returned after this one will be 256 * 100ns later
+     *
      * @return the high 64 bits of the next UUID (version 1)
      */
     private static long getNextTimeAndVersion( boolean reservedTimeBlock ) {
@@ -142,10 +143,10 @@ public class Uuids {
         long result = time100ns << 32;
 
         // time mid
-        result |= (time100ns & 0xFFFF00000000L) >> 16;
+        result |= ( time100ns & 0xFFFF00000000L ) >> 16;
 
         // time hi and version 1
-        result |= (time100ns >> 48) & 0x0FFF;
+        result |= ( time100ns >> 48 ) & 0x0FFF;
 
         // version 1
         result |= 0x1000;

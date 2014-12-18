@@ -17,8 +17,9 @@ public class StmTransactionContext {
     }
 
     /**
-     * Creates a new transaction. The lifecycle of the transaction must be managed by the client, which
-     * is responsible for calling either commitTransaction or abortTransaction on the result.
+     * Creates a new transaction. The lifecycle of the transaction must be managed by the client, which is responsible
+     * for calling either commitTransaction or abortTransaction on the result.
+     *
      * @return the newly started transaction.
      */
     public static StmTransaction beginTransaction() {
@@ -66,8 +67,9 @@ public class StmTransactionContext {
      * Performs the work of the given callback inside a newly created transaction.
      *
      * @param task       the work to be done inside a transaction.
-     * @param maxRetries the maximum number of times to retry the transaction if write conflicts are encountered
-     *                   (must be zero or more, zero meaning try but don't retry).
+     * @param maxRetries the maximum number of times to retry the transaction if write conflicts are encountered (must
+     *                   be zero or more, zero meaning try but don't retry).
+     *
      * @throws MaximumRetriesExceededException if the transaction fails even after the specified number of retries.
      * @throws Exception                       any exception thrown by the transactional task
      */
@@ -156,6 +158,5 @@ public class StmTransactionContext {
      * Thread-local storage for the transaction in use by the current thread (can be only one per thread).
      */
     private static ThreadLocal<StmTransaction> transactionOfCurrentThread = new ThreadLocal<>();
-
 
 }

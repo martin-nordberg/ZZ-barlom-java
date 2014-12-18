@@ -31,8 +31,11 @@ public class AdminServerBuilder {
 
     /**
      * Creates a Jetty server for administration.
+     *
      * @param dataSource The data source for queries completed by the admin server.
+     *
      * @return the newly created server.
+     *
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
     public static Server makeAdminServer( IDataSource dataSource ) throws MalformedURLException {
@@ -68,6 +71,7 @@ public class AdminServerBuilder {
 
     /**
      * Creates the context handler for the admin server.
+     *
      * @return the new context handler.
      */
     private static ServletContextHandler makeDynamicContextHandler() {
@@ -82,9 +86,9 @@ public class AdminServerBuilder {
         result.addServlet( servletHolder, "/exit" );
 
         // Add a raw H2 SQL console.
-//        servletHolder = new ServletHolder( new org.h2.server.web.WebServlet() );
-//        servletHolder.setInitParameter( "webAllowOthers", "true" );
-//        result.addServlet( servletHolder, "/h2console/*" );
+        //        servletHolder = new ServletHolder( new org.h2.server.web.WebServlet() );
+        //        servletHolder.setInitParameter( "webAllowOthers", "true" );
+        //        result.addServlet( servletHolder, "/h2console/*" );
 
         // Rename request threads for better logging.
         result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
@@ -95,7 +99,9 @@ public class AdminServerBuilder {
 
     /**
      * Creates the static file server context handler.
+     *
      * @return the new context handler.
+     *
      * @throws MalformedURLException if things are configured incorrectly.
      */
     private static ContextHandler makeStaticContextHandler() throws MalformedURLException {
@@ -108,12 +114,15 @@ public class AdminServerBuilder {
         ResourceHandler fileResourceHandler = new ResourceHandler();
         fileResourceHandler.setCacheControl( "max-age=3600,public" );
         // TODO: Make internal resource
-        fileResourceHandler.setBaseResource( Resource.newResource( "/home/mnordberg/Workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp" ) );
+        fileResourceHandler.setBaseResource(
+            Resource.newResource(
+                "/home/mnordberg/Workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp"
+            )
+        );
         fileServerContext.setHandler( fileResourceHandler );
 
         return fileServerContext;
 
     }
-
 
 }

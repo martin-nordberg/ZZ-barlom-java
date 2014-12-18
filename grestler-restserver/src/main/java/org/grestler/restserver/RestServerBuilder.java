@@ -31,8 +31,11 @@ public class RestServerBuilder {
 
     /**
      * Creates a Jetty server for REST services.
+     *
      * @param dataSource the data source for queries made by the server.
+     *
      * @return the newly created server.
+     *
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
     public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
@@ -66,6 +69,29 @@ public class RestServerBuilder {
     }
 
     /**
+     * Creates the REST service context handler.
+     *
+     * @return the new context handler.
+     */
+    private static ServletContextHandler makeWebServiceContextHandler() {
+
+        // Set the context for dynamic content.
+        ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
+        result.setContextPath( "/grestlerdata" );
+
+        // Add a RESTEasy servlet for the dynamic content.
+        ServletHolder servletHolder = new ServletHolder( new HttpServletDispatcher() );
+        servletHolder.setInitParameter( "javax.ws.rs.Application", "org.grestler.restserver.ApplicationServices" );
+        result.addServlet( servletHolder, "/*" );
+
+        // Rename request threads for better logging.
+        result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
+
+        return result;
+
+    }
+
+    /**
      * Connects RESTEasy logging to Log4j2.
      */
     private static void overrideRestEasyLoggerInitialization() {
@@ -90,28 +116,5 @@ public class RestServerBuilder {
         }
 
     }
-
-    /**
-     * Creates the REST service context handler.
-     * @return the new context handler.
-     */
-    private static ServletContextHandler makeWebServiceContextHandler() {
-
-        // Set the context for dynamic content.
-        ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
-        result.setContextPath( "/grestlerdata" );
-
-        // Add a RESTEasy servlet for the dynamic content.
-        ServletHolder servletHolder = new ServletHolder( new HttpServletDispatcher() );
-        servletHolder.setInitParameter( "javax.ws.rs.Application", "org.grestler.restserver.ApplicationServices" );
-        result.addServlet( servletHolder, "/*" );
-
-        // Rename request threads for better logging.
-        result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
-
-        return result;
-
-    }
-
 
 }

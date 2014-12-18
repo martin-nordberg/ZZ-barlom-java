@@ -40,7 +40,7 @@ public class H2DataSource
         this.connectionPool = JdbcConnectionPool.create( url, username, password );
 
         // Update the schema if needed.
-        new DatabaseMigration(this).updateDatabaseSchema();
+        new DatabaseMigration( this ).updateDatabaseSchema();
 
     }
 

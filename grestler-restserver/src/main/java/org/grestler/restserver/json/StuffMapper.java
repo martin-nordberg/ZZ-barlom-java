@@ -1,4 +1,3 @@
-
 package org.grestler.restserver.json;
 
 import org.apache.logging.log4j.LogManager;
@@ -44,10 +43,18 @@ public class StuffMapper
     }
 
     @Override
-    public void writeTo( Object object, Class<?> clazz, Type type, Annotation[] annotation, MediaType mediaType, MultivaluedMap<String, Object> map, OutputStream out ) throws IOException, WebApplicationException {
+    public void writeTo(
+        Object object,
+        Class<?> clazz,
+        Type type,
+        Annotation[] annotation,
+        MediaType mediaType,
+        MultivaluedMap<String, Object> map,
+        OutputStream out
+    ) throws IOException, WebApplicationException {
         if ( object instanceof Stuff ) {
             JsonGenerator gen = Json.createGenerator( out );
-            gen.writeStartObject().write( "thecount", ((Stuff) object).getCount() ).writeEnd();
+            gen.writeStartObject().write( "thecount", ( (Stuff) object ).getCount() ).writeEnd();
             gen.close();
         }
     }

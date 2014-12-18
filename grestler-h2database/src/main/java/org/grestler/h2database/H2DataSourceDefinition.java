@@ -5,7 +5,6 @@
 
 package org.grestler.h2database;
 
-import org.grestler.dbutilities.IDataSource;
 import org.grestler.dbutilities.IDataSourceDefinition;
 import org.grestler.h2database.datasource.H2DataSource;
 

@@ -14,9 +14,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Utility class for managing in-memory transactions. The code is similar to "versioned boxes", the concept
- * behind JVSTM for software transactional memory. However, this code is much more streamlined, though very
- * experimental.
+ * Utility class for managing in-memory transactions. The code is similar to "versioned boxes", the concept behind JVSTM
+ * for software transactional memory. However, this code is much more streamlined, though very experimental.
  */
 public class StmTransaction {
 
@@ -50,24 +49,6 @@ public class StmTransaction {
 
         // Establish a link for putting this transaction in a linked list of completed transactions.
         this.nextTransactionAwaitingCleanUp = new AtomicReference<>( null );
-
-    }
-
-    /**
-     * Atomically commits the given transaction.
-     *
-     * @param transaction the transaction to commit
-     * @throws WriteConflictException if some other transaction has written some value the given transaction read.
-     */
-    private static synchronized void writeTransaction( StmTransaction transaction ) {
-
-        // Check for conflicts.
-        for ( AbstractVersionedItem versionedItem : transaction.versionedItemsRead ) {
-            versionedItem.ensureNotWrittenByOtherTransaction();
-        }
-
-        // Set the revision number to a committed value.
-        transaction.targetRevisionNumber.set( lastCommittedRevisionNumber.incrementAndGet() );
 
     }
 
@@ -110,8 +91,8 @@ public class StmTransaction {
 
     /**
      * Tracks all versioned items written by this transaction. The versions written by this transaction will be cleaned
-     * up after the transaction aborts. Any earlier versions will be cleaned up after all transactions using any
-     * earlier versions and their source have completed.
+     * up after the transaction aborts. Any earlier versions will be cleaned up after all transactions using any earlier
+     * versions and their source have completed.
      *
      * @param versionedItem the item that has been written.
      */
@@ -184,7 +165,8 @@ public class StmTransaction {
     }
 
     /**
-     * @return the revision number of information written by this transaction (negative while transaction is running; positive after committed.
+     * @return the revision number of information written by this transaction (negative while transaction is running;
+     * positive after committed.
      */
     AtomicLong getTargetRevisionNumber() {
         return this.targetRevisionNumber;
@@ -203,6 +185,25 @@ public class StmTransaction {
 
         // Track the newer revision number to fail early if we subsequently write something.
         this.newerRevisionSeen = true;
+
+    }
+
+    /**
+     * Atomically commits the given transaction.
+     *
+     * @param transaction the transaction to commit
+     *
+     * @throws WriteConflictException if some other transaction has written some value the given transaction read.
+     */
+    private static synchronized void writeTransaction( StmTransaction transaction ) {
+
+        // Check for conflicts.
+        for ( AbstractVersionedItem versionedItem : transaction.versionedItemsRead ) {
+            versionedItem.ensureNotWrittenByOtherTransaction();
+        }
+
+        // Set the revision number to a committed value.
+        transaction.targetRevisionNumber.set( lastCommittedRevisionNumber.incrementAndGet() );
 
     }
 
@@ -226,8 +227,8 @@ public class StmTransaction {
     }
 
     /**
-     * Removes the source revision number of this transaction from those in use. Cleans up older revisions
-     * if not in use by other transactions.
+     * Removes the source revision number of this transaction from those in use. Cleans up older revisions if not in use
+     * by other transactions.
      */
     private void cleanUpOlderRevisions() {
 
@@ -301,8 +302,8 @@ public class StmTransaction {
     private static AtomicLong lastCommittedRevisionNumber = new AtomicLong( 0 );
 
     /**
-     * Monotone decreasing revision number decremented whenever a transaction is started. Negative value
-     * indicates a transaction in progress.
+     * Monotone decreasing revision number decremented whenever a transaction is started. Negative value indicates a
+     * transaction in progress.
      */
     private static AtomicLong lastPendingRevisionNumber = new AtomicLong( 0 );
 
@@ -310,11 +311,6 @@ public class StmTransaction {
      * Priority queue of revision numbers currently in use as the source revision for some transaction.
      */
     private static Queue<Long> sourceRevisionsInUse = new PriorityBlockingQueue<>();
-
-    /**
-     * A newer revision number seen during reading will cause a write conflict if anything writes through this transaction.
-     */
-    private boolean newerRevisionSeen;
 
     /**
      * The next transaction in a linked list of transactions awaiting clean up.
@@ -327,8 +323,8 @@ public class StmTransaction {
     private final long sourceRevisionNumber;
 
     /**
-     * The revision number being written by this transaction. Negative while the transaction is running; zero if
-     * the transaction is aborted; positive after the transaction has been committed.
+     * The revision number being written by this transaction. Negative while the transaction is running; zero if the
+     * transaction is aborted; positive after the transaction has been committed.
      */
     private final AtomicLong targetRevisionNumber;
 
@@ -341,5 +337,11 @@ public class StmTransaction {
      * The versioned item written by this transaction.
      */
     private final Set<AbstractVersionedItem> versionedItemsWritten;
+
+    /**
+     * A newer revision number seen during reading will cause a write conflict if anything writes through this
+     * transaction.
+     */
+    private boolean newerRevisionSeen;
 
 }

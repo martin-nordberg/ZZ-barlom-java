@@ -17,13 +17,23 @@ import java.io.IOException;
 public class ShutdownServlet
     extends HttpServlet {
 
+    /**
+     * Registers the web server to be closed when this shutdown servlet executes. TODO: not static
+     *
+     * @param webServer the web server to shut down.
+     */
+    public static void registerWebServer( AutoCloseable webServer ) {
+        ShutdownServlet.webServer = webServer;
+    }
+
     @Override
     protected void service( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
 
         // ask the web server to stop (asynchronously)
         try {
             webServer.close();
-        } catch ( Exception e ) {
+        }
+        catch ( Exception e ) {
             throw new ServletException( e );
         }
 
@@ -31,15 +41,6 @@ public class ShutdownServlet
         resp.getOutputStream().println( "Grestler admin and application servers stopping..." );
         resp.setStatus( HttpServletResponse.SC_OK );
 
-    }
-
-    /**
-     * Registers the web server to be closed when this shutdown servlet executes.
-     * TODO: not static
-     * @param webServer the web server to shut down.
-     */
-    public static void registerWebServer( AutoCloseable webServer ) {
-        ShutdownServlet.webServer = webServer;
     }
 
     /** The web server to shutdown when this servlet executes. */

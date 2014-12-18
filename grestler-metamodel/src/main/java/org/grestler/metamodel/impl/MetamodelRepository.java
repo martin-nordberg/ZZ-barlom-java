@@ -47,7 +47,7 @@ public class MetamodelRepository
     @Override
     public Optional<IEdgeType> findEdgeTypeByName( String name ) {
 
-        // Search for the edge type with given UUID. -- TODO: may be worth map by ID
+        // Search for the edge type with given UUID. -- TODO: may be worth map by name
         for ( IEdgeType e : this.edgeTypes.get() ) {
             if ( e.getName().equals( name ) ) {
                 return Optional.of( e );
@@ -80,7 +80,7 @@ public class MetamodelRepository
     @Override
     public Optional<IVertexType> findVertexTypeByName( String name ) {
 
-        // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
+        // Search for the vertex type with given UUID. -- TODO: may be worth map by name
         for ( IVertexType v : this.vertexTypes.get() ) {
             if ( v.getName().equals( name ) ) {
                 return Optional.of( v );
@@ -97,7 +97,13 @@ public class MetamodelRepository
     }
 
     @Override
-    public IEdgeType loadEdgeType( UUID id, String name, Optional<IEdgeType> superType, IVertexType fromVertexType, IVertexType toVertexType ) {
+    public IEdgeType loadEdgeType(
+        UUID id,
+        String name,
+        Optional<IEdgeType> superType,
+        IVertexType fromVertexType,
+        IVertexType toVertexType
+    ) {
 
         IEdgeType result = new EdgeType( id, name, superType, fromVertexType, toVertexType );
 

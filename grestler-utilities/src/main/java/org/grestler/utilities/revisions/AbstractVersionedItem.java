@@ -10,9 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Interface to a versioned value that supports clean up of obsolete or aborted versions.
  * <p>
- * TODO: make versioned items observable:
- * void subscribe( boolean insideTransaction, Subscriber subscriber );
- * void unsubscribe( Subscriber subscriber );
+ * TODO: make versioned items observable: void subscribe( boolean insideTransaction, Subscriber subscriber ); void
+ * unsubscribe( Subscriber subscriber );
  */
 abstract class AbstractVersionedItem {
 
@@ -23,7 +22,7 @@ abstract class AbstractVersionedItem {
         this.hashCode = lastHashCode.incrementAndGet();
     }
 
-    @SuppressWarnings("SimplifiableIfStatement")
+    @SuppressWarnings( "SimplifiableIfStatement" )
     @Override
     public final boolean equals( Object that ) {
 
@@ -35,7 +34,7 @@ abstract class AbstractVersionedItem {
             return false;
         }
 
-        return hashCode == ((AbstractVersionedItem) that).hashCode;
+        return hashCode == ( (AbstractVersionedItem) that ).hashCode;
 
     }
 

@@ -25,6 +25,7 @@ public class VertexTypeLoader
 
     /**
      * Constructs a new DAO for vertex types.
+     *
      * @param dataSource the data source for the H2 database to read from.
      */
     public VertexTypeLoader( H2DataSource dataSource ) {
@@ -39,7 +40,10 @@ public class VertexTypeLoader
         database.getInstantiatorRegistry().registerInstantiator( VertexTypeData.class, new VertexTypeInstantiator() );
 
         // Perform the raw query.
-        List<VertexTypeData> records = database.findAll( VertexTypeData.class, "SELECT TO_CHAR(ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE" );
+        List<VertexTypeData> records = database.findAll(
+            VertexTypeData.class,
+            "SELECT TO_CHAR(ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
+        );
 
         // Copy the results into the repository.
         for ( VertexTypeData record : records ) {
@@ -49,56 +53,18 @@ public class VertexTypeLoader
     }
 
     /**
-     * Data structure for vertex type records.
-     */
-    private static class VertexTypeData {
-
-        VertexTypeData( UUID id, String name, UUID superTypeId ) {
-            this.id = id;
-            this.name = name;
-            this.superTypeId = superTypeId;
-        }
-
-        final UUID id;
-        final String name;
-        final UUID superTypeId;
-
-    }
-
-    /**
-     * Custom instantiator for vertex types.
-     */
-    private static class VertexTypeInstantiator
-        implements Instantiator<VertexTypeData> {
-
-        /**
-         * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the registry.
-         *
-         * @param fields the fields from the database query.
-         * @return the new vertexType.
-         */
-        @SuppressWarnings("NullableProblems")
-        @Override
-        public VertexTypeData instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new VertexTypeData(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                (String) fields.getValues().get( 1 ),
-                UUID.fromString( (String) fields.getValues().get( 2 ) )
-            );
-
-        }
-
-    }
-
-    /**
      * Finds a vertex type in the metamodel repository or creates it if not yet there.
-     * @param record the attributes of the vertex type.
+     *
+     * @param record  the attributes of the vertex type.
      * @param records the attributes of all vertex types.
+     *
      * @return the found or newly created vertex type.
      */
-    private IVertexType findOrCreateVertexType( VertexTypeData record, List<VertexTypeData> records, IMetamodelRepositorySpi repository ) {
+    private IVertexType findOrCreateVertexType(
+        VertexTypeData record,
+        List<VertexTypeData> records,
+        IMetamodelRepositorySpi repository
+    ) {
 
         Optional<IVertexType> result = repository.findVertexTypeById( record.id );
 
@@ -131,5 +97,53 @@ public class VertexTypeLoader
 
     /** The data source for queries. */
     private final H2DataSource dataSource;
+
+    /**
+     * Data structure for vertex type records.
+     */
+    private static class VertexTypeData {
+
+        VertexTypeData( UUID id, String name, UUID superTypeId ) {
+            this.id = id;
+            this.name = name;
+            this.superTypeId = superTypeId;
+        }
+
+        final UUID id;
+
+        final String name;
+
+        final UUID superTypeId;
+
+    }
+
+    /**
+     * Custom instantiator for vertex types.
+     */
+    private static class VertexTypeInstantiator
+        implements Instantiator<VertexTypeData> {
+
+        /**
+         * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the
+         * registry.
+         *
+         * @param fields the fields from the database query.
+         *
+         * @return the new vertexType.
+         */
+        @SuppressWarnings( "NullableProblems" )
+        @Override
+        public VertexTypeData instantiate( InstantiatorArguments fields ) {
+
+            // Get the attributes from the database result.
+            return new VertexTypeData(
+                UUID.fromString( (String) fields.getValues().get( 0 ) ),
+                (String) fields.getValues().get( 1 ),
+                UUID.fromString( (String) fields.getValues().get( 2 ) )
+            );
+
+        }
+
+    }
 
 }

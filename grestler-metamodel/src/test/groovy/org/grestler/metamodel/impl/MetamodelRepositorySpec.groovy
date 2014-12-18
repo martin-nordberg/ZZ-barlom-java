@@ -13,7 +13,8 @@ import spock.lang.Specification
 /**
  * Specification for a meatmodel repository.
  */
-class MetamodelRepositorySpec extends Specification {
+class MetamodelRepositorySpec
+        extends Specification {
 
     UUID id1 = Uuids.makeUuid();
 
@@ -21,7 +22,7 @@ class MetamodelRepositorySpec extends Specification {
 
         given:
         IMetamodelRepositorySpi m
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             m = new MetamodelRepository();
 
             m.loadVertexType( id1, "V1", Optional.empty() );
@@ -31,7 +32,7 @@ class MetamodelRepositorySpec extends Specification {
         }
 
         expect:
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             assert m.findVertexTypeById( id1 ).get().name == "V1";
             assert m.findVertexTypeByName( "V2" ).get().name == "V2";
             assert m.findVertexTypesAll().size() == 4;

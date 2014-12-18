@@ -17,7 +17,8 @@ public class CacheControlFilter
 
     /**
      * Disallows caching of dynamic content.
-     * @param request The HTTP request (only GETs affected).
+     *
+     * @param request  The HTTP request (only GETs affected).
      * @param response The HTTP response (cache control headers set by the filter).
      */
     public void filter( ContainerRequestContext request, ContainerResponseContext response ) {

@@ -17,11 +17,12 @@ public class ThreadNameFilter
     implements Filter {
 
     @Override
-    public void init( FilterConfig filterConfig ) throws ServletException {
+    public void destroy() {
     }
 
     @Override
-    public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException, ServletException {
+    public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain )
+        throws IOException, ServletException {
 
         // Determine the request URL.
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -38,7 +39,7 @@ public class ThreadNameFilter
     }
 
     @Override
-    public void destroy() {
+    public void init( FilterConfig filterConfig ) throws ServletException {
     }
 
 }

@@ -14,7 +14,8 @@ import spock.lang.Specification
 /**
  * Specification for vertex type loading.
  */
-class VertexTypeLoaderSpec extends Specification {
+class VertexTypeLoaderSpec
+        extends Specification {
 
     def "A vertex loader retrieves the top level base vertex type"() {
 
@@ -29,7 +30,7 @@ class VertexTypeLoaderSpec extends Specification {
         }
 
         expect:
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             assert m.findVertexTypeByName( "Vertex" ).get().name == "Vertex";
             assert !m.findVertexTypeByName( "Vertex" ).get().superType.isPresent();
             assert m.findVertexTypesAll().size() == 1;

@@ -9,18 +9,18 @@ import javax.ws.rs.core.Response;
 /**
  * Simple hello world REST service.
  */
-@Path("/hello")
+@Path( "/hello" )
 public class HelloService {
 
     @GET
-    @Path("extra")
-    @Produces({ "application/json", "application/vnd.grestler.org.v1.stuff+json" })
+    @Path( "extra" )
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.stuff+json" } )
     public Stuff helloExtraGet() {
         return new Stuff( 100 );
     }
 
     @GET
-    @Produces("application/json")
+    @Produces( "application/json" )
     public Response helloGet() {
         return Response.status( 200 ).entity( "{ \"message\": \"Hello\" }" ).build();
     }

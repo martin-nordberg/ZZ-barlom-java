@@ -31,7 +31,13 @@ public class V<T>
         StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         this.latestRevision = new AtomicReference<>( null );
-        this.latestRevision.set( new Revision<>( value, currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() ) );
+        this.latestRevision.set(
+            new Revision<>(
+                value,
+                currentTransaction.getTargetRevisionNumber(),
+                this.latestRevision.get()
+            )
+        );
 
         // Keep track of everything we've written.
         currentTransaction.addVersionedItemWritten( this );
@@ -53,7 +59,9 @@ public class V<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -100,7 +108,9 @@ public class V<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions ...
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -126,7 +136,13 @@ public class V<T>
         }
 
         // Create the new revision at the front of the chain.
-        this.latestRevision.set( new Revision<>( value, currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() ) );
+        this.latestRevision.set(
+            new Revision<>(
+                value,
+                currentTransaction.getTargetRevisionNumber(),
+                this.latestRevision.get()
+            )
+        );
 
         // Keep track of everything we've written.
         currentTransaction.addVersionedItemWritten( this );
@@ -142,7 +158,9 @@ public class V<T>
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
         // Loop through the revisions ...
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -201,7 +219,9 @@ public class V<T>
     void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -214,6 +234,12 @@ public class V<T>
         }
 
     }
+
+    /**
+     * Reference to the latest revision. Revisions are kept in a custom linked list with the newest revision at the head
+     * of the list.
+     */
+    private final AtomicReference<Revision<T>> latestRevision;
 
     /**
      * Internal record structure for revisions in the linked list of revisions.
@@ -244,11 +270,5 @@ public class V<T>
         T value;
 
     }
-
-    /**
-     * Reference to the latest revision. Revisions are kept in a custom linked list with the newest revision at
-     * the head of the list.
-     */
-    private final AtomicReference<Revision<T>> latestRevision;
 
 }

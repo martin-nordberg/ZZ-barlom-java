@@ -10,9 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Handle to a versioned item that is a set of items.
- * TBD: This is practically a clone of VList; either refactor out a generic base class or else implement
- * a better versioned set.
+ * Handle to a versioned item that is a set of items. TBD: This is practically a clone of VList; either refactor out a
+ * generic base class or else implement a better versioned set.
  */
 public class VSet<T>
     extends AbstractVersionedItem {
@@ -26,7 +25,12 @@ public class VSet<T>
         StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         this.latestRevision = new AtomicReference<>( null );
-        this.latestRevision.set( new Revision<>( currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() ) );
+        this.latestRevision.set(
+            new Revision<>(
+                currentTransaction.getTargetRevisionNumber(),
+                this.latestRevision.get()
+            )
+        );
 
         // keep track of everything we've written
         currentTransaction.addVersionedItemWritten( this );
@@ -50,7 +54,9 @@ public class VSet<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // loop through the revisions
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -68,7 +74,10 @@ public class VSet<T>
         }
 
         // create the new revision at the front of the chain
-        final Revision<T> revision = new Revision<>( currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() );
+        final Revision<T> revision = new Revision<>(
+            currentTransaction.getTargetRevisionNumber(),
+            this.latestRevision.get()
+        );
         revision.addedValues.add( value );
         this.latestRevision.set( revision );
 
@@ -92,7 +101,9 @@ public class VSet<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -140,7 +151,9 @@ public class VSet<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // loop through the revisions
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -158,7 +171,10 @@ public class VSet<T>
         }
 
         // create the new revision at the front of the chain
-        final Revision<T> revision = new Revision<>( currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() );
+        final Revision<T> revision = new Revision<>(
+            currentTransaction.getTargetRevisionNumber(),
+            this.latestRevision.get()
+        );
         revision.removedValues.add( value );
         this.latestRevision.set( revision );
 
@@ -176,7 +192,9 @@ public class VSet<T>
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
         // loop through the revisions
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -235,7 +253,9 @@ public class VSet<T>
     void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -253,6 +273,12 @@ public class VSet<T>
         }
 
     }
+
+    /**
+     * Reference to the latest revision. Revisions are kept in a custom linked Set with the newest revision at the head
+     * of the set.
+     */
+    private final AtomicReference<Revision<T>> latestRevision;
 
     /**
      * Internal record structure for revisions in the linked Set of revisions.
@@ -291,31 +317,25 @@ public class VSet<T>
         }
 
         /**
-         * The items added to the set during this revision.
-         */
-        List<T> addedValues;
-
-        /**
          * A reference to the previous revision of the versioned item.
          */
         final AtomicReference<Revision<T>> priorRevision;
-
-        /**
-         * The items removed from the set during this revision.
-         */
-        List<T> removedValues;
 
         /**
          * The revision number of this revision (uniquely from the transaction that wrote it).
          */
         final AtomicLong revisionNumber;
 
-    }
+        /**
+         * The items added to the set during this revision.
+         */
+        List<T> addedValues;
 
-    /**
-     * Reference to the latest revision. Revisions are kept in a custom linked Set with the newest revision at
-     * the head of the set.
-     */
-    private final AtomicReference<Revision<T>> latestRevision;
+        /**
+         * The items removed from the set during this revision.
+         */
+        List<T> removedValues;
+
+    }
 
 }

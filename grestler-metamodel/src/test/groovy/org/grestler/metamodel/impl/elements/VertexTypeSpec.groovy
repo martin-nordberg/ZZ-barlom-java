@@ -13,21 +13,23 @@ import spock.lang.Specification
 /**
  * Specification for vertex types.
  */
-class VertexTypeSpec extends Specification {
+class VertexTypeSpec
+        extends Specification {
 
     UUID id = Uuids.makeUuid();
+
     String name = "Example";
 
     def "A top level vertex type can be constructed and read"() {
 
         given:
         IVertexType v
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             v = new VertexType( id, name, Optional.empty() );
         }
 
         expect:
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             assert v.getId() == id
             assert v.getName() == name
             assert !v.getSuperType().isPresent();
@@ -42,14 +44,14 @@ class VertexTypeSpec extends Specification {
         IVertexType v1;
         IVertexType v2;
         IVertexType w;
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             v1 = new VertexType( id, name, Optional.empty() );
-            v2 = new VertexType( id, name, Optional.of(v1) );
+            v2 = new VertexType( id, name, Optional.of( v1 ) );
             w = new VertexType( id, name, Optional.empty() );
         }
 
         expect:
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             assert !v1.getSuperType().isPresent();
             assert v1.isSubTypeOf( v1 );
             assert v2.getSuperType().get() == v1;

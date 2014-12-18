@@ -26,7 +26,12 @@ public class VList<T>
         StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         this.latestRevision = new AtomicReference<>( null );
-        this.latestRevision.set( new Revision<>( currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() ) );
+        this.latestRevision.set(
+            new Revision<>(
+                currentTransaction.getTargetRevisionNumber(),
+                this.latestRevision.get()
+            )
+        );
 
         // keep track of everything we've written
         currentTransaction.addVersionedItemWritten( this );
@@ -50,7 +55,9 @@ public class VList<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // loop through the revisions
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -68,7 +75,10 @@ public class VList<T>
         }
 
         // create the new revision at the front of the chain
-        final Revision<T> revision = new Revision<>( currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() );
+        final Revision<T> revision = new Revision<>(
+            currentTransaction.getTargetRevisionNumber(),
+            this.latestRevision.get()
+        );
         revision.addedValues.add( value );
         this.latestRevision.set( revision );
 
@@ -92,7 +102,9 @@ public class VList<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -140,7 +152,9 @@ public class VList<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // loop through the revisions
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -158,7 +172,10 @@ public class VList<T>
         }
 
         // create the new revision at the front of the chain
-        final Revision<T> revision = new Revision<>( currentTransaction.getTargetRevisionNumber(), this.latestRevision.get() );
+        final Revision<T> revision = new Revision<>(
+            currentTransaction.getTargetRevisionNumber(),
+            this.latestRevision.get()
+        );
         revision.removedValues.add( value );
         this.latestRevision.set( revision );
 
@@ -176,7 +193,9 @@ public class VList<T>
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
         // loop through the revisions
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -235,7 +254,9 @@ public class VList<T>
     void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get(); revision != null; revision = revision.priorRevision.get() ) {
+        for ( Revision<T> revision = this.latestRevision.get();
+              revision != null;
+              revision = revision.priorRevision.get() ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -253,6 +274,12 @@ public class VList<T>
         }
 
     }
+
+    /**
+     * Reference to the latest revision. Revisions are kept in a custom linked list with the newest revision at the head
+     * of the list.
+     */
+    private final AtomicReference<Revision<T>> latestRevision;
 
     /**
      * Internal record structure for revisions in the linked list of revisions.
@@ -291,31 +318,25 @@ public class VList<T>
         }
 
         /**
-         * The items added to the list during this revision.
-         */
-        List<T> addedValues;
-
-        /**
          * A reference to the previous revision of the versioned item.
          */
         final AtomicReference<Revision<T>> priorRevision;
-
-        /**
-         * The items removed from the list during this revision.
-         */
-        List<T> removedValues;
 
         /**
          * The revision number of this revision (uniquely from the transaction that wrote it).
          */
         final AtomicLong revisionNumber;
 
-    }
+        /**
+         * The items added to the list during this revision.
+         */
+        List<T> addedValues;
 
-    /**
-     * Reference to the latest revision. Revisions are kept in a custom linked list with the newest revision at
-     * the head of the list.
-     */
-    private final AtomicReference<Revision<T>> latestRevision;
+        /**
+         * The items removed from the list during this revision.
+         */
+        List<T> removedValues;
+
+    }
 
 }

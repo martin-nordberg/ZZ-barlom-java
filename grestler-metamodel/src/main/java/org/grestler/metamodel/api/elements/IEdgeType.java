@@ -14,14 +14,14 @@ import java.util.UUID;
 public interface IEdgeType {
 
     /**
-     * @return the unique ID of this edge type.
-     */
-    UUID getId();
-
-    /**
      * @return the origin vertex type for edges of this type.
      */
     IVertexType getFromVertexType();
+
+    /**
+     * @return the unique ID of this edge type.
+     */
+    UUID getId();
 
     /**
      * @return the name of this edge type.
@@ -40,8 +40,11 @@ public interface IEdgeType {
 
     /**
      * Determines whether this edge type is a direct or indirect subtype of the given edge type.
+     *
      * @param edgeType the potential super type
-     * @return true if this edge type is the given type or, recursively, if its super type is a subtype of the given type.
+     *
+     * @return true if this edge type is the given type or, recursively, if its super type is a subtype of the given
+     * type.
      */
     default boolean isSubTypeOf( IEdgeType edgeType ) {
 

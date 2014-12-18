@@ -5,15 +5,16 @@ import spock.lang.Specification
 /**
  * Specification for org.grestler.utilities.configuration.Configuration.
  */
-class ConfigurationSpec extends Specification {
+class ConfigurationSpec
+        extends Specification {
 
     def "Sample properties can be read"() {
 
         given:
-        def config = new Configuration(ConfigurationSpec.class)
+        def config = new Configuration( ConfigurationSpec.class )
 
         when:
-        def result = config.readString(key)
+        def result = config.readString( key )
 
         then:
         result == expectedResult
@@ -28,16 +29,16 @@ class ConfigurationSpec extends Specification {
     def "An integer property can be read"() {
 
         given:
-        def config = new Configuration(ConfigurationSpec.class)
+        def config = new Configuration( ConfigurationSpec.class )
 
         when:
-        def result = config.readInt(key)
+        def result = config.readInt( key )
 
         then:
         result == expectedResult
 
         where:
-        key    | expectedResult
+        key     | expectedResult
         "key1i" | 1
         "key2i" | 2
 

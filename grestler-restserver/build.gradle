@@ -1,4 +1,3 @@
-
 buildDir = '../build/grestler-restserver'
 
 dependencies {
@@ -22,7 +21,7 @@ dependencies {
 }
 
 
-apply plugin:'application'
+apply plugin: 'application'
 
 mainClassName = "org.grestler.application.Application"
 

@@ -20,8 +20,9 @@ public class VertexType
 
     /**
      * Constructs a new vertex type.
-     * @param id the unique ID of the type.
-     * @param name the name of the type.
+     *
+     * @param id        the unique ID of the type.
+     * @param name      the name of the type.
      * @param superType the super type.
      */
     public VertexType( UUID id, String name, Optional<IVertexType> superType ) {
@@ -63,6 +64,7 @@ public class VertexType
 
     /**
      * Changes the name of this vertex type.
+     *
      * @param name the new name (required).
      */
     public void setName( String name ) {
@@ -75,6 +77,7 @@ public class VertexType
 
     /**
      * Changes the super type of this vertex type.
+     *
      * @param superType the new super type.
      */
     public void setSuperType( Optional<IVertexType> superType ) {

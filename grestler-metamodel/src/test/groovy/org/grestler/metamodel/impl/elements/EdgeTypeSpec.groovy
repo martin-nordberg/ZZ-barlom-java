@@ -9,9 +9,11 @@ import spock.lang.Specification
 /**
  * Specificaton for edge types.
  */
-class EdgeTypeSpec extends Specification {
+class EdgeTypeSpec
+        extends Specification {
 
     UUID id = Uuids.makeUuid();
+
     String name = "Example";
 
     def "A top level edge type can be constructed and read"() {
@@ -20,15 +22,15 @@ class EdgeTypeSpec extends Specification {
         IVertexType v1;
         IVertexType v2;
         IEdgeType e
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             v1 = new VertexType( Uuids.makeUuid(), "v1", Optional.empty() );
-            v2 = new VertexType( Uuids.makeUuid(), "v2", Optional.of(v1) );
+            v2 = new VertexType( Uuids.makeUuid(), "v2", Optional.of( v1 ) );
 
             e = new EdgeType( id, name, Optional.empty(), v1, v2 );
         }
 
         expect:
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             assert e.id == id
             assert e.name == name
             assert !e.superType.isPresent();
@@ -47,17 +49,17 @@ class EdgeTypeSpec extends Specification {
         IEdgeType e1;
         IEdgeType e2;
         IEdgeType e3;
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             v1 = new VertexType( Uuids.makeUuid(), "v1", Optional.empty() );
-            v2 = new VertexType( Uuids.makeUuid(), "v2", Optional.of(v1) );
+            v2 = new VertexType( Uuids.makeUuid(), "v2", Optional.of( v1 ) );
 
             e1 = new EdgeType( id, name, Optional.empty(), v1, v2 );
-            e2 = new EdgeType( id, name, Optional.of(e1), v1, v2 );
+            e2 = new EdgeType( id, name, Optional.of( e1 ), v1, v2 );
             e3 = new EdgeType( id, name, Optional.empty(), v1, v2 );
         }
 
         expect:
-        StmTransactionContext.doInTransaction(1) {
+        StmTransactionContext.doInTransaction( 1 ) {
             assert !e1.superType.isPresent();
             assert e1.isSubTypeOf( e1 );
             assert e2.superType.get() == e1;

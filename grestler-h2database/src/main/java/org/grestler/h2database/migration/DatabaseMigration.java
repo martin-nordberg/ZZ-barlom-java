@@ -20,6 +20,7 @@ public final class DatabaseMigration {
 
     /**
      * Static utility class not intended for instantiation.
+     *
      * @param dataSource the data source for the database to be migrated.
      */
     public DatabaseMigration( DataSource dataSource ) {

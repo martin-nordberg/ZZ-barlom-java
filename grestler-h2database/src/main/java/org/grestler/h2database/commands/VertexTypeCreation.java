@@ -15,6 +15,7 @@ public class VertexTypeCreation {
 
     /**
      * Constructs a new DAO for vertex types.
+     *
      * @param database the H2 database to read from.
      */
     public VertexTypeCreation( Database database ) {
@@ -23,26 +24,37 @@ public class VertexTypeCreation {
 
     /**
      * Saves a newly created vertex type to the database.
+     *
      * @param vertexType the vertex type to save.
      */
     public void createVertexType( IVertexType vertexType ) {
 
-        this.database.withVoidTransaction( tx -> {
+        this.database.withVoidTransaction(
+            tx -> {
 
-            if ( vertexType.getSuperType().isPresent() ) {
-                this.database.update( "INSERT INTO GRESTLER_VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
-                    vertexType.getId(), vertexType.getName(), vertexType.getSuperType().get().getId() );
+                if ( vertexType.getSuperType().isPresent() ) {
+                    this.database.update(
+                        "INSERT INTO GRESTLER_VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
+                        vertexType.getId(),
+                        vertexType.getName(),
+                        vertexType.getSuperType().get().getId()
+                    );
+                }
+                else {
+                    this.database.update(
+                        "INSERT INTO GRESTLER_VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
+                        vertexType.getId(),
+                        vertexType.getName(),
+                        vertexType.getId()
+                    );
+                }
+
+                // TODO: create the corresponding table
+
+                // TODO: log the action
+
             }
-            else {
-                this.database.update( "INSERT INTO GRESTLER_VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
-                    vertexType.getId(), vertexType.getName(), vertexType.getId() );
-            }
-
-            // TODO: create the corresponding table
-
-            // TODO: log the action
-
-        } );
+        );
 
     }
 
