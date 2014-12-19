@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl
 
+import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
@@ -25,17 +26,17 @@ class MetamodelRepositorySpec
         StmTransactionContext.doInTransaction( 1 ) {
             m = new MetamodelRepository();
 
-            m.loadVertexType( id1, "V1", Optional.empty() );
-            m.loadVertexType( Uuids.makeUuid(), "V2", Optional.empty() );
-            m.loadVertexType( Uuids.makeUuid(), "V3", Optional.empty() );
-            m.loadVertexType( Uuids.makeUuid(), "V4", Optional.empty() );
+            m.loadVertexType( id1, "V1", IVertexType.BASE_VERTEX_TYPE );
+            m.loadVertexType( Uuids.makeUuid(), "V2", IVertexType.BASE_VERTEX_TYPE );
+            m.loadVertexType( Uuids.makeUuid(), "V3", IVertexType.BASE_VERTEX_TYPE );
+            m.loadVertexType( Uuids.makeUuid(), "V4", IVertexType.BASE_VERTEX_TYPE );
         }
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
             assert m.findVertexTypeById( id1 ).get().name == "V1";
             assert m.findVertexTypeByName( "V2" ).get().name == "V2";
-            assert m.findVertexTypesAll().size() == 4;
+            assert m.findVertexTypesAll().size() == 5;
         }
 
     }

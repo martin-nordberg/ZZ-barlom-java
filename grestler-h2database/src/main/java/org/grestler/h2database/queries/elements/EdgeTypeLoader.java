@@ -77,13 +77,7 @@ public class EdgeTypeLoader
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return repository.loadEdgeType(
-                record.id,
-                record.name,
-                Optional.empty(),
-                fromVertexType.get(),
-                toVertexType.get()
-            );
+            return IEdgeType.BASE_EDGE_TYPE;
         }
 
         // Find an existing edge super type by UUID.
@@ -99,7 +93,13 @@ public class EdgeTypeLoader
             }
         }
 
-        return repository.loadEdgeType( record.id, record.name, superType, fromVertexType.get(), toVertexType.get() );
+        return repository.loadEdgeType(
+            record.id,
+            record.name,
+            superType.get(),
+            fromVertexType.get(),
+            toVertexType.get()
+        );
 
     }
 

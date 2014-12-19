@@ -20,18 +20,14 @@ public class EdgeType
     implements IEdgeType {
 
     /**
-     * Constructs a new vertex type.
+     * Constructs a new edge type.
      *
      * @param id        the unique ID of the type.
      * @param name      the name of the type.
      * @param superType the super type.
      */
     public EdgeType(
-        UUID id,
-        String name,
-        Optional<IEdgeType> superType,
-        IVertexType fromVertexType,
-        IVertexType toVertexType
+        UUID id, String name, IEdgeType superType, IVertexType fromVertexType, IVertexType toVertexType
     ) {
 
         Objects.requireNonNull( id, "Missing ID" );
@@ -41,12 +37,7 @@ public class EdgeType
 
         this.id = id;
         this.name = new V<>( name );
-        if ( superType.isPresent() ) {
-            this.superType = new V<>( superType.get() );
-        }
-        else {
-            this.superType = new V<>( this );
-        }
+        this.superType = new V<>( superType );
         this.fromVertexType = new V<>( fromVertexType );
         this.toVertexType = new V<>( toVertexType );
 
@@ -69,13 +60,7 @@ public class EdgeType
 
     @Override
     public Optional<IEdgeType> getSuperType() {
-
-        if ( this.superType.get() == this ) {
-            return Optional.empty();
-        }
-
         return Optional.of( this.superType.get() );
-
     }
 
     @Override
@@ -84,7 +69,7 @@ public class EdgeType
     }
 
     /**
-     * Changes the name of this vertex type.
+     * Changes the name of this edge type.
      *
      * @param name the new name (required).
      */
@@ -97,19 +82,12 @@ public class EdgeType
     }
 
     /**
-     * Changes the super type of this vertex type.
+     * Changes the super type of this edge type.
      *
      * @param superType the new super type.
      */
-    public void setSuperType( Optional<IEdgeType> superType ) {
-
-        if ( superType.isPresent() ) {
-            this.superType.set( superType.get() );
-        }
-        else {
-            this.superType.set( this );
-        }
-
+    public void setSuperType( IEdgeType superType ) {
+        this.superType.set( superType );
     }
 
     private final V<IVertexType> fromVertexType;

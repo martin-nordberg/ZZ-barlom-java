@@ -26,8 +26,13 @@ public class MetamodelRepository
      * Constructs a new metamodel repository.
      */
     public MetamodelRepository() {
+
         this.vertexTypes = new VList<>();
         this.edgeTypes = new VList<>();
+
+        this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
+        this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
+
     }
 
     @Override
@@ -98,11 +103,7 @@ public class MetamodelRepository
 
     @Override
     public IEdgeType loadEdgeType(
-        UUID id,
-        String name,
-        Optional<IEdgeType> superType,
-        IVertexType fromVertexType,
-        IVertexType toVertexType
+        UUID id, String name, IEdgeType superType, IVertexType fromVertexType, IVertexType toVertexType
     ) {
 
         IEdgeType result = new EdgeType( id, name, superType, fromVertexType, toVertexType );
@@ -114,7 +115,7 @@ public class MetamodelRepository
     }
 
     @Override
-    public IVertexType loadVertexType( UUID id, String name, Optional<IVertexType> superType ) {
+    public IVertexType loadVertexType( UUID id, String name, IVertexType superType ) {
 
         IVertexType result = new VertexType( id, name, superType );
 

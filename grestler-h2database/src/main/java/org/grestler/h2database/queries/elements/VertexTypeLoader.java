@@ -41,8 +41,7 @@ public class VertexTypeLoader
 
         // Perform the raw query.
         List<VertexTypeData> records = database.findAll(
-            VertexTypeData.class,
-            "SELECT TO_CHAR(ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
+            VertexTypeData.class, "SELECT TO_CHAR(ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
         );
 
         // Copy the results into the repository.
@@ -61,9 +60,7 @@ public class VertexTypeLoader
      * @return the found or newly created vertex type.
      */
     private IVertexType findOrCreateVertexType(
-        VertexTypeData record,
-        List<VertexTypeData> records,
-        IMetamodelRepositorySpi repository
+        VertexTypeData record, List<VertexTypeData> records, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IVertexType> result = repository.findVertexTypeById( record.id );
@@ -75,7 +72,7 @@ public class VertexTypeLoader
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return repository.loadVertexType( record.id, record.name, Optional.empty() );
+            return IVertexType.BASE_VERTEX_TYPE;
         }
 
         // Find an existing vertex super type by UUID.
@@ -91,7 +88,7 @@ public class VertexTypeLoader
             }
         }
 
-        return repository.loadVertexType( record.id, record.name, superType );
+        return repository.loadVertexType( record.id, record.name, superType.get() );
 
     }
 

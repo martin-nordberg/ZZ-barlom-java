@@ -25,19 +25,14 @@ public class VertexType
      * @param name      the name of the type.
      * @param superType the super type.
      */
-    public VertexType( UUID id, String name, Optional<IVertexType> superType ) {
+    public VertexType( UUID id, String name, IVertexType superType ) {
 
         Objects.requireNonNull( id, "Missing ID" );
         Objects.requireNonNull( name, "Missing name" );
 
         this.id = id;
         this.name = new V<>( name );
-        if ( superType.isPresent() ) {
-            this.superType = new V<>( superType.get() );
-        }
-        else {
-            this.superType = new V<>( this );
-        }
+        this.superType = new V<>( superType );
 
     }
 
@@ -53,13 +48,7 @@ public class VertexType
 
     @Override
     public Optional<IVertexType> getSuperType() {
-
-        if ( this.superType.get() == this ) {
-            return Optional.empty();
-        }
-
         return Optional.of( this.superType.get() );
-
     }
 
     /**
@@ -80,14 +69,9 @@ public class VertexType
      *
      * @param superType the new super type.
      */
-    public void setSuperType( Optional<IVertexType> superType ) {
+    public void setSuperType( IVertexType superType ) {
 
-        if ( superType.isPresent() ) {
-            this.superType.set( superType.get() );
-        }
-        else {
-            this.superType.set( this );
-        }
+        this.superType.set( superType );
 
     }
 

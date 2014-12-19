@@ -53,4 +53,24 @@ public interface IVertexType {
 
     }
 
+    /**
+     * Top level base vertex type (constant).
+     */
+    static final IVertexType BASE_VERTEX_TYPE = new IVertexType() {
+        @Override
+        public UUID getId() {
+            return UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
+        }
+
+        @Override
+        public String getName() {
+            return "Vertex";
+        }
+
+        @Override
+        public Optional<IVertexType> getSuperType() {
+            return Optional.empty();
+        }
+    };
+
 }

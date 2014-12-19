@@ -20,18 +20,14 @@ class VertexTypeSpec
 
     String name = "Example";
 
-    def "A top level vertex type can be constructed and read"() {
+    def "A top level vertex type is constructed and read"() {
 
         given:
-        IVertexType v
-        StmTransactionContext.doInTransaction( 1 ) {
-            v = new VertexType( id, name, Optional.empty() );
-        }
+        IVertexType v = IVertexType.BASE_VERTEX_TYPE;
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert v.getId() == id
-            assert v.getName() == name
+            assert v.getName() == "Vertex";
             assert !v.getSuperType().isPresent();
             assert v.isSubTypeOf( v );
         }
@@ -45,14 +41,14 @@ class VertexTypeSpec
         IVertexType v2;
         IVertexType w;
         StmTransactionContext.doInTransaction( 1 ) {
-            v1 = new VertexType( id, name, Optional.empty() );
-            v2 = new VertexType( id, name, Optional.of( v1 ) );
-            w = new VertexType( id, name, Optional.empty() );
+            v1 = new VertexType( id, name, IVertexType.BASE_VERTEX_TYPE );
+            v2 = new VertexType( id, name, v1 );
+            w = new VertexType( id, name, IVertexType.BASE_VERTEX_TYPE );
         }
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert !v1.getSuperType().isPresent();
+            assert v1.getSuperType().get() == IVertexType.BASE_VERTEX_TYPE;
             assert v1.isSubTypeOf( v1 );
             assert v2.getSuperType().get() == v1;
             assert v2.isSubTypeOf( v1 );

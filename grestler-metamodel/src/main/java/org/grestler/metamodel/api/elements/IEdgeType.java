@@ -63,4 +63,34 @@ public interface IEdgeType {
 
     }
 
+    /**
+     * Top level base edge type (constant).
+     */
+    static final IEdgeType BASE_EDGE_TYPE = new IEdgeType() {
+        @Override
+        public IVertexType getFromVertexType() {
+            return IVertexType.BASE_VERTEX_TYPE;
+        }
+
+        @Override
+        public UUID getId() {
+            return UUID.fromString( "00000001-7a26-11e4-a545-08002741a702" );
+        }
+
+        @Override
+        public String getName() {
+            return "Edge";
+        }
+
+        @Override
+        public Optional<IEdgeType> getSuperType() {
+            return Optional.empty();
+        }
+
+        @Override
+        public IVertexType getToVertexType() {
+            return IVertexType.BASE_VERTEX_TYPE;
+        }
+    };
+
 }

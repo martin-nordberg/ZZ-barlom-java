@@ -16,27 +16,18 @@ class EdgeTypeSpec
 
     String name = "Example";
 
-    def "A top level edge type can be constructed and read"() {
+    def "A top level edge type is constructed and can be read"() {
 
         given:
-        IVertexType v1;
-        IVertexType v2;
-        IEdgeType e
-        StmTransactionContext.doInTransaction( 1 ) {
-            v1 = new VertexType( Uuids.makeUuid(), "v1", Optional.empty() );
-            v2 = new VertexType( Uuids.makeUuid(), "v2", Optional.of( v1 ) );
-
-            e = new EdgeType( id, name, Optional.empty(), v1, v2 );
-        }
+        IEdgeType e = IEdgeType.BASE_EDGE_TYPE;
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert e.id == id
-            assert e.name == name
+            assert e.name == "Edge";
             assert !e.superType.isPresent();
             assert e.isSubTypeOf( e );
-            assert e.fromVertexType == v1;
-            assert e.toVertexType == v2;
+            assert e.fromVertexType == IVertexType.BASE_VERTEX_TYPE;
+            assert e.toVertexType == IVertexType.BASE_VERTEX_TYPE;
         }
 
     }
@@ -50,17 +41,17 @@ class EdgeTypeSpec
         IEdgeType e2;
         IEdgeType e3;
         StmTransactionContext.doInTransaction( 1 ) {
-            v1 = new VertexType( Uuids.makeUuid(), "v1", Optional.empty() );
-            v2 = new VertexType( Uuids.makeUuid(), "v2", Optional.of( v1 ) );
+            v1 = IVertexType.BASE_VERTEX_TYPE;
+            v2 = new VertexType( Uuids.makeUuid(), "v2", v1 );
 
-            e1 = new EdgeType( id, name, Optional.empty(), v1, v2 );
-            e2 = new EdgeType( id, name, Optional.of( e1 ), v1, v2 );
-            e3 = new EdgeType( id, name, Optional.empty(), v1, v2 );
+            e1 = new EdgeType( id, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
+            e2 = new EdgeType( id, name, e1, v1, v2 );
+            e3 = new EdgeType( id, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
         }
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert !e1.superType.isPresent();
+            assert e1.superType.get() == IEdgeType.BASE_EDGE_TYPE;
             assert e1.isSubTypeOf( e1 );
             assert e2.superType.get() == e1;
             assert e2.isSubTypeOf( e1 );
