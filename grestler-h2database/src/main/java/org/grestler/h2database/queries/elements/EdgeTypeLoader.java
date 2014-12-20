@@ -10,6 +10,7 @@ import fi.evident.dalesbred.instantiation.Instantiator;
 import fi.evident.dalesbred.instantiation.InstantiatorArguments;
 import org.grestler.h2database.datasource.H2DataSource;
 import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
@@ -43,7 +44,7 @@ public class EdgeTypeLoader
         // Perform the raw query.
         List<EdgeTypeData> records = database.findAll(
             EdgeTypeData.class,
-            "SELECT TO_CHAR(ID), NAME, TO_CHAR(SUPER_TYPE_ID), TO_CHAR(FROM_VERTEX_TYPE_ID), TO_CHAR(TO_VERTEX_TYPE_ID) FROM GRESTLER_EDGE_TYPE"
+            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID), TO_CHAR(FROM_VERTEX_TYPE_ID), TO_CHAR(TO_VERTEX_TYPE_ID) FROM GRESTLER_EDGE_TYPE"
         );
 
         // Copy the results into the repository.
@@ -80,6 +81,9 @@ public class EdgeTypeLoader
             return IEdgeType.BASE_EDGE_TYPE;
         }
 
+        // Find the parent package
+        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+
         // Find an existing edge super type by UUID.
         Optional<IEdgeType> superType = repository.findEdgeTypeById( record.superTypeId );
 
@@ -94,11 +98,7 @@ public class EdgeTypeLoader
         }
 
         return repository.loadEdgeType(
-            record.id,
-            record.name,
-            superType.get(),
-            fromVertexType.get(),
-            toVertexType.get()
+            record.id, parentPackage.get(), record.name, superType.get(), fromVertexType.get(), toVertexType.get()
         );
 
     }
@@ -111,8 +111,11 @@ public class EdgeTypeLoader
      */
     private static class EdgeTypeData {
 
-        EdgeTypeData( UUID id, String name, UUID superTypeId, UUID fromVertexTypeId, UUID toVertexTypeId ) {
+        EdgeTypeData(
+            UUID id, UUID parentPackageId, String name, UUID superTypeId, UUID fromVertexTypeId, UUID toVertexTypeId
+        ) {
             this.id = id;
+            this.parentPackageId = parentPackageId;
             this.name = name;
             this.superTypeId = superTypeId;
             this.fromVertexTypeId = fromVertexTypeId;
@@ -124,6 +127,8 @@ public class EdgeTypeLoader
         final UUID id;
 
         final String name;
+
+        final UUID parentPackageId;
 
         final UUID superTypeId;
 
@@ -152,10 +157,11 @@ public class EdgeTypeLoader
             // Get the attributes from the database result.
             return new EdgeTypeData(
                 UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                (String) fields.getValues().get( 1 ),
-                UUID.fromString( (String) fields.getValues().get( 2 ) ),
+                UUID.fromString( (String) fields.getValues().get( 1 ) ),
+                (String) fields.getValues().get( 2 ),
                 UUID.fromString( (String) fields.getValues().get( 3 ) ),
-                UUID.fromString( (String) fields.getValues().get( 4 ) )
+                UUID.fromString( (String) fields.getValues().get( 4 ) ),
+                UUID.fromString( (String) fields.getValues().get( 5 ) )
             );
 
         }

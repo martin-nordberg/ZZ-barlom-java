@@ -6,6 +6,7 @@
 package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.H2DataSourceDefinition
+import org.grestler.metamodel.api.elements.IEdgeType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.utilities.revisions.StmTransactionContext
@@ -37,8 +38,8 @@ class EdgeTypeLoaderSpec
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert m.findEdgeTypeByName( "Edge" ).get().name == "Edge";
-            assert !m.findEdgeTypeByName( "Edge" ).get().superType.isPresent();
+            assert m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().name == "Edge";
+            assert !m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().superType.isPresent();
             assert m.findEdgeTypesAll().size() == 1;
         }
 

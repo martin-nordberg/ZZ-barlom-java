@@ -6,6 +6,7 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
@@ -22,20 +23,28 @@ public class EdgeType
     /**
      * Constructs a new edge type.
      *
-     * @param id        the unique ID of the type.
-     * @param name      the name of the type.
-     * @param superType the super type.
+     * @param id             the unique ID of the type.
+     * @param parentPackage  the package containing the edge type.
+     * @param name           the name of the type.
+     * @param superType      the super type.
+     * @param fromVertexType the vertex type at the start of the edge type.
+     * @param toVertexType   the vertex type at the end of the edge type.
      */
     public EdgeType(
-        UUID id, String name, IEdgeType superType, IVertexType fromVertexType, IVertexType toVertexType
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        IEdgeType superType,
+        IVertexType fromVertexType,
+        IVertexType toVertexType
     ) {
 
         Objects.requireNonNull( id, "Missing ID" );
-        Objects.requireNonNull( name, "Missing name" );
-        Objects.requireNonNull( fromVertexType, "Missing fromVertexType" );
-        Objects.requireNonNull( toVertexType, "Missing toVertexType" );
+
+        // TODO: unique name per package
 
         this.id = id;
+        this.parentPackage = new V<>( parentPackage );
         this.name = new V<>( name );
         this.superType = new V<>( superType );
         this.fromVertexType = new V<>( fromVertexType );
@@ -59,6 +68,11 @@ public class EdgeType
     }
 
     @Override
+    public IPackage getParentPackage() {
+        return this.parentPackage.get();
+    }
+
+    @Override
     public Optional<IEdgeType> getSuperType() {
         return Optional.of( this.superType.get() );
     }
@@ -75,9 +89,26 @@ public class EdgeType
      */
     public void setName( String name ) {
 
+        // TODO: unique per parent package
+
         Objects.requireNonNull( name, "Missing name" );
 
         this.name.set( name );
+
+    }
+
+    /**
+     * Changes the parent package of this edge type.
+     *
+     * @param parentPackage the new parent package (required).
+     */
+    public void setParentPackage( IPackage parentPackage ) {
+
+        // TODO: unique per parent package
+
+        Objects.requireNonNull( parentPackage, "Missing parentPackage" );
+
+        this.parentPackage.set( parentPackage );
 
     }
 
@@ -95,6 +126,8 @@ public class EdgeType
     private final UUID id;
 
     private final V<String> name;
+
+    private final V<IPackage> parentPackage;
 
     private final V<IEdgeType> superType;
 

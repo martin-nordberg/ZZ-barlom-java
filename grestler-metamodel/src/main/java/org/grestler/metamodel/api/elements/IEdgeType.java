@@ -29,6 +29,26 @@ public interface IEdgeType {
     String getName();
 
     /**
+     * @return the parent of this edge type.
+     */
+    IPackage getParentPackage();
+
+    /**
+     * @return the fully qualified path to this edge type.
+     */
+    default String getPath() {
+
+        String result = this.getParentPackage().getPath();
+
+        if ( !result.isEmpty() ) {
+            return result + "." + this.getName();
+        }
+
+        return this.getName();
+
+    }
+
+    /**
      * @return the super type of this edge type.
      */
     Optional<IEdgeType> getSuperType();
@@ -47,20 +67,7 @@ public interface IEdgeType {
      * type.
      */
     default boolean isSubTypeOf( IEdgeType edgeType ) {
-
-        IEdgeType v = this;
-        while ( true ) {
-            if ( v == edgeType ) {
-                // success if we encounter the given type somewhere along the chain
-                return true;
-            }
-            if ( !v.getSuperType().isPresent() ) {
-                // root edge type has no super type
-                return false;
-            }
-            v = v.getSuperType().get();
-        }
-
+        return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
     /**
@@ -74,12 +81,17 @@ public interface IEdgeType {
 
         @Override
         public UUID getId() {
-            return UUID.fromString( "00000001-7a26-11e4-a545-08002741a702" );
+            return UUID.fromString( "00000020-7a26-11e4-a545-08002741a702" );
         }
 
         @Override
         public String getName() {
             return "Edge";
+        }
+
+        @Override
+        public IPackage getParentPackage() {
+            return IPackage.ROOT_PACKAGE;
         }
 
         @Override
@@ -90,6 +102,11 @@ public interface IEdgeType {
         @Override
         public IVertexType getToVertexType() {
             return IVertexType.BASE_VERTEX_TYPE;
+        }
+
+        @Override
+        public boolean isSubTypeOf( IEdgeType edgeType ) {
+            return this == edgeType;
         }
     };
 

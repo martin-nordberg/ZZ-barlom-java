@@ -6,6 +6,7 @@
 package org.grestler.metamodel.api;
 
 import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 import java.util.List;
@@ -27,18 +28,23 @@ public interface IMetamodelRepository {
     Optional<IEdgeType> findEdgeTypeById( UUID id );
 
     /**
-     * Finds the edge type with given name.
-     *
-     * @param name the name of the edge type to find.
-     *
-     * @return the edge type found.
-     */
-    Optional<IEdgeType> findEdgeTypeByName( String name );
-
-    /**
      * @return a list of all edge types in the repository.
      */
     List<IEdgeType> findEdgeTypesAll();
+
+    /**
+     * Finds the package with given ID.
+     *
+     * @param id the UUID of the package to find.
+     *
+     * @return the package found.
+     */
+    Optional<IPackage> findPackageById( UUID id );
+
+    /**
+     * @return a list of all packages in the repository.
+     */
+    List<IPackage> findPackagesAll();
 
     /**
      * Finds the vertex type with given ID.
@@ -48,15 +54,6 @@ public interface IMetamodelRepository {
      * @return the vertex type found.
      */
     Optional<IVertexType> findVertexTypeById( UUID id );
-
-    /**
-     * Finds the vertex type with given name.
-     *
-     * @param name the name of the vertex type to find.
-     *
-     * @return the vertex type found.
-     */
-    Optional<IVertexType> findVertexTypeByName( String name );
 
     /**
      * @return a list of all vertex types in the repository.

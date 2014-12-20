@@ -9,6 +9,7 @@ import fi.evident.dalesbred.Database;
 import fi.evident.dalesbred.instantiation.Instantiator;
 import fi.evident.dalesbred.instantiation.InstantiatorArguments;
 import org.grestler.h2database.datasource.H2DataSource;
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
@@ -41,7 +42,8 @@ public class VertexTypeLoader
 
         // Perform the raw query.
         List<VertexTypeData> records = database.findAll(
-            VertexTypeData.class, "SELECT TO_CHAR(ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
+            VertexTypeData.class,
+            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
         );
 
         // Copy the results into the repository.
@@ -75,6 +77,9 @@ public class VertexTypeLoader
             return IVertexType.BASE_VERTEX_TYPE;
         }
 
+        // Find the parent package
+        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+
         // Find an existing vertex super type by UUID.
         Optional<IVertexType> superType = repository.findVertexTypeById( record.superTypeId );
 
@@ -88,7 +93,7 @@ public class VertexTypeLoader
             }
         }
 
-        return repository.loadVertexType( record.id, record.name, superType.get() );
+        return repository.loadVertexType( record.id, parentPackage.get(), record.name, superType.get() );
 
     }
 
@@ -100,8 +105,9 @@ public class VertexTypeLoader
      */
     private static class VertexTypeData {
 
-        VertexTypeData( UUID id, String name, UUID superTypeId ) {
+        VertexTypeData( UUID id, UUID parentPackageId, String name, UUID superTypeId ) {
             this.id = id;
+            this.parentPackageId = parentPackageId;
             this.name = name;
             this.superTypeId = superTypeId;
         }
@@ -109,6 +115,8 @@ public class VertexTypeLoader
         final UUID id;
 
         final String name;
+
+        final UUID parentPackageId;
 
         final UUID superTypeId;
 
@@ -135,8 +143,9 @@ public class VertexTypeLoader
             // Get the attributes from the database result.
             return new VertexTypeData(
                 UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                (String) fields.getValues().get( 1 ),
-                UUID.fromString( (String) fields.getValues().get( 2 ) )
+                UUID.fromString( (String) fields.getValues().get( 1 ) ),
+                (String) fields.getValues().get( 2 ),
+                UUID.fromString( (String) fields.getValues().get( 3 ) )
             );
 
         }

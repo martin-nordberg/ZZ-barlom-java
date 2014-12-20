@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl.elements;
 
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
@@ -21,16 +22,21 @@ public class VertexType
     /**
      * Constructs a new vertex type.
      *
-     * @param id        the unique ID of the type.
-     * @param name      the name of the type.
-     * @param superType the super type.
+     * @param id            the unique ID of the type.
+     * @param parentPackage the package containing the edge type.
+     * @param name          the name of the type.
+     * @param superType     the super type.
      */
-    public VertexType( UUID id, String name, IVertexType superType ) {
+    public VertexType(
+        UUID id, IPackage parentPackage, String name, IVertexType superType
+    ) {
 
         Objects.requireNonNull( id, "Missing ID" );
-        Objects.requireNonNull( name, "Missing name" );
+
+        // TODO: unique name per package
 
         this.id = id;
+        this.parentPackage = new V<>( parentPackage );
         this.name = new V<>( name );
         this.superType = new V<>( superType );
 
@@ -44,6 +50,11 @@ public class VertexType
     @Override
     public String getName() {
         return this.name.get();
+    }
+
+    @Override
+    public IPackage getParentPackage() {
+        return this.parentPackage.get();
     }
 
     @Override
@@ -78,6 +89,8 @@ public class VertexType
     private final UUID id;
 
     private final V<String> name;
+
+    private final V<IPackage> parentPackage;
 
     private final V<IVertexType> superType;
 

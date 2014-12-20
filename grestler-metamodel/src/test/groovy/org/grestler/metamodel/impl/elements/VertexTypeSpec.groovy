@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl.elements
 
+import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
@@ -27,8 +28,8 @@ class VertexTypeSpec
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert v.getName() == "Vertex";
-            assert !v.getSuperType().isPresent();
+            assert v.name == "Vertex";
+            assert !v.superType.isPresent();
             assert v.isSubTypeOf( v );
         }
 
@@ -41,16 +42,16 @@ class VertexTypeSpec
         IVertexType v2;
         IVertexType w;
         StmTransactionContext.doInTransaction( 1 ) {
-            v1 = new VertexType( id, name, IVertexType.BASE_VERTEX_TYPE );
-            v2 = new VertexType( id, name, v1 );
-            w = new VertexType( id, name, IVertexType.BASE_VERTEX_TYPE );
+            v1 = new VertexType( id, IPackage.ROOT_PACKAGE, name, IVertexType.BASE_VERTEX_TYPE );
+            v2 = new VertexType( id, IPackage.ROOT_PACKAGE, name, v1 );
+            w = new VertexType( id, IPackage.ROOT_PACKAGE, name, IVertexType.BASE_VERTEX_TYPE );
         }
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert v1.getSuperType().get() == IVertexType.BASE_VERTEX_TYPE;
+            assert v1.superType.get() == IVertexType.BASE_VERTEX_TYPE;
             assert v1.isSubTypeOf( v1 );
-            assert v2.getSuperType().get() == v1;
+            assert v2.superType.get() == v1;
             assert v2.isSubTypeOf( v1 );
             assert !v1.isSubTypeOf( v2 );
             assert !w.isSubTypeOf( v1 );

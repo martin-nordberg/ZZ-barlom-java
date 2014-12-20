@@ -1,6 +1,7 @@
 package org.grestler.metamodel.impl.elements
 
 import org.grestler.metamodel.api.elements.IEdgeType
+import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
@@ -42,11 +43,11 @@ class EdgeTypeSpec
         IEdgeType e3;
         StmTransactionContext.doInTransaction( 1 ) {
             v1 = IVertexType.BASE_VERTEX_TYPE;
-            v2 = new VertexType( Uuids.makeUuid(), "v2", v1 );
+            v2 = new VertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "v2", v1 );
 
-            e1 = new EdgeType( id, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
-            e2 = new EdgeType( id, name, e1, v1, v2 );
-            e3 = new EdgeType( id, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
+            e1 = new EdgeType( id, IPackage.ROOT_PACKAGE, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
+            e2 = new EdgeType( id, IPackage.ROOT_PACKAGE, name, e1, v1, v2 );
+            e3 = new EdgeType( id, IPackage.ROOT_PACKAGE, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
         }
 
         expect:

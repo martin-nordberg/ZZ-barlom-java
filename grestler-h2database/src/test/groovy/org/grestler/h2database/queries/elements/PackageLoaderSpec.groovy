@@ -6,7 +6,7 @@
 package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.H2DataSourceDefinition
-import org.grestler.metamodel.api.elements.IVertexType
+import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.utilities.revisions.StmTransactionContext
@@ -15,26 +15,26 @@ import spock.lang.Specification
 /**
  * Specification for vertex type loading.
  */
-class VertexTypeLoaderSpec
+class PackageLoaderSpec
         extends Specification {
 
-    def "A vertex loader retrieves the top level base vertex type"() {
+    def "A package loader retrieves the top level root package"() {
 
         given:
         IMetamodelRepositorySpi m
         StmTransactionContext.doInTransaction( 1 ) {
             m = new MetamodelRepository();
 
-            def loader = new VertexTypeLoader( new H2DataSourceDefinition().makeDataSource() );
+            def loader = new PackageLoader( new H2DataSourceDefinition().makeDataSource() );
 
-            loader.loadAllVertexTypes( m );
+            loader.loadAllPackages( m );
         }
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().name == "Vertex";
-            assert !m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().superType.isPresent();
-            assert m.findVertexTypesAll().size() == 1;
+            assert m.findPackageById( IPackage.ROOT_PACKAGE.id ).get().name == "\$";
+            assert !m.findPackageById( IPackage.ROOT_PACKAGE.id ).get().parentPackage.isPresent();
+            assert m.findPackagesAll().size() == 1;
         }
 
     }

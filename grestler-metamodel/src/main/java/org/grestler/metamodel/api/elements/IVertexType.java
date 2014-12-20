@@ -24,6 +24,26 @@ public interface IVertexType {
     String getName();
 
     /**
+     * @return the parent of this vertex type.
+     */
+    IPackage getParentPackage();
+
+    /**
+     * @return the fully qualified path to this vertex type.
+     */
+    default String getPath() {
+
+        String result = this.getParentPackage().getPath();
+
+        if ( !result.isEmpty() ) {
+            return result + "." + this.getName();
+        }
+
+        return this.getName();
+
+    }
+
+    /**
      * @return the super type of this vertex type.
      */
     Optional<IVertexType> getSuperType();
@@ -37,20 +57,7 @@ public interface IVertexType {
      * type.
      */
     default boolean isSubTypeOf( IVertexType vertexType ) {
-
-        IVertexType v = this;
-        while ( true ) {
-            if ( v == vertexType ) {
-                // success if we encounter the given type somewhere along the chain
-                return true;
-            }
-            if ( !v.getSuperType().isPresent() ) {
-                // root vertex type has no super type
-                return false;
-            }
-            v = v.getSuperType().get();
-        }
-
+        return this == vertexType || this.getSuperType().get().isSubTypeOf( vertexType );
     }
 
     /**
@@ -59,7 +66,7 @@ public interface IVertexType {
     static final IVertexType BASE_VERTEX_TYPE = new IVertexType() {
         @Override
         public UUID getId() {
-            return UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
+            return UUID.fromString( "00000010-7a26-11e4-a545-08002741a702" );
         }
 
         @Override
@@ -68,8 +75,18 @@ public interface IVertexType {
         }
 
         @Override
+        public IPackage getParentPackage() {
+            return IPackage.ROOT_PACKAGE;
+        }
+
+        @Override
         public Optional<IVertexType> getSuperType() {
             return Optional.empty();
+        }
+
+        @Override
+        public boolean isSubTypeOf( IVertexType vertexType ) {
+            return this == vertexType;
         }
     };
 

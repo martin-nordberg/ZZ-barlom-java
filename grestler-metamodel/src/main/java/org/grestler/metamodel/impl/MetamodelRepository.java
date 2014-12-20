@@ -6,8 +6,10 @@
 package org.grestler.metamodel.impl;
 
 import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.impl.elements.EdgeType;
+import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.utilities.revisions.VList;
@@ -27,9 +29,11 @@ public class MetamodelRepository
      */
     public MetamodelRepository() {
 
+        this.packages = new VList<>();
         this.vertexTypes = new VList<>();
         this.edgeTypes = new VList<>();
 
+        this.packages.add( IPackage.ROOT_PACKAGE );
         this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
         this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
 
@@ -50,12 +54,17 @@ public class MetamodelRepository
     }
 
     @Override
-    public Optional<IEdgeType> findEdgeTypeByName( String name ) {
+    public List<IEdgeType> findEdgeTypesAll() {
+        return this.edgeTypes.get();
+    }
 
-        // Search for the edge type with given UUID. -- TODO: may be worth map by name
-        for ( IEdgeType e : this.edgeTypes.get() ) {
-            if ( e.getName().equals( name ) ) {
-                return Optional.of( e );
+    @Override
+    public Optional<IPackage> findPackageById( UUID id ) {
+
+        // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
+        for ( IPackage p : this.packages.get() ) {
+            if ( p.getId().equals( id ) ) {
+                return Optional.of( p );
             }
         }
 
@@ -64,8 +73,8 @@ public class MetamodelRepository
     }
 
     @Override
-    public List<IEdgeType> findEdgeTypesAll() {
-        return this.edgeTypes.get();
+    public List<IPackage> findPackagesAll() {
+        return this.packages.get();
     }
 
     @Override
@@ -83,30 +92,21 @@ public class MetamodelRepository
     }
 
     @Override
-    public Optional<IVertexType> findVertexTypeByName( String name ) {
-
-        // Search for the vertex type with given UUID. -- TODO: may be worth map by name
-        for ( IVertexType v : this.vertexTypes.get() ) {
-            if ( v.getName().equals( name ) ) {
-                return Optional.of( v );
-            }
-        }
-
-        return Optional.empty();
-
-    }
-
-    @Override
     public List<IVertexType> findVertexTypesAll() {
         return this.vertexTypes.get();
     }
 
     @Override
     public IEdgeType loadEdgeType(
-        UUID id, String name, IEdgeType superType, IVertexType fromVertexType, IVertexType toVertexType
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        IEdgeType superType,
+        IVertexType fromVertexType,
+        IVertexType toVertexType
     ) {
 
-        IEdgeType result = new EdgeType( id, name, superType, fromVertexType, toVertexType );
+        IEdgeType result = new EdgeType( id, parentPackage, name, superType, fromVertexType, toVertexType );
 
         this.edgeTypes.add( result );
 
@@ -115,9 +115,20 @@ public class MetamodelRepository
     }
 
     @Override
-    public IVertexType loadVertexType( UUID id, String name, IVertexType superType ) {
+    public IPackage loadPackage( UUID id, IPackage parentPackage, String name ) {
 
-        IVertexType result = new VertexType( id, name, superType );
+        IPackage result = new Package( id, parentPackage, name );
+
+        this.packages.add( result );
+
+        return result;
+
+    }
+
+    @Override
+    public IVertexType loadVertexType( UUID id, IPackage parentPackage, String name, IVertexType superType ) {
+
+        IVertexType result = new VertexType( id, parentPackage, name, superType );
 
         this.vertexTypes.add( result );
 
@@ -126,6 +137,8 @@ public class MetamodelRepository
     }
 
     private final VList<IEdgeType> edgeTypes;
+
+    private final VList<IPackage> packages;
 
     private final VList<IVertexType> vertexTypes;
 
