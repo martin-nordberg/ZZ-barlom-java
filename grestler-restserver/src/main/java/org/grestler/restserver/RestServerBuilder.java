@@ -5,16 +5,11 @@
 
 package org.grestler.restserver;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.logging.Log4j2RestEasyLogger;
-import org.grestler.utilities.configuration.Configuration;
 import org.grestler.webutilities.filters.ThreadNameFilter;
 import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
@@ -33,39 +28,22 @@ public class RestServerBuilder {
      * Creates a Jetty server for REST services.
      *
      * @param dataSource the data source for queries made by the server.
-     *
-     * @return the newly created server.
+     * @param contexts   the context collection to be configured for REST web services.
      *
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
-    public static Server makeRestServer( IDataSource dataSource ) throws MalformedURLException {
+    public static void makeRestServer( IDataSource dataSource, ContextHandlerCollection contexts )
+        throws MalformedURLException {
 
         // Redirect RESTEasy logging to Log4j2.
         overrideRestEasyLoggerInitialization();
 
-        // Read the configuration.
-        Configuration config = new Configuration( RestServerBuilder.class );
-        int restPort = config.readInt( "restPort" );
-
-        // Create the server itself.
-        Server result = new Server();
-
-        // Configure the server connection.
-        ServerConnector connector = new ServerConnector( result );
-        connector.setPort( restPort );
-        result.setConnectors( new Connector[]{ connector } );
-
         // Serve dynamic content.
         ServletContextHandler webServiceContext = makeWebServiceContextHandler();
 
-        // Combine the two contexts.
-        ContextHandlerCollection contexts = new ContextHandlerCollection();
-        contexts.setHandlers( new Handler[]{ webServiceContext } );
+        // Insert the REST context.
+        contexts.addHandler( webServiceContext );
 
-        // Configure the server for its contexts
-        result.setHandler( contexts );
-
-        return result;
     }
 
     /**

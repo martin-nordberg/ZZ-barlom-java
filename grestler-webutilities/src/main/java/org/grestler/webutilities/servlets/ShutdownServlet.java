@@ -38,7 +38,7 @@ public class ShutdownServlet
         }
 
         // respond with a simple output
-        resp.getOutputStream().println( "Grestler admin and application servers stopping..." );
+        resp.getOutputStream().println( "Grestler application server stopping..." );
         resp.setStatus( HttpServletResponse.SC_OK );
 
     }

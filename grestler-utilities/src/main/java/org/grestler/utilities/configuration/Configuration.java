@@ -51,16 +51,29 @@ public class Configuration {
     }
 
     /**
+     * Reads a boolean property for the given key.
+     *
+     * @param key the name of the property.
+     *
+     * @return the boolean value (true for "true", "yes", or "1" as the property value).
+     */
+    public boolean readBoolean( String key ) {
+        String strValue = this.readString( key ).toLowerCase();
+        return "true".equals( strValue ) || "yes".equals( strValue ) || "1".equals( strValue );
+    }
+
+    /**
      * Reads an integer property for the given key.
      *
      * @param key the name of the property.
      *
-     * @return the integer value
+     * @return the integer value.
      *
      * @throws java.lang.NumberFormatException if the property's value is not an integer.
      */
     public int readInt( String key ) {
-        return Integer.parseInt( this.readString( key ) );
+        String strValue = this.readString( key );
+        return Integer.parseInt( strValue );
     }
 
     /**
@@ -74,7 +87,7 @@ public class Configuration {
 
         // TBD: read from external properties first, then internal as fallback
 
-        return this.properties.getProperty( key );
+        return this.properties.getProperty( key ).trim();
 
     }
 
