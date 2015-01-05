@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -10,6 +10,7 @@ import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
+import javax.json.stream.JsonGenerator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,6 +51,18 @@ public class EdgeType
         this.fromVertexType = new V<>( fromVertexType );
         this.toVertexType = new V<>( toVertexType );
 
+    }
+
+    @Override
+    public void generateJson( JsonGenerator json ) {
+        json.writeStartObject()
+            .write( "id", this.getId().toString() )
+            .write( "parentPackageId", this.getParentPackage().getId().toString() )
+            .write( "name", this.getName() )
+            .write( "path", this.getPath() )
+            .write( "fromVertexTypeId", this.getFromVertexType().getId().toString() )
+            .write( "toVertexTypeId", this.getToVertexType().getId().toString() )
+            .writeEnd();
     }
 
     @Override

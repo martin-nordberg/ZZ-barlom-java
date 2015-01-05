@@ -1,13 +1,12 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.restserver;
 
 import org.grestler.restserver.filters.CacheControlFilter;
-import org.grestler.restserver.json.StuffMapper;
-import org.grestler.restserver.services.HelloService;
+import org.grestler.restserver.services.metamodel.PackageQueries;
 
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
@@ -20,14 +19,13 @@ public class ApplicationServices
     extends Application {
 
     public ApplicationServices() {
-        // register RESTful services
-        singletons.add( new HelloService() );
+
+        // register RESTful query services
+        singletons.add( new PackageQueries() );
 
         // register filters
         singletons.add( new CacheControlFilter() );
 
-        // register mappers
-        singletons.add( new StuffMapper() );
     }
 
     @Override
@@ -35,7 +33,7 @@ public class ApplicationServices
         return singletons;
     }
 
-    private static Set<Object> singletons = new HashSet<>();
+    private Set<Object> singletons = new HashSet<>();
 
 }
 

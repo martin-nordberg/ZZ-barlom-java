@@ -4,6 +4,7 @@ dependencies {
 
     // Other Modules
     compile project( ':grestler-dbutilities' )
+    compile project( ':grestler-metamodel' )
     compile project( ':grestler-webutilities' )
 
     // Jetty

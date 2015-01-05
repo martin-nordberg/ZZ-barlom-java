@@ -1,32 +1,24 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.metamodel.api.elements;
 
+import javax.json.stream.JsonGenerator;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Top level interface to an edge type.
  */
-public interface IEdgeType {
+public interface IEdgeType
+    extends IElement {
 
     /**
      * @return the origin vertex type for edges of this type.
      */
     IVertexType getFromVertexType();
-
-    /**
-     * @return the unique ID of this edge type.
-     */
-    UUID getId();
-
-    /**
-     * @return the name of this edge type.
-     */
-    String getName();
 
     /**
      * @return the parent of this edge type.
@@ -70,10 +62,25 @@ public interface IEdgeType {
         return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
+    /** The unique ID for the base edge type. */
+    final UUID BASE_EDGE_TYPE_ID = UUID.fromString( "00000020-7a26-11e4-a545-08002741a702" );
+
     /**
      * Top level base edge type (constant).
      */
     static final IEdgeType BASE_EDGE_TYPE = new IEdgeType() {
+        @Override
+        public void generateJson( JsonGenerator json ) {
+            json.writeStartObject()
+                .write( "id", BASE_EDGE_TYPE_ID.toString() )
+                .write( "parentPackageId", IPackage.ROOT_PACKAGE_ID.toString() )
+                .write( "name", "Vertex" )
+                .write( "path", "Vertex" )
+                .write( "fromVertexTypeId", IVertexType.BASE_VERTEX_TYPE_ID.toString() )
+                .write( "toVertexTypeId", IVertexType.BASE_VERTEX_TYPE_ID.toString() )
+                .writeEnd();
+        }
+
         @Override
         public IVertexType getFromVertexType() {
             return IVertexType.BASE_VERTEX_TYPE;
@@ -81,7 +88,7 @@ public interface IEdgeType {
 
         @Override
         public UUID getId() {
-            return UUID.fromString( "00000020-7a26-11e4-a545-08002741a702" );
+            return BASE_EDGE_TYPE_ID;
         }
 
         @Override

@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -9,6 +9,7 @@ import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
+import javax.json.stream.JsonGenerator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,6 +41,16 @@ public class VertexType
         this.name = new V<>( name );
         this.superType = new V<>( superType );
 
+    }
+
+    @Override
+    public void generateJson( JsonGenerator json ) {
+        json.writeStartObject()
+            .write( "id", this.getId().toString() )
+            .write( "parentPackageId", this.getParentPackage().getId().toString() )
+            .write( "name", this.getName() )
+            .write( "path", this.getPath() )
+            .writeEnd();
     }
 
     @Override
@@ -81,9 +92,7 @@ public class VertexType
      * @param superType the new super type.
      */
     public void setSuperType( IVertexType superType ) {
-
         this.superType.set( superType );
-
     }
 
     private final UUID id;

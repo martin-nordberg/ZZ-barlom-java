@@ -1,10 +1,11 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.metamodel.api.elements;
 
+import javax.json.stream.JsonGenerator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,7 +13,8 @@ import java.util.UUID;
 /**
  * Interface to a package of vertex types and edge types.
  */
-public interface IPackage {
+public interface IPackage
+    extends IElement {
 
     /**
      * @return the packages that are children of this one.
@@ -20,22 +22,12 @@ public interface IPackage {
     List<IPackage> getChildPackages();
 
     /**
-     * @return the unique ID of this package.
-     */
-    UUID getId();
-
-    /**
-     * @return the name of this package.
-     */
-    String getName();
-
-    /**
-     * @return the parent of this package.
+     * @return the parent of this element.
      */
     Optional<IPackage> getParentPackage();
 
     /**
-     * @return the fully qualified path to this package.
+     * @return the fully qualified path to this element.
      */
     default String getPath() {
 
@@ -69,6 +61,16 @@ public interface IPackage {
      */
     static final IPackage ROOT_PACKAGE = new IPackage() {
         @Override
+        public void generateJson( JsonGenerator json ) {
+            json.writeStartObject()
+                .write( "id", ROOT_PACKAGE_ID.toString() )
+                .writeNull( "parentPackageId" )
+                .write( "name", "$" )
+                .write( "path", "" )
+                .writeEnd();
+        }
+
+        @Override
         public List<IPackage> getChildPackages() {
             // TODO
             return null;
@@ -76,7 +78,7 @@ public interface IPackage {
 
         @Override
         public UUID getId() {
-            return UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
+            return ROOT_PACKAGE_ID;
         }
 
         @Override
@@ -98,6 +100,11 @@ public interface IPackage {
         public boolean isChildOf( IPackage parentPackage ) {
             return false;
         }
+
     };
 
+    /**
+     * The fixed ID for the root package.
+     */
+    final UUID ROOT_PACKAGE_ID = UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
 }

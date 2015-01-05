@@ -1,27 +1,19 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.metamodel.api.elements;
 
+import javax.json.stream.JsonGenerator;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Top level interface to a vertex type.
  */
-public interface IVertexType {
-
-    /**
-     * @return the unique ID of this vertex type.
-     */
-    UUID getId();
-
-    /**
-     * @return the name of this vertex type.
-     */
-    String getName();
+public interface IVertexType
+    extends IElement {
 
     /**
      * @return the parent of this vertex type.
@@ -61,12 +53,27 @@ public interface IVertexType {
     }
 
     /**
+     * The fixed ID for the base vertex type.
+     */
+    final UUID BASE_VERTEX_TYPE_ID = UUID.fromString( "00000010-7a26-11e4-a545-08002741a702" );
+
+    /**
      * Top level base vertex type (constant).
      */
     static final IVertexType BASE_VERTEX_TYPE = new IVertexType() {
         @Override
+        public void generateJson( JsonGenerator json ) {
+            json.writeStartObject()
+                .write( "id", BASE_VERTEX_TYPE_ID.toString() )
+                .write( "parentPackageId", IPackage.ROOT_PACKAGE_ID.toString() )
+                .write( "name", "Vertex" )
+                .write( "path", "Vertex" )
+                .writeEnd();
+        }
+
+        @Override
         public UUID getId() {
-            return UUID.fromString( "00000010-7a26-11e4-a545-08002741a702" );
+            return BASE_VERTEX_TYPE_ID;
         }
 
         @Override
@@ -88,6 +95,7 @@ public interface IVertexType {
         public boolean isSubTypeOf( IVertexType vertexType ) {
             return this == vertexType;
         }
+
     };
 
 }

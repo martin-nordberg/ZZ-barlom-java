@@ -17,7 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * Utility class for managing in-memory transactions. The code is similar to "versioned boxes", the concept behind JVSTM
  * for software transactional memory. However, this code is much more streamlined, though very experimental.
  */
-public class StmTransaction {
+public class StmTransaction
+    implements AutoCloseable {
 
     /**
      * Constructs a new transaction.
@@ -50,6 +51,11 @@ public class StmTransaction {
         // Establish a link for putting this transaction in a linked list of completed transactions.
         this.nextTransactionAwaitingCleanUp = new AtomicReference<>( null );
 
+    }
+
+    @Override
+    public void close() {
+        StmTransactionContext.commitTransaction( this );
     }
 
     /**

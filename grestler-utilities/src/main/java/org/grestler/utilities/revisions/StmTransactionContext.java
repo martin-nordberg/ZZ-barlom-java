@@ -71,9 +71,8 @@ public class StmTransactionContext {
      *                   be zero or more, zero meaning try but don't retry).
      *
      * @throws MaximumRetriesExceededException if the transaction fails even after the specified number of retries.
-     * @throws Exception                       any exception thrown by the transactional task
      */
-    public static void doInTransaction( int maxRetries, Runnable task ) throws Exception {
+    public static void doInTransaction( int maxRetries, Runnable task ) {
 
         // Sanity check the input.
         Objects.requireNonNull( task );

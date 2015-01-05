@@ -5,4 +5,7 @@ dependencies {
     // Other Modules
     compile project( ':grestler-utilities' )
 
+    // JSON-P
+    compile( group: 'org.glassfish', name: 'javax.json', version: jsonpVersion )
+
 }
