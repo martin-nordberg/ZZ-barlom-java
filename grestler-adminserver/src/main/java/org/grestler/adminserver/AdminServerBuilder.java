@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -11,7 +11,6 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
-import org.grestler.dbutilities.IDataSource;
 import org.grestler.webutilities.filters.ThreadNameFilter;
 import org.grestler.webutilities.servlets.ShutdownServlet;
 
@@ -27,19 +26,19 @@ public class AdminServerBuilder {
     /**
      * Creates a Jetty server for administration.
      *
-     * @param dataSource The data source for queries completed by the admin server.
-     * @param contexts   the context collection to be configured with the Grestler admin application.
+     * @param webServer The top level web server to be shutdown via the admin console.
+     * @param contexts  the context collection to be configured with the Grestler admin application.
      *
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
-    public static void makeAdminServer( IDataSource dataSource, ContextHandlerCollection contexts )
+    public static void makeAdminServer( AutoCloseable webServer, ContextHandlerCollection contexts )
         throws MalformedURLException {
 
         // Serve static content.
         ContextHandler staticContext = makeStaticContextHandler();
 
         // Serve dynamic content plus a shutdown handler.
-        ServletContextHandler dynamicContext = makeDynamicContextHandler();
+        ServletContextHandler dynamicContext = makeDynamicContextHandler( webServer );
 
         // Combine the two contexts plus a shutdown handler.
         contexts.addHandler( staticContext );
@@ -52,14 +51,14 @@ public class AdminServerBuilder {
      *
      * @return the new context handler.
      */
-    private static ServletContextHandler makeDynamicContextHandler() {
+    private static ServletContextHandler makeDynamicContextHandler( AutoCloseable webServer ) {
 
         // Set the context for dynamic content
         ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
         result.setContextPath( "/grestleradmin" );
 
         // Add a shutdown servlet for the dynamic content.
-        ServletHolder servletHolder = new ServletHolder( new ShutdownServlet() );
+        ServletHolder servletHolder = new ServletHolder( new ShutdownServlet( webServer ) );
         result.addServlet( servletHolder, "/exit" );
 
         // TBD: Any other stuff needed for admin ...

@@ -1,11 +1,24 @@
 
 buildDir = '../build/grestler-h2database'
 
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
 dependencies {
 
     // Other Modules
     compile project( ':grestler-dbutilities' )
     compile project( ':grestler-metamodel' )
+
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
 
     // Dalesbred
     compile( group: 'fi.evident.dalesbred', name: 'dalesbred', version: dalesbredVersion )
@@ -15,6 +28,9 @@ dependencies {
 
     // Flyway
     compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )
+
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }
 

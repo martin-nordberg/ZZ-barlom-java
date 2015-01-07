@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -18,18 +18,17 @@ public class ShutdownServlet
     extends HttpServlet {
 
     /**
-     * Registers the web server to be closed when this shutdown servlet executes. TODO: not static
-     *
-     * @param webServer the web server to shut down.
+     * Constructs a new shutdown servlet.
+     * @param webServer the web server to be shut down when this servlet executes.
      */
-    public static void registerWebServer( AutoCloseable webServer ) {
-        ShutdownServlet.webServer = webServer;
+    public ShutdownServlet( AutoCloseable webServer ) {
+        this.webServer = webServer;
     }
 
     @Override
     protected void service( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
 
-        // ask the web server to stop (asynchronously)
+        // Ask the web server to stop (asynchronously).
         try {
             webServer.close();
         }
@@ -37,13 +36,13 @@ public class ShutdownServlet
             throw new ServletException( e );
         }
 
-        // respond with a simple output
+        // Respond with a simple output.
         resp.getOutputStream().println( "Grestler application server stopping..." );
         resp.setStatus( HttpServletResponse.SC_OK );
 
     }
 
     /** The web server to shutdown when this servlet executes. */
-    private static AutoCloseable webServer;
+    private final AutoCloseable webServer;
 
 }

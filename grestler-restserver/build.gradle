@@ -1,4 +1,15 @@
+
 buildDir = '../build/grestler-restserver'
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
 
 dependencies {
 
@@ -6,6 +17,9 @@ dependencies {
     compile project( ':grestler-dbutilities' )
     compile project( ':grestler-metamodel' )
     compile project( ':grestler-webutilities' )
+
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
 
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
@@ -19,10 +33,10 @@ dependencies {
     // JSON-P
     compile( group: 'org.glassfish', name: 'javax.json', version: jsonpVersion )
 
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+
 }
 
 
-apply plugin: 'application'
-
-mainClassName = "org.grestler.application.Application"
 

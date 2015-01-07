@@ -14,21 +14,24 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.grestler.adminserver.AdminServerBuilder;
-import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.RestServerBuilder;
 import org.grestler.utilities.configuration.Configuration;
-import org.grestler.webutilities.servlets.ShutdownServlet;
 import org.h2.server.web.WebServlet;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Jetty web server initial configuration and start up.
  */
+@Singleton
 public class WebServer
     implements AutoCloseable {
 
     /**
      * Constructs a new web server.
      */
+    @Inject
     public WebServer() {
     }
 
@@ -62,11 +65,9 @@ public class WebServer
     /**
      * Starts the app server of Grestler. Does not return until they are stopped.
      *
-     * @param dataSource the data source for the web servers to query from.
-     *
      * @throws Exception If Jetty servers do not start properly.
      */
-    public void run( IDataSource dataSource ) throws Exception {
+    public void run() throws Exception {
 
         // Read the configuration.
         Configuration config = new Configuration( WebServer.class );
@@ -81,11 +82,11 @@ public class WebServer
         ContextHandlerCollection contexts = new ContextHandlerCollection();
 
         // Build the REST server.
-        RestServerBuilder.makeRestServer( dataSource, contexts );
+        RestServerBuilder.makeRestServer( contexts );
 
         // Build the admin server.
         if ( enableAdminServer ) {
-            AdminServerBuilder.makeAdminServer( dataSource, contexts );
+            AdminServerBuilder.makeAdminServer( this, contexts );
         }
 
         // Add a raw H2 SQL console.
@@ -103,8 +104,6 @@ public class WebServer
         // Set up graceful shut down.
         WebServer.server.setStopTimeout( 5000 );
         WebServer.server.setStopAtShutdown( true );
-
-        ShutdownServlet.registerWebServer( this );
 
         // Hang out until the server is stopped.
         WebServer.server.join();

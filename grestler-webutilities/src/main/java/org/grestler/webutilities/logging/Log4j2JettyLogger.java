@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.util.log.Logger;
 
 /**
- * Adapter routes Jetty logging into Log4J2.
+ * Adapter routes Jetty logging into Log4J2. This code is mostly cloned from Jetty's standard Logger implementations.
  */
 public class Log4j2JettyLogger
     implements Logger {

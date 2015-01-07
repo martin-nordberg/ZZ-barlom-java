@@ -1,11 +1,11 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.h2database.queries.elements
 
-import org.grestler.h2database.H2DataSourceDefinition
+import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
@@ -25,7 +25,7 @@ class VertexTypeLoaderSpec
         StmTransactionContext.doInTransaction( 1 ) {
             m = new MetamodelRepository();
 
-            def loader = new VertexTypeLoader( new H2DataSourceDefinition().makeDataSource() );
+            def loader = new VertexTypeLoader( new H2DataSource() );
 
             loader.loadAllVertexTypes( m );
         }

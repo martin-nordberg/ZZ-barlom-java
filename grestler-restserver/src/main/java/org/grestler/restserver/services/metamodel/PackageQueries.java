@@ -29,6 +29,10 @@ import java.util.List;
 @Path( "/metadata/packages" )
 public class PackageQueries {
 
+    public PackageQueries() {
+
+    }
+
     @GET
     @Path( "/{idOrPath}" )
     @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )

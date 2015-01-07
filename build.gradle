@@ -8,18 +8,21 @@ allprojects {
         mavenCentral()
     }
 
-    // versions of all external libraries used throughout Grestler
+    // Versions of all external libraries used throughout Grestler
+    ext.daggerVersion = '1.2.2'
     ext.dalesbredVersion = '0.7.0'
     ext.flywayVersion = '3.1'
     ext.h2Version = '1.4.182'
     ext.jettyVersion = '9.2.5.v20141112'
-    ext.jooqVersion = '3.5.0'
     ext.jsonpVersion = '1.0.4'
     ext.log4j2Version = '2.1'
     ext.resteasyVersion = '3.0.10.Final'
     ext.spockVersion = '0.7-groovy-2.0'
 
     dependencies {
+
+        // Java CDI
+        compile( group: 'javax.inject', name: 'javax.inject', version: '1' )
 
         // Log4j 2
         compile( group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version )
@@ -41,6 +44,16 @@ apply plugin:'application'
 
 buildDir = 'build/grestler'
 
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
 dependencies {
 
     // Other Modules
@@ -48,8 +61,14 @@ dependencies {
     compile project( ':grestler-h2database' )
     compile project( ':grestler-restserver' )
 
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
+
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }
 

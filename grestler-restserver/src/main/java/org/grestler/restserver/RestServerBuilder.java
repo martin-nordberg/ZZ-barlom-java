@@ -8,7 +8,6 @@ package org.grestler.restserver;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.grestler.dbutilities.IDataSource;
 import org.grestler.restserver.logging.Log4j2RestEasyLogger;
 import org.grestler.webutilities.filters.ThreadNameFilter;
 import org.jboss.resteasy.logging.Logger;
@@ -27,13 +26,11 @@ public class RestServerBuilder {
     /**
      * Creates a Jetty server for REST services.
      *
-     * @param dataSource the data source for queries made by the server.
-     * @param contexts   the context collection to be configured for REST web services.
+     * @param contexts the context collection to be configured for REST web services.
      *
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
-    public static void makeRestServer( IDataSource dataSource, ContextHandlerCollection contexts )
-        throws MalformedURLException {
+    public static void makeRestServer( ContextHandlerCollection contexts ) throws MalformedURLException {
 
         // Redirect RESTEasy logging to Log4j2.
         overrideRestEasyLoggerInitialization();
@@ -59,7 +56,10 @@ public class RestServerBuilder {
 
         // Add a RESTEasy servlet for the dynamic content.
         ServletHolder servletHolder = new ServletHolder( new HttpServletDispatcher() );
-        servletHolder.setInitParameter( "javax.ws.rs.Application", "org.grestler.restserver.ApplicationServices" );
+        servletHolder.setInitParameter(
+            "javax.ws.rs.Application",
+            "org.grestler.restserver.ApplicationServicesWrapper"
+        );
         result.addServlet( servletHolder, "/*" );
 
         // Rename request threads for better logging.

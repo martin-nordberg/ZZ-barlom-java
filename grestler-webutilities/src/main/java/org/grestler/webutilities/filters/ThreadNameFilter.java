@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Servlet filter sets the current thread name to the request URL. This benefit logging and debugging which then double
+ * Servlet filter sets the current thread name to the request URL. This benefits logging and debugging which then double
  * the request URL in the thread name.
  */
 public class ThreadNameFilter
