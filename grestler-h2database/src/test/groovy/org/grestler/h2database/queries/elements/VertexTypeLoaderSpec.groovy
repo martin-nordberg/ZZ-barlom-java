@@ -23,11 +23,13 @@ class VertexTypeLoaderSpec
         given:
         IMetamodelRepositorySpi m
         StmTransactionContext.doInTransaction( 1 ) {
-            m = new MetamodelRepository();
+            def dataSource = new H2DataSource();
 
-            def loader = new VertexTypeLoader( new H2DataSource() );
+            def ploader = new PackageLoader( dataSource );
+            def vloader = new VertexTypeLoader( dataSource );
+            def eloader = new EdgeTypeLoader( dataSource )
 
-            loader.loadAllVertexTypes( m );
+            m = new MetamodelRepository( ploader, vloader, eloader );
         }
 
         expect:

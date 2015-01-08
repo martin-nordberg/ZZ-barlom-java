@@ -8,7 +8,7 @@ package org.grestler.restserver.services.metamodel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.IMetamodelRepository;
-import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
@@ -24,19 +24,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service for querying Grestler packages.
+ * Service for querying Grestler edge types.
  */
-@Path( "/metadata/packages" )
-public class PackageQueries {
+@Path( "/metadata/edgetypes" )
+public class EdgeTypeQueries {
 
     /**
-     * Constructs a new package query service backed by given metamodel repository.
+     * Constructs a new edge type query service backed by given metamodel repository.
      *
      * @param metamodelRepository  the metamodel repository to query from.
-     * @param jsonGeneratorFactory the factory for generating JSON output.
+     * @param jsonGeneratorFactory the factory for generating JSON.
      */
     @Inject
-    public PackageQueries( IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory ) {
+    public EdgeTypeQueries( IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory ) {
 
         this.metamodelRepository = metamodelRepository;
         this.jsonGeneratorFactory = jsonGeneratorFactory;
@@ -44,18 +44,18 @@ public class PackageQueries {
     }
 
     /**
-     * Queries for one package by ID or by path.
+     * Queries for one edge type by ID or by path.
      *
-     * @param idOrPath the UUID or the full path of the package.
+     * @param idOrPath the UUID or the full path of the edge type.
      *
-     * @return JSON for the package found or null
+     * @return JSON for the edge type found or null.
      */
     @GET
     @Path( "/{idOrPath}" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
-    public String getPackageByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.edgetype+json" } )
+    public String getEdgeTypeByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
 
-        LOG.info( "Querying for package {}.", idOrPath );
+        LOG.info( "Querying for edge type {}.", idOrPath );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -65,10 +65,14 @@ public class PackageQueries {
 
                 // TODO: distinguish UUID from path
 
-                Optional<IPackage> pkg = this.metamodelRepository.findPackageById( UUID.fromString( idOrPath ) );
+                Optional<IEdgeType> edgeType = this.metamodelRepository.findEdgeTypeById(
+                    UUID.fromString(
+                        idOrPath
+                    )
+                );
 
-                if ( pkg.isPresent() ) {
-                    pkg.get().generateJson( json );
+                if ( edgeType.isPresent() ) {
+                    edgeType.get().generateJson( json );
                 }
                 else {
                     json.writeNull();
@@ -82,27 +86,27 @@ public class PackageQueries {
     }
 
     /**
-     * Queries for all packages.
+     * Queries for all edge types.
      *
-     * @return JSON for the packages found.
+     * @return JSON for the edge types found.
      */
     @GET
     @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
-    public String getPackagesAll() {
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.edgetype+json" } )
+    public String getEdgeTypesAll() {
 
-        LOG.info( "Querying for all packages." );
+        LOG.info( "Querying for all edge types." );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
 
         json.writeStartObject();
-        json.writeStartArray( "packages" );
+        json.writeStartArray( "edgeTypes" );
 
         StmTransactionContext.doInTransaction(
             2, () -> {
-                List<IPackage> packages = this.metamodelRepository.findPackagesAll();
-                packages.forEach( ( pkg ) -> pkg.generateJson( json ) );
+                List<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
+                edgeTypes.forEach( ( edgeType ) -> edgeType.generateJson( json ) );
             }
         );
 

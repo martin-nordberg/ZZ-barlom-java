@@ -8,7 +8,7 @@ package org.grestler.restserver.services.metamodel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.IMetamodelRepository;
-import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
@@ -24,38 +24,36 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service for querying Grestler packages.
+ * Service for querying Grestler vertex types.
  */
-@Path( "/metadata/packages" )
-public class PackageQueries {
+@Path( "/metadata/vertextypes" )
+public class VertexTypeQueries {
 
     /**
-     * Constructs a new package query service backed by given metamodel repository.
+     * Constructs a new vertex type query service backed by given metamodel repository.
      *
      * @param metamodelRepository  the metamodel repository to query from.
-     * @param jsonGeneratorFactory the factory for generating JSON output.
+     * @param jsonGeneratorFactory the factory for generating JSON.
      */
     @Inject
-    public PackageQueries( IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory ) {
-
+    public VertexTypeQueries( IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory ) {
         this.metamodelRepository = metamodelRepository;
         this.jsonGeneratorFactory = jsonGeneratorFactory;
-
     }
 
     /**
-     * Queries for one package by ID or by path.
+     * Queries for one vertex type by ID or by path.
      *
-     * @param idOrPath the UUID or the full path of the package.
+     * @param idOrPath the UUID or the full path of the vertex type.
      *
-     * @return JSON for the package found or null
+     * @return JSON for the vertex type found or null.
      */
     @GET
     @Path( "/{idOrPath}" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
-    public String getPackageByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.vertextype+json" } )
+    public String getVertexTypeByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
 
-        LOG.info( "Querying for package {}.", idOrPath );
+        LOG.info( "Querying for vertex type {}.", idOrPath );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -65,10 +63,14 @@ public class PackageQueries {
 
                 // TODO: distinguish UUID from path
 
-                Optional<IPackage> pkg = this.metamodelRepository.findPackageById( UUID.fromString( idOrPath ) );
+                Optional<IVertexType> vertexType = this.metamodelRepository.findVertexTypeById(
+                    UUID.fromString(
+                        idOrPath
+                    )
+                );
 
-                if ( pkg.isPresent() ) {
-                    pkg.get().generateJson( json );
+                if ( vertexType.isPresent() ) {
+                    vertexType.get().generateJson( json );
                 }
                 else {
                     json.writeNull();
@@ -82,27 +84,27 @@ public class PackageQueries {
     }
 
     /**
-     * Queries for all packages.
+     * Queries for all vertex types.
      *
-     * @return JSON for the packages found.
+     * @return JSON for the vertex types found.
      */
     @GET
     @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
-    public String getPackagesAll() {
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.vertextype+json" } )
+    public String getVertexTypesAll() {
 
-        LOG.info( "Querying for all packages." );
+        LOG.info( "Querying for all vertex types." );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
 
         json.writeStartObject();
-        json.writeStartArray( "packages" );
+        json.writeStartArray( "vertexTypes" );
 
         StmTransactionContext.doInTransaction(
             2, () -> {
-                List<IPackage> packages = this.metamodelRepository.findPackagesAll();
-                packages.forEach( ( pkg ) -> pkg.generateJson( json ) );
+                List<IVertexType> vertexTypes = this.metamodelRepository.findVertexTypesAll();
+                vertexTypes.forEach( ( vertexType ) -> vertexType.generateJson( json ) );
             }
         );
 

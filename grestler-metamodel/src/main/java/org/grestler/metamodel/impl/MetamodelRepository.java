@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -12,8 +12,14 @@ import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.elements.IPackageLoader;
+import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
+import org.grestler.utilities.revisions.StmTransaction;
+import org.grestler.utilities.revisions.StmTransactionContext;
 import org.grestler.utilities.revisions.VList;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,17 +31,27 @@ public class MetamodelRepository
     implements IMetamodelRepositorySpi {
 
     /**
-     * Constructs a new metamodel repository.
+     * Constructs a new metamodel repository. Loads it with packages, vertex types, and edge types from the given
+     * sources.
      */
-    public MetamodelRepository() {
+    @Inject
+    public MetamodelRepository(
+        IPackageLoader packageLoader, IVertexTypeLoader vertexTypeLoader, IEdgeTypeLoader edgeTypeLoader
+    ) {
 
-        this.packages = new VList<>();
-        this.vertexTypes = new VList<>();
-        this.edgeTypes = new VList<>();
+        try ( StmTransaction ignored = StmTransactionContext.beginTransaction() ) {
+            this.packages = new VList<>();
+            this.vertexTypes = new VList<>();
+            this.edgeTypes = new VList<>();
 
-        this.packages.add( IPackage.ROOT_PACKAGE );
-        this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
-        this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
+            this.packages.add( IPackage.ROOT_PACKAGE );
+            this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
+            this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
+
+            packageLoader.loadAllPackages( this );
+            vertexTypeLoader.loadAllVertexTypes( this );
+            edgeTypeLoader.loadAllEdgeTypes( this );
+        }
 
     }
 

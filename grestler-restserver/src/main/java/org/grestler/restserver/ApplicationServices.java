@@ -6,7 +6,9 @@
 package org.grestler.restserver;
 
 import org.grestler.restserver.filters.CacheControlFilter;
+import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
 import org.grestler.restserver.services.metamodel.PackageQueries;
+import org.grestler.restserver.services.metamodel.VertexTypeQueries;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Application;
@@ -23,10 +25,14 @@ public class ApplicationServices
      * Constructs a new application definition.
      */
     @Inject
-    public ApplicationServices( PackageQueries packageQueries ) {
+    public ApplicationServices(
+        PackageQueries packageQueries, VertexTypeQueries vertexTypeQueries, EdgeTypeQueries edgeTypeQueries
+    ) {
 
         // register RESTful query services
         singletons.add( packageQueries );
+        singletons.add( vertexTypeQueries );
+        singletons.add( edgeTypeQueries );
 
         // register filters
         singletons.add( new CacheControlFilter() );

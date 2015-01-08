@@ -8,7 +8,7 @@ package org.grestler.h2database.queries.elements;
 import fi.evident.dalesbred.Database;
 import fi.evident.dalesbred.instantiation.Instantiator;
 import fi.evident.dalesbred.instantiation.InstantiatorArguments;
-import org.grestler.h2database.datasource.H2DataSource;
+import org.grestler.dbutilities.IDataSource;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -30,7 +30,7 @@ public class EdgeTypeLoader
      *
      * @param dataSource the data source for the H2 database to read from.
      */
-    public EdgeTypeLoader( H2DataSource dataSource ) {
+    public EdgeTypeLoader( IDataSource dataSource ) {
         this.dataSource = dataSource;
     }
 
@@ -104,7 +104,7 @@ public class EdgeTypeLoader
     }
 
     /** The data source for queries. */
-    private final H2DataSource dataSource;
+    private final IDataSource dataSource;
 
     /**
      * Data structure for edge type records.

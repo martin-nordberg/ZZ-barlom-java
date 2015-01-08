@@ -8,7 +8,7 @@ package org.grestler.h2database.queries.elements;
 import fi.evident.dalesbred.Database;
 import fi.evident.dalesbred.instantiation.Instantiator;
 import fi.evident.dalesbred.instantiation.InstantiatorArguments;
-import org.grestler.h2database.datasource.H2DataSource;
+import org.grestler.dbutilities.IDataSource;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
@@ -28,7 +28,7 @@ public class PackageLoader
      *
      * @param dataSource the data source for the H2 database to read from.
      */
-    public PackageLoader( H2DataSource dataSource ) {
+    public PackageLoader( IDataSource dataSource ) {
         this.dataSource = dataSource;
     }
 
@@ -93,7 +93,7 @@ public class PackageLoader
     }
 
     /** The data source for queries. */
-    private final H2DataSource dataSource;
+    private final IDataSource dataSource;
 
     /**
      * Data structure for package records.

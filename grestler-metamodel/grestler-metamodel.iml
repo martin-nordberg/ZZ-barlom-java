@@ -24,5 +24,6 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.codehaus.groovy:groovy-all:2.0.5" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.glassfish:javax.json:1.0.4" level="project" />
     <orderEntry type="library" exported="" name="Gradle: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.dagger:dagger:1.2.2" level="project" />
   </component>
 </module>

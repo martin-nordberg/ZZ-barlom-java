@@ -23,17 +23,14 @@ class EdgeTypeLoaderSpec
         given:
         IMetamodelRepositorySpi m
         StmTransactionContext.doInTransaction( 1 ) {
-            m = new MetamodelRepository();
-
             def dataSource = new H2DataSource();
 
+            def ploader = new PackageLoader( dataSource );
             def vloader = new VertexTypeLoader( dataSource );
-
-            vloader.loadAllVertexTypes( m );
-
             def eloader = new EdgeTypeLoader( dataSource )
 
-            eloader.loadAllEdgeTypes( m );
+            m = new MetamodelRepository( ploader, vloader, eloader );
+
         }
 
         expect:
