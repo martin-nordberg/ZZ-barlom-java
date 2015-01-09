@@ -13,7 +13,7 @@ import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
- * Specification for vertex type loading.
+ * Specification for package loading.
  */
 class PackageLoaderSpec
         extends Specification {
@@ -21,16 +21,13 @@ class PackageLoaderSpec
     def "A package loader retrieves the top level root package"() {
 
         given:
-        IMetamodelRepositorySpi m
-        StmTransactionContext.doInTransaction( 1 ) {
-            def dataSource = new H2DataSource();
+        def dataSource = new H2DataSource();
 
-            def ploader = new PackageLoader( dataSource );
-            def vloader = new VertexTypeLoader( dataSource );
-            def eloader = new EdgeTypeLoader( dataSource )
+        def ploader = new PackageLoader( dataSource );
+        def vloader = new VertexTypeLoader( dataSource );
+        def eloader = new EdgeTypeLoader( dataSource )
 
-            m = new MetamodelRepository( ploader, vloader, eloader );
-        }
+        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, vloader, eloader );
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {

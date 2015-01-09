@@ -26,33 +26,16 @@ class MetamodelRepositorySpec
     def "A metamodel repository lets added vertex types be retrieved"() {
 
         given:
-        IMetamodelRepositorySpi m
-        StmTransactionContext.doInTransaction( 1 ) {
-
-            m = new MetamodelRepository(
-                    new IPackageLoader() {
-
-                        @Override
-                        void loadAllPackages( IMetamodelRepositorySpi repository ) {
-                        }
-                    }, new IVertexTypeLoader() {
-
-                @Override
-                void loadAllVertexTypes( IMetamodelRepositorySpi r ) {
-                    r.loadVertexType( id1, IPackage.ROOT_PACKAGE, "V1", IVertexType.BASE_VERTEX_TYPE );
-                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V2", IVertexType.BASE_VERTEX_TYPE );
-                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V3", IVertexType.BASE_VERTEX_TYPE );
-                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V4", IVertexType.BASE_VERTEX_TYPE );
-                }
-            }, new IEdgeTypeLoader() {
-
-                @Override
-                void loadAllEdgeTypes( IMetamodelRepositorySpi repository ) {
-                }
-            }
-            );
-
-        }
+        IMetamodelRepositorySpi m = new MetamodelRepository(
+            { r -> } as IPackageLoader,
+            { r ->
+                r.loadVertexType( id1, IPackage.ROOT_PACKAGE, "V1", IVertexType.BASE_VERTEX_TYPE );
+                r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V2", IVertexType.BASE_VERTEX_TYPE );
+                r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V3", IVertexType.BASE_VERTEX_TYPE );
+                r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V4", IVertexType.BASE_VERTEX_TYPE );
+            } as IVertexTypeLoader,
+            { r -> } as IEdgeTypeLoader
+        );
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
