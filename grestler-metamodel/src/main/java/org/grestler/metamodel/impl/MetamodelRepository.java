@@ -33,6 +33,9 @@ public class MetamodelRepository
     /**
      * Constructs a new metamodel repository. Loads it with packages, vertex types, and edge types from the given
      * sources.
+     * @param packageLoader the loader used to initialize the packages into the metamodel repository.
+     * @param vertexTypeLoader the loader used to initialize the vertex types into the metamodel repository.
+     * @param edgeTypeLoader the loader used to initialize the edge types into the metamodel repository.
      */
     @Inject
     public MetamodelRepository(

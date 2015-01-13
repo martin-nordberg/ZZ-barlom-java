@@ -23,6 +23,13 @@ public class ApplicationServicesWrapper
         this.delegate = objectGraph.get( ApplicationServices.class );
     }
 
+    /**
+     * Registers the Dagger object graph that will be used to inject everything below the application itself. This
+     * clumsy hack is to work around the seeming inability to dependency inject the application object itself without a
+     * JEE container.
+     *
+     * @param objectGraph the already initialized Dagger object graph for dependency injection.
+     */
     public static void registerObjectGraph( ObjectGraph objectGraph ) {
         ApplicationServicesWrapper.objectGraph = objectGraph;
     }
@@ -33,8 +40,7 @@ public class ApplicationServicesWrapper
     }
 
     /**
-     * The Dagger dependency injection service. Explicitly used since no clear way to provide ApplicationServices
-     * itself.
+     * The Dagger dependency injection service. Explicitly used since no clear way to inject Application itself.
      */
     private static ObjectGraph objectGraph;
 
