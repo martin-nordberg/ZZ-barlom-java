@@ -20,7 +20,18 @@ public interface IElement {
      *
      * @param json the generator to write to.
      */
-    void generateJson( JsonGenerator json );
+    default void generateJson( JsonGenerator json ) {
+        json.writeStartObject();
+        this.generateJsonAttributes( json );
+        json.writeEnd();
+    }
+
+    /**
+     * Generates the JSON representation of this element's attributes to the given generator.
+     *
+     * @param json the generator to write to.
+     */
+    void generateJsonAttributes( JsonGenerator json );
 
     /**
      * @return the unique ID of this element.
@@ -33,9 +44,39 @@ public interface IElement {
     String getName();
 
     /**
+     * @return the parent of this element.
+     */
+    IPackage getParentPackage();
+
+    /**
      * @return the fully qualified path to this element.
      */
-    String getPath();
+    default String getPath() {
+
+        String result = this.getParentPackage().getPath();
+
+        if ( !result.isEmpty() ) {
+            return result + "." + this.getName();
+        }
+
+        return this.getName();
+
+    }
+
+    /**
+     * Determines whether this package is a direct or indirect child of the given package.
+     *
+     * @param parentPackage the potential parent.
+     *
+     * @return true if this package is a child or grandchild of the given parent package.
+     */
+    default boolean isChildOf( IPackage parentPackage ) {
+
+        IPackage parentPkg = this.getParentPackage();
+
+        return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
+
+    }
 
     /**
      * @return a JSON representation of this element.

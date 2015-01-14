@@ -16,26 +16,6 @@ public interface IVertexType
     extends IElement {
 
     /**
-     * @return the parent of this vertex type.
-     */
-    IPackage getParentPackage();
-
-    /**
-     * @return the fully qualified path to this vertex type.
-     */
-    default String getPath() {
-
-        String result = this.getParentPackage().getPath();
-
-        if ( !result.isEmpty() ) {
-            return result + "." + this.getName();
-        }
-
-        return this.getName();
-
-    }
-
-    /**
      * @return the super type of this vertex type.
      */
     Optional<IVertexType> getSuperType();
@@ -62,13 +42,11 @@ public interface IVertexType
      */
     static final IVertexType BASE_VERTEX_TYPE = new IVertexType() {
         @Override
-        public void generateJson( JsonGenerator json ) {
-            json.writeStartObject()
-                .write( "id", BASE_VERTEX_TYPE_ID.toString() )
+        public void generateJsonAttributes( JsonGenerator json ) {
+            json.write( "id", BASE_VERTEX_TYPE_ID.toString() )
                 .write( "parentPackageId", IPackage.ROOT_PACKAGE_ID.toString() )
                 .write( "name", "Vertex" )
-                .write( "path", "Vertex" )
-                .writeEnd();
+                .write( "path", "Vertex" );
         }
 
         @Override

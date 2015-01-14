@@ -31,8 +31,9 @@ class PackageLoaderSpec
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert m.findPackageById( IPackage.ROOT_PACKAGE.id ).get().name == "\$";
-            assert !m.findPackageById( IPackage.ROOT_PACKAGE.id ).get().parentPackage.isPresent();
+            def rootPkg = m.findPackageById( IPackage.ROOT_PACKAGE.id ).get();
+            assert rootPkg.name == "\$";
+            assert rootPkg.parentPackage == rootPkg;
             assert m.findPackagesAll().size() == 1;
         }
 

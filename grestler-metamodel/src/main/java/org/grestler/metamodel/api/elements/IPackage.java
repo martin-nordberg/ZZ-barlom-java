@@ -7,7 +7,6 @@ package org.grestler.metamodel.api.elements;
 
 import javax.json.stream.JsonGenerator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -22,52 +21,20 @@ public interface IPackage
     List<IPackage> getChildPackages();
 
     /**
-     * @return the parent of this element.
+     * The fixed ID for the root package.
      */
-    Optional<IPackage> getParentPackage();
-
-    /**
-     * @return the fully qualified path to this element.
-     */
-    default String getPath() {
-
-        String result = this.getParentPackage().get().getPath();
-
-        if ( !result.isEmpty() ) {
-            return result + "." + this.getName();
-        }
-
-        return this.getName();
-
-    }
-
-    /**
-     * Determines whether this package is a direct or indirect child of the given package.
-     *
-     * @param parentPackage the potential parent.
-     *
-     * @return true if this package is a child or grandchild of the given parent package.
-     */
-    default boolean isChildOf( IPackage parentPackage ) {
-
-        IPackage parentPkg = this.getParentPackage().get();
-
-        return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
-
-    }
+    final UUID ROOT_PACKAGE_ID = UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
 
     /**
      * Top level root package (constant).
      */
     static final IPackage ROOT_PACKAGE = new IPackage() {
         @Override
-        public void generateJson( JsonGenerator json ) {
-            json.writeStartObject()
-                .write( "id", ROOT_PACKAGE_ID.toString() )
+        public void generateJsonAttributes( JsonGenerator json ) {
+            json.write( "id", ROOT_PACKAGE_ID.toString() )
                 .writeNull( "parentPackageId" )
                 .write( "name", "$" )
-                .write( "path", "" )
-                .writeEnd();
+                .write( "path", "" );
         }
 
         @Override
@@ -87,8 +54,8 @@ public interface IPackage
         }
 
         @Override
-        public Optional<IPackage> getParentPackage() {
-            return Optional.empty();
+        public IPackage getParentPackage() {
+            return this;
         }
 
         @Override
@@ -102,9 +69,4 @@ public interface IPackage
         }
 
     };
-
-    /**
-     * The fixed ID for the root package.
-     */
-    final UUID ROOT_PACKAGE_ID = UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
 }

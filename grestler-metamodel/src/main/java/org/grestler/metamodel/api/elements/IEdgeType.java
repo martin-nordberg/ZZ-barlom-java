@@ -21,26 +21,6 @@ public interface IEdgeType
     IVertexType getFromVertexType();
 
     /**
-     * @return the parent of this edge type.
-     */
-    IPackage getParentPackage();
-
-    /**
-     * @return the fully qualified path to this edge type.
-     */
-    default String getPath() {
-
-        String result = this.getParentPackage().getPath();
-
-        if ( !result.isEmpty() ) {
-            return result + "." + this.getName();
-        }
-
-        return this.getName();
-
-    }
-
-    /**
      * @return the super type of this edge type.
      */
     Optional<IEdgeType> getSuperType();
@@ -70,15 +50,13 @@ public interface IEdgeType
      */
     static final IEdgeType BASE_EDGE_TYPE = new IEdgeType() {
         @Override
-        public void generateJson( JsonGenerator json ) {
-            json.writeStartObject()
-                .write( "id", BASE_EDGE_TYPE_ID.toString() )
+        public void generateJsonAttributes( JsonGenerator json ) {
+            json.write( "id", BASE_EDGE_TYPE_ID.toString() )
                 .write( "parentPackageId", IPackage.ROOT_PACKAGE_ID.toString() )
                 .write( "name", "Vertex" )
                 .write( "path", "Vertex" )
                 .write( "fromVertexTypeId", IVertexType.BASE_VERTEX_TYPE_ID.toString() )
-                .write( "toVertexTypeId", IVertexType.BASE_VERTEX_TYPE_ID.toString() )
-                .writeEnd();
+                .write( "toVertexTypeId", IVertexType.BASE_VERTEX_TYPE_ID.toString() );
         }
 
         @Override

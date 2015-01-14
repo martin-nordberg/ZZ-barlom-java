@@ -11,22 +11,22 @@ import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Implementation class for edge types.
  */
-public class EdgeType
+public final class EdgeType
+    extends Element
     implements IEdgeType {
 
     /**
      * Constructs a new edge type.
      *
-     * @param id             the unique ID of the type.
+     * @param id             the unique ID of the edge type.
      * @param parentPackage  the package containing the edge type.
-     * @param name           the name of the type.
+     * @param name           the name of the edge type.
      * @param superType      the super type.
      * @param fromVertexType the vertex type at the start of the edge type.
      * @param toVertexType   the vertex type at the end of the edge type.
@@ -39,14 +39,8 @@ public class EdgeType
         IVertexType fromVertexType,
         IVertexType toVertexType
     ) {
+        super( id, parentPackage, name );
 
-        Objects.requireNonNull( id, "Missing ID" );
-
-        // TODO: unique name per package
-
-        this.id = id;
-        this.parentPackage = new V<>( parentPackage );
-        this.name = new V<>( name );
         this.superType = new V<>( superType );
         this.fromVertexType = new V<>( fromVertexType );
         this.toVertexType = new V<>( toVertexType );
@@ -54,35 +48,15 @@ public class EdgeType
     }
 
     @Override
-    public void generateJson( JsonGenerator json ) {
-        json.writeStartObject()
-            .write( "id", this.getId().toString() )
-            .write( "parentPackageId", this.getParentPackage().getId().toString() )
-            .write( "name", this.getName() )
-            .write( "path", this.getPath() )
-            .write( "fromVertexTypeId", this.getFromVertexType().getId().toString() )
-            .write( "toVertexTypeId", this.getToVertexType().getId().toString() )
-            .writeEnd();
+    public void generateJsonAttributes( JsonGenerator json ) {
+        super.generateJsonAttributes( json );
+        json.write( "fromVertexTypeId", this.getFromVertexType().getId().toString() )
+            .write( "toVertexTypeId", this.getToVertexType().getId().toString() );
     }
 
     @Override
     public IVertexType getFromVertexType() {
         return this.fromVertexType.get();
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    @Override
-    public String getName() {
-        return this.name.get();
-    }
-
-    @Override
-    public IPackage getParentPackage() {
-        return this.parentPackage.get();
     }
 
     @Override
@@ -95,55 +69,13 @@ public class EdgeType
         return this.toVertexType.get();
     }
 
-    /**
-     * Changes the name of this edge type.
-     *
-     * @param name the new name (required).
-     */
-    public void setName( String name ) {
-
-        // TODO: unique per parent package
-
-        Objects.requireNonNull( name, "Missing name" );
-
-        this.name.set( name );
-
-    }
-
-    /**
-     * Changes the parent package of this edge type.
-     *
-     * @param parentPackage the new parent package (required).
-     */
-    public void setParentPackage( IPackage parentPackage ) {
-
-        // TODO: unique per parent package
-
-        Objects.requireNonNull( parentPackage, "Missing parentPackage" );
-
-        this.parentPackage.set( parentPackage );
-
-    }
-
-    /**
-     * Changes the super type of this edge type.
-     *
-     * @param superType the new super type.
-     */
-    public void setSuperType( IEdgeType superType ) {
-        this.superType.set( superType );
-    }
-
+    /** The vertex type at the tail of edges of this type. */
     private final V<IVertexType> fromVertexType;
 
-    private final UUID id;
-
-    private final V<String> name;
-
-    private final V<IPackage> parentPackage;
-
+    /** The super type for this edge type. */
     private final V<IEdgeType> superType;
 
+    /** The vertex type at the head of edges of this type. */
     private final V<IVertexType> toVertexType;
 
 }

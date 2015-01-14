@@ -1,16 +1,13 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.metamodel.impl.elements
-
 import org.grestler.metamodel.api.elements.IPackage
-import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
-
 /**
  * Specification for packages.
  */
@@ -29,7 +26,7 @@ class PackageSpec
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
             assert p.name == "\$";
-            assert !p.parentPackage.isPresent();
+            assert p.parentPackage == p;
             assert !p.isChildOf( p );
         }
 
@@ -49,10 +46,10 @@ class PackageSpec
 
         expect:
         StmTransactionContext.doInTransaction( 1 ) {
-            assert p1.parentPackage.get() == IPackage.ROOT_PACKAGE;
+            assert p1.parentPackage == IPackage.ROOT_PACKAGE;
             assert p1.isChildOf( IPackage.ROOT_PACKAGE );
             assert !p1.isChildOf( p1 );
-            assert p2.parentPackage.get() == p1;
+            assert p2.parentPackage == p1;
             assert p2.isChildOf( p1 );
             assert !p1.isChildOf( p2 );
             assert !r.isChildOf( p1 );
