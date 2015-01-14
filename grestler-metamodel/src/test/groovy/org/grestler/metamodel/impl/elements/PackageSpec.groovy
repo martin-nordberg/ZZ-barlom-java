@@ -4,10 +4,11 @@
 //
 
 package org.grestler.metamodel.impl.elements
+
 import org.grestler.metamodel.api.elements.IPackage
-import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
+
 /**
  * Specification for packages.
  */
@@ -24,36 +25,27 @@ class PackageSpec
         IPackage p = IPackage.ROOT_PACKAGE;
 
         expect:
-        StmTransactionContext.doInTransaction( 1 ) {
-            assert p.name == "\$";
-            assert p.parentPackage == p;
-            assert !p.isChildOf( p );
-        }
+        p.name == "\$";
+        p.parentPackage == p;
+        !p.isChildOf( p );
 
     }
 
     def "Package parents can be detected correctly"() {
 
         given:
-        IPackage p1;
-        IPackage p2;
-        IPackage r;
-        StmTransactionContext.doInTransaction( 1 ) {
-            p1 = new Package( id, IPackage.ROOT_PACKAGE, name );
-            p2 = new Package( id, p1, name );
-            r = new Package( id, IPackage.ROOT_PACKAGE, name );
-        }
+        IPackage p1 = new Package( id, IPackage.ROOT_PACKAGE, name );
+        IPackage p2 = new Package( id, p1, name );
+        IPackage r = new Package( id, IPackage.ROOT_PACKAGE, name );
 
         expect:
-        StmTransactionContext.doInTransaction( 1 ) {
-            assert p1.parentPackage == IPackage.ROOT_PACKAGE;
-            assert p1.isChildOf( IPackage.ROOT_PACKAGE );
-            assert !p1.isChildOf( p1 );
-            assert p2.parentPackage == p1;
-            assert p2.isChildOf( p1 );
-            assert !p1.isChildOf( p2 );
-            assert !r.isChildOf( p1 );
-        }
+        p1.parentPackage == IPackage.ROOT_PACKAGE;
+        p1.isChildOf( IPackage.ROOT_PACKAGE );
+        !p1.isChildOf( p1 );
+        p2.parentPackage == p1;
+        p2.isChildOf( p1 );
+        !p1.isChildOf( p2 );
+        !r.isChildOf( p1 );
 
     }
 

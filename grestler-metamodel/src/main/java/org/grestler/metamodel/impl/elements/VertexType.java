@@ -7,7 +7,6 @@ package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
-import org.grestler.utilities.revisions.V;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,15 +31,15 @@ public final class VertexType
     ) {
         super( id, parentPackage, name );
 
-        this.superType = new V<>( superType );
+        this.superType = superType;
     }
 
     @Override
     public Optional<IVertexType> getSuperType() {
-        return Optional.of( this.superType.get() );
+        return Optional.of( this.superType );
     }
 
     /** The super type of this vertex type. */
-    private final V<IVertexType> superType;
+    private final IVertexType superType;
 
 }

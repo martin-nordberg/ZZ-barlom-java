@@ -8,8 +8,6 @@ package org.grestler.metamodel.impl.elements
 import org.grestler.metamodel.api.elements.IEdgeType
 import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.api.elements.IVertexType
-import org.grestler.utilities.revisions.StmTransaction
-import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -22,16 +20,6 @@ class EdgeTypeSpec
     UUID id = Uuids.makeUuid();
 
     String name = "Example";
-
-    StmTransaction tx;
-
-    def setup() {
-        tx = StmTransactionContext.beginTransaction();
-    }
-
-    def cleanup() {
-        tx.close();
-    }
 
     def "A top level edge type is constructed and can be read"() {
 

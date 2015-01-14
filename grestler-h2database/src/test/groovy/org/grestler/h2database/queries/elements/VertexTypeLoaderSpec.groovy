@@ -9,7 +9,6 @@ import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
-import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -30,11 +29,9 @@ class VertexTypeLoaderSpec
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, vloader, eloader );
 
         expect:
-        StmTransactionContext.doInTransaction( 1 ) {
-            assert m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().name == "Vertex";
-            assert !m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().superType.isPresent();
-            assert m.findVertexTypesAll().size() == 1;
-        }
+        m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().name == "Vertex";
+        !m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().superType.isPresent();
+        m.findVertexTypesAll().size() == 1;
 
     }
 

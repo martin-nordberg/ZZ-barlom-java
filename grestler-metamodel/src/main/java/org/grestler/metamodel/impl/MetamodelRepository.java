@@ -15,11 +15,9 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
-import org.grestler.utilities.revisions.StmTransaction;
-import org.grestler.utilities.revisions.StmTransactionContext;
-import org.grestler.utilities.revisions.VList;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,28 +31,27 @@ public class MetamodelRepository
     /**
      * Constructs a new metamodel repository. Loads it with packages, vertex types, and edge types from the given
      * sources.
-     * @param packageLoader the loader used to initialize the packages into the metamodel repository.
+     *
+     * @param packageLoader    the loader used to initialize the packages into the metamodel repository.
      * @param vertexTypeLoader the loader used to initialize the vertex types into the metamodel repository.
-     * @param edgeTypeLoader the loader used to initialize the edge types into the metamodel repository.
+     * @param edgeTypeLoader   the loader used to initialize the edge types into the metamodel repository.
      */
     @Inject
     public MetamodelRepository(
         IPackageLoader packageLoader, IVertexTypeLoader vertexTypeLoader, IEdgeTypeLoader edgeTypeLoader
     ) {
 
-        try ( StmTransaction ignored = StmTransactionContext.beginTransaction() ) {
-            this.packages = new VList<>();
-            this.vertexTypes = new VList<>();
-            this.edgeTypes = new VList<>();
+        this.packages = new ArrayList<>();
+        this.vertexTypes = new ArrayList<>();
+        this.edgeTypes = new ArrayList<>();
 
-            this.packages.add( IPackage.ROOT_PACKAGE );
-            this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
-            this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
+        this.packages.add( IPackage.ROOT_PACKAGE );
+        this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
+        this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
 
-            packageLoader.loadAllPackages( this );
-            vertexTypeLoader.loadAllVertexTypes( this );
-            edgeTypeLoader.loadAllEdgeTypes( this );
-        }
+        packageLoader.loadAllPackages( this );
+        vertexTypeLoader.loadAllVertexTypes( this );
+        edgeTypeLoader.loadAllEdgeTypes( this );
 
     }
 
@@ -62,7 +59,7 @@ public class MetamodelRepository
     public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
 
         // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IEdgeType e : this.edgeTypes.get() ) {
+        for ( IEdgeType e : this.edgeTypes ) {
             if ( e.getId().equals( id ) ) {
                 return Optional.of( e );
             }
@@ -74,14 +71,14 @@ public class MetamodelRepository
 
     @Override
     public List<IEdgeType> findEdgeTypesAll() {
-        return this.edgeTypes.get();
+        return this.edgeTypes;
     }
 
     @Override
     public Optional<IPackage> findPackageById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IPackage p : this.packages.get() ) {
+        for ( IPackage p : this.packages ) {
             if ( p.getId().equals( id ) ) {
                 return Optional.of( p );
             }
@@ -93,14 +90,14 @@ public class MetamodelRepository
 
     @Override
     public List<IPackage> findPackagesAll() {
-        return this.packages.get();
+        return this.packages;
     }
 
     @Override
     public Optional<IVertexType> findVertexTypeById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IVertexType v : this.vertexTypes.get() ) {
+        for ( IVertexType v : this.vertexTypes ) {
             if ( v.getId().equals( id ) ) {
                 return Optional.of( v );
             }
@@ -112,7 +109,7 @@ public class MetamodelRepository
 
     @Override
     public List<IVertexType> findVertexTypesAll() {
-        return this.vertexTypes.get();
+        return this.vertexTypes;
     }
 
     @Override
@@ -155,10 +152,10 @@ public class MetamodelRepository
 
     }
 
-    private final VList<IEdgeType> edgeTypes;
+    private final List<IEdgeType> edgeTypes;
 
-    private final VList<IPackage> packages;
+    private final List<IPackage> packages;
 
-    private final VList<IVertexType> vertexTypes;
+    private final List<IVertexType> vertexTypes;
 
 }

@@ -2,7 +2,6 @@ package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IElement;
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.Objects;
@@ -28,8 +27,8 @@ public abstract class Element
         // TODO: unique name per parent package
 
         this.id = id;
-        this.parentPackage = new V<>( parentPackage );
-        this.name = new V<>( name );
+        this.parentPackage = parentPackage;
+        this.name = name;
 
     }
 
@@ -48,21 +47,21 @@ public abstract class Element
 
     @Override
     public final String getName() {
-        return this.name.get();
+        return this.name;
     }
 
     @Override
     public final IPackage getParentPackage() {
-        return this.parentPackage.get();
+        return this.parentPackage;
     }
 
     /** The unique ID of this element. */
     private final UUID id;
 
     /** The name of this element. */
-    private final V<String> name;
+    private final String name;
 
     /** The package containing this element. */
-    private final V<IPackage> parentPackage;
+    private final IPackage parentPackage;
 
 }

@@ -9,7 +9,6 @@ import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.metamodel.api.elements.IEdgeType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
-import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -30,11 +29,9 @@ class EdgeTypeLoaderSpec
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, vloader, eloader );
 
         expect:
-        StmTransactionContext.doInTransaction( 1 ) {
-            assert m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().name == "Edge";
-            assert !m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().superType.isPresent();
-            assert m.findEdgeTypesAll().size() == 1;
-        }
+        m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().name == "Edge";
+        !m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().superType.isPresent();
+        m.findEdgeTypesAll().size() == 1;
 
     }
 

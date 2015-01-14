@@ -9,7 +9,6 @@ import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
-import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -29,13 +28,12 @@ class PackageLoaderSpec
 
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, vloader, eloader );
 
+        def rootPkg = m.findPackageById( IPackage.ROOT_PACKAGE.id ).get();
+
         expect:
-        StmTransactionContext.doInTransaction( 1 ) {
-            def rootPkg = m.findPackageById( IPackage.ROOT_PACKAGE.id ).get();
-            assert rootPkg.name == "\$";
-            assert rootPkg.parentPackage == rootPkg;
-            assert m.findPackagesAll().size() == 1;
-        }
+        rootPkg.name == "\$";
+        rootPkg.parentPackage == rootPkg;
+        m.findPackagesAll().size() == 1;
 
     }
 

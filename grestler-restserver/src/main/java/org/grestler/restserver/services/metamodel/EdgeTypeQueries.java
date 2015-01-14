@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.IMetamodelRepository;
 import org.grestler.metamodel.api.elements.IEdgeType;
-import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.stream.JsonGenerator;
@@ -60,25 +59,20 @@ public class EdgeTypeQueries {
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
 
-        StmTransactionContext.doInTransaction(
-            2, () -> {
+        // TODO: distinguish UUID from path
 
-                // TODO: distinguish UUID from path
-
-                Optional<IEdgeType> edgeType = this.metamodelRepository.findEdgeTypeById(
-                    UUID.fromString(
-                        idOrPath
-                    )
-                );
-
-                if ( edgeType.isPresent() ) {
-                    edgeType.get().generateJson( json );
-                }
-                else {
-                    json.writeNull();
-                }
-            }
+        Optional<IEdgeType> edgeType = this.metamodelRepository.findEdgeTypeById(
+            UUID.fromString(
+                idOrPath
+            )
         );
+
+        if ( edgeType.isPresent() ) {
+            edgeType.get().generateJson( json );
+        }
+        else {
+            json.writeNull();
+        }
 
         json.close();
         return result.toString();
@@ -103,12 +97,8 @@ public class EdgeTypeQueries {
         json.writeStartObject();
         json.writeStartArray( "edgeTypes" );
 
-        StmTransactionContext.doInTransaction(
-            2, () -> {
-                List<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
-                edgeTypes.forEach( ( edgeType ) -> edgeType.generateJson( json ) );
-            }
-        );
+        List<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
+        edgeTypes.forEach( ( edgeType ) -> edgeType.generateJson( json ) );
 
         json.writeEnd();
         json.writeEnd();

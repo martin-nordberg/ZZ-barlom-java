@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.IMetamodelRepository;
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.stream.JsonGenerator;
@@ -60,21 +59,16 @@ public class PackageQueries {
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
 
-        StmTransactionContext.doInTransaction(
-            2, () -> {
+        // TODO: distinguish UUID from path
 
-                // TODO: distinguish UUID from path
+        Optional<IPackage> pkg = this.metamodelRepository.findPackageById( UUID.fromString( idOrPath ) );
 
-                Optional<IPackage> pkg = this.metamodelRepository.findPackageById( UUID.fromString( idOrPath ) );
-
-                if ( pkg.isPresent() ) {
-                    pkg.get().generateJson( json );
-                }
-                else {
-                    json.writeNull();
-                }
-            }
-        );
+        if ( pkg.isPresent() ) {
+            pkg.get().generateJson( json );
+        }
+        else {
+            json.writeNull();
+        }
 
         json.close();
         return result.toString();
@@ -99,12 +93,8 @@ public class PackageQueries {
         json.writeStartObject();
         json.writeStartArray( "packages" );
 
-        StmTransactionContext.doInTransaction(
-            2, () -> {
-                List<IPackage> packages = this.metamodelRepository.findPackagesAll();
-                packages.forEach( ( pkg ) -> pkg.generateJson( json ) );
-            }
-        );
+        List<IPackage> packages = this.metamodelRepository.findPackagesAll();
+        packages.forEach( ( pkg ) -> pkg.generateJson( json ) );
 
         json.writeEnd();
         json.writeEnd();

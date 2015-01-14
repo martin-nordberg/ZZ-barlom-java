@@ -7,7 +7,6 @@ package org.grestler.metamodel.impl.attributes;
 
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.utilities.revisions.V;
 
 import java.util.Date;
 import java.util.Optional;
@@ -34,25 +33,25 @@ public final class DateTimeAttributeType
     ) {
         super( id, parentPackage, name );
 
-        this.maxValue = new V<>( maxValue );
-        this.minValue = new V<>( minValue );
+        this.maxValue = maxValue;
+        this.minValue = minValue;
 
     }
 
     @Override
     public Optional<Date> getMaxValue() {
-        return this.maxValue.get();
+        return this.maxValue;
     }
 
     @Override
     public Optional<Date> getMinValue() {
-        return this.minValue.get();
+        return this.minValue;
     }
 
     /** The maximum allowed value for attributes with this type. */
-    private final V<Optional<Date>> maxValue;
+    private final Optional<Date> maxValue;
 
     /** The minimum allowed value for attributes with this type. */
-    private final V<Optional<Date>> minValue;
+    private final Optional<Date> minValue;
 
 }

@@ -11,7 +11,6 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader
 import org.grestler.metamodel.spi.elements.IPackageLoader
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader
-import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -27,21 +26,19 @@ class MetamodelRepositorySpec
 
         given:
         IMetamodelRepositorySpi m = new MetamodelRepository(
-            { r -> } as IPackageLoader,
-            { r ->
-                r.loadVertexType( id1, IPackage.ROOT_PACKAGE, "V1", IVertexType.BASE_VERTEX_TYPE );
-                r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V2", IVertexType.BASE_VERTEX_TYPE );
-                r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V3", IVertexType.BASE_VERTEX_TYPE );
-                r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V4", IVertexType.BASE_VERTEX_TYPE );
-            } as IVertexTypeLoader,
-            { r -> } as IEdgeTypeLoader
+                { r -> } as IPackageLoader,
+                { r ->
+                    r.loadVertexType( id1, IPackage.ROOT_PACKAGE, "V1", IVertexType.BASE_VERTEX_TYPE );
+                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V2", IVertexType.BASE_VERTEX_TYPE );
+                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V3", IVertexType.BASE_VERTEX_TYPE );
+                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V4", IVertexType.BASE_VERTEX_TYPE );
+                } as IVertexTypeLoader,
+                { r -> } as IEdgeTypeLoader
         );
 
         expect:
-        StmTransactionContext.doInTransaction( 1 ) {
-            assert m.findVertexTypeById( id1 ).get().name == "V1";
-            assert m.findVertexTypesAll().size() == 5;
-        }
+        m.findVertexTypeById( id1 ).get().name == "V1";
+        m.findVertexTypesAll().size() == 5;
 
     }
 
