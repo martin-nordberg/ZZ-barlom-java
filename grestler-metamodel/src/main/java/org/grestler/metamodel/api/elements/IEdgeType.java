@@ -16,9 +16,9 @@ public interface IEdgeType
     extends IElement {
 
     /**
-     * @return the origin vertex type for edges of this type.
+     * @return the destination vertex type for edges of this type.
      */
-    IVertexType getFromVertexType();
+    IVertexType getHeadVertexType();
 
     /**
      * @return the super type of this edge type.
@@ -26,9 +26,9 @@ public interface IEdgeType
     Optional<IEdgeType> getSuperType();
 
     /**
-     * @return the destination vertex type for edges of this type.
+     * @return the origin vertex type for edges of this type.
      */
-    IVertexType getToVertexType();
+    IVertexType getTailVertexType();
 
     /**
      * Determines whether this edge type is a direct or indirect subtype of the given edge type.
@@ -60,7 +60,7 @@ public interface IEdgeType
         }
 
         @Override
-        public IVertexType getFromVertexType() {
+        public IVertexType getHeadVertexType() {
             return IVertexType.BASE_VERTEX_TYPE;
         }
 
@@ -85,7 +85,7 @@ public interface IEdgeType
         }
 
         @Override
-        public IVertexType getToVertexType() {
+        public IVertexType getTailVertexType() {
             return IVertexType.BASE_VERTEX_TYPE;
         }
 

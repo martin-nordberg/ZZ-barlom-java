@@ -42,8 +42,8 @@ class EdgeTypeSpec
         e.name == "Edge";
         !e.superType.isPresent();
         e.isSubTypeOf( e );
-        e.fromVertexType == IVertexType.BASE_VERTEX_TYPE;
-        e.toVertexType == IVertexType.BASE_VERTEX_TYPE;
+        e.tailVertexType == IVertexType.BASE_VERTEX_TYPE;
+        e.headVertexType == IVertexType.BASE_VERTEX_TYPE;
 
     }
 

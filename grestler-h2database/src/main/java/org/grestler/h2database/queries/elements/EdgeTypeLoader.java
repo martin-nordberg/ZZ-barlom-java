@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -39,16 +39,16 @@ public class EdgeTypeLoader
 
         // Set up the database wrapper.
         Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry().registerInstantiator( EdgeTypeData.class, new EdgeTypeInstantiator() );
+        database.getInstantiatorRegistry().registerInstantiator( EdgeTypeRecord.class, new EdgeTypeInstantiator() );
 
         // Perform the raw query.
-        List<EdgeTypeData> records = database.findAll(
-            EdgeTypeData.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID), TO_CHAR(FROM_VERTEX_TYPE_ID), TO_CHAR(TO_VERTEX_TYPE_ID) FROM GRESTLER_EDGE_TYPE"
+        List<EdgeTypeRecord> records = database.findAll(
+            EdgeTypeRecord.class,
+            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID), TO_CHAR(TAIL_VERTEX_TYPE_ID), TO_CHAR(HEAD_VERTEX_TYPE_ID) FROM GRESTLER_EDGE_TYPE"
         );
 
         // Copy the results into the repository.
-        for ( EdgeTypeData record : records ) {
+        for ( EdgeTypeRecord record : records ) {
             this.findOrCreateEdgeType( record, records, repository );
         }
 
@@ -57,13 +57,14 @@ public class EdgeTypeLoader
     /**
      * Finds a edge type in the metamodel repository or creates it if not yet there.
      *
-     * @param record  the attributes of the edge type.
-     * @param records the attributes of all edge types.
+     * @param record     the attributes of the edge type.
+     * @param records    the attributes of all edge types.
+     * @param repository the repository to look in or add to.
      *
      * @return the found or newly created edge type.
      */
     private IEdgeType findOrCreateEdgeType(
-        EdgeTypeData record, List<EdgeTypeData> records, IMetamodelRepositorySpi repository
+        EdgeTypeRecord record, List<EdgeTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IEdgeType> result = repository.findEdgeTypeById( record.id );
@@ -73,8 +74,8 @@ public class EdgeTypeLoader
             return result.get();
         }
 
-        Optional<IVertexType> fromVertexType = repository.findVertexTypeById( record.fromVertexTypeId );
-        Optional<IVertexType> toVertexType = repository.findVertexTypeById( record.toVertexTypeId );
+        Optional<IVertexType> tailVertexType = repository.findVertexTypeById( record.tailVertexTypeId );
+        Optional<IVertexType> headVertexType = repository.findVertexTypeById( record.headVertexTypeId );
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
@@ -90,7 +91,7 @@ public class EdgeTypeLoader
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
             // ... recursively register the supertype.
-            for ( EdgeTypeData srecord : records ) {
+            for ( EdgeTypeRecord srecord : records ) {
                 if ( srecord.id.equals( record.superTypeId ) ) {
                     superType = Optional.of( this.findOrCreateEdgeType( srecord, records, repository ) );
                 }
@@ -98,7 +99,7 @@ public class EdgeTypeLoader
         }
 
         return repository.loadEdgeType(
-            record.id, parentPackage.get(), record.name, superType.get(), fromVertexType.get(), toVertexType.get()
+            record.id, parentPackage.get(), record.name, superType.get(), tailVertexType.get(), headVertexType.get()
         );
 
     }
@@ -107,40 +108,10 @@ public class EdgeTypeLoader
     private final IDataSource dataSource;
 
     /**
-     * Data structure for edge type records.
-     */
-    private static class EdgeTypeData {
-
-        EdgeTypeData(
-            UUID id, UUID parentPackageId, String name, UUID superTypeId, UUID fromVertexTypeId, UUID toVertexTypeId
-        ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
-            this.superTypeId = superTypeId;
-            this.fromVertexTypeId = fromVertexTypeId;
-            this.toVertexTypeId = toVertexTypeId;
-        }
-
-        final UUID fromVertexTypeId;
-
-        final UUID id;
-
-        final String name;
-
-        final UUID parentPackageId;
-
-        final UUID superTypeId;
-
-        final UUID toVertexTypeId;
-
-    }
-
-    /**
      * Custom instantiator for edge types.
      */
     private static class EdgeTypeInstantiator
-        implements Instantiator<EdgeTypeData> {
+        implements Instantiator<EdgeTypeRecord> {
 
         /**
          * Instantiates a edgeType either by finding it in the registry or else creating it and adding it to the
@@ -152,10 +123,10 @@ public class EdgeTypeLoader
          */
         @SuppressWarnings( "NullableProblems" )
         @Override
-        public EdgeTypeData instantiate( InstantiatorArguments fields ) {
+        public EdgeTypeRecord instantiate( InstantiatorArguments fields ) {
 
             // Get the attributes from the database result.
-            return new EdgeTypeData(
+            return new EdgeTypeRecord(
                 UUID.fromString( (String) fields.getValues().get( 0 ) ),
                 UUID.fromString( (String) fields.getValues().get( 1 ) ),
                 (String) fields.getValues().get( 2 ),
@@ -165,6 +136,36 @@ public class EdgeTypeLoader
             );
 
         }
+
+    }
+
+    /**
+     * Data structure for edge type records.
+     */
+    private static class EdgeTypeRecord {
+
+        EdgeTypeRecord(
+            UUID id, UUID parentPackageId, String name, UUID superTypeId, UUID tailVertexTypeId, UUID headVertexTypeId
+        ) {
+            this.id = id;
+            this.parentPackageId = parentPackageId;
+            this.name = name;
+            this.superTypeId = superTypeId;
+            this.tailVertexTypeId = tailVertexTypeId;
+            this.headVertexTypeId = headVertexTypeId;
+        }
+
+        final UUID headVertexTypeId;
+
+        final UUID id;
+
+        final String name;
+
+        final UUID parentPackageId;
+
+        final UUID superTypeId;
+
+        final UUID tailVertexTypeId;
 
     }
 

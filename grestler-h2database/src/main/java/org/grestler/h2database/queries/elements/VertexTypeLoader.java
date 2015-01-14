@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -38,16 +38,16 @@ public class VertexTypeLoader
 
         // Set up the database wrapper.
         Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry().registerInstantiator( VertexTypeData.class, new VertexTypeInstantiator() );
+        database.getInstantiatorRegistry().registerInstantiator( VertexTypeRecord.class, new VertexTypeInstantiator() );
 
         // Perform the raw query.
-        List<VertexTypeData> records = database.findAll(
-            VertexTypeData.class,
+        List<VertexTypeRecord> records = database.findAll(
+            VertexTypeRecord.class,
             "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
         );
 
         // Copy the results into the repository.
-        for ( VertexTypeData record : records ) {
+        for ( VertexTypeRecord record : records ) {
             this.findOrCreateVertexType( record, records, repository );
         }
 
@@ -56,13 +56,14 @@ public class VertexTypeLoader
     /**
      * Finds a vertex type in the metamodel repository or creates it if not yet there.
      *
-     * @param record  the attributes of the vertex type.
-     * @param records the attributes of all vertex types.
+     * @param record     the attributes of the vertex type.
+     * @param records    the attributes of all vertex types.
+     * @param repository the repository to look in.
      *
      * @return the found or newly created vertex type.
      */
     private IVertexType findOrCreateVertexType(
-        VertexTypeData record, List<VertexTypeData> records, IMetamodelRepositorySpi repository
+        VertexTypeRecord record, List<VertexTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IVertexType> result = repository.findVertexTypeById( record.id );
@@ -86,7 +87,7 @@ public class VertexTypeLoader
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
             // ... recursively register the supertype.
-            for ( VertexTypeData srecord : records ) {
+            for ( VertexTypeRecord srecord : records ) {
                 if ( srecord.id.equals( record.superTypeId ) ) {
                     superType = Optional.of( this.findOrCreateVertexType( srecord, records, repository ) );
                 }
@@ -101,11 +102,41 @@ public class VertexTypeLoader
     private final IDataSource dataSource;
 
     /**
+     * Custom instantiator for vertex types.
+     */
+    private static class VertexTypeInstantiator
+        implements Instantiator<VertexTypeRecord> {
+
+        /**
+         * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the
+         * registry.
+         *
+         * @param fields the fields from the database query.
+         *
+         * @return the new vertexType.
+         */
+        @SuppressWarnings( "NullableProblems" )
+        @Override
+        public VertexTypeRecord instantiate( InstantiatorArguments fields ) {
+
+            // Get the attributes from the database result.
+            return new VertexTypeRecord(
+                UUID.fromString( (String) fields.getValues().get( 0 ) ),
+                UUID.fromString( (String) fields.getValues().get( 1 ) ),
+                (String) fields.getValues().get( 2 ),
+                UUID.fromString( (String) fields.getValues().get( 3 ) )
+            );
+
+        }
+
+    }
+
+    /**
      * Data structure for vertex type records.
      */
-    private static class VertexTypeData {
+    private static class VertexTypeRecord {
 
-        VertexTypeData( UUID id, UUID parentPackageId, String name, UUID superTypeId ) {
+        VertexTypeRecord( UUID id, UUID parentPackageId, String name, UUID superTypeId ) {
             this.id = id;
             this.parentPackageId = parentPackageId;
             this.name = name;
@@ -119,36 +150,6 @@ public class VertexTypeLoader
         final UUID parentPackageId;
 
         final UUID superTypeId;
-
-    }
-
-    /**
-     * Custom instantiator for vertex types.
-     */
-    private static class VertexTypeInstantiator
-        implements Instantiator<VertexTypeData> {
-
-        /**
-         * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the
-         * registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new vertexType.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public VertexTypeData instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new VertexTypeData(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                UUID.fromString( (String) fields.getValues().get( 3 ) )
-            );
-
-        }
 
     }
 

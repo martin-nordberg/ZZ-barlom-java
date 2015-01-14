@@ -28,35 +28,35 @@ public final class EdgeType
      * @param parentPackage  the package containing the edge type.
      * @param name           the name of the edge type.
      * @param superType      the super type.
-     * @param fromVertexType the vertex type at the start of the edge type.
-     * @param toVertexType   the vertex type at the end of the edge type.
+     * @param tailVertexType the vertex type at the start of the edge type.
+     * @param headVertexType the vertex type at the end of the edge type.
      */
     public EdgeType(
         UUID id,
         IPackage parentPackage,
         String name,
         IEdgeType superType,
-        IVertexType fromVertexType,
-        IVertexType toVertexType
+        IVertexType tailVertexType,
+        IVertexType headVertexType
     ) {
         super( id, parentPackage, name );
 
         this.superType = new V<>( superType );
-        this.fromVertexType = new V<>( fromVertexType );
-        this.toVertexType = new V<>( toVertexType );
+        this.tailVertexType = new V<>( tailVertexType );
+        this.headVertexType = new V<>( headVertexType );
 
     }
 
     @Override
     public void generateJsonAttributes( JsonGenerator json ) {
         super.generateJsonAttributes( json );
-        json.write( "fromVertexTypeId", this.getFromVertexType().getId().toString() )
-            .write( "toVertexTypeId", this.getToVertexType().getId().toString() );
+        json.write( "tailVertexTypeId", this.getTailVertexType().getId().toString() )
+            .write( "headVertexTypeId", this.getHeadVertexType().getId().toString() );
     }
 
     @Override
-    public IVertexType getFromVertexType() {
-        return this.fromVertexType.get();
+    public IVertexType getHeadVertexType() {
+        return this.headVertexType.get();
     }
 
     @Override
@@ -65,17 +65,17 @@ public final class EdgeType
     }
 
     @Override
-    public IVertexType getToVertexType() {
-        return this.toVertexType.get();
+    public IVertexType getTailVertexType() {
+        return this.tailVertexType.get();
     }
 
-    /** The vertex type at the tail of edges of this type. */
-    private final V<IVertexType> fromVertexType;
+    /** The vertex type at the head of edges of this type. */
+    private final V<IVertexType> headVertexType;
 
     /** The super type for this edge type. */
     private final V<IEdgeType> superType;
 
-    /** The vertex type at the head of edges of this type. */
-    private final V<IVertexType> toVertexType;
+    /** The vertex type at the tail of edges of this type. */
+    private final V<IVertexType> tailVertexType;
 
 }

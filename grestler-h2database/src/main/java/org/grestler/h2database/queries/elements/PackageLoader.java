@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -37,15 +37,15 @@ public class PackageLoader
 
         // Set up the database wrapper.
         Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry().registerInstantiator( PackageData.class, new PackageInstantiator() );
+        database.getInstantiatorRegistry().registerInstantiator( PackageRecord.class, new PackageInstantiator() );
 
         // Perform the raw query.
-        List<PackageData> records = database.findAll(
-            PackageData.class, "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME FROM GRESTLER_PACKAGE"
+        List<PackageRecord> records = database.findAll(
+            PackageRecord.class, "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME FROM GRESTLER_PACKAGE"
         );
 
         // Copy the results into the repository.
-        for ( PackageData record : records ) {
+        for ( PackageRecord record : records ) {
             this.findOrCreatePackage( record, records, repository );
         }
 
@@ -54,13 +54,14 @@ public class PackageLoader
     /**
      * Finds a package in the metamodel repository or creates it if not yet there.
      *
-     * @param record  the attributes of the package.
-     * @param records the attributes of all packages.
+     * @param record     the attributes of the package.
+     * @param records    the attributes of all packages.
+     * @param repository the repository to look in or add to.
      *
      * @return the found or newly created package.
      */
     private IPackage findOrCreatePackage(
-        PackageData record, List<PackageData> records, IMetamodelRepositorySpi repository
+        PackageRecord record, List<PackageRecord> records, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IPackage> result = repository.findPackageById( record.id );
@@ -81,7 +82,7 @@ public class PackageLoader
         // If parent package not already registered, ...
         if ( !parentPackage.isPresent() ) {
             // ... recursively register the parent package.
-            for ( PackageData srecord : records ) {
+            for ( PackageRecord srecord : records ) {
                 if ( srecord.id.equals( record.parentPackageId ) ) {
                     parentPackage = Optional.of( this.findOrCreatePackage( srecord, records, repository ) );
                 }
@@ -96,29 +97,10 @@ public class PackageLoader
     private final IDataSource dataSource;
 
     /**
-     * Data structure for package records.
-     */
-    private static class PackageData {
-
-        PackageData( UUID id, UUID parentPackageId, String name ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
-        }
-
-        final UUID id;
-
-        final String name;
-
-        final UUID parentPackageId;
-
-    }
-
-    /**
      * Custom instantiator for packages.
      */
     private static class PackageInstantiator
-        implements Instantiator<PackageData> {
+        implements Instantiator<PackageRecord> {
 
         /**
          * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the
@@ -130,16 +112,35 @@ public class PackageLoader
          */
         @SuppressWarnings( "NullableProblems" )
         @Override
-        public PackageData instantiate( InstantiatorArguments fields ) {
+        public PackageRecord instantiate( InstantiatorArguments fields ) {
 
             // Get the attributes from the database result.
-            return new PackageData(
+            return new PackageRecord(
                 UUID.fromString( (String) fields.getValues().get( 0 ) ),
                 UUID.fromString( (String) fields.getValues().get( 1 ) ),
                 (String) fields.getValues().get( 2 )
             );
 
         }
+
+    }
+
+    /**
+     * Data structure for package records.
+     */
+    private static class PackageRecord {
+
+        PackageRecord( UUID id, UUID parentPackageId, String name ) {
+            this.id = id;
+            this.parentPackageId = parentPackageId;
+            this.name = name;
+        }
+
+        final UUID id;
+
+        final String name;
+
+        final UUID parentPackageId;
 
     }
 
