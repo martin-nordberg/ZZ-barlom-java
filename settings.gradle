@@ -2,6 +2,11 @@
 rootProject.name = 'grestler'
 
 
+// Main
+include 'grestler-server/main/grestler-main'
+rootProject.children.find { it.name == 'grestler-server/main/grestler-main' }.name = 'grestler-main'
+
+
 // Application
 include 'grestler-server/application/grestler-adminserver'
 rootProject.children.find { it.name == 'grestler-server/application/grestler-adminserver' }.name = 'grestler-adminserver'

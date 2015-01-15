@@ -1,5 +1,5 @@
 
-allprojects {
+subprojects {
 
     apply plugin: 'java'
     apply plugin: 'groovy'
@@ -37,43 +37,4 @@ allprojects {
     version = '0.1.0-alpha'
 
 }
-
-
-
-apply plugin:'application'
-
-buildDir = 'build/grestler'
-
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
-}
-
-dependencies {
-
-    // Other Modules
-    compile project( ':grestler-adminserver' )
-    compile project( ':grestler-h2database' )
-    compile project( ':grestler-restserver' )
-
-    // Dagger
-    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
-
-    // Jetty
-    compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
-
-    // Dagger Annotation Processor
-    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
-
-}
-
-mainClassName = "org.grestler.application.Application"
-
-
-
 
