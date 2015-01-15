@@ -1,0 +1,14 @@
+
+buildDir = '../../build/application/grestler-webutilities'
+
+dependencies {
+
+    // Other Modules
+    compile project( ':grestler-utilities' )
+
+    // Jetty
+    compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
+    compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
+
+}
+

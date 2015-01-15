@@ -1,0 +1,42 @@
+
+buildDir = '../../build/application/grestler-restserver'
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+
+    // Other Modules
+    compile project( ':grestler-dbutilities' )
+    compile project( ':grestler-metamodel' )
+    compile project( ':grestler-webutilities' )
+
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+
+    // Jetty
+    compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
+    compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
+
+    // RESTEasy (server only)
+    compile( group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: resteasyVersion ) {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+
+    // JSON-P
+    compile( group: 'org.glassfish', name: 'javax.json', version: jsonpVersion )
+
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+
+}
+
+
+

@@ -1,17 +1,34 @@
 
 rootProject.name = 'grestler'
 
-include 'grestler-adminserver'
 
-include 'grestler-dbutilities'
+// Application
+include 'grestler-server/application/grestler-adminserver'
+rootProject.children.find { it.name == 'grestler-server/application/grestler-adminserver' }.name = 'grestler-adminserver'
 
-include 'grestler-h2database'
+include 'grestler-server/application/grestler-restserver'
+rootProject.children.find { it.name == 'grestler-server/application/grestler-restserver' }.name = 'grestler-restserver'
 
-include 'grestler-metamodel'
+include 'grestler-server/application/grestler-webutilities'
+rootProject.children.find { it.name == 'grestler-server/application/grestler-webutilities' }.name = 'grestler-webutilities'
 
-include 'grestler-restserver'
 
-include 'grestler-utilities'
+// Domain
+include 'grestler-server/domain/grestler-metamodel'
+rootProject.children.find { it.name == 'grestler-server/domain/grestler-metamodel' }.name = 'grestler-metamodel'
 
-include 'grestler-webutilities'
+
+// Persistence
+include 'grestler-server/persistence/grestler-dbutilities'
+rootProject.children.find { it.name == 'grestler-server/persistence/grestler-dbutilities' }.name = 'grestler-dbutilities'
+
+include 'grestler-server/persistence/grestler-h2database'
+rootProject.children.find { it.name == 'grestler-server/persistence/grestler-h2database' }.name = 'grestler-h2database'
+
+
+//Infrastructure
+include 'grestler-server/infrastructure/grestler-utilities'
+rootProject.children.find { it.name == 'grestler-server/infrastructure/grestler-utilities' }.name = 'grestler-utilities'
+
+
 
