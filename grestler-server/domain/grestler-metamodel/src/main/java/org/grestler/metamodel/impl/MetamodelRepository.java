@@ -5,6 +5,8 @@
 
 package org.grestler.metamodel.impl;
 
+import org.grestler.metamodel.api.attributes.IAttributeType;
+import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -12,6 +14,7 @@ import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
@@ -29,30 +32,55 @@ public class MetamodelRepository
     implements IMetamodelRepositorySpi {
 
     /**
-     * Constructs a new metamodel repository. Loads it with packages, vertex types, and edge types from the given
-     * sources.
+     * Constructs a new metamodel repository. Loads it with packages, attribute types, vertex types, and edge types from
+     * the given sources.
      *
-     * @param packageLoader    the loader used to initialize the packages into the metamodel repository.
-     * @param vertexTypeLoader the loader used to initialize the vertex types into the metamodel repository.
-     * @param edgeTypeLoader   the loader used to initialize the edge types into the metamodel repository.
+     * @param packageLoader       the loader used to initialize the packages into the metamodel repository.
+     * @param attributeTypeLoader the loader used to initialize the attribute types into the metamodel repository.
+     * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
+     * @param edgeTypeLoader      the loader used to initialize the edge types into the metamodel repository.
      */
     @Inject
     public MetamodelRepository(
-        IPackageLoader packageLoader, IVertexTypeLoader vertexTypeLoader, IEdgeTypeLoader edgeTypeLoader
+        IPackageLoader packageLoader,
+        IAttributeTypeLoader attributeTypeLoader,
+        IVertexTypeLoader vertexTypeLoader,
+        IEdgeTypeLoader edgeTypeLoader
     ) {
 
         this.packages = new ArrayList<>();
         this.vertexTypes = new ArrayList<>();
         this.edgeTypes = new ArrayList<>();
+        this.attributeTypes = new ArrayList<>();
 
         this.packages.add( IPackage.ROOT_PACKAGE );
         this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
         this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
 
         packageLoader.loadAllPackages( this );
+        attributeTypeLoader.loadAllAttributeTypes( this );
         vertexTypeLoader.loadAllVertexTypes( this );
         edgeTypeLoader.loadAllEdgeTypes( this );
 
+    }
+
+    @Override
+    public Optional<IAttributeType> findAttributeTypeById( UUID id ) {
+
+        // Search for the edge type with given UUID. -- TODO: may be worth map by ID
+        for ( IAttributeType e : this.attributeTypes ) {
+            if ( e.getId().equals( id ) ) {
+                return Optional.of( e );
+            }
+        }
+
+        return Optional.empty();
+
+    }
+
+    @Override
+    public List<IAttributeType> findAttributeTypesAll() {
+        return this.attributeTypes;
     }
 
     @Override
@@ -113,6 +141,13 @@ public class MetamodelRepository
     }
 
     @Override
+    public IBooleanAttributeType loadBooleanAttributeType(
+        UUID id, IPackage parentPackage, String name
+    ) {
+        return null;
+    }
+
+    @Override
     public IEdgeType loadEdgeType(
         UUID id,
         IPackage parentPackage,
@@ -151,6 +186,8 @@ public class MetamodelRepository
         return result;
 
     }
+
+    private final List<IAttributeType> attributeTypes;
 
     private final List<IEdgeType> edgeTypes;
 

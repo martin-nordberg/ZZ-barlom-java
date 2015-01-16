@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import org.grestler.metamodel.api.IMetamodelRepository;
 import org.grestler.metamodel.impl.MetamodelRepository;
+import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
@@ -26,18 +27,22 @@ public class MetamodelModule {
     /**
      * Constructs a new metamodel repository.
      *
-     * @param packageLoader    the source for loading packages.
-     * @param vertexTypeLoader the source for loading vertex types.
-     * @param edgeTypeLoader   the source for loading edge types.
+     * @param packageLoader       the source for loading packages.
+     * @param attributeTypeLoader the source for loading attribute types.
+     * @param vertexTypeLoader    the source for loading vertex types.
+     * @param edgeTypeLoader      the source for loading edge types.
      *
      * @return the newly created repository.
      */
     @Provides
     @Singleton
     public IMetamodelRepository provideMetamodel(
-        IPackageLoader packageLoader, IVertexTypeLoader vertexTypeLoader, IEdgeTypeLoader edgeTypeLoader
+        IPackageLoader packageLoader,
+        IAttributeTypeLoader attributeTypeLoader,
+        IVertexTypeLoader vertexTypeLoader,
+        IEdgeTypeLoader edgeTypeLoader
     ) {
-        return new MetamodelRepository( packageLoader, vertexTypeLoader, edgeTypeLoader );
+        return new MetamodelRepository( packageLoader, attributeTypeLoader, vertexTypeLoader, edgeTypeLoader );
     }
 
 }

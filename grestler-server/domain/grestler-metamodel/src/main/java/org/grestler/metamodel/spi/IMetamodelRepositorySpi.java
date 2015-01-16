@@ -1,11 +1,12 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.metamodel.spi;
 
 import org.grestler.metamodel.api.IMetamodelRepository;
+import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -17,6 +18,21 @@ import java.util.UUID;
  */
 public interface IMetamodelRepositorySpi
     extends IMetamodelRepository {
+
+    /**
+     * Loads a queried boolean attribute type into the repository.
+     *
+     * @param id             the unique ID of the attribute type.
+     * @param parentPackage  the parent package for the attribute type.
+     * @param name           the name of the attribute type.
+     *
+     * @return the loaded attribute type.
+     */
+    IBooleanAttributeType loadBooleanAttributeType(
+        UUID id,
+        IPackage parentPackage,
+        String name
+    );
 
     /**
      * Loads a queried edge type into the repository.

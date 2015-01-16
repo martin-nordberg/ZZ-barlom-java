@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.api;
 
+import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -17,6 +18,20 @@ import java.util.UUID;
  * Central store of metamodel elements.
  */
 public interface IMetamodelRepository {
+
+    /**
+     * Finds the attribute type with given ID.
+     *
+     * @param id the UUID of the attribute type to find.
+     *
+     * @return the attribute type found.
+     */
+    Optional<IAttributeType> findAttributeTypeById( UUID id );
+
+    /**
+     * @return a list of all attribute types in the repository.
+     */
+    List<IAttributeType> findAttributeTypesAll();
 
     /**
      * Finds the edge type with given ID.

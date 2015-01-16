@@ -1,24 +1,26 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
-package org.grestler.h2database.queries.elements
+package org.grestler.h2database.queries.attributes
 
 import org.grestler.h2database.datasource.H2DataSource
-import org.grestler.h2database.queries.attributes.AttributeTypeLoader
-import org.grestler.metamodel.api.elements.IVertexType
+import org.grestler.h2database.queries.elements.EdgeTypeLoader
+import org.grestler.h2database.queries.elements.PackageLoader
+import org.grestler.h2database.queries.elements.VertexTypeLoader
+import org.grestler.metamodel.api.elements.IEdgeType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import spock.lang.Specification
 
 /**
- * Specification for vertex type loading.
+ * Specification for attribute type loading.
  */
-class VertexTypeLoaderSpec
+class AttributeTypeLoaderSpec
         extends Specification {
 
-    def "A vertex loader retrieves the top level base vertex type"() {
+    def "An edge loader retrieves the top level base edge type"() {
 
         given:
         def dataSource = new H2DataSource();
@@ -31,9 +33,8 @@ class VertexTypeLoaderSpec
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, aloader, vloader, eloader );
 
         expect:
-        m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().name == "Vertex";
-        !m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().superType.isPresent();
-        m.findVertexTypesAll().size() == 1;
+        !m.findAttributeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).isPresent();
+        m.findAttributeTypesAll().size() == 0;
 
     }
 

@@ -6,6 +6,7 @@
 package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.datasource.H2DataSource
+import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.metamodel.api.elements.IEdgeType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
@@ -23,10 +24,11 @@ class EdgeTypeLoaderSpec
         def dataSource = new H2DataSource();
 
         def ploader = new PackageLoader( dataSource );
+        def aloader = new AttributeTypeLoader( dataSource );
         def vloader = new VertexTypeLoader( dataSource );
         def eloader = new EdgeTypeLoader( dataSource )
 
-        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, vloader, eloader );
+        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, aloader, vloader, eloader );
 
         expect:
         m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().name == "Edge";

@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl
 import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
+import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader
 import org.grestler.metamodel.spi.elements.IPackageLoader
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader
@@ -27,6 +28,7 @@ class MetamodelRepositorySpec
         given:
         IMetamodelRepositorySpi m = new MetamodelRepository(
                 { r -> } as IPackageLoader,
+                { r -> } as IAttributeTypeLoader,
                 { r ->
                     r.loadVertexType( id1, IPackage.ROOT_PACKAGE, "V1", IVertexType.BASE_VERTEX_TYPE );
                     r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V2", IVertexType.BASE_VERTEX_TYPE );
