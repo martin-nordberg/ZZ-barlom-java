@@ -7,9 +7,12 @@ package org.grestler.metamodel.impl;
 
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
+import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.metamodel.impl.attributes.BooleanAttributeType;
+import org.grestler.metamodel.impl.attributes.DateTimeAttributeType;
 import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.VertexType;
@@ -20,10 +23,7 @@ import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The main metamodel repository.
@@ -144,7 +144,26 @@ public class MetamodelRepository
     public IBooleanAttributeType loadBooleanAttributeType(
         UUID id, IPackage parentPackage, String name
     ) {
-        return null;
+
+        IBooleanAttributeType result = new BooleanAttributeType( id, parentPackage, name );
+
+        this.attributeTypes.add( result );
+
+        return result;
+
+    }
+
+    @Override
+    public IDateTimeAttributeType loadDateTimeAttributeType(
+        UUID id, IPackage parentPackage, String name, Optional<Date> minValue, Optional<Date> maxValue
+    ) {
+
+        IDateTimeAttributeType result = new DateTimeAttributeType( id, parentPackage, name, minValue, maxValue );
+
+        this.attributeTypes.add( result );
+
+        return result;
+
     }
 
     @Override

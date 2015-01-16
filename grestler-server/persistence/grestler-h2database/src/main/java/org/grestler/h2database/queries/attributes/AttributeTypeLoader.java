@@ -14,6 +14,7 @@ import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,11 +38,12 @@ public class AttributeTypeLoader
     public void loadAllAttributeTypes( IMetamodelRepositorySpi repository ) {
 
         this.loadAllBooleanAttributeTypes( repository );
+        this.loadAllDateTimeAttributeTypes( repository );
 
     }
 
     /**
-     * Finds a attribute type in the metamodel repository or creates it if not yet there.
+     * Finds a boolean attribute type in the metamodel repository or creates it if not yet there.
      *
      * @param record     the attributes of the attribute type.
      * @param repository the repository to look in or add to.
@@ -64,6 +66,38 @@ public class AttributeTypeLoader
 
         return repository.loadBooleanAttributeType(
             record.id, parentPackage.get(), record.name
+        );
+
+    }
+
+    /**
+     * Finds a date/time attribute type in the metamodel repository or creates it if not yet there.
+     *
+     * @param record     the attributes of the attribute type.
+     * @param repository the repository to look in or add to.
+     *
+     * @return the found or newly created attribute type.
+     */
+    private IAttributeType findOrCreateDateTimeAttributeType(
+        DateTimeAttributeTypeRecord record, IMetamodelRepositorySpi repository
+    ) {
+
+        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+
+        // If already registered, used the registered value.
+        if ( result.isPresent() ) {
+            return result.get();
+        }
+
+        // Find the parent package
+        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+
+        return repository.loadDateTimeAttributeType(
+            record.id,
+            parentPackage.get(),
+            record.name,
+            Optional.ofNullable( record.minValue ),
+            Optional.ofNullable( record.maxValue )
         );
 
     }
@@ -93,8 +127,54 @@ public class AttributeTypeLoader
 
     }
 
+    /**
+     * Loads all the date/time attributes from the database.
+     *
+     * @param repository the repository to load into.
+     */
+    private void loadAllDateTimeAttributeTypes( IMetamodelRepositorySpi repository ) {
+
+        // Set up the database wrapper.
+        Database database = Database.forDataSource( this.dataSource );
+        database.getInstantiatorRegistry()
+                .registerInstantiator( DateTimeAttributeTypeRecord.class, new DateTimeAttributeTypeInstantiator() );
+
+        // Perform the raw query.
+        List<DateTimeAttributeTypeRecord> records = database.findAll(
+            DateTimeAttributeTypeRecord.class,
+            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, MIN_VALUE, MAX_VALUE FROM GRESTLER_VIEW_DATETIME_ATTRIBUTE_TYPE"
+        );
+
+        // Copy the results into the repository.
+        for ( DateTimeAttributeTypeRecord record : records ) {
+            this.findOrCreateDateTimeAttributeType( record, repository );
+        }
+
+    }
+
     /** The data source for queries. */
     private final IDataSource dataSource;
+
+    /**
+     * Data structure for boolean attribute type records.
+     */
+    private static class AttributeTypeRecord {
+
+        AttributeTypeRecord(
+            UUID id, UUID parentPackageId, String name
+        ) {
+            this.id = id;
+            this.parentPackageId = parentPackageId;
+            this.name = name;
+        }
+
+        final UUID id;
+
+        final String name;
+
+        final UUID parentPackageId;
+
+    }
 
     /**
      * Custom instantiator for boolean attribute types.
@@ -128,22 +208,65 @@ public class AttributeTypeLoader
     /**
      * Data structure for boolean attribute type records.
      */
-    private static class BooleanAttributeTypeRecord {
+    private static class BooleanAttributeTypeRecord
+        extends AttributeTypeRecord {
 
         BooleanAttributeTypeRecord(
             UUID id, UUID parentPackageId, String name
         ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
+            super( id, parentPackageId, name );
         }
 
-        final UUID id;
+    }
 
-        final String name;
+    /**
+     * Custom instantiator for date/time attribute types.
+     */
+    private static class DateTimeAttributeTypeInstantiator
+        implements Instantiator<DateTimeAttributeTypeRecord> {
 
-        final UUID parentPackageId;
+        /**
+         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
+         * to the registry.
+         *
+         * @param fields the fields from the database query.
+         *
+         * @return the new attribute type.
+         */
+        @SuppressWarnings( "NullableProblems" )
+        @Override
+        public DateTimeAttributeTypeRecord instantiate( InstantiatorArguments fields ) {
 
+            // Get the attributes from the database result.
+            return new DateTimeAttributeTypeRecord(
+                UUID.fromString( (String) fields.getValues().get( 0 ) ),
+                UUID.fromString( (String) fields.getValues().get( 1 ) ),
+                (String) fields.getValues().get( 2 ),
+                (Date) fields.getValues().get( 3 ),
+                (Date) fields.getValues().get( 4 )
+            );
+
+        }
+
+    }
+
+    /**
+     * Data structure for date/time attribute type records.
+     */
+    private static class DateTimeAttributeTypeRecord
+        extends AttributeTypeRecord {
+
+        DateTimeAttributeTypeRecord(
+            UUID id, UUID parentPackageId, String name, Date minValue, Date maxValue
+        ) {
+            super( id, parentPackageId, name );
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
+
+        final Date maxValue;
+
+        final Date minValue;
     }
 
 }
