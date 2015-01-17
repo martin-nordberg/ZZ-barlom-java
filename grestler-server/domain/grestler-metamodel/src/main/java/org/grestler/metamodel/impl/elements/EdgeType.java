@@ -49,8 +49,8 @@ public final class EdgeType
     @Override
     public void generateJsonAttributes( JsonGenerator json ) {
         super.generateJsonAttributes( json );
-        json.write( "tailVertexTypeId", this.getTailVertexType().getId().toString() )
-            .write( "headVertexTypeId", this.getHeadVertexType().getId().toString() );
+        json.write( "tailVertexTypeId", this.tailVertexType.getId().toString() )
+            .write( "headVertexTypeId", this.headVertexType.getId().toString() );
     }
 
     @Override

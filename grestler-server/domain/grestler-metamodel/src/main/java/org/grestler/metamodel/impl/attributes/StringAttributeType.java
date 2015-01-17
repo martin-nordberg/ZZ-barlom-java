@@ -28,7 +28,7 @@ public final class StringAttributeType
      * @param maxLength     the maximum length for values with this attribute type.
      * @param regexPattern  a regular expression that must be matched by values with this attribute type.
      */
-    protected StringAttributeType(
+    public StringAttributeType(
         UUID id, IPackage parentPackage, String name, int maxLength, Optional<String> regexPattern
     ) {
         super( id, parentPackage, name );

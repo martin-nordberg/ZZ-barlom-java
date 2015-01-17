@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.api.attributes;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -22,11 +22,11 @@ public interface IDateTimeAttributeType
     /**
      * @return the maximum possible value (inclusive) for attributes of this type.
      */
-    Optional<Date> getMinValue();
+    Optional<LocalDateTime> getMinValue();
 
     /**
      * @return the minimum possible value (inclusive) for attributes of this type.
      */
-    Optional<Date> getMaxValue();
+    Optional<LocalDateTime> getMaxValue();
 
 }

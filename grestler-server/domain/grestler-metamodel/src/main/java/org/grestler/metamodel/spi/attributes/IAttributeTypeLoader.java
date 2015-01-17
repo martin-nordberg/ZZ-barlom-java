@@ -10,6 +10,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 /**
  * Interface defining attribute type queries.
  */
+@FunctionalInterface
 public interface IAttributeTypeLoader {
 
     /**

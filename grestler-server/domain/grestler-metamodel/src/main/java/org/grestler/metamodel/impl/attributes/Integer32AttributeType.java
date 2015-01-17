@@ -27,7 +27,7 @@ public class Integer32AttributeType
      * @param minValue      the minimum value for attributes of this type.
      * @param maxValue      the minimum value for attributes of this type.
      */
-    protected Integer32AttributeType(
+    public Integer32AttributeType(
         UUID id, IPackage parentPackage, String name, OptionalInt minValue, OptionalInt maxValue
     ) {
         super( id, parentPackage, name );
@@ -37,16 +37,17 @@ public class Integer32AttributeType
     }
 
     @Override
-    public OptionalInt getMinValue() {
-        return this.minValue;
+    public OptionalInt getMaxValue() {
+        return this.maxValue;
     }
 
     @Override
-    public OptionalInt getMaxValue() {
-        return this.maxValue;
+    public OptionalInt getMinValue() {
+        return this.minValue;
     }
 
     private final OptionalInt maxValue;
 
     private final OptionalInt minValue;
+
 }

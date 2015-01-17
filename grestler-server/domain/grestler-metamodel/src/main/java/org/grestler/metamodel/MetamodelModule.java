@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 /**
  * Dagger dependency injection module.
  */
+@SuppressWarnings( "ClassNamePrefixedWithPackageName" )
 @Module(
     complete = false,
     library = true )

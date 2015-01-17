@@ -8,7 +8,7 @@ package org.grestler.metamodel.impl.attributes;
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +29,7 @@ public final class DateTimeAttributeType
      * @param maxValue      the minimum value for attributes of this type.
      */
     public DateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<Date> minValue, Optional<Date> maxValue
+        UUID id, IPackage parentPackage, String name, Optional<LocalDateTime> minValue, Optional<LocalDateTime> maxValue
     ) {
         super( id, parentPackage, name );
 
@@ -39,19 +39,19 @@ public final class DateTimeAttributeType
     }
 
     @Override
-    public Optional<Date> getMaxValue() {
+    public Optional<LocalDateTime> getMaxValue() {
         return this.maxValue;
     }
 
     @Override
-    public Optional<Date> getMinValue() {
+    public Optional<LocalDateTime> getMinValue() {
         return this.minValue;
     }
 
     /** The maximum allowed value for attributes with this type. */
-    private final Optional<Date> maxValue;
+    private final Optional<LocalDateTime> maxValue;
 
     /** The minimum allowed value for attributes with this type. */
-    private final Optional<Date> minValue;
+    private final Optional<LocalDateTime> minValue;
 
 }

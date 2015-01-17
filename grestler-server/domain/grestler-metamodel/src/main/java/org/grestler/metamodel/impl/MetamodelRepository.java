@@ -8,11 +8,19 @@ package org.grestler.metamodel.impl;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
+import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
+import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
+import org.grestler.metamodel.api.attributes.IStringAttributeType;
+import org.grestler.metamodel.api.attributes.IUuidAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.impl.attributes.BooleanAttributeType;
 import org.grestler.metamodel.impl.attributes.DateTimeAttributeType;
+import org.grestler.metamodel.impl.attributes.Float64AttributeType;
+import org.grestler.metamodel.impl.attributes.Integer32AttributeType;
+import org.grestler.metamodel.impl.attributes.StringAttributeType;
+import org.grestler.metamodel.impl.attributes.UuidAttributeType;
 import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.VertexType;
@@ -23,7 +31,13 @@ import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.UUID;
 
 /**
  * The main metamodel repository.
@@ -40,6 +54,7 @@ public class MetamodelRepository
      * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
      * @param edgeTypeLoader      the loader used to initialize the edge types into the metamodel repository.
      */
+    @SuppressWarnings( "ThisEscapedInObjectConstruction" )
     @Inject
     public MetamodelRepository(
         IPackageLoader packageLoader,
@@ -155,7 +170,7 @@ public class MetamodelRepository
 
     @Override
     public IDateTimeAttributeType loadDateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<Date> minValue, Optional<Date> maxValue
+        UUID id, IPackage parentPackage, String name, Optional<LocalDateTime> minValue, Optional<LocalDateTime> maxValue
     ) {
 
         IDateTimeAttributeType result = new DateTimeAttributeType( id, parentPackage, name, minValue, maxValue );
@@ -185,6 +200,28 @@ public class MetamodelRepository
     }
 
     @Override
+    public IFloat64AttributeType loadFloat64AttributeType(
+        UUID id, IPackage parentPackage, String name, OptionalDouble minValue, OptionalDouble maxValue
+    ) {
+        IFloat64AttributeType result = new Float64AttributeType( id, parentPackage, name, minValue, maxValue );
+
+        this.attributeTypes.add( result );
+
+        return result;
+    }
+
+    @Override
+    public IInteger32AttributeType loadInteger32AttributeType(
+        UUID id, IPackage parentPackage, String name, OptionalInt minValue, OptionalInt maxValue
+    ) {
+        IInteger32AttributeType result = new Integer32AttributeType( id, parentPackage, name, minValue, maxValue );
+
+        this.attributeTypes.add( result );
+
+        return result;
+    }
+
+    @Override
     public IPackage loadPackage( UUID id, IPackage parentPackage, String name ) {
 
         IPackage result = new Package( id, parentPackage, name );
@@ -193,6 +230,28 @@ public class MetamodelRepository
 
         return result;
 
+    }
+
+    @Override
+    public IStringAttributeType loadStringAttributeType(
+        UUID id, IPackage parentPackage, String name, int maxLength, Optional<String> regexPattern
+    ) {
+        IStringAttributeType result = new StringAttributeType( id, parentPackage, name, maxLength, regexPattern );
+
+        this.attributeTypes.add( result );
+
+        return result;
+    }
+
+    @Override
+    public IUuidAttributeType loadUuidAttributeType(
+        UUID id, IPackage parentPackage, String name
+    ) {
+        IUuidAttributeType result = new UuidAttributeType( id, parentPackage, name );
+
+        this.attributeTypes.add( result );
+
+        return result;
     }
 
     @Override

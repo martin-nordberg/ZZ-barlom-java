@@ -27,7 +27,7 @@ public final class Float64AttributeType
      * @param minValue      the minimum value for attributes of this type.
      * @param maxValue      the minimum value for attributes of this type.
      */
-    protected Float64AttributeType(
+    public Float64AttributeType(
         UUID id, IPackage parentPackage, String name, OptionalDouble minValue, OptionalDouble maxValue
     ) {
         super( id, parentPackage, name );
