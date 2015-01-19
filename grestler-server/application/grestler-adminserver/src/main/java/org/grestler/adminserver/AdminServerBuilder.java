@@ -21,7 +21,11 @@ import java.util.EnumSet;
 /**
  * Builder class creates and configures the admin server.
  */
-public class AdminServerBuilder {
+public final class AdminServerBuilder {
+
+    /** Static utility class. */
+    private AdminServerBuilder() {
+    }
 
     /**
      * Creates a Jetty server for administration.
@@ -35,10 +39,10 @@ public class AdminServerBuilder {
         throws MalformedURLException {
 
         // Serve static content.
-        ContextHandler staticContext = makeStaticContextHandler();
+        ContextHandler staticContext = AdminServerBuilder.makeStaticContextHandler();
 
         // Serve dynamic content plus a shutdown handler.
-        ServletContextHandler dynamicContext = makeDynamicContextHandler( webServer );
+        ServletContextHandler dynamicContext = AdminServerBuilder.makeDynamicContextHandler( webServer );
 
         // Combine the two contexts plus a shutdown handler.
         contexts.addHandler( staticContext );

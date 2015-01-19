@@ -46,6 +46,7 @@ public interface IElement {
     /**
      * @return the parent of this element.
      */
+    @SuppressWarnings( "ClassReferencesSubclass" )
     IPackage getParentPackage();
 
     /**

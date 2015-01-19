@@ -20,8 +20,8 @@ public class Log4j2JettyLogger
 
     @Override
     public void debug( String msg, Object... args ) {
-        if ( logger.isDebugEnabled() ) {
-            this.logger.debug( this.format( msg, args ) );
+        if ( this.logger.isDebugEnabled() ) {
+            this.logger.debug( Log4j2JettyLogger.format( msg, args ) );
         }
     }
 
@@ -57,8 +57,8 @@ public class Log4j2JettyLogger
 
     @Override
     public void info( String msg, Object... args ) {
-        if ( logger.isInfoEnabled() ) {
-            this.logger.info( this.format( msg, args ) );
+        if ( this.logger.isInfoEnabled() ) {
+            this.logger.info( Log4j2JettyLogger.format( msg, args ) );
         }
     }
 
@@ -84,8 +84,8 @@ public class Log4j2JettyLogger
 
     @Override
     public void warn( String msg, Object... args ) {
-        if ( logger.isWarnEnabled() ) {
-            this.logger.warn( this.format( msg, args ) );
+        if ( this.logger.isWarnEnabled() ) {
+            this.logger.warn( Log4j2JettyLogger.format( msg, args ) );
         }
     }
 
@@ -99,9 +99,9 @@ public class Log4j2JettyLogger
         this.logger.warn( msg, thrown );
     }
 
-    private String format( String msg, Object... args ) {
+    private static String format( String message, Object... args ) {
 
-        msg = String.valueOf( msg ); // Avoids NPE
+        String msg = String.valueOf( message ); // Avoids NPE
 
         String braces = "{}";
 
@@ -120,7 +120,7 @@ public class Log4j2JettyLogger
             }
             else {
                 builder.append( msg.substring( start, bracesIndex ) );
-                builder.append( String.valueOf( arg ) );
+                builder.append( arg );
                 start = bracesIndex + braces.length();
             }
         }

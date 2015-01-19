@@ -10,6 +10,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 /**
  * Interface defining package queries.
  */
+@FunctionalInterface
 public interface IPackageLoader {
 
     /**

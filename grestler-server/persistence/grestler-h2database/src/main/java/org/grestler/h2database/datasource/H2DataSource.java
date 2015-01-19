@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -20,12 +20,13 @@ import java.util.logging.Logger;
 /**
  * Wrapper for an H2 data source with pooled connections.
  */
-public class H2DataSource
+public final class H2DataSource
     implements IDataSource {
 
     /**
      * Constructs a new H2 data source.
      */
+    @SuppressWarnings( "ThisEscapedInObjectConstruction" )
     public H2DataSource() {
 
         // Read the database configuration.
@@ -34,7 +35,7 @@ public class H2DataSource
         String username = config.readString( "username" );
         String password = config.readString( "password" );
 
-        LOG.info( "Opening data source: URL = {}, User Name = {}", url, username );
+        H2DataSource.LOG.info( "Opening data source: URL = {}, User Name = {}", url, username );
 
         // Create a connection pool.
         this.connectionPool = JdbcConnectionPool.create( url, username, password );
@@ -47,7 +48,7 @@ public class H2DataSource
     @Override
     public void close() {
 
-        LOG.info( "Closing data source" );
+        H2DataSource.LOG.info( "Closing data source" );
 
         this.connectionPool.dispose();
 

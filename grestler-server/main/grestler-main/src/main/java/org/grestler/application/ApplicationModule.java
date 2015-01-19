@@ -15,8 +15,7 @@ import org.grestler.restserver.RestServerModule;
  */
 @Module(
     injects = Application.class,
-    includes = { RestServerModule.class, H2DatabaseModule.class }
-)
+    includes = { RestServerModule.class, H2DatabaseModule.class } )
 public class ApplicationModule {
 
     /** Constructs the main web server. */

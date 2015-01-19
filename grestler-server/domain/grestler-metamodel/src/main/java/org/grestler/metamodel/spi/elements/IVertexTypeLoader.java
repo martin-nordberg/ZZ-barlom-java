@@ -10,6 +10,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 /**
  * Interface defining vertex type queries.
  */
+@FunctionalInterface
 public interface IVertexTypeLoader {
 
     /**

@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -17,83 +17,83 @@ public class Log4j2RestEasyLogger
     extends Logger {
 
     public Log4j2RestEasyLogger( String classname ) {
-        delegate = LogManager.getLogger( classname );
+        this.delegate = LogManager.getLogger( classname );
     }
 
     @Override
     public void debug( String message ) {
-        if ( !delegate.isDebugEnabled() ) {
+        if ( !this.delegate.isDebugEnabled() ) {
             return;
         }
-        delegate.debug( message );
+        this.delegate.debug( message );
     }
 
     @Override
     public void debug( String message, Object... params ) {
-        if ( !delegate.isDebugEnabled() ) {
+        if ( !this.delegate.isDebugEnabled() ) {
             return;
         }
         String msg = MessageFormat.format( message, params );
-        delegate.debug( msg );
+        this.delegate.debug( msg );
     }
 
     @Override
     public void debug( String message, Throwable error ) {
-        if ( !isDebugEnabled() ) {
+        if ( !this.isDebugEnabled() ) {
             return;
         }
-        delegate.debug( message, error );
+        this.delegate.debug( message, error );
     }
 
     @Override
     public void error( String message ) {
-        delegate.warn( message );
+        this.delegate.warn( message );
     }
 
     @Override
     public void error( String message, Object... params ) {
         String msg = MessageFormat.format( message, params );
-        delegate.error( msg );
+        this.delegate.error( msg );
     }
 
     @Override
     public void error( String message, Throwable error ) {
-        delegate.warn( message, error );
+        this.delegate.warn( message, error );
     }
 
     @Override
     public void info( String message ) {
-        if ( !( delegate.isInfoEnabled() ) ) {
+        if ( !this.delegate.isInfoEnabled() ) {
             return;
         }
-        delegate.info( message );
+        this.delegate.info( message );
     }
 
     @Override
     public void info( String message, Object... params ) {
-        if ( !delegate.isInfoEnabled() ) {
+        if ( !this.delegate.isInfoEnabled() ) {
             return;
         }
         String msg = MessageFormat.format( message, params );
-        delegate.info( msg );
+        this.delegate.info( msg );
     }
 
     @Override
     public void info( String message, Throwable error ) {
-        if ( !delegate.isInfoEnabled() ) {
+        if ( !this.delegate.isInfoEnabled() ) {
             return;
         }
-        delegate.info( message, error );
+        this.delegate.info( message, error );
     }
 
     @Override
     public boolean isDebugEnabled() {
-        return delegate.isDebugEnabled();
+        return this.delegate.isDebugEnabled();
     }
 
     @Override
     public boolean isTraceEnabled() {
-        return delegate.isTraceEnabled();
+        return this.delegate.isTraceEnabled();
     }
 
     @Override
@@ -103,44 +103,45 @@ public class Log4j2RestEasyLogger
 
     @Override
     public void trace( String message ) {
-        if ( !delegate.isTraceEnabled() ) {
+        if ( !this.delegate.isTraceEnabled() ) {
             return;
         }
-        delegate.trace( message );
+        this.delegate.trace( message );
     }
 
     @Override
     public void trace( String message, Object... params ) {
-        if ( !delegate.isTraceEnabled() ) {
+        if ( !this.delegate.isTraceEnabled() ) {
             return;
         }
         String msg = MessageFormat.format( message, params );
-        delegate.trace( msg );
+        this.delegate.trace( msg );
     }
 
     @Override
     public void trace( String message, Throwable error ) {
-        if ( !delegate.isTraceEnabled() ) {
+        if ( !this.delegate.isTraceEnabled() ) {
             return;
         }
-        delegate.trace( message, error );
+        this.delegate.trace( message, error );
     }
 
     @Override
     public void warn( String message ) {
-        delegate.warn( message );
+        this.delegate.warn( message );
     }
 
     @Override
     public void warn( String message, Object... params ) {
         String msg = MessageFormat.format( message, params );
-        delegate.warn( msg );
+        this.delegate.warn( msg );
     }
 
     @Override
     public void warn( String message, Throwable error ) {
-        delegate.warn( message, error );
+        this.delegate.warn( message, error );
     }
 
-    private transient org.apache.logging.log4j.Logger delegate;
+    private final transient org.apache.logging.log4j.Logger delegate;
+
 }

@@ -10,6 +10,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 /**
  * Interface defining edge type queries.
  */
+@FunctionalInterface
 public interface IEdgeTypeLoader {
 
     /**

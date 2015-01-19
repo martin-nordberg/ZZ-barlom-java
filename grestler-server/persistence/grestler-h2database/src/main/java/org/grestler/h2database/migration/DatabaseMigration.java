@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -32,7 +32,7 @@ public final class DatabaseMigration {
      */
     public void updateDatabaseSchema() {
 
-        LOG.info( "Updating database schema..." );
+        DatabaseMigration.LOG.info( "Updating database schema..." );
 
         // Send Flyway logging to Log4j2.
         LogFactory.setLogCreator( new FlywayLog4j2Creator() );

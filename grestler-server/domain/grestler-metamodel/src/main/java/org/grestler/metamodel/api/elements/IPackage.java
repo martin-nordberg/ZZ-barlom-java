@@ -23,15 +23,15 @@ public interface IPackage
     /**
      * The fixed ID for the root package.
      */
-    final UUID ROOT_PACKAGE_ID = UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
+    UUID ROOT_PACKAGE_ID = UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
 
     /**
      * Top level root package (constant).
      */
-    static final IPackage ROOT_PACKAGE = new IPackage() {
+    IPackage ROOT_PACKAGE = new IPackage() {
         @Override
         public void generateJsonAttributes( JsonGenerator json ) {
-            json.write( "id", ROOT_PACKAGE_ID.toString() )
+            json.write( "id", IPackage.ROOT_PACKAGE_ID.toString() )
                 .writeNull( "parentPackageId" )
                 .write( "name", "$" )
                 .write( "path", "" );
@@ -45,7 +45,7 @@ public interface IPackage
 
         @Override
         public UUID getId() {
-            return ROOT_PACKAGE_ID;
+            return IPackage.ROOT_PACKAGE_ID;
         }
 
         @Override

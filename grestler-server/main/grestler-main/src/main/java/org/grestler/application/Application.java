@@ -44,7 +44,7 @@ public class Application {
         ApplicationServicesWrapper.registerObjectGraph( objectGraph );
 
         // do extra experimental stuff
-        app.experiment();
+        Application.experiment();
 
         // Run the application.
         app.run();
@@ -54,8 +54,8 @@ public class Application {
     /**
      * Placeholder for extra code when experimenting.
      */
-    private void experiment() {
-        LOG.info( "UUID: " + Uuids.makeUuidWithReservedBlock() );
+    private static void experiment() {
+        Application.LOG.info( "UUID: " + Uuids.makeUuidWithReservedBlock() );
     }
 
     /**
@@ -65,12 +65,12 @@ public class Application {
      */
     private void run() throws Exception {
 
-        LOG.info( "Application started." );
+        Application.LOG.info( "Application started." );
 
         // Run the web server.
         this.webServer.run();
 
-        LOG.info( "Application stopped." );
+        Application.LOG.info( "Application stopped." );
 
     }
 

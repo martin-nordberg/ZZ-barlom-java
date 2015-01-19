@@ -20,7 +20,7 @@ public class ApplicationServicesWrapper
      * Constructs a new REST application.
      */
     public ApplicationServicesWrapper() {
-        this.delegate = objectGraph.get( ApplicationServices.class );
+        this.delegate = ApplicationServicesWrapper.objectGraph.get( ApplicationServices.class );
     }
 
     /**
@@ -28,10 +28,10 @@ public class ApplicationServicesWrapper
      * clumsy hack is to work around the seeming inability to dependency inject the application object itself without a
      * JEE container.
      *
-     * @param objectGraph the already initialized Dagger object graph for dependency injection.
+     * @param objGraph the already initialized Dagger object graph for dependency injection.
      */
-    public static void registerObjectGraph( ObjectGraph objectGraph ) {
-        ApplicationServicesWrapper.objectGraph = objectGraph;
+    public static void registerObjectGraph( ObjectGraph objGraph ) {
+        ApplicationServicesWrapper.objectGraph = objGraph;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ApplicationServicesWrapper
     /**
      * The Dagger dependency injection service. Explicitly used since no clear way to inject Application itself.
      */
-    private static ObjectGraph objectGraph;
+    private static ObjectGraph objectGraph = null;
 
     /** The wrapped application that benefits from dependency injection. */
     private final Application delegate;

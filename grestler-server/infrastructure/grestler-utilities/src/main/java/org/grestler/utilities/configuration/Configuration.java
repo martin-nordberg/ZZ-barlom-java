@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -57,6 +57,7 @@ public class Configuration {
      *
      * @return the boolean value (true for "true", "yes", or "1" as the property value).
      */
+    @SuppressWarnings( "BooleanMethodNameMustStartWithQuestion" )
     public boolean readBoolean( String key ) {
         String strValue = this.readString( key ).toLowerCase();
         return "true".equals( strValue ) || "yes".equals( strValue ) || "1".equals( strValue );

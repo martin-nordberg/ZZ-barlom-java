@@ -52,7 +52,7 @@ public class VertexTypeQueries {
     @Produces( { "application/json", "application/vnd.grestler.org.v1.vertextype+json" } )
     public String getVertexTypeByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
 
-        LOG.info( "Querying for vertex type {}.", idOrPath );
+        VertexTypeQueries.LOG.info( "Querying for vertex type {}.", idOrPath );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -87,7 +87,7 @@ public class VertexTypeQueries {
     @Produces( { "application/json", "application/vnd.grestler.org.v1.vertextype+json" } )
     public String getVertexTypesAll() {
 
-        LOG.info( "Querying for all vertex types." );
+        VertexTypeQueries.LOG.info( "Querying for all vertex types." );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -96,7 +96,7 @@ public class VertexTypeQueries {
         json.writeStartArray( "vertexTypes" );
 
         List<IVertexType> vertexTypes = this.metamodelRepository.findVertexTypesAll();
-        vertexTypes.forEach( ( vertexType ) -> vertexType.generateJson( json ) );
+        vertexTypes.forEach( vertexType -> vertexType.generateJson( json ) );
 
         json.writeEnd();
         json.writeEnd();

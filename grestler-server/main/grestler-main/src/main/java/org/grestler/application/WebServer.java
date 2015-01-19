@@ -38,19 +38,20 @@ public class WebServer
     /**
      * Stops the running web server.
      */
+    @Override
     public void close() {
 
-        LOG.info( "Preparing to shut down ..." );
+        WebServer.LOG.info( "Preparing to shut down ..." );
 
         // Define a task to stop the two servers.
         Runnable stopServer = () -> {
             try {
-                Thread.sleep( 100 );
-                WebServer.server.stop();
-                LOG.info( "Application server shut down." );
+                Thread.sleep( 100L );
+                this.server.stop();
+                WebServer.LOG.info( "Application server shut down." );
             }
             catch ( Exception e ) {
-                LOG.error( "Failed shutdown.", e );
+                WebServer.LOG.error( "Failed shutdown.", e );
             }
         };
 
@@ -76,7 +77,7 @@ public class WebServer
         boolean enableH2Console = config.readBoolean( "enableH2Console" );
 
         // Build the app server.
-        WebServer.server = makeServer( port );
+        this.server = WebServer.makeServer( port );
 
         // Create the context list.
         ContextHandlerCollection contexts = new ContextHandlerCollection();
@@ -91,22 +92,43 @@ public class WebServer
 
         // Add a raw H2 SQL console.
         if ( enableH2Console ) {
-            this.makeH2Console( contexts );
+            WebServer.makeH2Console( contexts );
         }
 
         // Configure the server for its contexts
-        server.setHandler( contexts );
+        this.server.setHandler( contexts );
 
         // Start the server.
-        LOG.info( "Starting application server ..." );
-        WebServer.server.start();
+        WebServer.LOG.info( "Starting application server ..." );
+        this.server.start();
 
         // Set up graceful shut down.
-        WebServer.server.setStopTimeout( 5000 );
-        WebServer.server.setStopAtShutdown( true );
+        this.server.setStopTimeout( 5000L );
+        this.server.setStopAtShutdown( true );
 
         // Hang out until the server is stopped.
-        WebServer.server.join();
+        this.server.join();
+
+    }
+
+    /**
+     * Add the H2 console servlet to the set of contexts.
+     *
+     * @param contexts the contexts being built.
+     */
+    private static void makeH2Console( ContextHandlerCollection contexts ) {
+
+        // TODO: move this to a lower level
+
+        ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
+        result.setContextPath( "/h2console" );
+
+        ServletHolder servletHolder = new ServletHolder( new WebServlet() );
+        servletHolder.setInitParameter( "webAllowOthers", "true" );
+
+        result.addServlet( servletHolder, "/*" );
+
+        contexts.addHandler( result );
 
     }
 
@@ -131,30 +153,9 @@ public class WebServer
 
     }
 
-    /**
-     * Add the H2 console servlet to the set of contexts.
-     *
-     * @param contexts the contexts being built.
-     */
-    private void makeH2Console( ContextHandlerCollection contexts ) {
-
-        // TODO: move this to a lower level
-
-        ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
-        result.setContextPath( "/h2console" );
-
-        ServletHolder servletHolder = new ServletHolder( new WebServlet() );
-        servletHolder.setInitParameter( "webAllowOthers", "true" );
-
-        result.addServlet( servletHolder, "/*" );
-
-        contexts.addHandler( result );
-
-    }
-
     private static final Logger LOG = LogManager.getLogger();
 
     /** App server for static content and REST web services. */
-    private static Server server;
+    private Server server = null;
 
 }

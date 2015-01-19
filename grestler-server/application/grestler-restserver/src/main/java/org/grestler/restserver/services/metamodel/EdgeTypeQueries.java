@@ -54,7 +54,7 @@ public class EdgeTypeQueries {
     @Produces( { "application/json", "application/vnd.grestler.org.v1.edgetype+json" } )
     public String getEdgeTypeByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
 
-        LOG.info( "Querying for edge type {}.", idOrPath );
+        EdgeTypeQueries.LOG.info( "Querying for edge type {}.", idOrPath );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -89,7 +89,7 @@ public class EdgeTypeQueries {
     @Produces( { "application/json", "application/vnd.grestler.org.v1.edgetype+json" } )
     public String getEdgeTypesAll() {
 
-        LOG.info( "Querying for all edge types." );
+        EdgeTypeQueries.LOG.info( "Querying for all edge types." );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -98,7 +98,7 @@ public class EdgeTypeQueries {
         json.writeStartArray( "edgeTypes" );
 
         List<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
-        edgeTypes.forEach( ( edgeType ) -> edgeType.generateJson( json ) );
+        edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
 
         json.writeEnd();
         json.writeEnd();

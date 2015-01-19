@@ -29,23 +29,25 @@ public class ApplicationServices
         PackageQueries packageQueries, VertexTypeQueries vertexTypeQueries, EdgeTypeQueries edgeTypeQueries
     ) {
 
+        this.singletons = new HashSet<>();
+
         // register RESTful query services
-        singletons.add( packageQueries );
-        singletons.add( vertexTypeQueries );
-        singletons.add( edgeTypeQueries );
+        this.singletons.add( packageQueries );
+        this.singletons.add( vertexTypeQueries );
+        this.singletons.add( edgeTypeQueries );
 
         // register filters
-        singletons.add( new CacheControlFilter() );
+        this.singletons.add( new CacheControlFilter() );
 
     }
 
     @Override
     public Set<Object> getSingletons() {
-        return singletons;
+        return this.singletons;
     }
 
     /** The resources collected by the Grestler application. */
-    private Set<Object> singletons = new HashSet<>();
+    private final Set<Object> singletons;
 
 }
 

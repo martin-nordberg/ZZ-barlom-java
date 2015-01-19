@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -29,17 +29,17 @@ public class StmTransaction
         // (We avoid concurrent change because if another thread bumped the revisions in use, it might also have
         // cleaned up the revision before we said we were using it.)
         while ( true ) {
-            long sourceRevNumber = lastCommittedRevisionNumber.get();
-            sourceRevisionsInUse.add( sourceRevNumber );
-            if ( sourceRevNumber == lastCommittedRevisionNumber.get() ) {
+            long sourceRevNumber = StmTransaction.lastCommittedRevisionNumber.get();
+            StmTransaction.sourceRevisionsInUse.add( sourceRevNumber );
+            if ( sourceRevNumber == StmTransaction.lastCommittedRevisionNumber.get() ) {
                 this.sourceRevisionNumber = sourceRevNumber;
                 break;
             }
-            sourceRevisionsInUse.remove( sourceRevNumber );
+            StmTransaction.sourceRevisionsInUse.remove( sourceRevNumber );
         }
 
         // Use the next negative pending revision number to mark our writes.
-        this.targetRevisionNumber = new AtomicLong( lastPendingRevisionNumber.decrementAndGet() );
+        this.targetRevisionNumber = new AtomicLong( StmTransaction.lastPendingRevisionNumber.decrementAndGet() );
 
         // Track the versioned items read and written by this transaction.
         this.versionedItemsRead = new HashSet<>();
@@ -67,9 +67,7 @@ public class StmTransaction
         this.targetRevisionNumber.set( 0L );
 
         // Clean up aborted revisions ...
-        for ( AbstractVersionedItem versionedItem : this.versionedItemsWritten ) {
-            versionedItem.removeAbortedRevision();
-        }
+        this.versionedItemsWritten.forEach( org.grestler.utilities.revisions.AbstractVersionedItem::removeAbortedRevision );
 
         this.versionedItemsRead.clear();
         this.versionedItemsWritten.clear();
@@ -128,8 +126,8 @@ public class StmTransaction
         // TBD: notify observers of read & written items inside transaction -- use a callback interface
 
         // Make the synchronized changed to make the transaction permanent.
-        if ( this.versionedItemsWritten.size() > 0 ) {
-            writeTransaction( this );
+        if ( !this.versionedItemsWritten.isEmpty() ) {
+            StmTransaction.writeTransaction( this );
         }
 
         // TBD: notify observers of read & written items outside the transaction -- use a callback interface
@@ -149,7 +147,7 @@ public class StmTransaction
      * @return the revision number of information to be read by this transaction.
      */
     long getSourceRevisionNumber() {
-        return sourceRevisionNumber;
+        return this.sourceRevisionNumber;
     }
 
     /**
@@ -161,7 +159,7 @@ public class StmTransaction
      */
     ETransactionStatus getStatus() {
         long targetRevNumber = this.targetRevisionNumber.get();
-        if ( targetRevNumber < 0 ) {
+        if ( targetRevNumber < 0L ) {
             return ETransactionStatus.IN_PROGRESS;
         }
         if ( targetRevNumber == 0 ) {
@@ -204,12 +202,10 @@ public class StmTransaction
     private static synchronized void writeTransaction( StmTransaction transaction ) {
 
         // Check for conflicts.
-        for ( AbstractVersionedItem versionedItem : transaction.versionedItemsRead ) {
-            versionedItem.ensureNotWrittenByOtherTransaction();
-        }
+        transaction.versionedItemsRead.forEach( AbstractVersionedItem::ensureNotWrittenByOtherTransaction );
 
         // Set the revision number to a committed value.
-        transaction.targetRevisionNumber.set( lastCommittedRevisionNumber.incrementAndGet() );
+        transaction.targetRevisionNumber.set( StmTransaction.lastCommittedRevisionNumber.incrementAndGet() );
 
     }
 
@@ -219,14 +215,14 @@ public class StmTransaction
     private void awaitCleanUp() {
 
         // Get the first transaction awaiting clean up.
-        StmTransaction firstTransAwaitingCleanUp = firstTransactionAwaitingCleanUp.get();
+        StmTransaction firstTransAwaitingCleanUp = StmTransaction.firstTransactionAwaitingCleanUp.get();
 
         // Link this transaction into the head of the list.
         this.nextTransactionAwaitingCleanUp.set( firstTransAwaitingCleanUp );
 
         // Spin until we do both atomically.
-        while ( !firstTransactionAwaitingCleanUp.compareAndSet( firstTransAwaitingCleanUp, this ) ) {
-            firstTransAwaitingCleanUp = firstTransactionAwaitingCleanUp.get();
+        while ( !StmTransaction.firstTransactionAwaitingCleanUp.compareAndSet( firstTransAwaitingCleanUp, this ) ) {
+            firstTransAwaitingCleanUp = StmTransaction.firstTransactionAwaitingCleanUp.get();
             this.nextTransactionAwaitingCleanUp.set( firstTransAwaitingCleanUp );
         }
 
@@ -239,17 +235,17 @@ public class StmTransaction
     private void cleanUpOlderRevisions() {
 
         // We're no longer using the source revision.
-        final long priorOldestRevisionInUse = sourceRevisionsInUse.peek();
-        sourceRevisionsInUse.remove( this.sourceRevisionNumber );
+        final long priorOldestRevisionInUse = StmTransaction.sourceRevisionsInUse.peek();
+        StmTransaction.sourceRevisionsInUse.remove( this.sourceRevisionNumber );
 
         // Determine the oldest revision still needed.
-        Long oldestRevisionInUse = sourceRevisionsInUse.peek();
+        Long oldestRevisionInUse = StmTransaction.sourceRevisionsInUse.peek();
         if ( oldestRevisionInUse == null ) {
             oldestRevisionInUse = priorOldestRevisionInUse;
         }
 
         //  Remove each transaction awaiting clean up that has a target revision number older than needed.
-        AtomicReference<StmTransaction> tref = firstTransactionAwaitingCleanUp;
+        AtomicReference<StmTransaction> tref = StmTransaction.firstTransactionAwaitingCleanUp;
         StmTransaction t = tref.get();
         if ( t == null ) {
             return;
@@ -287,9 +283,9 @@ public class StmTransaction
     private void removeUnusedRevisions() {
 
         // Remove all revisions older than the one written by this transaction.
-        final long oldestUsableRevisionNumber = this.targetRevisionNumber.get();
+        final long oldestUsableRevNumber = this.targetRevisionNumber.get();
         for ( AbstractVersionedItem versionedItem : this.versionedItemsWritten ) {
-            versionedItem.removeUnusedRevisions( oldestUsableRevisionNumber );
+            versionedItem.removeUnusedRevisions( oldestUsableRevNumber );
         }
 
         // Stop referencing the versioned items.
@@ -300,22 +296,26 @@ public class StmTransaction
     /**
      * Head of a linked list of transactions awaiting clean up.
      */
+    @SuppressWarnings( "FieldMayBeFinal" )
     private static AtomicReference<StmTransaction> firstTransactionAwaitingCleanUp = new AtomicReference<>( null );
 
     /**
      * Monotone increasing revision number incremented whenever a transaction is successfully committed.
      */
-    private static AtomicLong lastCommittedRevisionNumber = new AtomicLong( 0 );
+    @SuppressWarnings( "FieldMayBeFinal" )
+    private static AtomicLong lastCommittedRevisionNumber = new AtomicLong( 0L );
 
     /**
      * Monotone decreasing revision number decremented whenever a transaction is started. Negative value indicates a
      * transaction in progress.
      */
-    private static AtomicLong lastPendingRevisionNumber = new AtomicLong( 0 );
+    @SuppressWarnings( "FieldMayBeFinal" )
+    private static AtomicLong lastPendingRevisionNumber = new AtomicLong( 0L );
 
     /**
      * Priority queue of revision numbers currently in use as the source revision for some transaction.
      */
+    @SuppressWarnings( "FieldMayBeFinal" )
     private static Queue<Long> sourceRevisionsInUse = new PriorityBlockingQueue<>();
 
     /**

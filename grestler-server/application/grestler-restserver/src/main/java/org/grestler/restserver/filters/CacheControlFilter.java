@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -21,8 +21,9 @@ public class CacheControlFilter
      * @param request  The HTTP request (only GETs affected).
      * @param response The HTTP response (cache control headers set by the filter).
      */
+    @Override
     public void filter( ContainerRequestContext request, ContainerResponseContext response ) {
-        if ( request.getMethod().equals( "GET" ) ) {
+        if ( "GET".equals( request.getMethod() ) ) {
             response.getHeaders().add( "Cache-Control", "max-age=0, no-cache, no-store" );
             response.getHeaders().add( "Pragma", "no-cache" );
         }

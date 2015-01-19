@@ -77,7 +77,7 @@ public class V<T>
             }
 
             // If revision is committed and older or equal to our source revision, read it.
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
                 // Keep track of everything we've read.
                 currentTransaction.addVersionedItemRead( this );
 
@@ -170,7 +170,7 @@ public class V<T>
             }
 
             // If revision is committed and older or equal to our source revision, then done.
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
                 break;
             }
 
@@ -216,7 +216,7 @@ public class V<T>
     }
 
     @Override
-    void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
+    void removeUnusedRevisions( long oldestUsableRevNumber ) {
 
         // Loop through the revisions.
         for ( Revision<T> revision = this.latestRevision.get();
@@ -226,7 +226,7 @@ public class V<T>
             final long revisionNumber = revision.revisionNumber.get();
 
             // Truncate revisions older than the oldest usable revision.
-            if ( revisionNumber == oldestUsableRevisionNumber ) {
+            if ( revisionNumber == oldestUsableRevNumber ) {
                 revision.priorRevision.set( null );
                 break;
             }
@@ -257,17 +257,17 @@ public class V<T>
         /**
          * A reference to the previous revision of the versioned item.
          */
-        final AtomicReference<Revision<T>> priorRevision;
+        public final AtomicReference<Revision<T>> priorRevision;
 
         /**
          * The revision number of this revision (uniquely from the transaction that wrote it).
          */
-        final AtomicLong revisionNumber;
+        public final AtomicLong revisionNumber;
 
         /**
          * The value of the versioned item at this revision.
          */
-        T value;
+        public T value;
 
     }
 

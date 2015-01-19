@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -15,8 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * Static utility class for generating UUIDs. Generates Version 1 JDK UUIDs. Hopefully more useful for database keys
  * than the random UUIDs produced by the JDK.
  */
-public class Uuids {
+public final class Uuids {
 
+    /** Static utility class. */
     private Uuids() {
         throw new UnsupportedOperationException( "Static utility class only." );
     }
@@ -27,7 +28,7 @@ public class Uuids {
      * @return a new UUID as a string in the format /^[a-f0-9]{8}-[a-f0-9]{4}-1[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$/.
      */
     public static UUID makeUuid() {
-        return new UUID( getNextTimeAndVersion( false ), CLOCK_SEQ_AND_NODE );
+        return new UUID( Uuids.getNextTimeAndVersion( false ), Uuids.CLOCK_SEQ_AND_NODE );
     }
 
     /**
@@ -38,7 +39,7 @@ public class Uuids {
      * @return a new UUID as a string in the format /^[a-f0-9]{6}00-[a-f0-9]{4}-1[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$/.
      */
     public static UUID makeUuidWithReservedBlock() {
-        return new UUID( getNextTimeAndVersion( true ), CLOCK_SEQ_AND_NODE );
+        return new UUID( Uuids.getNextTimeAndVersion( true ), Uuids.CLOCK_SEQ_AND_NODE );
     }
 
     /**
@@ -49,7 +50,7 @@ public class Uuids {
     private static long determineClockSeqAndNode() {
 
         // node
-        byte[] macAddress = determineMacAddress();
+        byte[] macAddress = Uuids.determineMacAddress();
         long result = macAddress[5];
         result |= ( 0xFFL & macAddress[4] ) << 8;
         result |= ( 0xFFL & macAddress[3] ) << 16;
@@ -58,7 +59,7 @@ public class Uuids {
         result |= ( 0xFFL & macAddress[0] ) << 40;
 
         // clock sequence - TBD: currently random; store & retrieve a value instead
-        result |= (long) ( Math.random() * 0x3FFF ) << 48;
+        result |= (long) ( Math.random() * (double) 0x3FFF ) << 48;
 
         // reserved bits
         result |= 0x8000000000000000L;
@@ -92,7 +93,7 @@ public class Uuids {
             // ignore
         }
 
-        return null;
+        return new byte[]{ (byte) 0, (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5 };
 
     }
 
@@ -109,7 +110,7 @@ public class Uuids {
         long timeMs = System.currentTimeMillis();
 
         // convert to 100ns units
-        long time100ns = timeMs * 10000;
+        long time100ns = timeMs * 10000L;
 
         // convert to UUID time (from Gregorian start)
         time100ns += 0x01B21DD213814000L;
@@ -118,24 +119,24 @@ public class Uuids {
         while ( true ) {
             // for blocks of UUIDs use 00 as last byte after rounding up
             if ( reservedTimeBlock ) {
-                time100ns += 0xFF;
+                time100ns += 0xFFL;
                 time100ns &= 0xFFFFFFFFFFFFFF00L;
             }
 
-            long last = prevTime100ns.get();
+            long last = Uuids.prevTime100ns.get();
 
             if ( time100ns > last ) {
                 if ( reservedTimeBlock ) {
-                    if ( prevTime100ns.compareAndSet( last, time100ns + 0xFF ) ) {
+                    if ( Uuids.prevTime100ns.compareAndSet( last, time100ns + 0xFFL ) ) {
                         break;
                     }
                 }
-                else if ( prevTime100ns.compareAndSet( last, time100ns ) ) {
+                else if ( Uuids.prevTime100ns.compareAndSet( last, time100ns ) ) {
                     break;
                 }
             }
             else {
-                time100ns = last + 1;
+                time100ns = last + 1L;
             }
         }
 
@@ -146,10 +147,10 @@ public class Uuids {
         result |= ( time100ns & 0xFFFF00000000L ) >> 16;
 
         // time hi and version 1
-        result |= ( time100ns >> 48 ) & 0x0FFF;
+        result |= time100ns >> 48 & 0x0FFFL;
 
         // version 1
-        result |= 0x1000;
+        result |= 0x1000L;
 
         return result;
 
@@ -158,11 +159,12 @@ public class Uuids {
     /**
      * The clock sequence and node value.
      */
-    private static final long CLOCK_SEQ_AND_NODE = determineClockSeqAndNode();
+    private static final long CLOCK_SEQ_AND_NODE = Uuids.determineClockSeqAndNode();
 
     /**
      * The last used time value. Tracks time but with atomic increments when needed to avoid duplicates.
      */
+    @SuppressWarnings( "FieldMayBeFinal" )
     private static AtomicLong prevTime100ns = new AtomicLong( Long.MIN_VALUE );
 
 }

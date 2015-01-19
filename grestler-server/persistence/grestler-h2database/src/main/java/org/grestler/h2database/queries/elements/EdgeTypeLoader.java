@@ -155,17 +155,17 @@ public class EdgeTypeLoader
             this.headVertexTypeId = headVertexTypeId;
         }
 
-        final UUID headVertexTypeId;
+        public final UUID headVertexTypeId;
 
-        final UUID id;
+        public final UUID id;
 
-        final String name;
+        public final String name;
 
-        final UUID parentPackageId;
+        public final UUID parentPackageId;
 
-        final UUID superTypeId;
+        public final UUID superTypeId;
 
-        final UUID tailVertexTypeId;
+        public final UUID tailVertexTypeId;
 
     }
 

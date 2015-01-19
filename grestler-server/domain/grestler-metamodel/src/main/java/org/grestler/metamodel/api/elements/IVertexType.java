@@ -35,15 +35,15 @@ public interface IVertexType
     /**
      * The fixed ID for the base vertex type.
      */
-    final UUID BASE_VERTEX_TYPE_ID = UUID.fromString( "00000010-7a26-11e4-a545-08002741a702" );
+    UUID BASE_VERTEX_TYPE_ID = UUID.fromString( "00000010-7a26-11e4-a545-08002741a702" );
 
     /**
      * Top level base vertex type (constant).
      */
-    static final IVertexType BASE_VERTEX_TYPE = new IVertexType() {
+    IVertexType BASE_VERTEX_TYPE = new IVertexType() {
         @Override
         public void generateJsonAttributes( JsonGenerator json ) {
-            json.write( "id", BASE_VERTEX_TYPE_ID.toString() )
+            json.write( "id", IVertexType.BASE_VERTEX_TYPE_ID.toString() )
                 .write( "parentPackageId", IPackage.ROOT_PACKAGE_ID.toString() )
                 .write( "name", "Vertex" )
                 .write( "path", "Vertex" );
@@ -51,7 +51,7 @@ public interface IVertexType
 
         @Override
         public UUID getId() {
-            return BASE_VERTEX_TYPE_ID;
+            return IVertexType.BASE_VERTEX_TYPE_ID;
         }
 
         @Override

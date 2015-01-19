@@ -21,7 +21,11 @@ import java.util.EnumSet;
 /**
  * Builder class creates and configures a new REST server.
  */
-public class RestServerBuilder {
+public final class RestServerBuilder {
+
+    /** Static utility class. */
+    private RestServerBuilder() {
+    }
 
     /**
      * Creates a Jetty server for REST services.
@@ -33,10 +37,10 @@ public class RestServerBuilder {
     public static void makeRestServer( ContextHandlerCollection contexts ) throws MalformedURLException {
 
         // Redirect RESTEasy logging to Log4j2.
-        overrideRestEasyLoggerInitialization();
+        RestServerBuilder.overrideRestEasyLoggerInitialization();
 
         // Serve dynamic content.
-        ServletContextHandler webServiceContext = makeWebServiceContextHandler();
+        ServletContextHandler webServiceContext = RestServerBuilder.makeWebServiceContextHandler();
 
         // Insert the REST context.
         contexts.addHandler( webServiceContext );
@@ -57,8 +61,7 @@ public class RestServerBuilder {
         // Add a RESTEasy servlet for the dynamic content.
         ServletHolder servletHolder = new ServletHolder( new HttpServletDispatcher() );
         servletHolder.setInitParameter(
-            "javax.ws.rs.Application",
-            "org.grestler.restserver.ApplicationServicesWrapper"
+            "javax.ws.rs.Application", "org.grestler.restserver.ApplicationServicesWrapper"
         );
         result.addServlet( servletHolder, "/*" );
 

@@ -54,7 +54,7 @@ public class PackageQueries {
     @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
     public String getPackageByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
 
-        LOG.info( "Querying for package {}.", idOrPath );
+        PackageQueries.LOG.info( "Querying for package {}.", idOrPath );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -85,7 +85,7 @@ public class PackageQueries {
     @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
     public String getPackagesAll() {
 
-        LOG.info( "Querying for all packages." );
+        PackageQueries.LOG.info( "Querying for all packages." );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -94,7 +94,7 @@ public class PackageQueries {
         json.writeStartArray( "packages" );
 
         List<IPackage> packages = this.metamodelRepository.findPackagesAll();
-        packages.forEach( ( pkg ) -> pkg.generateJson( json ) );
+        packages.forEach( pkg -> pkg.generateJson( json ) );
 
         json.writeEnd();
         json.writeEnd();

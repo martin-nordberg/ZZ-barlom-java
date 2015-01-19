@@ -31,8 +31,7 @@ public class RestServerModule {
 
     @Provides
     public EdgeTypeQueries provideEdgeTypeQueries(
-        IMetamodelRepository metamodelRepository,
-        JsonGeneratorFactory jsonGeneratorFactory
+        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
     ) {
         return new EdgeTypeQueries( metamodelRepository, jsonGeneratorFactory );
     }
@@ -49,16 +48,14 @@ public class RestServerModule {
 
     @Provides
     public PackageQueries providePackageQueries(
-        IMetamodelRepository metamodelRepository,
-        JsonGeneratorFactory jsonGeneratorFactory
+        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
     ) {
         return new PackageQueries( metamodelRepository, jsonGeneratorFactory );
     }
 
     @Provides
     public VertexTypeQueries provideVertexTypeQueries(
-        IMetamodelRepository metamodelRepository,
-        JsonGeneratorFactory jsonGeneratorFactory
+        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
     ) {
         return new VertexTypeQueries( metamodelRepository, jsonGeneratorFactory );
     }

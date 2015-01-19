@@ -19,6 +19,7 @@ public class ShutdownServlet
 
     /**
      * Constructs a new shutdown servlet.
+     *
      * @param webServer the web server to be shut down when this servlet executes.
      */
     public ShutdownServlet( AutoCloseable webServer ) {
@@ -30,7 +31,7 @@ public class ShutdownServlet
 
         // Ask the web server to stop (asynchronously).
         try {
-            webServer.close();
+            this.webServer.close();
         }
         catch ( Exception e ) {
             throw new ServletException( e );

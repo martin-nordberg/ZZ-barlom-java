@@ -43,15 +43,15 @@ public interface IEdgeType
     }
 
     /** The unique ID for the base edge type. */
-    final UUID BASE_EDGE_TYPE_ID = UUID.fromString( "00000020-7a26-11e4-a545-08002741a702" );
+    UUID BASE_EDGE_TYPE_ID = UUID.fromString( "00000020-7a26-11e4-a545-08002741a702" );
 
     /**
      * Top level base edge type (constant).
      */
-    static final IEdgeType BASE_EDGE_TYPE = new IEdgeType() {
+    IEdgeType BASE_EDGE_TYPE = new IEdgeType() {
         @Override
         public void generateJsonAttributes( JsonGenerator json ) {
-            json.write( "id", BASE_EDGE_TYPE_ID.toString() )
+            json.write( "id", IEdgeType.BASE_EDGE_TYPE_ID.toString() )
                 .write( "parentPackageId", IPackage.ROOT_PACKAGE_ID.toString() )
                 .write( "name", "Vertex" )
                 .write( "path", "Vertex" )
@@ -66,7 +66,7 @@ public interface IEdgeType
 
         @Override
         public UUID getId() {
-            return BASE_EDGE_TYPE_ID;
+            return IEdgeType.BASE_EDGE_TYPE_ID;
         }
 
         @Override
