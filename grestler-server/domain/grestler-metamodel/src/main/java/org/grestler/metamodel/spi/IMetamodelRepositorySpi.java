@@ -63,8 +63,8 @@ public interface IMetamodelRepositorySpi
      * @param parentPackage  the parent package for the edge type.
      * @param name           the name of the edge type.
      * @param superType      the super type of the edge type.
-     * @param fromVertexType the vertex type at the start of edges of the new edge type.
-     * @param toVertexType   the vertex type at the end of edges of the new edge type.
+     * @param tailVertexType the vertex type at the start of edges of the new edge type.
+     * @param headVertexType the vertex type at the end of edges of the new edge type.
      *
      * @return the loaded edge type.
      */
@@ -73,8 +73,8 @@ public interface IMetamodelRepositorySpi
         IPackage parentPackage,
         String name,
         IEdgeType superType,
-        IVertexType fromVertexType,
-        IVertexType toVertexType
+        IVertexType tailVertexType,
+        IVertexType headVertexType
     );
 
     /**
@@ -117,6 +117,37 @@ public interface IMetamodelRepositorySpi
      * @return the loaded package.
      */
     IPackage loadPackage( UUID id, IPackage parentPackage, String name );
+
+    /**
+     * Loads a queried root edge type into the repository.
+     *
+     * @param id            the unique ID of the root edge type.
+     * @param parentPackage the parent package for the root edge type.
+     *
+     * @return the loaded edge type.
+     */
+    IEdgeType loadRootEdgeType(
+        UUID id, IPackage parentPackage
+    );
+
+    /**
+     * Loads the queried root package into the repository.
+     *
+     * @param id the unique ID of the package.
+     *
+     * @return the loaded package.
+     */
+    IPackage loadRootPackage( UUID id );
+
+    /**
+     * Loads a queried vertex type into the repository.
+     *
+     * @param id            the unique ID of the vertex type.
+     * @param parentPackage the parent (root) package for the vertex type.
+     *
+     * @return the loaded vertex type.
+     */
+    IVertexType loadRootVertexType( UUID id, IPackage parentPackage );
 
     /**
      * Loads a queried string attribute type into the repository.

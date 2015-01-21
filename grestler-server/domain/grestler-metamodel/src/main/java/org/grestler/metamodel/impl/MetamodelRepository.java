@@ -23,6 +23,9 @@ import org.grestler.metamodel.impl.attributes.StringAttributeType;
 import org.grestler.metamodel.impl.attributes.UuidAttributeType;
 import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
+import org.grestler.metamodel.impl.elements.RootEdgeType;
+import org.grestler.metamodel.impl.elements.RootPackage;
+import org.grestler.metamodel.impl.elements.RootVertexType;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
@@ -42,7 +45,7 @@ import java.util.UUID;
 /**
  * The main metamodel repository.
  */
-public class MetamodelRepository
+public final class MetamodelRepository
     implements IMetamodelRepositorySpi {
 
     /**
@@ -54,7 +57,6 @@ public class MetamodelRepository
      * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
      * @param edgeTypeLoader      the loader used to initialize the edge types into the metamodel repository.
      */
-    @SuppressWarnings( "ThisEscapedInObjectConstruction" )
     @Inject
     public MetamodelRepository(
         IPackageLoader packageLoader,
@@ -67,10 +69,6 @@ public class MetamodelRepository
         this.vertexTypes = new ArrayList<>();
         this.edgeTypes = new ArrayList<>();
         this.attributeTypes = new ArrayList<>();
-
-        this.packages.add( IPackage.ROOT_PACKAGE );
-        this.vertexTypes.add( IVertexType.BASE_VERTEX_TYPE );
-        this.edgeTypes.add( IEdgeType.BASE_EDGE_TYPE );
 
         packageLoader.loadAllPackages( this );
         attributeTypeLoader.loadAllAttributeTypes( this );
@@ -113,6 +111,11 @@ public class MetamodelRepository
     }
 
     @Override
+    public Optional<IEdgeType> findEdgeTypeRoot() {
+        return Optional.ofNullable( this.rootEdgeType );
+    }
+
+    @Override
     public List<IEdgeType> findEdgeTypesAll() {
         return this.edgeTypes;
     }
@@ -132,6 +135,11 @@ public class MetamodelRepository
     }
 
     @Override
+    public Optional<IPackage> findPackageRoot() {
+        return Optional.ofNullable( this.rootPackage );
+    }
+
+    @Override
     public List<IPackage> findPackagesAll() {
         return this.packages;
     }
@@ -148,6 +156,11 @@ public class MetamodelRepository
 
         return Optional.empty();
 
+    }
+
+    @Override
+    public Optional<IVertexType> findVertexTypeRoot() {
+        return Optional.ofNullable( this.rootVertexType );
     }
 
     @Override
@@ -187,11 +200,11 @@ public class MetamodelRepository
         IPackage parentPackage,
         String name,
         IEdgeType superType,
-        IVertexType fromVertexType,
-        IVertexType toVertexType
+        IVertexType tailVertexType,
+        IVertexType headVertexType
     ) {
 
-        IEdgeType result = new EdgeType( id, parentPackage, name, superType, fromVertexType, toVertexType );
+        IEdgeType result = new EdgeType( id, parentPackage, name, superType, tailVertexType, headVertexType );
 
         this.edgeTypes.add( result );
 
@@ -227,6 +240,44 @@ public class MetamodelRepository
         IPackage result = new Package( id, parentPackage, name );
 
         this.packages.add( result );
+
+        return result;
+
+    }
+
+    @Override
+    public IEdgeType loadRootEdgeType(
+        UUID id, IPackage parentPackage
+    ) {
+
+        IEdgeType result = new RootEdgeType( id, parentPackage, this.rootVertexType );
+
+        this.edgeTypes.add( result );
+        this.rootEdgeType = result;
+
+        return result;
+
+    }
+
+    @Override
+    public IPackage loadRootPackage( UUID id ) {
+
+        IPackage result = new RootPackage( id );
+
+        this.packages.add( result );
+        this.rootPackage = result;
+
+        return result;
+
+    }
+
+    @Override
+    public IVertexType loadRootVertexType( UUID id, IPackage parentPackage ) {
+
+        IVertexType result = new RootVertexType( id, parentPackage );
+
+        this.vertexTypes.add( result );
+        this.rootVertexType = result;
 
         return result;
 
@@ -273,4 +324,9 @@ public class MetamodelRepository
 
     private final List<IVertexType> vertexTypes;
 
+    private IEdgeType rootEdgeType = null;
+
+    private IPackage rootPackage = null;
+
+    private IVertexType rootVertexType = null;
 }

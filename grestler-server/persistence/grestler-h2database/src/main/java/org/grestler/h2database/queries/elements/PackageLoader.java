@@ -64,16 +64,17 @@ public class PackageLoader
         PackageRecord record, List<PackageRecord> records, IMetamodelRepositorySpi repository
     ) {
 
+        // Look for the package already in the repository.
         Optional<IPackage> result = repository.findPackageById( record.id );
 
-        // If already registered, used the registered value.
+        // If already registered, use the registered value.
         if ( result.isPresent() ) {
             return result.get();
         }
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.parentPackageId ) ) {
-            return IPackage.ROOT_PACKAGE;
+            return repository.loadRootPackage( record.id );
         }
 
         // Find an existing parent package by UUID.
@@ -136,11 +137,11 @@ public class PackageLoader
             this.name = name;
         }
 
-        final UUID id;
+        public final UUID id;
 
-        final String name;
+        public final String name;
 
-        final UUID parentPackageId;
+        public final UUID parentPackageId;
 
     }
 

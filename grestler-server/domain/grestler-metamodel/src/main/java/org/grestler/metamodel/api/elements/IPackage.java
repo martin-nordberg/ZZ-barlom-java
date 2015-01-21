@@ -5,10 +5,6 @@
 
 package org.grestler.metamodel.api.elements;
 
-import javax.json.stream.JsonGenerator;
-import java.util.List;
-import java.util.UUID;
-
 /**
  * Interface to a package of vertex types and edge types.
  */
@@ -18,55 +14,16 @@ public interface IPackage
     /**
      * @return the packages that are children of this one.
      */
-    List<IPackage> getChildPackages();
+    Iterable<IPackage> getChildPackages();
 
     /**
-     * The fixed ID for the root package.
+     * @return the Edge types that are children of this package.
      */
-    UUID ROOT_PACKAGE_ID = UUID.fromString( "00000000-7a26-11e4-a545-08002741a702" );
+    Iterable<IEdgeType> getEdgeTypes();
 
     /**
-     * Top level root package (constant).
+     * @return the vertex types that are children of this package.
      */
-    IPackage ROOT_PACKAGE = new IPackage() {
-        @Override
-        public void generateJsonAttributes( JsonGenerator json ) {
-            json.write( "id", IPackage.ROOT_PACKAGE_ID.toString() )
-                .writeNull( "parentPackageId" )
-                .write( "name", "$" )
-                .write( "path", "" );
-        }
+    Iterable<IVertexType> getVertexTypes();
 
-        @Override
-        public List<IPackage> getChildPackages() {
-            // TODO
-            return null;
-        }
-
-        @Override
-        public UUID getId() {
-            return IPackage.ROOT_PACKAGE_ID;
-        }
-
-        @Override
-        public String getName() {
-            return "$";
-        }
-
-        @Override
-        public IPackage getParentPackage() {
-            return this;
-        }
-
-        @Override
-        public String getPath() {
-            return "";
-        }
-
-        @Override
-        public boolean isChildOf( IPackage parentPackage ) {
-            return false;
-        }
-
-    };
 }

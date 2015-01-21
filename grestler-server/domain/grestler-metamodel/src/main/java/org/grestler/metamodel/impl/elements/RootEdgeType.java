@@ -17,35 +17,25 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Implementation class for edge types.
+ * Implementation of the top-level root edge type.
  */
-public final class EdgeType
-    extends Element
+public class RootEdgeType
     implements IEdgeType, IEdgeTypeSpi {
 
     /**
-     * Constructs a new edge type.
+     * Constructs a new root edge type.
      *
      * @param id             the unique ID of the edge type.
      * @param parentPackage  the package containing the edge type.
-     * @param name           the name of the edge type.
-     * @param superType      the super type.
-     * @param tailVertexType the vertex type at the start of the edge type.
-     * @param headVertexType the vertex type at the end of the edge type.
+     * @param rootVertexType the root vertex type connected by the edge type.
      */
-    public EdgeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        IEdgeType superType,
-        IVertexType tailVertexType,
-        IVertexType headVertexType
+    public RootEdgeType(
+        UUID id, IPackage parentPackage, IVertexType rootVertexType
     ) {
-        super( id, parentPackage, name );
 
-        this.superType = superType;
-        this.tailVertexType = tailVertexType;
-        this.headVertexType = headVertexType;
+        this.id = id;
+        this.parentPackage = parentPackage;
+        this.rootVertexType = rootVertexType;
 
         this.attributes = new ArrayList<>();
 
@@ -60,9 +50,12 @@ public final class EdgeType
 
     @Override
     public void generateJsonAttributes( JsonGenerator json ) {
-        super.generateJsonAttributes( json );
-        json.write( "tailVertexTypeId", this.tailVertexType.getId().toString() )
-            .write( "headVertexTypeId", this.headVertexType.getId().toString() );
+        json.write( "id", this.id.toString() )
+            .write( "parentPackageId", this.parentPackage.getId().toString() )
+            .write( "name", "Vertex" )
+            .write( "path", this.getPath() )
+            .write( "tailVertexTypeId", this.rootVertexType.getId().toString() )
+            .write( "headVertexTypeId", this.rootVertexType.getId().toString() );
     }
 
     @Override
@@ -72,33 +65,44 @@ public final class EdgeType
 
     @Override
     public IVertexType getHeadVertexType() {
-        return this.headVertexType;
+        return this.rootVertexType;
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    @Override
+    public String getName() {
+        return "Edge";
+    }
+
+    @Override
+    public IPackage getParentPackage() {
+        return this.parentPackage;
     }
 
     @Override
     public Optional<IEdgeType> getSuperType() {
-        return Optional.of( this.superType );
+        return Optional.empty();
     }
 
     @Override
     public IVertexType getTailVertexType() {
-        return this.tailVertexType;
+        return this.rootVertexType;
     }
 
     @Override
     public boolean isSubTypeOf( IEdgeType edgeType ) {
-        return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
+        return this == edgeType;
     }
 
     private final List<IEdgeAttributeDeclaration> attributes;
 
-    /** The vertex type at the head of edges of this type. */
-    private final IVertexType headVertexType;
+    private final UUID id;
 
-    /** The super type for this edge type. */
-    private final IEdgeType superType;
+    private final IPackage parentPackage;
 
-    /** The vertex type at the tail of edges of this type. */
-    private final IVertexType tailVertexType;
-
+    private final IVertexType rootVertexType;
 }

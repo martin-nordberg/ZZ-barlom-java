@@ -23,9 +23,10 @@ class VertexTypeSpec
     def "A top level vertex type is constructed and read"() {
 
         given:
-        IVertexType v = IVertexType.BASE_VERTEX_TYPE;
+        IVertexType v = new RootVertexType( id, new RootPackage( Uuids.makeUuid() ) );
 
         expect:
+        v.id == id;
         v.name == "Vertex";
         !v.superType.isPresent();
         v.isSubTypeOf( v );
@@ -35,16 +36,22 @@ class VertexTypeSpec
     def "Vertex type subtypes can be detected correctly"() {
 
         given:
-        IVertexType v1 = new VertexType( id, IPackage.ROOT_PACKAGE, name, IVertexType.BASE_VERTEX_TYPE );
-        IVertexType v2 = new VertexType( id, IPackage.ROOT_PACKAGE, name, v1 );
-        IVertexType w = new VertexType( id, IPackage.ROOT_PACKAGE, name, IVertexType.BASE_VERTEX_TYPE );
+        IPackage root = new RootPackage( id );
+        IVertexType v = new RootVertexType( id, root );
+        IVertexType v1 = new VertexType( id, root, name, v );
+        IVertexType v2 = new VertexType( id, root, name, v1 );
+        IVertexType w = new VertexType( id, root, name, v );
 
         expect:
-        v1.superType.get() == IVertexType.BASE_VERTEX_TYPE;
+        v1.superType.get() == v;
+        v1.isSubTypeOf( v );
         v1.isSubTypeOf( v1 );
         v2.superType.get() == v1;
+        v2.isSubTypeOf( v );
         v2.isSubTypeOf( v1 );
+        v2.isSubTypeOf( v2 );
         !v1.isSubTypeOf( v2 );
+        w.isSubTypeOf( v );
         !w.isSubTypeOf( v1 );
 
     }

@@ -67,23 +67,25 @@ public class EdgeTypeLoader
         EdgeTypeRecord record, List<EdgeTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
+        // Look for the edge type already in the repository.
         Optional<IEdgeType> result = repository.findEdgeTypeById( record.id );
 
-        // If already registered, used the registered value.
+        // If already registered, use the registered value.
         if ( result.isPresent() ) {
             return result.get();
         }
 
-        Optional<IVertexType> tailVertexType = repository.findVertexTypeById( record.tailVertexTypeId );
-        Optional<IVertexType> headVertexType = repository.findVertexTypeById( record.headVertexTypeId );
+        // Find the parent package.
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId ).get();
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return IEdgeType.BASE_EDGE_TYPE;
+            return repository.loadRootEdgeType( record.id, parentPackage );
         }
 
-        // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        // Find the vertex types.
+        IVertexType headVertexType = repository.findVertexTypeById( record.headVertexTypeId ).get();
+        IVertexType tailVertexType = repository.findVertexTypeById( record.tailVertexTypeId ).get();
 
         // Find an existing edge super type by UUID.
         Optional<IEdgeType> superType = repository.findEdgeTypeById( record.superTypeId );
@@ -99,7 +101,7 @@ public class EdgeTypeLoader
         }
 
         return repository.loadEdgeType(
-            record.id, parentPackage.get(), record.name, superType.get(), tailVertexType.get(), headVertexType.get()
+            record.id, parentPackage, record.name, superType.get(), tailVertexType, headVertexType
         );
 
     }

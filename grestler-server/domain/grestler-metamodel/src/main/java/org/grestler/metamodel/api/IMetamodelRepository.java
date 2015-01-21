@@ -43,6 +43,13 @@ public interface IMetamodelRepository {
     Optional<IEdgeType> findEdgeTypeById( UUID id );
 
     /**
+     * Finds the root edge type.
+     *
+     * @return the root edge type or empty if not loaded yet.
+     */
+    Optional<IEdgeType> findEdgeTypeRoot();
+
+    /**
      * @return a list of all edge types in the repository.
      */
     List<IEdgeType> findEdgeTypesAll();
@@ -57,6 +64,12 @@ public interface IMetamodelRepository {
     Optional<IPackage> findPackageById( UUID id );
 
     /**
+     * Finds the root package.
+     * @return the root package or empty if not loaded yet.
+     */
+    Optional<IPackage> findPackageRoot();
+
+    /**
      * @return a list of all packages in the repository.
      */
     List<IPackage> findPackagesAll();
@@ -69,6 +82,13 @@ public interface IMetamodelRepository {
      * @return the vertex type found.
      */
     Optional<IVertexType> findVertexTypeById( UUID id );
+
+    /**
+     * Finds the root vertex type.
+     *
+     * @return the root vertex type or empty if not loaded yet.
+     */
+    Optional<IVertexType> findVertexTypeRoot();
 
     /**
      * @return a list of all vertex types in the repository.

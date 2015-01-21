@@ -5,8 +5,6 @@
 
 package org.grestler.metamodel.impl
 
-import org.grestler.metamodel.api.elements.IPackage
-import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader
@@ -21,19 +19,23 @@ import spock.lang.Specification
 class MetamodelRepositorySpec
         extends Specification {
 
+    UUID id0 = Uuids.makeUuid();
+
     UUID id1 = Uuids.makeUuid();
 
     def "A metamodel repository lets added vertex types be retrieved"() {
 
         given:
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                { r -> } as IPackageLoader,
+                { r -> r.loadRootPackage( id0 ) } as IPackageLoader,
                 { r -> } as IAttributeTypeLoader,
                 { r ->
-                    r.loadVertexType( id1, IPackage.ROOT_PACKAGE, "V1", IVertexType.BASE_VERTEX_TYPE );
-                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V2", IVertexType.BASE_VERTEX_TYPE );
-                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V3", IVertexType.BASE_VERTEX_TYPE );
-                    r.loadVertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "V4", IVertexType.BASE_VERTEX_TYPE );
+                    def rootPkg = r.findPackageRoot().get();
+                    def rootVertexType = r.loadRootVertexType( Uuids.makeUuid(), rootPkg );
+                    r.loadVertexType( id1, rootPkg, "V1", rootVertexType );
+                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V2", rootVertexType );
+                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V3", rootVertexType );
+                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V4", rootVertexType );
                 } as IVertexTypeLoader,
                 { r -> } as IEdgeTypeLoader
         );

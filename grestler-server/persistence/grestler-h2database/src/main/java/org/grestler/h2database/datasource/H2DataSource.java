@@ -26,7 +26,6 @@ public final class H2DataSource
     /**
      * Constructs a new H2 data source.
      */
-    @SuppressWarnings( "ThisEscapedInObjectConstruction" )
     public H2DataSource() {
 
         // Read the database configuration.

@@ -66,20 +66,21 @@ public class VertexTypeLoader
         VertexTypeRecord record, List<VertexTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
+        // Look for the vertex type already in the repository.
         Optional<IVertexType> result = repository.findVertexTypeById( record.id );
 
-        // If already registered, used the registered value.
+        // If already registered, use the registered value.
         if ( result.isPresent() ) {
             return result.get();
         }
 
+        // Find the parent package
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId ).get();
+
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return IVertexType.BASE_VERTEX_TYPE;
+            return repository.loadRootVertexType( record.id, parentPackage );
         }
-
-        // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         // Find an existing vertex super type by UUID.
         Optional<IVertexType> superType = repository.findVertexTypeById( record.superTypeId );
@@ -94,7 +95,7 @@ public class VertexTypeLoader
             }
         }
 
-        return repository.loadVertexType( record.id, parentPackage.get(), record.name, superType.get() );
+        return repository.loadVertexType( record.id, parentPackage, record.name, superType.get() );
 
     }
 
@@ -143,13 +144,13 @@ public class VertexTypeLoader
             this.superTypeId = superTypeId;
         }
 
-        final UUID id;
+        public final UUID id;
 
-        final String name;
+        public final String name;
 
-        final UUID parentPackageId;
+        public final UUID parentPackageId;
 
-        final UUID superTypeId;
+        public final UUID superTypeId;
 
     }
 

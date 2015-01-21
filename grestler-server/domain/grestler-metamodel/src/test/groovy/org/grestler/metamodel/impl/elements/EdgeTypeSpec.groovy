@@ -24,31 +24,38 @@ class EdgeTypeSpec
     def "A top level edge type is constructed and can be read"() {
 
         given:
-        IEdgeType e = IEdgeType.BASE_EDGE_TYPE;
+        IPackage root = new RootPackage( id );
+        IVertexType rootVertexType = new RootVertexType( id, root );
+        IEdgeType e = new RootEdgeType( id, root, rootVertexType );
 
         expect:
         e.name == "Edge";
         !e.superType.isPresent();
         e.isSubTypeOf( e );
-        e.tailVertexType == IVertexType.BASE_VERTEX_TYPE;
-        e.headVertexType == IVertexType.BASE_VERTEX_TYPE;
+        e.tailVertexType == rootVertexType;
+        e.headVertexType == rootVertexType;
 
     }
 
     def "Edge type subtypes can be detected correctly"() {
 
         given:
-        IVertexType v1 = IVertexType.BASE_VERTEX_TYPE;
-        IVertexType v2 = new VertexType( Uuids.makeUuid(), IPackage.ROOT_PACKAGE, "v2", v1 );
-        IEdgeType e1 = new EdgeType( id, IPackage.ROOT_PACKAGE, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
-        IEdgeType e2 = new EdgeType( id, IPackage.ROOT_PACKAGE, name, e1, v1, v2 );
-        IEdgeType e3 = new EdgeType( id, IPackage.ROOT_PACKAGE, name, IEdgeType.BASE_EDGE_TYPE, v1, v2 );
+        IPackage root = new RootPackage( id );
+        IVertexType v0 = new RootVertexType( id, root );
+        IVertexType v1 = new VertexType( id, root, "v1", v0 );
+        IEdgeType e0 = new RootEdgeType( id, root, v0 );
+        IEdgeType e1 = new EdgeType( id, root, name, e0, v0, v1 );
+        IEdgeType e2 = new EdgeType( id, root, name, e1, v0, v1 );
+        IEdgeType e3 = new EdgeType( id, root, name, e0, v0, v1 );
 
         expect:
-        e1.superType.get() == IEdgeType.BASE_EDGE_TYPE;
+        e1.superType.get() == e0;
+        e1.isSubTypeOf( e0 );
         e1.isSubTypeOf( e1 );
         e2.superType.get() == e1;
+        e2.isSubTypeOf( e0 );
         e2.isSubTypeOf( e1 );
+        e2.isSubTypeOf( e2 );
         !e1.isSubTypeOf( e2 );
         !e3.isSubTypeOf( e1 );
 

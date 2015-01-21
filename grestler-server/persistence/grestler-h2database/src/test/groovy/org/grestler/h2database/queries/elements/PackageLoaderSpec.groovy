@@ -7,7 +7,6 @@ package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
-import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import spock.lang.Specification
@@ -30,13 +29,14 @@ class PackageLoaderSpec
 
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, aloader, vloader, eloader );
 
-        def rootPkg = m.findPackageById( IPackage.ROOT_PACKAGE.id ).get();
+        def rootPkg = m.findPackageRoot();
 
         expect:
-        rootPkg.name == "\$";
-        rootPkg.parentPackage == rootPkg;
+        rootPkg.isPresent();
+        rootPkg.get().name == "\$";
+        rootPkg.get().parentPackage == rootPkg.get();
         m.findPackagesAll().size() == 1;
-
+        m.findPackageById( rootPkg.get().id ).equals( rootPkg );
     }
 
 }

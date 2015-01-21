@@ -7,7 +7,6 @@ package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
-import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import spock.lang.Specification
@@ -30,11 +29,14 @@ class VertexTypeLoaderSpec
 
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, aloader, vloader, eloader );
 
-        expect:
-        m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().name == "Vertex";
-        !m.findVertexTypeById( IVertexType.BASE_VERTEX_TYPE.id ).get().superType.isPresent();
-        m.findVertexTypesAll().size() == 1;
+        def rootVertexType = m.findVertexTypeRoot();
 
+        expect:
+        rootVertexType.isPresent();
+        rootVertexType.get().name == "Vertex";
+        !rootVertexType.get().superType.isPresent();
+        m.findVertexTypesAll().size() == 1;
+        m.findVertexTypeById( rootVertexType.get().id ).equals( rootVertexType );
     }
 
 }

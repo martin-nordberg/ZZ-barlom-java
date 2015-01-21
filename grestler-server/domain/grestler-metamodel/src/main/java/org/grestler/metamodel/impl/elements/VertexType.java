@@ -6,8 +6,11 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IVertexAttributeDeclaration;
 import org.grestler.metamodel.api.elements.IVertexType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +19,7 @@ import java.util.UUID;
  */
 public final class VertexType
     extends Element
-    implements IVertexType {
+    implements IVertexType, IVertexTypeSpi {
 
     /**
      * Constructs a new vertex type.
@@ -29,15 +32,38 @@ public final class VertexType
     public VertexType(
         UUID id, IPackage parentPackage, String name, IVertexType superType
     ) {
+
         super( id, parentPackage, name );
 
         this.superType = superType;
+        this.attributes = new ArrayList<>();
+
+        ( (IPackageSpi) parentPackage ).addVertexType( this );
+
+    }
+
+    @Override
+    public boolean isSubTypeOf( IVertexType vertexType ) {
+        return this == vertexType || this.getSuperType().get().isSubTypeOf( vertexType );
+    }
+
+    @Override
+    public Iterable<IVertexAttributeDeclaration> getAttributes() {
+        return this.attributes;
     }
 
     @Override
     public Optional<IVertexType> getSuperType() {
         return Optional.of( this.superType );
     }
+
+    @Override
+    public void addAttribute( IVertexAttributeDeclaration attribute ) {
+        this.attributes.add( attribute );
+    }
+
+    /** The attributes of this vertex type. */
+    private final List<IVertexAttributeDeclaration> attributes;
 
     /** The super type of this vertex type. */
     private final IVertexType superType;

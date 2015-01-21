@@ -34,9 +34,9 @@ public abstract class Element
 
     @Override
     public void generateJsonAttributes( JsonGenerator json ) {
-        json.write( "id", this.getId().toString() )
-            .write( "parentPackageId", this.getParentPackage().getId().toString() )
-            .write( "name", this.getName() )
+        json.write( "id", this.id.toString() )
+            .write( "parentPackageId", this.parentPackage.getId().toString() )
+            .write( "name", this.name )
             .write( "path", this.getPath() );
     }
 

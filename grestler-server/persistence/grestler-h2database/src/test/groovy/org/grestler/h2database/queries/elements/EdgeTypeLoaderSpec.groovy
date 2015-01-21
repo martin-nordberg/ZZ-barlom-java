@@ -7,7 +7,6 @@ package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.datasource.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
-import org.grestler.metamodel.api.elements.IEdgeType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import spock.lang.Specification
@@ -30,10 +29,14 @@ class EdgeTypeLoaderSpec
 
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, aloader, vloader, eloader );
 
+        def rootEdgeType = m.findEdgeTypeRoot();
+
         expect:
-        m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().name == "Edge";
-        !m.findEdgeTypeById( IEdgeType.BASE_EDGE_TYPE.id ).get().superType.isPresent();
+        rootEdgeType.isPresent();
+        rootEdgeType.get().name == "Edge";
+        !rootEdgeType.get().superType.isPresent();
         m.findEdgeTypesAll().size() == 1;
+        m.findEdgeTypeById( rootEdgeType.get().id ).equals( rootEdgeType );
 
     }
 

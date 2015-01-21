@@ -71,6 +71,7 @@ public interface IElement {
      *
      * @return true if this package is a child or grandchild of the given parent package.
      */
+    @SuppressWarnings( "ClassReferencesSubclass" )
     default boolean isChildOf( IPackage parentPackage ) {
 
         IPackage parentPkg = this.getParentPackage();
@@ -93,4 +94,5 @@ public interface IElement {
         return result.toString();
 
     }
+
 }
