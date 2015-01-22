@@ -26,21 +26,22 @@ public final class H2DataSource
     /**
      * Constructs a new H2 data source.
      */
-    public H2DataSource() {
+    public H2DataSource( String dataSourceName ) {
 
         // Read the database configuration.
         Configuration config = new Configuration( H2DataSource.class );
-        String url = config.readString( "url" );
-        String username = config.readString( "username" );
-        String password = config.readString( "password" );
+        String url = config.readString( dataSourceName + ".url" );
+        String username = config.readString( dataSourceName + ".username" );
+        String password = config.readString( dataSourceName + ".password" );
+        String extraMigrationLocations = config.readString( dataSourceName + ".extraMigrationLocations" );
 
-        H2DataSource.LOG.info( "Opening data source: URL = {}, User Name = {}", url, username );
+        H2DataSource.LOG.info( "Opening data source {}: URL = {}, User Name = {}", dataSourceName, url, username );
 
         // Create a connection pool.
         this.connectionPool = JdbcConnectionPool.create( url, username, password );
 
         // Update the schema if needed.
-        new DatabaseMigration( this ).updateDatabaseSchema();
+        new DatabaseMigration( this ).updateDatabaseSchema( extraMigrationLocations );
 
     }
 

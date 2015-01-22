@@ -20,7 +20,7 @@ class EdgeTypeLoaderSpec
     def "An edge type loader retrieves the top level base edge type"() {
 
         given:
-        def dataSource = new H2DataSource();
+        def dataSource = new H2DataSource( "test0" );
 
         def ploader = new PackageLoader( dataSource );
         def atloader = new AttributeTypeLoader( dataSource );

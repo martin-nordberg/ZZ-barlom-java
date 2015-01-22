@@ -58,7 +58,8 @@ public class H2DatabaseModule {
      */
     @Provides
     public IDataSource provideDataSource() {
-        return new H2DataSource();
+        // TODO: make the data source name configurable in the injection
+        return new H2DataSource( "tmp" );
     }
 
     /**

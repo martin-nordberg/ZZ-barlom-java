@@ -29,8 +29,10 @@ public final class DatabaseMigration {
 
     /**
      * Updates the database schema to the latest version.
+     *
+     * @param extraMigrationClasspath extra classpath folders that should be read and migrated after the base schema definition.
      */
-    public void updateDatabaseSchema() {
+    public void updateDatabaseSchema( String extraMigrationClasspath ) {
 
         DatabaseMigration.LOG.info( "Updating database schema..." );
 
@@ -43,6 +45,17 @@ public final class DatabaseMigration {
         // Point it to the database.
         flyway.setDataSource( this.dataSource );
 
+        // Build the path for migrations.
+        String migrationClasspath = DatabaseMigration.SCHEMA_MIGRATION_CLASSPATHS;
+        if ( !extraMigrationClasspath.isEmpty() ) {
+            migrationClasspath += ";";
+            migrationClasspath += extraMigrationClasspath;
+        }
+
+        DatabaseMigration.LOG.info( "Flyway migration classpath: {}", migrationClasspath );
+
+        flyway.setLocations( migrationClasspath.split( ";" ) );
+
         // Start the migration.
         flyway.migrate();
 
@@ -52,6 +65,11 @@ public final class DatabaseMigration {
      * The logger for this class.
      */
     private static final Logger LOG = LogManager.getLogger();
+
+    /**
+     * The base classpath locations for defining the schema.
+     */
+    public static final String SCHEMA_MIGRATION_CLASSPATHS = "classpath:db/migration";
 
     /**
      * The data source for the database to migrate.

@@ -88,7 +88,7 @@ public class Configuration {
 
         // TBD: read from external properties first, then internal as fallback
 
-        return this.properties.getProperty( key ).trim();
+        return this.properties.getProperty( key, "" ).trim();
 
     }
 

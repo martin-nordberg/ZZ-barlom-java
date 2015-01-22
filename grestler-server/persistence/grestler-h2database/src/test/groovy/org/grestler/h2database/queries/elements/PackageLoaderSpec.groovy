@@ -20,7 +20,7 @@ class PackageLoaderSpec
     def "A package loader retrieves the top level root package"() {
 
         given:
-        def dataSource = new H2DataSource();
+        def dataSource = new H2DataSource( "test0" );
 
         def ploader = new PackageLoader( dataSource );
         def atloader = new AttributeTypeLoader( dataSource );
