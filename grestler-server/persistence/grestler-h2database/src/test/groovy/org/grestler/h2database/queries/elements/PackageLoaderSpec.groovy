@@ -23,11 +23,12 @@ class PackageLoaderSpec
         def dataSource = new H2DataSource();
 
         def ploader = new PackageLoader( dataSource );
-        def aloader = new AttributeTypeLoader( dataSource );
-        def vloader = new VertexTypeLoader( dataSource );
-        def eloader = new EdgeTypeLoader( dataSource )
+        def atloader = new AttributeTypeLoader( dataSource );
+        def vtloader = new VertexTypeLoader( dataSource );
+        def etloader = new EdgeTypeLoader( dataSource )
+        def adloader = new AttributeDeclLoader( dataSource );
 
-        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, aloader, vloader, eloader );
+        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, atloader, vtloader, etloader, adloader );
 
         def rootPkg = m.findPackageRoot();
 

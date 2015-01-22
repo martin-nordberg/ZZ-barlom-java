@@ -10,6 +10,7 @@ import dagger.Provides;
 import org.grestler.metamodel.api.IMetamodelRepository;
 import org.grestler.metamodel.impl.MetamodelRepository;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
+import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
@@ -32,6 +33,7 @@ public class MetamodelModule {
      * @param attributeTypeLoader the source for loading attribute types.
      * @param vertexTypeLoader    the source for loading vertex types.
      * @param edgeTypeLoader      the source for loading edge types.
+     * @param attributeDeclLoader the source for loading attribute declarations.
      *
      * @return the newly created repository.
      */
@@ -41,9 +43,16 @@ public class MetamodelModule {
         IPackageLoader packageLoader,
         IAttributeTypeLoader attributeTypeLoader,
         IVertexTypeLoader vertexTypeLoader,
-        IEdgeTypeLoader edgeTypeLoader
+        IEdgeTypeLoader edgeTypeLoader,
+        IAttributeDeclLoader attributeDeclLoader
     ) {
-        return new MetamodelRepository( packageLoader, attributeTypeLoader, vertexTypeLoader, edgeTypeLoader );
+        return new MetamodelRepository(
+            packageLoader,
+            attributeTypeLoader,
+            vertexTypeLoader,
+            edgeTypeLoader,
+            attributeDeclLoader
+        );
     }
 
 }

@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.impl.elements;
 
-import org.grestler.metamodel.api.elements.IEdgeAttributeDeclaration;
+import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 
 /**
  * Internal interface for edge types.
@@ -18,6 +18,6 @@ interface IEdgeTypeSpi {
      *
      * @param attribute the child attribute to add.
      */
-    void addAttribute( IEdgeAttributeDeclaration attribute );
+    void addAttribute( IEdgeAttributeDecl attribute );
 
 }

@@ -6,7 +6,7 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.metamodel.api.elements.IVertexAttributeDeclaration;
+import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 import javax.json.stream.JsonGenerator;
@@ -40,7 +40,7 @@ public final class RootVertexType
     }
 
     @Override
-    public void addAttribute( IVertexAttributeDeclaration attribute ) {
+    public void addAttribute( IVertexAttributeDecl attribute ) {
         this.attributes.add( attribute );
     }
 
@@ -53,7 +53,7 @@ public final class RootVertexType
     }
 
     @Override
-    public Iterable<IVertexAttributeDeclaration> getAttributes() {
+    public Iterable<IVertexAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
@@ -83,7 +83,7 @@ public final class RootVertexType
     }
 
     /** The attributes of this vertex type. */
-    private final List<IVertexAttributeDeclaration> attributes;
+    private final List<IVertexAttributeDecl> attributes;
 
     /** The unique ID of this vertex type. */
     private final UUID id;

@@ -1,20 +1,20 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2014-2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
 package org.grestler.metamodel.api.elements;
 
-import org.grestler.metamodel.api.attributes.EAttributeRequired;
+import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
 
 /**
- * Interface to a vertex attribute declaration.
+ * Interface to an edge attribute declaration.
  */
-public interface IVertexAttributeDeclaration {
+public interface IEdgeAttributeDecl {
 
     /**
      * Generates the JSON representation of this attribute to the given generator.
@@ -36,7 +36,7 @@ public interface IVertexAttributeDeclaration {
     /**
      * @return the parent of this attribute.
      */
-    IVertexType getParentVertexType();
+    IEdgeType getParentEdgeType();
 
     /**
      * @return the typeof this attribute.
@@ -46,6 +46,6 @@ public interface IVertexAttributeDeclaration {
     /**
      * @return whether this is a required attribute.
      */
-    EAttributeRequired getRequired();
+    EAttributeOptionality getOptionality();
 
 }

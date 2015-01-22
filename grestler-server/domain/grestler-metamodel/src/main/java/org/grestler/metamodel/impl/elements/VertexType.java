@@ -6,7 +6,7 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.metamodel.api.elements.IVertexAttributeDeclaration;
+import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public final class VertexType
     }
 
     @Override
-    public Iterable<IVertexAttributeDeclaration> getAttributes() {
+    public Iterable<IVertexAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
@@ -58,12 +58,12 @@ public final class VertexType
     }
 
     @Override
-    public void addAttribute( IVertexAttributeDeclaration attribute ) {
+    public void addAttribute( IVertexAttributeDecl attribute ) {
         this.attributes.add( attribute );
     }
 
     /** The attributes of this vertex type. */
-    private final List<IVertexAttributeDeclaration> attributes;
+    private final List<IVertexAttributeDecl> attributes;
 
     /** The super type of this vertex type. */
     private final IVertexType superType;

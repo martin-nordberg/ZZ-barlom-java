@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.impl.elements;
 
-import org.grestler.metamodel.api.elements.IVertexAttributeDeclaration;
+import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 
 /**
  * Internal interface for vertex types.
@@ -18,6 +18,6 @@ interface IVertexTypeSpi {
      *
      * @param attribute the child attribute to add.
      */
-    void addAttribute( IVertexAttributeDeclaration attribute );
+    void addAttribute( IVertexAttributeDecl attribute );
 
 }

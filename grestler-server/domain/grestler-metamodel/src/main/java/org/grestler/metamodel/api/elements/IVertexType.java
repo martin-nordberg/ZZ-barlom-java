@@ -5,10 +5,7 @@
 
 package org.grestler.metamodel.api.elements;
 
-import javax.json.stream.JsonGenerator;
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Top level interface to a vertex type.
@@ -19,7 +16,7 @@ public interface IVertexType
     /**
      * @return the defined attributes of this vertex type.
      */
-    Iterable<IVertexAttributeDeclaration> getAttributes();
+    Iterable<IVertexAttributeDecl> getAttributes();
 
     /**
      * @return the super type of this vertex type.

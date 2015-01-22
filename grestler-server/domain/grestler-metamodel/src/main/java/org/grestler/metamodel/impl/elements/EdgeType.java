@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.impl.elements;
 
-import org.grestler.metamodel.api.elements.IEdgeAttributeDeclaration;
+import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -54,7 +54,7 @@ public final class EdgeType
     }
 
     @Override
-    public void addAttribute( IEdgeAttributeDeclaration attribute ) {
+    public void addAttribute( IEdgeAttributeDecl attribute ) {
         this.attributes.add( attribute );
     }
 
@@ -66,7 +66,7 @@ public final class EdgeType
     }
 
     @Override
-    public Iterable<IEdgeAttributeDeclaration> getAttributes() {
+    public Iterable<IEdgeAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
@@ -90,7 +90,7 @@ public final class EdgeType
         return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
-    private final List<IEdgeAttributeDeclaration> attributes;
+    private final List<IEdgeAttributeDecl> attributes;
 
     /** The vertex type at the head of edges of this type. */
     private final IVertexType headVertexType;

@@ -6,9 +6,9 @@
 package org.grestler.metamodel.api.attributes;
 
 /**
- * Enumeration of possible values for whether an attribute is required.
+ * Enumeration of possible values for whether an attribute is required or optional.
  */
-public enum EAttributeRequired {
+public enum EAttributeOptionality {
 
     OPTIONAL,
     REQUIRED

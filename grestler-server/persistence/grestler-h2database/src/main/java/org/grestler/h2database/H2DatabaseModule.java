@@ -10,10 +10,12 @@ import dagger.Provides;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.h2database.datasource.H2DataSource;
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader;
+import org.grestler.h2database.queries.elements.AttributeDeclLoader;
 import org.grestler.h2database.queries.elements.EdgeTypeLoader;
 import org.grestler.h2database.queries.elements.PackageLoader;
 import org.grestler.h2database.queries.elements.VertexTypeLoader;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
+import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
@@ -26,6 +28,18 @@ import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 public class H2DatabaseModule {
 
     /**
+     * Provides an attribute declaration loader for H2.
+     *
+     * @param dataSource the H2 data source.
+     *
+     * @return the constructed attribute declaration loader.
+     */
+    @Provides
+    public IAttributeDeclLoader provideAttributeDeclLoader( IDataSource dataSource ) {
+        return new AttributeDeclLoader( dataSource );
+    }
+
+    /**
      * Provides an attribute type loader for H2.
      *
      * @param dataSource the H2 data source.
@@ -33,7 +47,7 @@ public class H2DatabaseModule {
      * @return the constructed attribute loader.
      */
     @Provides
-    public IAttributeTypeLoader provideAttributeLoader( IDataSource dataSource ) {
+    public IAttributeTypeLoader provideAttributeTypeLoader( IDataSource dataSource ) {
         return new AttributeTypeLoader( dataSource );
     }
 

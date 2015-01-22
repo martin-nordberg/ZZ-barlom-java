@@ -6,14 +6,18 @@
 package org.grestler.metamodel.spi;
 
 import org.grestler.metamodel.api.IMetamodelRepository;
+import org.grestler.metamodel.api.attributes.EAttributeOptionality;
+import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
+import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 import java.time.LocalDateTime;
@@ -54,6 +58,21 @@ public interface IMetamodelRepositorySpi
      */
     IDateTimeAttributeType loadDateTimeAttributeType(
         UUID id, IPackage parentPackage, String name, Optional<LocalDateTime> minValue, Optional<LocalDateTime> maxValue
+    );
+
+    /**
+     * Loads a queried edge attribute declaration into the repository.
+     *
+     * @param id             the unique ID of the attribute declaration.
+     * @param parentEdgeType the parent edge type.
+     * @param name           the name of the attribute.
+     * @param type           the type of the attribute.
+     * @param optionality    whether this attribute is required.
+     *
+     * @return the loaded edge attribute.
+     */
+    IEdgeAttributeDecl loadEdgeAttributeDecl(
+        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
     );
 
     /**
@@ -175,6 +194,21 @@ public interface IMetamodelRepositorySpi
      */
     IUuidAttributeType loadUuidAttributeType(
         UUID id, IPackage parentPackage, String name
+    );
+
+    /**
+     * Loads a queried vertex attribute declaration into the repository.
+     *
+     * @param id               the unique ID of the attribute declaration.
+     * @param parentVertexType the parent vertex type.
+     * @param name             the name of the attribute.
+     * @param type             the type of the attribute.
+     * @param optionality      whether this attribute is required.
+     *
+     * @return the loaded vertex attribute.
+     */
+    IVertexAttributeDecl loadVertexAttributeDecl(
+        UUID id, IVertexType parentVertexType, String name, IAttributeType type, EAttributeOptionality optionality
     );
 
     /**

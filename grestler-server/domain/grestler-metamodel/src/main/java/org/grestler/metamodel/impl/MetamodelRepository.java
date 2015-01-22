@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl;
 
+import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
@@ -12,8 +13,10 @@ import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
+import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.impl.attributes.BooleanAttributeType;
 import org.grestler.metamodel.impl.attributes.DateTimeAttributeType;
@@ -21,14 +24,17 @@ import org.grestler.metamodel.impl.attributes.Float64AttributeType;
 import org.grestler.metamodel.impl.attributes.Integer32AttributeType;
 import org.grestler.metamodel.impl.attributes.StringAttributeType;
 import org.grestler.metamodel.impl.attributes.UuidAttributeType;
+import org.grestler.metamodel.impl.elements.EdgeAttributeDecl;
 import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.RootEdgeType;
 import org.grestler.metamodel.impl.elements.RootPackage;
 import org.grestler.metamodel.impl.elements.RootVertexType;
+import org.grestler.metamodel.impl.elements.VertexAttributeDecl;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
+import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
@@ -56,13 +62,15 @@ public final class MetamodelRepository
      * @param attributeTypeLoader the loader used to initialize the attribute types into the metamodel repository.
      * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
      * @param edgeTypeLoader      the loader used to initialize the edge types into the metamodel repository.
+     * @param attributeDeclLoader the loader used to initialize attribute declarations into the metamodel repository.
      */
     @Inject
     public MetamodelRepository(
         IPackageLoader packageLoader,
         IAttributeTypeLoader attributeTypeLoader,
         IVertexTypeLoader vertexTypeLoader,
-        IEdgeTypeLoader edgeTypeLoader
+        IEdgeTypeLoader edgeTypeLoader,
+        IAttributeDeclLoader attributeDeclLoader
     ) {
 
         this.packages = new ArrayList<>();
@@ -74,6 +82,7 @@ public final class MetamodelRepository
         attributeTypeLoader.loadAllAttributeTypes( this );
         vertexTypeLoader.loadAllVertexTypes( this );
         edgeTypeLoader.loadAllEdgeTypes( this );
+        attributeDeclLoader.loadAllAttributeDecls( this );
 
     }
 
@@ -195,6 +204,13 @@ public final class MetamodelRepository
     }
 
     @Override
+    public IEdgeAttributeDecl loadEdgeAttributeDecl(
+        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
+    ) {
+        return new EdgeAttributeDecl( id, parentEdgeType, name, type, optionality );
+    }
+
+    @Override
     public IEdgeType loadEdgeType(
         UUID id,
         IPackage parentPackage,
@@ -306,6 +322,13 @@ public final class MetamodelRepository
     }
 
     @Override
+    public IVertexAttributeDecl loadVertexAttributeDecl(
+        UUID id, IVertexType parentVertexType, String name, IAttributeType type, EAttributeOptionality optionality
+    ) {
+        return new VertexAttributeDecl( id, parentVertexType, name, type, optionality );
+    }
+
+    @Override
     public IVertexType loadVertexType( UUID id, IPackage parentPackage, String name, IVertexType superType ) {
 
         IVertexType result = new VertexType( id, parentPackage, name, superType );
@@ -329,4 +352,5 @@ public final class MetamodelRepository
     private IPackage rootPackage = null;
 
     private IVertexType rootVertexType = null;
+
 }

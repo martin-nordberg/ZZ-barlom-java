@@ -16,7 +16,7 @@ public interface IEdgeType
     /**
      * @return the defined attributes of this edge type.
      */
-    Iterable<IEdgeAttributeDeclaration> getAttributes();
+    Iterable<IEdgeAttributeDecl> getAttributes();
 
     /**
      * @return the destination vertex type for edges of this type.

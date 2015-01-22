@@ -5,49 +5,49 @@
 
 package org.grestler.metamodel.impl.elements;
 
-import org.grestler.metamodel.api.attributes.EAttributeRequired;
+import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
-import org.grestler.metamodel.api.elements.IVertexAttributeDeclaration;
-import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
+import org.grestler.metamodel.api.elements.IEdgeType;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
 
 /**
- * Implementation class for vertex attribute declarations.
+ * Implementation class for edge attribute declarations.
  */
-public final class VertexAttributeDeclaration
-    implements IVertexAttributeDeclaration {
+public final class EdgeAttributeDecl
+    implements IEdgeAttributeDecl {
 
     /**
-     * Constructs a new vertex attribute declaration.
+     * Constructs a new edge attribute declaration.
      *
      * @param id               the unique ID of the attribute declaration.
-     * @param parentVertexType the parent vertex type.
+     * @param parentEdgeType the parent edge type.
      * @param name             the name of the attribute.
      * @param type             the type of the attribute.
-     * @param required         whether this attribute is required.
+     * @param optionality         whether this attribute is optionality.
      */
-    public VertexAttributeDeclaration(
-        UUID id, IVertexType parentVertexType, String name, IAttributeType type, EAttributeRequired required
+    public EdgeAttributeDecl(
+        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
     ) {
         this.id = id;
-        this.parentVertexType = parentVertexType;
+        this.parentEdgeType = parentEdgeType;
         this.name = name;
         this.type = type;
-        this.required = required;
+        this.optionality = optionality;
 
-        ( (IVertexTypeSpi) this.parentVertexType ).addAttribute( this );
+        ( (IEdgeTypeSpi) this.parentEdgeType ).addAttribute( this );
     }
 
     @Override
     public void generateJson( JsonGenerator json ) {
         json.writeStartObject()
             .write( "id", this.id.toString() )
-            .write( "parentVertexTypeId", this.parentVertexType.getId().toString() )
+            .write( "parentEdgeTypeId", this.parentEdgeType.getId().toString() )
             .write( "name", this.name )
             .write( "typeId", this.type.getId().toString() )
-            .write( "required", this.required.name() )
+            .write( "optionality", this.optionality.name() )
             .writeEnd();
     }
 
@@ -62,13 +62,13 @@ public final class VertexAttributeDeclaration
     }
 
     @Override
-    public IVertexType getParentVertexType() {
-        return this.parentVertexType;
+    public IEdgeType getParentEdgeType() {
+        return this.parentEdgeType;
     }
 
     @Override
-    public EAttributeRequired getRequired() {
-        return this.required;
+    public EAttributeOptionality getOptionality() {
+        return this.optionality;
     }
 
     @Override
@@ -82,11 +82,11 @@ public final class VertexAttributeDeclaration
     /** The name of this attribute declaration. */
     private final String name;
 
-    /** The parent vertex type of this attribute declaration. */
-    private final IVertexType parentVertexType;
+    /** The parent edge type of this attribute declaration. */
+    private final IEdgeType parentEdgeType;
 
-    /** Whether this attribute is required for instances of the parent vertex type. */
-    private final EAttributeRequired required;
+    /** Whether this attribute is required for instances of the parent edge type. */
+    private final EAttributeOptionality optionality;
 
     /** The type of this attribute declaration. */
     private final IAttributeType type;
