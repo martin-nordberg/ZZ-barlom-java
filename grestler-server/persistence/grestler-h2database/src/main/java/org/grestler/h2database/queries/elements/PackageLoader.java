@@ -5,14 +5,19 @@
 
 package org.grestler.h2database.queries.elements;
 
-import fi.evident.dalesbred.Database;
-import fi.evident.dalesbred.instantiation.Instantiator;
-import fi.evident.dalesbred.instantiation.InstantiatorArguments;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.JdbcConnection;
+import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
+import org.grestler.utilities.configuration.Configuration;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,18 +40,28 @@ public class PackageLoader
     @Override
     public void loadAllPackages( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry().registerInstantiator( PackageRecord.class, new PackageInstantiator() );
+        Configuration config = new Configuration( H2DatabaseModule.class );
 
-        // Perform the raw query.
-        List<PackageRecord> records = database.findAll(
-            PackageRecord.class, "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME FROM GRESTLER_PACKAGE"
-        );
+        List<PackageRecord> pkgRecords = new ArrayList<>();
+
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> pkgRecords.add( new PackageRecord( rs ) ), config.readString( "Package.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            PackageLoader.LOG.error( "Failed to load packages.", e );
+
+            // TODO: custom exception type
+            throw new RuntimeException( "Package loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( PackageRecord record : records ) {
-            this.findOrCreatePackage( record, records, repository );
+        for ( PackageRecord pkgRecord : pkgRecords ) {
+            this.findOrCreatePackage( pkgRecord, pkgRecords, repository );
         }
 
     }
@@ -94,47 +109,23 @@ public class PackageLoader
 
     }
 
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOG = LogManager.getLogger();
+
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Custom instantiator for packages.
-     */
-    private static class PackageInstantiator
-        implements Instantiator<PackageRecord> {
-
-        /**
-         * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the
-         * registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new vertexType.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public PackageRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new PackageRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 )
-            );
-
-        }
-
-    }
 
     /**
      * Data structure for package records.
      */
     private static class PackageRecord {
 
-        PackageRecord( UUID id, UUID parentPackageId, String name ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
+        PackageRecord( ResultSet resultSet ) throws SQLException {
+            this.id = UUID.fromString( resultSet.getString( "ID" ) );
+            this.parentPackageId = UUID.fromString( resultSet.getString( "PARENT_PACKAGE_ID" ) );
+            this.name = resultSet.getString( "NAME" );
         }
 
         public final UUID id;
