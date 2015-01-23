@@ -53,7 +53,7 @@ public final class RootVertexType
     }
 
     @Override
-    public Iterable<IVertexAttributeDecl> getAttributes() {
+    public List<IVertexAttributeDecl> getAttributes() {
         return this.attributes;
     }
 

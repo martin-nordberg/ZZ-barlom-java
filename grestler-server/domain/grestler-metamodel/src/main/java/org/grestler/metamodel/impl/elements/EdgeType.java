@@ -66,7 +66,7 @@ public final class EdgeType
     }
 
     @Override
-    public Iterable<IEdgeAttributeDecl> getAttributes() {
+    public List<IEdgeAttributeDecl> getAttributes() {
         return this.attributes;
     }
 

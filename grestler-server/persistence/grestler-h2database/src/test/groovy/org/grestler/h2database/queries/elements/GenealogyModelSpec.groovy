@@ -49,19 +49,20 @@ class GenealogyModelSpec
         vtPerson.parentPackage == genealogyPkg;
         vtPerson.name == "Person";
         vtPerson.superType.get() == rootVertexType;
+        vtPerson.attributes.size() == 2;
 
         // edge types
         def rootEdgeType = m.findEdgeTypeRoot().get();
         def etHasFather = m.findEdgeTypeById( UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" ) ).get();
         etHasFather.parentPackage == genealogyPkg;
-        etHasFather.name == "has-father";
+        etHasFather.name == "Has Father";
         etHasFather.superType.get() == rootEdgeType;
         etHasFather.tailVertexType == vtPerson;
         etHasFather.headVertexType == vtPerson;
 
         def etHasMother = m.findEdgeTypeById( UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" ) ).get();
         etHasMother.parentPackage == genealogyPkg;
-        etHasMother.name == "has-mother";
+        etHasMother.name == "Has Mother";
         etHasMother.superType.get() == rootEdgeType;
         etHasMother.tailVertexType == vtPerson;
         etHasMother.headVertexType == vtPerson;

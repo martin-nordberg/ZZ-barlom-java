@@ -40,17 +40,17 @@ public final class Package
     }
 
     @Override
-    public Iterable<IPackage> getChildPackages() {
+    public List<IPackage> getChildPackages() {
         return this.childPackages;
     }
 
     @Override
-    public Iterable<IEdgeType> getEdgeTypes() {
+    public List<IEdgeType> getEdgeTypes() {
         return this.edgeTypes;
     }
 
     @Override
-    public Iterable<IVertexType> getVertexTypes() {
+    public List<IVertexType> getVertexTypes() {
         return this.vertexTypes;
     }
 

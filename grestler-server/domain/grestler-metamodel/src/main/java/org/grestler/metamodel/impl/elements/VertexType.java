@@ -48,7 +48,7 @@ public final class VertexType
     }
 
     @Override
-    public Iterable<IVertexAttributeDecl> getAttributes() {
+    public List<IVertexAttributeDecl> getAttributes() {
         return this.attributes;
     }
 

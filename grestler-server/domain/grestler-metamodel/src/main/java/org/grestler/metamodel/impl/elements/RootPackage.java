@@ -61,7 +61,7 @@ public class RootPackage
     }
 
     @Override
-    public Iterable<IEdgeType> getEdgeTypes() {
+    public List<IEdgeType> getEdgeTypes() {
         return this.edgeTypes;
     }
 
@@ -86,7 +86,7 @@ public class RootPackage
     }
 
     @Override
-    public Iterable<IVertexType> getVertexTypes() {
+    public List<IVertexType> getVertexTypes() {
         return this.vertexTypes;
     }
 

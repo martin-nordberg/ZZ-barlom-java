@@ -5,6 +5,8 @@
 
 package org.grestler.metamodel.api.elements;
 
+import java.util.List;
+
 /**
  * Interface to a package of vertex types and edge types.
  */
@@ -14,16 +16,16 @@ public interface IPackage
     /**
      * @return the packages that are children of this one.
      */
-    Iterable<IPackage> getChildPackages();
+    List<IPackage> getChildPackages();
 
     /**
      * @return the Edge types that are children of this package.
      */
-    Iterable<IEdgeType> getEdgeTypes();
+    List<IEdgeType> getEdgeTypes();
 
     /**
      * @return the vertex types that are children of this package.
      */
-    Iterable<IVertexType> getVertexTypes();
+    List<IVertexType> getVertexTypes();
 
 }

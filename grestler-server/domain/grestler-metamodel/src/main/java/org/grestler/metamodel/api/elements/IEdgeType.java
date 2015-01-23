@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.api.elements;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,7 +17,7 @@ public interface IEdgeType
     /**
      * @return the defined attributes of this edge type.
      */
-    Iterable<IEdgeAttributeDecl> getAttributes();
+    List<IEdgeAttributeDecl> getAttributes();
 
     /**
      * @return the destination vertex type for edges of this type.
