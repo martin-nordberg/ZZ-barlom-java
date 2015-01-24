@@ -5,18 +5,22 @@
 
 package org.grestler.h2database.queries.attributes;
 
-import fi.evident.dalesbred.Database;
-import fi.evident.dalesbred.instantiation.Instantiator;
-import fi.evident.dalesbred.instantiation.InstantiatorArguments;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.JdbcConnection;
+import org.grestler.h2database.H2DatabaseException;
+import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
+import org.grestler.utilities.configuration.Configuration;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -34,7 +38,11 @@ public class AttributeTypeLoader
      * @param dataSource the data source for the H2 database to read from.
      */
     public AttributeTypeLoader( IDataSource dataSource ) {
+
         this.dataSource = dataSource;
+
+        this.config = new Configuration( H2DatabaseModule.class );
+
     }
 
     @Override
@@ -100,11 +108,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadDateTimeAttributeType(
-            record.id,
-            parentPackage.get(),
-            record.name,
-            Optional.ofNullable( record.minValue ),
-            Optional.ofNullable( record.maxValue )
+            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue
         );
 
     }
@@ -132,11 +136,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadFloat64AttributeType(
-            record.id,
-            parentPackage.get(),
-            record.name,
-            record.minValue == null ? OptionalDouble.empty() : OptionalDouble.of( record.minValue ),
-            record.maxValue == null ? OptionalDouble.empty() : OptionalDouble.of( record.maxValue )
+            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue
         );
 
     }
@@ -164,11 +164,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadInteger32AttributeType(
-            record.id,
-            parentPackage.get(),
-            record.name,
-            record.minValue == null ? OptionalInt.empty() : OptionalInt.of( record.minValue ),
-            record.maxValue == null ? OptionalInt.empty() : OptionalInt.of( record.maxValue )
+            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue
         );
 
     }
@@ -196,11 +192,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadStringAttributeType(
-            record.id,
-            parentPackage.get(),
-            record.name,
-            record.maxLength,
-            record.regexPattern == null ? Optional.empty() : Optional.of( record.regexPattern )
+            record.id, parentPackage.get(), record.name, record.maxLength, record.regexPattern
         );
 
     }
@@ -240,20 +232,24 @@ public class AttributeTypeLoader
      */
     private void loadAllBooleanAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( BooleanAttributeTypeRecord.class, new BooleanAttributeTypeInstantiator() );
+        Collection<BooleanAttributeTypeRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<BooleanAttributeTypeRecord> records = database.findAll(
-            BooleanAttributeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME FROM GRESTLER_VIEW_BOOLEAN_ATTRIBUTE_TYPE"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new BooleanAttributeTypeRecord( rs ) ),
+                    this.config.readString( "BooleanAttributeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Boolean attribute type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( BooleanAttributeTypeRecord record : records ) {
-            AttributeTypeLoader.findOrCreateBooleanAttributeType( record, repository );
+        for ( BooleanAttributeTypeRecord atRecord : atRecords ) {
+            AttributeTypeLoader.findOrCreateBooleanAttributeType( atRecord, repository );
         }
 
     }
@@ -265,20 +261,24 @@ public class AttributeTypeLoader
      */
     private void loadAllDateTimeAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( DateTimeAttributeTypeRecord.class, new DateTimeAttributeTypeInstantiator() );
+        Collection<DateTimeAttributeTypeRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<DateTimeAttributeTypeRecord> records = database.findAll(
-            DateTimeAttributeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, MIN_VALUE, MAX_VALUE FROM GRESTLER_VIEW_DATETIME_ATTRIBUTE_TYPE"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new DateTimeAttributeTypeRecord( rs ) ),
+                    this.config.readString( "DateTimeAttributeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Date/time attribute type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( DateTimeAttributeTypeRecord record : records ) {
-            AttributeTypeLoader.findOrCreateDateTimeAttributeType( record, repository );
+        for ( DateTimeAttributeTypeRecord atRecord : atRecords ) {
+            AttributeTypeLoader.findOrCreateDateTimeAttributeType( atRecord, repository );
         }
 
     }
@@ -290,20 +290,24 @@ public class AttributeTypeLoader
      */
     private void loadAllFloat64AttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( Float64AttributeTypeRecord.class, new Float64AttributeTypeInstantiator() );
+        Collection<Float64AttributeTypeRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<Float64AttributeTypeRecord> records = database.findAll(
-            Float64AttributeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, MIN_VALUE, MAX_VALUE FROM GRESTLER_VIEW_FLOAT64_ATTRIBUTE_TYPE"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new Float64AttributeTypeRecord( rs ) ),
+                    this.config.readString( "Float64AttributeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Float64 attribute type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( Float64AttributeTypeRecord record : records ) {
-            AttributeTypeLoader.findOrCreateFloat64AttributeType( record, repository );
+        for ( Float64AttributeTypeRecord atRecord : atRecords ) {
+            AttributeTypeLoader.findOrCreateFloat64AttributeType( atRecord, repository );
         }
 
     }
@@ -315,20 +319,24 @@ public class AttributeTypeLoader
      */
     private void loadAllInteger32AttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( Integer32AttributeTypeRecord.class, new Integer32AttributeTypeInstantiator() );
+        Collection<Integer32AttributeTypeRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<Integer32AttributeTypeRecord> records = database.findAll(
-            Integer32AttributeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, MIN_VALUE, MAX_VALUE FROM GRESTLER_VIEW_INTEGER32_ATTRIBUTE_TYPE"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new Integer32AttributeTypeRecord( rs ) ),
+                    this.config.readString( "Integer32AttributeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Integer32 attribute type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( Integer32AttributeTypeRecord record : records ) {
-            AttributeTypeLoader.findOrCreateInteger32AttributeType( record, repository );
+        for ( Integer32AttributeTypeRecord atRecord : atRecords ) {
+            AttributeTypeLoader.findOrCreateInteger32AttributeType( atRecord, repository );
         }
 
     }
@@ -340,20 +348,24 @@ public class AttributeTypeLoader
      */
     private void loadAllStringAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( StringAttributeTypeRecord.class, new StringAttributeTypeInstantiator() );
+        Collection<StringAttributeTypeRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<StringAttributeTypeRecord> records = database.findAll(
-            StringAttributeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, MAX_LENGTH, REGEX_PATTERN FROM GRESTLER_VIEW_STRING_ATTRIBUTE_TYPE"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new StringAttributeTypeRecord( rs ) ),
+                    this.config.readString( "StringAttributeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Integer32 attribute type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( StringAttributeTypeRecord record : records ) {
-            AttributeTypeLoader.findOrCreateStringAttributeType( record, repository );
+        for ( StringAttributeTypeRecord atRecord : atRecords ) {
+            AttributeTypeLoader.findOrCreateStringAttributeType( atRecord, repository );
         }
 
     }
@@ -365,23 +377,30 @@ public class AttributeTypeLoader
      */
     private void loadAllUuidAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( UuidAttributeTypeRecord.class, new UuidAttributeTypeInstantiator() );
+        Collection<UuidAttributeTypeRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<UuidAttributeTypeRecord> records = database.findAll(
-            UuidAttributeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME FROM GRESTLER_VIEW_UUID_ATTRIBUTE_TYPE"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new UuidAttributeTypeRecord( rs ) ),
+                    this.config.readString( "UuidAttributeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Integer32 attribute type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( UuidAttributeTypeRecord record : records ) {
-            AttributeTypeLoader.findOrCreateUuidAttributeType( record, repository );
+        for ( UuidAttributeTypeRecord atRecord : atRecords ) {
+            AttributeTypeLoader.findOrCreateUuidAttributeType( atRecord, repository );
         }
 
     }
+
+    /** The configuration for SQL queries. */
+    private final Configuration config;
 
     /** The data source for queries. */
     private final IDataSource dataSource;
@@ -391,12 +410,10 @@ public class AttributeTypeLoader
      */
     private static class AttributeTypeRecord {
 
-        AttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name
-        ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
+        AttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+            this.id = UUID.fromString( resultSet.getString( "ID" ) );
+            this.parentPackageId = UUID.fromString( resultSet.getString( "PARENT_PACKAGE_ID" ) );
+            this.name = resultSet.getString( "NAME" );
         }
 
         public final UUID id;
@@ -408,84 +425,13 @@ public class AttributeTypeLoader
     }
 
     /**
-     * Custom instantiator for UUID attribute types.
-     */
-    private static class BooleanAttributeTypeInstantiator
-        implements Instantiator<BooleanAttributeTypeRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public BooleanAttributeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new BooleanAttributeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 )
-            );
-
-        }
-
-    }
-
-    /**
      * Data structure for UUID attribute type records.
      */
     private static class BooleanAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        BooleanAttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name
-        ) {
-            super( id, parentPackageId, name );
-        }
-
-    }
-
-    /**
-     * Custom instantiator for date/time attribute types.
-     */
-    private static class DateTimeAttributeTypeInstantiator
-        implements Instantiator<DateTimeAttributeTypeRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public DateTimeAttributeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            LocalDateTime minValue = null;
-            if ( fields.getValues().get( 3 ) != null ) {
-                minValue = ( (Timestamp) fields.getValues().get( 3 ) ).toLocalDateTime();
-            }
-            LocalDateTime maxValue = null;
-            if ( fields.getValues().get( 4 ) != null ) {
-                maxValue = ( (Timestamp) fields.getValues().get( 4 ) ).toLocalDateTime();
-            }
-
-            // Get the attributes from the database result.
-            return new DateTimeAttributeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                minValue,
-                maxValue
-            );
-
+        BooleanAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+            super( resultSet );
         }
 
     }
@@ -496,48 +442,21 @@ public class AttributeTypeLoader
     private static class DateTimeAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        DateTimeAttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name, LocalDateTime minValue, LocalDateTime maxValue
-        ) {
-            super( id, parentPackageId, name );
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-        }
+        DateTimeAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
 
-        public final LocalDateTime maxValue;
+            super( resultSet );
 
-        public final LocalDateTime minValue;
-    }
+            Timestamp minValueTs = resultSet.getTimestamp( "MIN_VALUE" );
+            this.minValue = Optional.ofNullable( minValueTs == null ? null : minValueTs.toLocalDateTime() );
 
-    /**
-     * Custom instantiator for 64-bit floating point attribute types.
-     */
-    private static class Float64AttributeTypeInstantiator
-        implements Instantiator<Float64AttributeTypeRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public Float64AttributeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new Float64AttributeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                (Double) fields.getValues().get( 3 ),
-                (Double) fields.getValues().get( 4 )
-            );
+            Timestamp maxValueTs = resultSet.getTimestamp( "MAX_VALUE" );
+            this.maxValue = Optional.ofNullable( maxValueTs == null ? null : maxValueTs.toLocalDateTime() );
 
         }
 
+        public final Optional<LocalDateTime> maxValue;
+
+        public final Optional<LocalDateTime> minValue;
     }
 
     /**
@@ -546,48 +465,21 @@ public class AttributeTypeLoader
     private static class Float64AttributeTypeRecord
         extends AttributeTypeRecord {
 
-        Float64AttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name, Double minValue, Double maxValue
-        ) {
-            super( id, parentPackageId, name );
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-        }
+        Float64AttributeTypeRecord( ResultSet resultSet ) throws SQLException {
 
-        public final Double maxValue;
+            super( resultSet );
 
-        public final Double minValue;
-    }
+            double rsMinValue = resultSet.getDouble( "MIN_VALUE" );
+            this.minValue = resultSet.wasNull() ? OptionalDouble.empty() : OptionalDouble.of( rsMinValue );
 
-    /**
-     * Custom instantiator for 32-bit integer attribute types.
-     */
-    private static class Integer32AttributeTypeInstantiator
-        implements Instantiator<Integer32AttributeTypeRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public Integer32AttributeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new Integer32AttributeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                (Integer) fields.getValues().get( 3 ),
-                (Integer) fields.getValues().get( 4 )
-            );
+            double rsMaxValue = resultSet.getDouble( "MAX_VALUE" );
+            this.maxValue = resultSet.wasNull() ? OptionalDouble.empty() : OptionalDouble.of( rsMaxValue );
 
         }
 
+        public final OptionalDouble maxValue;
+
+        public final OptionalDouble minValue;
     }
 
     /**
@@ -596,48 +488,22 @@ public class AttributeTypeLoader
     private static class Integer32AttributeTypeRecord
         extends AttributeTypeRecord {
 
-        Integer32AttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name, Integer minValue, Integer maxValue
-        ) {
-            super( id, parentPackageId, name );
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-        }
+        Integer32AttributeTypeRecord( ResultSet resultSet ) throws SQLException {
 
-        public final Integer maxValue;
+            super( resultSet );
 
-        public final Integer minValue;
-    }
+            int rsMinValue = resultSet.getInt( "MIN_VALUE" );
+            this.minValue = resultSet.wasNull() ? OptionalInt.empty() : OptionalInt.of( rsMinValue );
 
-    /**
-     * Custom instantiator for string attribute types.
-     */
-    private static class StringAttributeTypeInstantiator
-        implements Instantiator<StringAttributeTypeRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public StringAttributeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new StringAttributeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                (Integer) fields.getValues().get( 3 ),
-                (String) fields.getValues().get( 4 )
-            );
+            int rsMaxValue = resultSet.getInt( "MAX_VALUE" );
+            this.maxValue = resultSet.wasNull() ? OptionalInt.empty() : OptionalInt.of( rsMaxValue );
 
         }
 
+
+        public final OptionalInt maxValue;
+
+        public final OptionalInt minValue;
     }
 
     /**
@@ -646,46 +512,19 @@ public class AttributeTypeLoader
     private static class StringAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        StringAttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name, Integer maxLength, String regexPattern
-        ) {
-            super( id, parentPackageId, name );
-            this.maxLength = maxLength;
-            this.regexPattern = regexPattern;
-        }
+        StringAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
 
-        public final Integer maxLength;
+            super( resultSet );
 
-        public final String regexPattern;
-    }
+            this.maxLength = resultSet.getInt( "MAX_LENGTH" );
 
-    /**
-     * Custom instantiator for boolean attribute types.
-     */
-    private static class UuidAttributeTypeInstantiator
-        implements Instantiator<UuidAttributeTypeRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public UuidAttributeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new UuidAttributeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 )
-            );
+            this.regexPattern = Optional.ofNullable( resultSet.getString( "REGEX_PATTERN" ) );
 
         }
 
+        public final int maxLength;
+
+        public final Optional<String> regexPattern;
     }
 
     /**
@@ -694,10 +533,8 @@ public class AttributeTypeLoader
     private static class UuidAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        UuidAttributeTypeRecord(
-            UUID id, UUID parentPackageId, String name
-        ) {
-            super( id, parentPackageId, name );
+        UuidAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+            super( resultSet );
         }
 
     }

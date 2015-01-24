@@ -5,10 +5,10 @@
 
 package org.grestler.h2database.queries.elements;
 
-import fi.evident.dalesbred.Database;
-import fi.evident.dalesbred.instantiation.Instantiator;
-import fi.evident.dalesbred.instantiation.InstantiatorArguments;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.JdbcConnection;
+import org.grestler.h2database.H2DatabaseException;
+import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
@@ -17,8 +17,12 @@ import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
+import org.grestler.utilities.configuration.Configuration;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,7 +38,11 @@ public class AttributeDeclLoader
      * @param dataSource the data source for the H2 database to read from.
      */
     public AttributeDeclLoader( IDataSource dataSource ) {
+
         this.dataSource = dataSource;
+
+        this.config = new Configuration( H2DatabaseModule.class );
+
     }
 
     @Override
@@ -96,20 +104,24 @@ public class AttributeDeclLoader
      */
     private void loadAllEdgeAttributeDecls( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( EdgeAttributeDeclRecord.class, new EdgeAttributeDeclInstantiator() );
+        Collection<EdgeAttributeDeclRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<EdgeAttributeDeclRecord> records = database.findAll(
-            EdgeAttributeDeclRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_EDGE_TYPE_ID), NAME, TO_CHAR(ATTRIBUTE_TYPE_ID), IS_REQUIRED FROM GRESTLER_EDGE_ATTRIBUTE_DECL"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new EdgeAttributeDeclRecord( rs ) ),
+                    this.config.readString( "EdgeAttributeDecl.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Edge attribute declaration loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( EdgeAttributeDeclRecord record : records ) {
-            AttributeDeclLoader.findOrCreateEdgeAttributeDecl( record, repository );
+        for ( EdgeAttributeDeclRecord atRecord : atRecords ) {
+            AttributeDeclLoader.findOrCreateEdgeAttributeDecl( atRecord, repository );
         }
 
     }
@@ -121,71 +133,46 @@ public class AttributeDeclLoader
      */
     private void loadAllVertexAttributeDecls( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry()
-                .registerInstantiator( VertexAttributeDeclRecord.class, new VertexAttributeDeclInstantiator() );
+        Collection<VertexAttributeDeclRecord> atRecords = new ArrayList<>();
 
-        // Perform the raw query.
-        List<VertexAttributeDeclRecord> records = database.findAll(
-            VertexAttributeDeclRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_VERTEX_TYPE_ID), NAME, TO_CHAR(ATTRIBUTE_TYPE_ID), IS_REQUIRED FROM GRESTLER_VERTEX_ATTRIBUTE_DECL"
-        );
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> atRecords.add( new VertexAttributeDeclRecord( rs ) ),
+                    this.config.readString( "VertexAttributeDecl.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Vertex attribute declaration loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( VertexAttributeDeclRecord record : records ) {
-            AttributeDeclLoader.findOrCreateVertexAttributeDecl( record, repository );
+        for ( VertexAttributeDeclRecord atRecord : atRecords ) {
+            AttributeDeclLoader.findOrCreateVertexAttributeDecl( atRecord, repository );
         }
 
     }
+
+    /** The configuration for SQL queries. */
+    private final Configuration config;
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Custom instantiator for boolean attribute types.
-     */
-    private static class EdgeAttributeDeclInstantiator
-        implements Instantiator<EdgeAttributeDeclRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public EdgeAttributeDeclRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new EdgeAttributeDeclRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                UUID.fromString( (String) fields.getValues().get( 3 ) ),
-                (Boolean) fields.getValues().get( 4 ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL
-            );
-
-        }
-
-    }
 
     /**
      * Data structure for boolean attribute type records.
      */
     private static class EdgeAttributeDeclRecord {
 
-        EdgeAttributeDeclRecord(
-            UUID id, UUID parentEdgeTypeId, String name, UUID attributeTypeId, EAttributeOptionality optionality
-        ) {
-            this.id = id;
-            this.parentEdgeTypeId = parentEdgeTypeId;
-            this.name = name;
-            this.attributeTypeId = attributeTypeId;
-            this.optionality = optionality;
+        EdgeAttributeDeclRecord( ResultSet resultSet ) throws SQLException {
+
+            this.id = UUID.fromString( resultSet.getString( "ID" ) );
+            this.parentEdgeTypeId = UUID.fromString( resultSet.getString( "PARENT_EDGE_TYPE_ID" ) );
+            this.name = resultSet.getString( "NAME" );
+            this.attributeTypeId = UUID.fromString( resultSet.getString( "ATTRIBUTE_TYPE_ID" ) );
+            this.optionality = resultSet.getBoolean( "IS_REQUIRED" ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
         }
 
         public final UUID id;
@@ -201,49 +188,17 @@ public class AttributeDeclLoader
     }
 
     /**
-     * Custom instantiator for UUID attribute types.
-     */
-    private static class VertexAttributeDeclInstantiator
-        implements Instantiator<VertexAttributeDeclRecord> {
-
-        /**
-         * Instantiates a boolean attribute type either by finding it in the registry or else creating it and adding it
-         * to the registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new attribute type.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public VertexAttributeDeclRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new VertexAttributeDeclRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                UUID.fromString( (String) fields.getValues().get( 3 ) ),
-                (Boolean) fields.getValues().get( 4 ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL
-            );
-
-        }
-
-    }
-
-    /**
      * Data structure for UUID attribute type records.
      */
     private static class VertexAttributeDeclRecord {
 
-        VertexAttributeDeclRecord(
-            UUID id, UUID parentVertexTypeId, String name, UUID attributeTypeId, EAttributeOptionality optionality
-        ) {
-            this.id = id;
-            this.parentVertexTypeId = parentVertexTypeId;
-            this.name = name;
-            this.attributeTypeId = attributeTypeId;
-            this.optionality = optionality;
+        VertexAttributeDeclRecord( ResultSet resultSet ) throws SQLException {
+
+            this.id = UUID.fromString( resultSet.getString( "ID" ) );
+            this.parentVertexTypeId = UUID.fromString( resultSet.getString( "PARENT_VERTEX_TYPE_ID" ) );
+            this.name = resultSet.getString( "NAME" );
+            this.attributeTypeId = UUID.fromString( resultSet.getString( "ATTRIBUTE_TYPE_ID" ) );
+            this.optionality = resultSet.getBoolean( "IS_REQUIRED" ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
         }
 
         public final UUID id;

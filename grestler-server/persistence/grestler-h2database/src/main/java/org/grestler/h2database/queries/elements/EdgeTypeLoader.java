@@ -5,16 +5,20 @@
 
 package org.grestler.h2database.queries.elements;
 
-import fi.evident.dalesbred.Database;
-import fi.evident.dalesbred.instantiation.Instantiator;
-import fi.evident.dalesbred.instantiation.InstantiatorArguments;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.JdbcConnection;
+import org.grestler.h2database.H2DatabaseException;
+import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
+import org.grestler.utilities.configuration.Configuration;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,19 +41,25 @@ public class EdgeTypeLoader
     @Override
     public void loadAllEdgeTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry().registerInstantiator( EdgeTypeRecord.class, new EdgeTypeInstantiator() );
+        Configuration config = new Configuration( H2DatabaseModule.class );
 
-        // Perform the raw query.
-        List<EdgeTypeRecord> records = database.findAll(
-            EdgeTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID), TO_CHAR(TAIL_VERTEX_TYPE_ID), TO_CHAR(HEAD_VERTEX_TYPE_ID) FROM GRESTLER_EDGE_TYPE"
-        );
+        List<EdgeTypeRecord> etRecords = new ArrayList<>();
+
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> etRecords.add( new EdgeTypeRecord( rs ) ), config.readString( "EdgeType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Edge type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( EdgeTypeRecord record : records ) {
-            this.findOrCreateEdgeType( record, records, repository );
+        for ( EdgeTypeRecord etRecord : etRecords ) {
+            this.findOrCreateEdgeType( etRecord, etRecords, repository );
         }
 
     }
@@ -110,51 +120,17 @@ public class EdgeTypeLoader
     private final IDataSource dataSource;
 
     /**
-     * Custom instantiator for edge types.
-     */
-    private static class EdgeTypeInstantiator
-        implements Instantiator<EdgeTypeRecord> {
-
-        /**
-         * Instantiates a edgeType either by finding it in the registry or else creating it and adding it to the
-         * registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new edgeType.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public EdgeTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new EdgeTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                UUID.fromString( (String) fields.getValues().get( 3 ) ),
-                UUID.fromString( (String) fields.getValues().get( 4 ) ),
-                UUID.fromString( (String) fields.getValues().get( 5 ) )
-            );
-
-        }
-
-    }
-
-    /**
      * Data structure for edge type records.
      */
     private static class EdgeTypeRecord {
 
-        EdgeTypeRecord(
-            UUID id, UUID parentPackageId, String name, UUID superTypeId, UUID tailVertexTypeId, UUID headVertexTypeId
-        ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
-            this.superTypeId = superTypeId;
-            this.tailVertexTypeId = tailVertexTypeId;
-            this.headVertexTypeId = headVertexTypeId;
+        EdgeTypeRecord( ResultSet resultSet ) throws SQLException {
+            this.id = UUID.fromString( resultSet.getString( "ID" ) );
+            this.parentPackageId = UUID.fromString( resultSet.getString( "PARENT_PACKAGE_ID" ) );
+            this.name = resultSet.getString( "NAME" );
+            this.superTypeId = UUID.fromString( resultSet.getString( "SUPER_TYPE_ID" ) );
+            this.tailVertexTypeId = UUID.fromString( resultSet.getString( "TAIL_VERTEX_TYPE_ID" ) );
+            this.headVertexTypeId = UUID.fromString( resultSet.getString( "HEAD_VERTEX_TYPE_ID" ) );
         }
 
         public final UUID headVertexTypeId;

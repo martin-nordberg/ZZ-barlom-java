@@ -5,10 +5,9 @@
 
 package org.grestler.h2database.queries.elements;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.IDataSource;
 import org.grestler.dbutilities.JdbcConnection;
+import org.grestler.h2database.H2DatabaseException;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
@@ -53,10 +52,7 @@ public class PackageLoader
             }
         }
         catch ( SQLException e ) {
-            PackageLoader.LOG.error( "Failed to load packages.", e );
-
-            // TODO: custom exception type
-            throw new RuntimeException( "Package loading failed.", e );
+            throw new H2DatabaseException( "Package loading failed.", e );
         }
 
         // Copy the results into the repository.
@@ -108,11 +104,6 @@ public class PackageLoader
         return repository.loadPackage( record.id, parentPackage.get(), record.name );
 
     }
-
-    /**
-     * The logger for this class.
-     */
-    private static final Logger LOG = LogManager.getLogger();
 
     /** The data source for queries. */
     private final IDataSource dataSource;

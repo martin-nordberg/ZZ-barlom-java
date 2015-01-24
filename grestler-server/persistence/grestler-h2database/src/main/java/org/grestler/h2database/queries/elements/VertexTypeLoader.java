@@ -5,15 +5,19 @@
 
 package org.grestler.h2database.queries.elements;
 
-import fi.evident.dalesbred.Database;
-import fi.evident.dalesbred.instantiation.Instantiator;
-import fi.evident.dalesbred.instantiation.InstantiatorArguments;
 import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.JdbcConnection;
+import org.grestler.h2database.H2DatabaseException;
+import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
+import org.grestler.utilities.configuration.Configuration;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,19 +40,25 @@ public class VertexTypeLoader
     @Override
     public void loadAllVertexTypes( IMetamodelRepositorySpi repository ) {
 
-        // Set up the database wrapper.
-        Database database = Database.forDataSource( this.dataSource );
-        database.getInstantiatorRegistry().registerInstantiator( VertexTypeRecord.class, new VertexTypeInstantiator() );
+        Configuration config = new Configuration( H2DatabaseModule.class );
 
-        // Perform the raw query.
-        List<VertexTypeRecord> records = database.findAll(
-            VertexTypeRecord.class,
-            "SELECT TO_CHAR(ID), TO_CHAR(PARENT_PACKAGE_ID), NAME, TO_CHAR(SUPER_TYPE_ID) FROM GRESTLER_VERTEX_TYPE"
-        );
+        List<VertexTypeRecord> vtRecords = new ArrayList<>();
+
+        // Perform the database query, accumulating the records found.
+        try {
+            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
+                connection.executeQuery(
+                    rs -> vtRecords.add( new VertexTypeRecord( rs ) ), config.readString( "VertexType.All" )
+                );
+            }
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Vertex type loading failed.", e );
+        }
 
         // Copy the results into the repository.
-        for ( VertexTypeRecord record : records ) {
-            this.findOrCreateVertexType( record, records, repository );
+        for ( VertexTypeRecord vtRecord : vtRecords ) {
+            this.findOrCreateVertexType( vtRecord, vtRecords, repository );
         }
 
     }
@@ -103,45 +113,15 @@ public class VertexTypeLoader
     private final IDataSource dataSource;
 
     /**
-     * Custom instantiator for vertex types.
-     */
-    private static class VertexTypeInstantiator
-        implements Instantiator<VertexTypeRecord> {
-
-        /**
-         * Instantiates a vertexType either by finding it in the registry or else creating it and adding it to the
-         * registry.
-         *
-         * @param fields the fields from the database query.
-         *
-         * @return the new vertexType.
-         */
-        @SuppressWarnings( "NullableProblems" )
-        @Override
-        public VertexTypeRecord instantiate( InstantiatorArguments fields ) {
-
-            // Get the attributes from the database result.
-            return new VertexTypeRecord(
-                UUID.fromString( (String) fields.getValues().get( 0 ) ),
-                UUID.fromString( (String) fields.getValues().get( 1 ) ),
-                (String) fields.getValues().get( 2 ),
-                UUID.fromString( (String) fields.getValues().get( 3 ) )
-            );
-
-        }
-
-    }
-
-    /**
      * Data structure for vertex type records.
      */
     private static class VertexTypeRecord {
 
-        VertexTypeRecord( UUID id, UUID parentPackageId, String name, UUID superTypeId ) {
-            this.id = id;
-            this.parentPackageId = parentPackageId;
-            this.name = name;
-            this.superTypeId = superTypeId;
+        VertexTypeRecord( ResultSet resultSet ) throws SQLException {
+            this.id = UUID.fromString( resultSet.getString( "ID" ) );
+            this.parentPackageId = UUID.fromString( resultSet.getString( "PARENT_PACKAGE_ID" ) );
+            this.name = resultSet.getString( "NAME" );
+            this.superTypeId = UUID.fromString( resultSet.getString( "SUPER_TYPE_ID" ) );
         }
 
         public final UUID id;

@@ -20,9 +20,6 @@ dependencies {
     // Dagger
     compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
 
-    // Dalesbred
-    compile( group: 'fi.evident.dalesbred', name: 'dalesbred', version: dalesbredVersion )
-
     // H2
     compile( group: 'com.h2database', name: 'h2', version: h2Version )
 

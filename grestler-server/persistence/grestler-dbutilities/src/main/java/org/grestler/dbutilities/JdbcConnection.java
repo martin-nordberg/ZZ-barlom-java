@@ -46,6 +46,8 @@ public class JdbcConnection
      */
     public void executeQuery( IQueryCallback queryCallback, String sqlQuery ) throws SQLException {
 
+        assert sqlQuery.startsWith( "SELECT" );
+
         JdbcConnection.LOG.info( "Executing query: {}.", sqlQuery );
 
         try ( PreparedStatement stmt = this.connection.prepareStatement( sqlQuery ) ) {
