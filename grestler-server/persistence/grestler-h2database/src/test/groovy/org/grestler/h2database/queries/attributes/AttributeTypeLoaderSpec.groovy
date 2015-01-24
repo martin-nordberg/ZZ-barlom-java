@@ -5,7 +5,7 @@
 
 package org.grestler.h2database.queries.attributes
 
-import org.grestler.h2database.datasource.H2DataSource
+import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.elements.AttributeDeclLoader
 import org.grestler.h2database.queries.elements.EdgeTypeLoader
 import org.grestler.h2database.queries.elements.PackageLoader

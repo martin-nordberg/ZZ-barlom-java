@@ -5,7 +5,7 @@
 
 package org.grestler.h2database.queries.elements
 
-import org.grestler.h2database.datasource.H2DataSource
+import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.metamodel.api.attributes.EAttributeOptionality
 import org.grestler.metamodel.api.attributes.EDataType

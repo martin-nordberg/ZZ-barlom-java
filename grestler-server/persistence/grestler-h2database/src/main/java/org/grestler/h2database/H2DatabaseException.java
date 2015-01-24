@@ -7,7 +7,7 @@ package org.grestler.h2database;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.grestler.dbutilities.DatabaseException;
+import org.grestler.dbutilities.api.DatabaseException;
 
 /**
  * Concrete exception for H2 database errors.

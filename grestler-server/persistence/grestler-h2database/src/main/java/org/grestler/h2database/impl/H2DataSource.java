@@ -3,10 +3,12 @@
 // Apache 2.0 License
 //
 
-package org.grestler.h2database.datasource;
+package org.grestler.h2database.impl;
 
 import org.apache.logging.log4j.LogManager;
-import org.grestler.dbutilities.IDataSource;
+import org.grestler.dbutilities.api.IConnection;
+import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.h2database.H2DatabaseException;
 import org.grestler.h2database.migration.DatabaseMigration;
 import org.grestler.utilities.configuration.Configuration;
 import org.h2.jdbcx.JdbcConnectionPool;
@@ -82,6 +84,16 @@ public final class H2DataSource
     @Override
     public boolean isWrapperFor( Class<?> iface ) throws SQLException {
         return this.connectionPool.isWrapperFor( iface );
+    }
+
+    @Override
+    public IConnection openConnection() {
+        try {
+            return new H2Connection( this.getConnection() );
+        }
+        catch ( SQLException e ) {
+            throw new H2DatabaseException( "Failed to open connection.", e );
+        }
     }
 
     @Override

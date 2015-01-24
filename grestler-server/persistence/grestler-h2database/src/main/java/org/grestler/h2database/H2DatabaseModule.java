@@ -7,8 +7,8 @@ package org.grestler.h2database;
 
 import dagger.Module;
 import dagger.Provides;
-import org.grestler.dbutilities.IDataSource;
-import org.grestler.h2database.datasource.H2DataSource;
+import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.h2database.impl.H2DataSource;
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader;
 import org.grestler.h2database.queries.elements.AttributeDeclLoader;
 import org.grestler.h2database.queries.elements.EdgeTypeLoader;

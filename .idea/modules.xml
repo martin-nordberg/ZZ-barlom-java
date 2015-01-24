@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/grestler.iml" filepath="$PROJECT_DIR$/grestler.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/application/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/grestler-server/application/grestler-adminserver/grestler-adminserver.iml" group="application" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/persistence/grestler-dbutilities/grestler-dbutilities.iml" filepath="$PROJECT_DIR$/grestler-server/persistence/grestler-dbutilities/grestler-dbutilities.iml" group="persistence" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/persistence/grestler-h2database/grestler-h2database.iml" filepath="$PROJECT_DIR$/grestler-server/persistence/grestler-h2database/grestler-h2database.iml" group="persistence" />

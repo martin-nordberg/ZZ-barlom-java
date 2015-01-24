@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.dbutilities;
+package org.grestler.dbutilities.api;
 
 import javax.sql.DataSource;
 
@@ -12,5 +12,12 @@ import javax.sql.DataSource;
  */
 public interface IDataSource
     extends AutoCloseable, DataSource {
+
+    /**
+     * Creates a new connection from this data source.
+     *
+     * @return the newly opened connection.
+     */
+    IConnection openConnection();
 
 }

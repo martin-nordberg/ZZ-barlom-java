@@ -5,17 +5,15 @@
 
 package org.grestler.h2database.queries.elements;
 
-import org.grestler.dbutilities.IDataSource;
-import org.grestler.dbutilities.JdbcConnection;
-import org.grestler.h2database.H2DatabaseException;
+import org.grestler.dbutilities.api.IConnection;
+import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.utilities.configuration.Configuration;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,15 +42,10 @@ public class PackageLoader
         List<PackageRecord> pkgRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> pkgRecords.add( new PackageRecord( rs ) ), config.readString( "Package.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Package loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> pkgRecords.add( new PackageRecord( rs ) ), config.readString( "Package.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -113,9 +106,9 @@ public class PackageLoader
      */
     private static class PackageRecord {
 
-        PackageRecord( ResultSet resultSet ) throws SQLException {
-            this.id = UUID.fromString( resultSet.getString( "ID" ) );
-            this.parentPackageId = UUID.fromString( resultSet.getString( "PARENT_PACKAGE_ID" ) );
+        PackageRecord( IResultSet resultSet ) {
+            this.id = resultSet.getUuid( "ID" );
+            this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );
         }
 

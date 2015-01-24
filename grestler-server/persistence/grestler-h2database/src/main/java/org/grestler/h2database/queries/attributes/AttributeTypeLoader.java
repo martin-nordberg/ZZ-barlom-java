@@ -5,9 +5,9 @@
 
 package org.grestler.h2database.queries.attributes;
 
-import org.grestler.dbutilities.IDataSource;
-import org.grestler.dbutilities.JdbcConnection;
-import org.grestler.h2database.H2DatabaseException;
+import org.grestler.dbutilities.api.IConnection;
+import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -15,9 +15,6 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.utilities.configuration.Configuration;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -235,16 +232,11 @@ public class AttributeTypeLoader
         Collection<BooleanAttributeTypeRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new BooleanAttributeTypeRecord( rs ) ),
-                    this.config.readString( "BooleanAttributeType.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Boolean attribute type loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new BooleanAttributeTypeRecord( rs ) ),
+                this.config.readString( "BooleanAttributeType.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -264,16 +256,11 @@ public class AttributeTypeLoader
         Collection<DateTimeAttributeTypeRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new DateTimeAttributeTypeRecord( rs ) ),
-                    this.config.readString( "DateTimeAttributeType.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Date/time attribute type loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new DateTimeAttributeTypeRecord( rs ) ),
+                this.config.readString( "DateTimeAttributeType.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -293,16 +280,11 @@ public class AttributeTypeLoader
         Collection<Float64AttributeTypeRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new Float64AttributeTypeRecord( rs ) ),
-                    this.config.readString( "Float64AttributeType.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Float64 attribute type loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new Float64AttributeTypeRecord( rs ) ),
+                this.config.readString( "Float64AttributeType.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -322,16 +304,11 @@ public class AttributeTypeLoader
         Collection<Integer32AttributeTypeRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new Integer32AttributeTypeRecord( rs ) ),
-                    this.config.readString( "Integer32AttributeType.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Integer32 attribute type loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new Integer32AttributeTypeRecord( rs ) ),
+                this.config.readString( "Integer32AttributeType.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -351,16 +328,11 @@ public class AttributeTypeLoader
         Collection<StringAttributeTypeRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new StringAttributeTypeRecord( rs ) ),
-                    this.config.readString( "StringAttributeType.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Integer32 attribute type loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new StringAttributeTypeRecord( rs ) ),
+                this.config.readString( "StringAttributeType.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -380,16 +352,11 @@ public class AttributeTypeLoader
         Collection<UuidAttributeTypeRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new UuidAttributeTypeRecord( rs ) ),
-                    this.config.readString( "UuidAttributeType.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Integer32 attribute type loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new UuidAttributeTypeRecord( rs ) ),
+                this.config.readString( "UuidAttributeType.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -410,9 +377,9 @@ public class AttributeTypeLoader
      */
     private static class AttributeTypeRecord {
 
-        AttributeTypeRecord( ResultSet resultSet ) throws SQLException {
-            this.id = UUID.fromString( resultSet.getString( "ID" ) );
-            this.parentPackageId = UUID.fromString( resultSet.getString( "PARENT_PACKAGE_ID" ) );
+        AttributeTypeRecord( IResultSet resultSet ) {
+            this.id = resultSet.getUuid( "ID" );
+            this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );
         }
 
@@ -430,7 +397,7 @@ public class AttributeTypeLoader
     private static class BooleanAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        BooleanAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+        BooleanAttributeTypeRecord( IResultSet resultSet ) {
             super( resultSet );
         }
 
@@ -442,15 +409,12 @@ public class AttributeTypeLoader
     private static class DateTimeAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        DateTimeAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+        DateTimeAttributeTypeRecord( IResultSet resultSet ) {
 
             super( resultSet );
 
-            Timestamp minValueTs = resultSet.getTimestamp( "MIN_VALUE" );
-            this.minValue = Optional.ofNullable( minValueTs == null ? null : minValueTs.toLocalDateTime() );
-
-            Timestamp maxValueTs = resultSet.getTimestamp( "MAX_VALUE" );
-            this.maxValue = Optional.ofNullable( maxValueTs == null ? null : maxValueTs.toLocalDateTime() );
+            this.minValue = resultSet.getOptionalDateTime( "MIN_VALUE" );
+            this.maxValue = resultSet.getOptionalDateTime( "MAX_VALUE" );
 
         }
 
@@ -465,15 +429,12 @@ public class AttributeTypeLoader
     private static class Float64AttributeTypeRecord
         extends AttributeTypeRecord {
 
-        Float64AttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+        Float64AttributeTypeRecord( IResultSet resultSet ) {
 
             super( resultSet );
 
-            double rsMinValue = resultSet.getDouble( "MIN_VALUE" );
-            this.minValue = resultSet.wasNull() ? OptionalDouble.empty() : OptionalDouble.of( rsMinValue );
-
-            double rsMaxValue = resultSet.getDouble( "MAX_VALUE" );
-            this.maxValue = resultSet.wasNull() ? OptionalDouble.empty() : OptionalDouble.of( rsMaxValue );
+            this.minValue = resultSet.getOptionalDouble( "MIN_VALUE" );
+            this.maxValue = resultSet.getOptionalDouble( "MAX_VALUE" );
 
         }
 
@@ -488,15 +449,12 @@ public class AttributeTypeLoader
     private static class Integer32AttributeTypeRecord
         extends AttributeTypeRecord {
 
-        Integer32AttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+        Integer32AttributeTypeRecord( IResultSet resultSet ) {
 
             super( resultSet );
 
-            int rsMinValue = resultSet.getInt( "MIN_VALUE" );
-            this.minValue = resultSet.wasNull() ? OptionalInt.empty() : OptionalInt.of( rsMinValue );
-
-            int rsMaxValue = resultSet.getInt( "MAX_VALUE" );
-            this.maxValue = resultSet.wasNull() ? OptionalInt.empty() : OptionalInt.of( rsMaxValue );
+            this.minValue = resultSet.getOptionalInt( "MIN_VALUE" );
+            this.maxValue = resultSet.getOptionalInt( "MAX_VALUE" );
 
         }
 
@@ -512,13 +470,13 @@ public class AttributeTypeLoader
     private static class StringAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        StringAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+        StringAttributeTypeRecord( IResultSet resultSet ) {
 
             super( resultSet );
 
             this.maxLength = resultSet.getInt( "MAX_LENGTH" );
 
-            this.regexPattern = Optional.ofNullable( resultSet.getString( "REGEX_PATTERN" ) );
+            this.regexPattern = resultSet.getOptionalString( "REGEX_PATTERN" );
 
         }
 
@@ -533,7 +491,7 @@ public class AttributeTypeLoader
     private static class UuidAttributeTypeRecord
         extends AttributeTypeRecord {
 
-        UuidAttributeTypeRecord( ResultSet resultSet ) throws SQLException {
+        UuidAttributeTypeRecord( IResultSet resultSet ) {
             super( resultSet );
         }
 

@@ -5,9 +5,9 @@
 
 package org.grestler.h2database.queries.elements;
 
-import org.grestler.dbutilities.IDataSource;
-import org.grestler.dbutilities.JdbcConnection;
-import org.grestler.h2database.H2DatabaseException;
+import org.grestler.dbutilities.api.IConnection;
+import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
@@ -19,8 +19,6 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.utilities.configuration.Configuration;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -107,16 +105,11 @@ public class AttributeDeclLoader
         Collection<EdgeAttributeDeclRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new EdgeAttributeDeclRecord( rs ) ),
-                    this.config.readString( "EdgeAttributeDecl.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Edge attribute declaration loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new EdgeAttributeDeclRecord( rs ) ),
+                this.config.readString( "EdgeAttributeDecl.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -136,16 +129,11 @@ public class AttributeDeclLoader
         Collection<VertexAttributeDeclRecord> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
-        try {
-            try ( JdbcConnection connection = new JdbcConnection( this.dataSource ) ) {
-                connection.executeQuery(
-                    rs -> atRecords.add( new VertexAttributeDeclRecord( rs ) ),
-                    this.config.readString( "VertexAttributeDecl.All" )
-                );
-            }
-        }
-        catch ( SQLException e ) {
-            throw new H2DatabaseException( "Vertex attribute declaration loading failed.", e );
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> atRecords.add( new VertexAttributeDeclRecord( rs ) ),
+                this.config.readString( "VertexAttributeDecl.All" )
+            );
         }
 
         // Copy the results into the repository.
@@ -166,12 +154,12 @@ public class AttributeDeclLoader
      */
     private static class EdgeAttributeDeclRecord {
 
-        EdgeAttributeDeclRecord( ResultSet resultSet ) throws SQLException {
+        EdgeAttributeDeclRecord( IResultSet resultSet ) {
 
-            this.id = UUID.fromString( resultSet.getString( "ID" ) );
-            this.parentEdgeTypeId = UUID.fromString( resultSet.getString( "PARENT_EDGE_TYPE_ID" ) );
+            this.id = resultSet.getUuid( "ID" );
+            this.parentEdgeTypeId = resultSet.getUuid( "PARENT_EDGE_TYPE_ID" );
             this.name = resultSet.getString( "NAME" );
-            this.attributeTypeId = UUID.fromString( resultSet.getString( "ATTRIBUTE_TYPE_ID" ) );
+            this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
             this.optionality = resultSet.getBoolean( "IS_REQUIRED" ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
         }
 
@@ -192,12 +180,12 @@ public class AttributeDeclLoader
      */
     private static class VertexAttributeDeclRecord {
 
-        VertexAttributeDeclRecord( ResultSet resultSet ) throws SQLException {
+        VertexAttributeDeclRecord( IResultSet resultSet ) {
 
-            this.id = UUID.fromString( resultSet.getString( "ID" ) );
-            this.parentVertexTypeId = UUID.fromString( resultSet.getString( "PARENT_VERTEX_TYPE_ID" ) );
+            this.id = resultSet.getUuid( "ID" );
+            this.parentVertexTypeId = resultSet.getUuid( "PARENT_VERTEX_TYPE_ID" );
             this.name = resultSet.getString( "NAME" );
-            this.attributeTypeId = UUID.fromString( resultSet.getString( "ATTRIBUTE_TYPE_ID" ) );
+            this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
             this.optionality = resultSet.getBoolean( "IS_REQUIRED" ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
         }
 

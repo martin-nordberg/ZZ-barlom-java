@@ -7,4 +7,4 @@
  * Package defining an H2 implementation of IDataSource.
  */
 
-package org.grestler.h2database.datasource;
+package org.grestler.h2database.impl;
