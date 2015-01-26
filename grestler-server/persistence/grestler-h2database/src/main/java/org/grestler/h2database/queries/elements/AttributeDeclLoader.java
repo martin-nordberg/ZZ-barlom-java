@@ -160,7 +160,7 @@ public class AttributeDeclLoader
             this.parentEdgeTypeId = resultSet.getUuid( "PARENT_EDGE_TYPE_ID" );
             this.name = resultSet.getString( "NAME" );
             this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
-            this.optionality = resultSet.getBoolean( "IS_REQUIRED" ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
+            this.optionality = EAttributeOptionality.fromBoolean( resultSet.getBoolean( "IS_REQUIRED" ) );
         }
 
         public final UUID id;
@@ -186,7 +186,7 @@ public class AttributeDeclLoader
             this.parentVertexTypeId = resultSet.getUuid( "PARENT_VERTEX_TYPE_ID" );
             this.name = resultSet.getString( "NAME" );
             this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
-            this.optionality = resultSet.getBoolean( "IS_REQUIRED" ) ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
+            this.optionality = EAttributeOptionality.fromBoolean( resultSet.getBoolean( "IS_REQUIRED" ) );
         }
 
         public final UUID id;

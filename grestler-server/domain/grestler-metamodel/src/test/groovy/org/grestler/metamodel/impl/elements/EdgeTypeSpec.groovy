@@ -5,9 +5,7 @@
 
 package org.grestler.metamodel.impl.elements
 
-import org.grestler.metamodel.api.elements.IEdgeType
-import org.grestler.metamodel.api.elements.IPackage
-import org.grestler.metamodel.api.elements.IVertexType
+import org.grestler.metamodel.api.elements.*
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -42,11 +40,50 @@ class EdgeTypeSpec
         given:
         IPackage root = new RootPackage( id );
         IVertexType v0 = new RootVertexType( id, root );
-        IVertexType v1 = new VertexType( id, root, "v1", v0 );
+        IVertexType v1 = new VertexType( id, root, "v1", v0, EAbstractness.ABSTRACT );
         IEdgeType e0 = new RootEdgeType( id, root, v0 );
-        IEdgeType e1 = new EdgeType( id, root, name, e0, v0, v1, Optional.empty(), Optional.empty() );
-        IEdgeType e2 = new EdgeType( id, root, name, e1, v0, v1, Optional.empty(), Optional.empty() );
-        IEdgeType e3 = new EdgeType( id, root, name, e0, v0, v1, Optional.empty(), Optional.empty() );
+        IEdgeType e1 = new EdgeType(
+                id,
+                root,
+                name,
+                e0,
+                EAbstractness.ABSTRACT,
+                v0,
+                v1,
+                Optional.empty(),
+                Optional.empty(),
+                ECyclicity.UNCONSTRAINED,
+                EMultiEdgedness.UNCONSTRAINED,
+                ESelfEdgedness.UNCONSTRAINED
+        );
+        IEdgeType e2 = new EdgeType(
+                id,
+                root,
+                name,
+                e1,
+                EAbstractness.ABSTRACT,
+                v0,
+                v1,
+                Optional.empty(),
+                Optional.empty(),
+                ECyclicity.UNCONSTRAINED,
+                EMultiEdgedness.UNCONSTRAINED,
+                ESelfEdgedness.UNCONSTRAINED
+        );
+        IEdgeType e3 = new EdgeType(
+                id,
+                root,
+                name,
+                e0,
+                EAbstractness.ABSTRACT,
+                v0,
+                v1,
+                Optional.empty(),
+                Optional.empty(),
+                ECyclicity.UNCONSTRAINED,
+                EMultiEdgedness.UNCONSTRAINED,
+                ESelfEdgedness.UNCONSTRAINED
+        );
 
         expect:
         e1.superType.get() == e0;

@@ -9,6 +9,7 @@ import org.grestler.dbutilities.api.IConnection;
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
+import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
@@ -98,7 +99,7 @@ public class VertexTypeLoader
             }
         }
 
-        return repository.loadVertexType( record.id, parentPackage, record.name, superType.get() );
+        return repository.loadVertexType( record.id, parentPackage, record.name, superType.get(), record.abstractness );
 
     }
 
@@ -115,7 +116,10 @@ public class VertexTypeLoader
             this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );
             this.superTypeId = resultSet.getUuid( "SUPER_TYPE_ID" );
+            this.abstractness = EAbstractness.fromBoolean( resultSet.getBoolean( "IS_ABSTRACT" ) );
         }
+
+        public final EAbstractness abstractness;
 
         public final UUID id;
 

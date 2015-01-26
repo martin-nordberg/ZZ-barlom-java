@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl
 
+import org.grestler.metamodel.api.elements.EAbstractness
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader
@@ -33,10 +34,10 @@ class MetamodelRepositorySpec
                 { r ->
                     def rootPkg = r.findPackageRoot().get();
                     def rootVertexType = r.loadRootVertexType( Uuids.makeUuid(), rootPkg );
-                    r.loadVertexType( id1, rootPkg, "V1", rootVertexType );
-                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V2", rootVertexType );
-                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V3", rootVertexType );
-                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V4", rootVertexType );
+                    r.loadVertexType( id1, rootPkg, "V1", rootVertexType, EAbstractness.ABSTRACT );
+                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V2", rootVertexType, EAbstractness.ABSTRACT );
+                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V3", rootVertexType, EAbstractness.ABSTRACT );
+                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V4", rootVertexType, EAbstractness.ABSTRACT );
                 } as IVertexTypeLoader,
                 { r -> } as IEdgeTypeLoader,
                 { r -> } as IAttributeDeclLoader

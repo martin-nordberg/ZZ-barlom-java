@@ -10,7 +10,22 @@ package org.grestler.metamodel.api.attributes;
  */
 public enum EAttributeOptionality {
 
+    /** An attribute is optional. */
     OPTIONAL,
-    REQUIRED
+
+    /** An attribute is required. */
+    REQUIRED;
+
+    /**
+     * Converts a boolean is-required value to an enum value.
+     *
+     * @param isRequired whether the attribute is required.
+     *
+     * @return the corresponding enum value.
+     */
+    @SuppressWarnings( "BooleanParameter" )
+    public static EAttributeOptionality fromBoolean( boolean isRequired ) {
+        return isRequired ? EAttributeOptionality.REQUIRED : EAttributeOptionality.OPTIONAL;
+    }
 
 }

@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl.elements;
 
+import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -50,6 +51,11 @@ public final class RootVertexType
             .write( "parentPackageId", this.parentPackage.getId().toString() )
             .write( "name", "Vertex" )
             .write( "path", this.getPath() );
+    }
+
+    @Override
+    public EAbstractness getAbstractness() {
+        return EAbstractness.ABSTRACT;
     }
 
     @Override

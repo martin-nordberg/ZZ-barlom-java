@@ -5,6 +5,10 @@
 
 package org.grestler.metamodel.impl.elements;
 
+import org.grestler.metamodel.api.elements.EAbstractness;
+import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.EMultiEdgedness;
+import org.grestler.metamodel.api.elements.ESelfEdgedness;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -30,28 +34,41 @@ public final class EdgeType
      * @param parentPackage  the package containing the edge type.
      * @param name           the name of the edge type.
      * @param superType      the super type.
+     * @param abstractness   whether the edge type is abstract or concrete.
      * @param tailVertexType the vertex type at the start of the edge type.
      * @param headVertexType the vertex type at the end of the edge type.
      * @param tailRoleName   the role name for vertexes at the tail of this edge type
      * @param headRoleName   the role name for vertexes at the head of this edge type
+     * @param cyclicity      whether the edge type is constrained to be acyclic.
+     * @param multiEdgedness whether the edge type is constrained to disallow multiple edges between two given
+     *                       vertexes.
+     * @param selfEdgedness  whether the edge type disallows edges from a vertex to itself.
      */
     public EdgeType(
         UUID id,
         IPackage parentPackage,
         String name,
         IEdgeType superType,
+        EAbstractness abstractness,
         IVertexType tailVertexType,
         IVertexType headVertexType,
         Optional<String> tailRoleName,
-        Optional<String> headRoleName
+        Optional<String> headRoleName,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfEdgedness selfEdgedness
     ) {
         super( id, parentPackage, name );
 
         this.superType = superType;
+        this.abstractness = abstractness;
         this.tailVertexType = tailVertexType;
         this.headVertexType = headVertexType;
         this.tailRoleName = tailRoleName;
         this.headRoleName = headRoleName;
+        this.cyclicity = cyclicity;
+        this.multiEdgedness = multiEdgedness;
+        this.selfEdgedness = selfEdgedness;
 
         this.attributes = new ArrayList<>();
 
@@ -72,8 +89,18 @@ public final class EdgeType
     }
 
     @Override
+    public EAbstractness getAbstractness() {
+        return this.abstractness;
+    }
+
+    @Override
     public List<IEdgeAttributeDecl> getAttributes() {
         return this.attributes;
+    }
+
+    @Override
+    public ECyclicity getCyclicity() {
+        return this.cyclicity;
     }
 
     @Override
@@ -84,6 +111,16 @@ public final class EdgeType
     @Override
     public IVertexType getHeadVertexType() {
         return this.headVertexType;
+    }
+
+    @Override
+    public EMultiEdgedness getMultiEdgedness() {
+        return this.multiEdgedness;
+    }
+
+    @Override
+    public ESelfEdgedness getSelfEdgedness() {
+        return this.selfEdgedness;
     }
 
     @Override
@@ -106,13 +143,26 @@ public final class EdgeType
         return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
+    /** Whether this edge type is abstract. */
+    private final EAbstractness abstractness;
+
+    /** The attribute declarations within this edge type. */
     private final List<IEdgeAttributeDecl> attributes;
+
+    /** Whetehr this edge type is acyclic. */
+    private final ECyclicity cyclicity;
 
     /** The name of the role for the vertex at the head of edges of this type. */
     private final Optional<String> headRoleName;
 
     /** The vertex type at the head of edges of this type. */
     private final IVertexType headVertexType;
+
+    /** Whether this edge type allows multiple edges between two given vertexes. */
+    private final EMultiEdgedness multiEdgedness;
+
+    /** Whetehr this edge type allows an edge from a vertex to itself. */
+    private final ESelfEdgedness selfEdgedness;
 
     /** The super type for this edge type. */
     private final IEdgeType superType;

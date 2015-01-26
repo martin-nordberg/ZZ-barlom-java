@@ -5,6 +5,10 @@
 
 package org.grestler.metamodel.impl.elements;
 
+import org.grestler.metamodel.api.elements.EAbstractness;
+import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.EMultiEdgedness;
+import org.grestler.metamodel.api.elements.ESelfEdgedness;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -59,8 +63,18 @@ public class RootEdgeType
     }
 
     @Override
+    public EAbstractness getAbstractness() {
+        return EAbstractness.ABSTRACT;
+    }
+
+    @Override
     public List<IEdgeAttributeDecl> getAttributes() {
         return this.attributes;
+    }
+
+    @Override
+    public ECyclicity getCyclicity() {
+        return ECyclicity.UNCONSTRAINED;
     }
 
     @Override
@@ -79,6 +93,11 @@ public class RootEdgeType
     }
 
     @Override
+    public EMultiEdgedness getMultiEdgedness() {
+        return EMultiEdgedness.UNCONSTRAINED;
+    }
+
+    @Override
     public String getName() {
         return "Edge";
     }
@@ -86,6 +105,11 @@ public class RootEdgeType
     @Override
     public IPackage getParentPackage() {
         return this.parentPackage;
+    }
+
+    @Override
+    public ESelfEdgedness getSelfEdgedness() {
+        return ESelfEdgedness.UNCONSTRAINED;
     }
 
     @Override

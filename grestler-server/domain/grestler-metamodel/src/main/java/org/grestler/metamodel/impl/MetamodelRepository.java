@@ -13,6 +13,10 @@ import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
+import org.grestler.metamodel.api.elements.EAbstractness;
+import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.EMultiEdgedness;
+import org.grestler.metamodel.api.elements.ESelfEdgedness;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -216,14 +220,29 @@ public final class MetamodelRepository
         IPackage parentPackage,
         String name,
         IEdgeType superType,
+        EAbstractness abstractness,
         IVertexType tailVertexType,
         IVertexType headVertexType,
         Optional<String> tailRoleName,
-        Optional<String> headRoleName
+        Optional<String> headRoleName,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfEdgedness selfEdgedness
     ) {
 
         IEdgeType result = new EdgeType(
-            id, parentPackage, name, superType, tailVertexType, headVertexType, tailRoleName, headRoleName
+            id,
+            parentPackage,
+            name,
+            superType,
+            abstractness,
+            tailVertexType,
+            headVertexType,
+            tailRoleName,
+            headRoleName,
+            cyclicity,
+            multiEdgedness,
+            selfEdgedness
         );
 
         this.edgeTypes.add( result );
@@ -340,9 +359,11 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IVertexType loadVertexType( UUID id, IPackage parentPackage, String name, IVertexType superType ) {
+    public IVertexType loadVertexType(
+        UUID id, IPackage parentPackage, String name, IVertexType superType, EAbstractness abstractness
+    ) {
 
-        IVertexType result = new VertexType( id, parentPackage, name, superType );
+        IVertexType result = new VertexType( id, parentPackage, name, superType, abstractness );
 
         this.vertexTypes.add( result );
 

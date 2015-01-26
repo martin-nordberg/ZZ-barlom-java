@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl.elements
 
+import org.grestler.metamodel.api.elements.EAbstractness
 import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.api.elements.IVertexType
 import org.grestler.utilities.uuids.Uuids
@@ -38,9 +39,9 @@ class VertexTypeSpec
         given:
         IPackage root = new RootPackage( id );
         IVertexType v = new RootVertexType( id, root );
-        IVertexType v1 = new VertexType( id, root, name, v );
-        IVertexType v2 = new VertexType( id, root, name, v1 );
-        IVertexType w = new VertexType( id, root, name, v );
+        IVertexType v1 = new VertexType( id, root, name, v, EAbstractness.ABSTRACT );
+        IVertexType v2 = new VertexType( id, root, name, v1, EAbstractness.ABSTRACT );
+        IVertexType w = new VertexType( id, root, name, v, EAbstractness.ABSTRACT );
 
         expect:
         v1.superType.get() == v;

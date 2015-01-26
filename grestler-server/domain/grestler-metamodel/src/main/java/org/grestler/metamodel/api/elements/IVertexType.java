@@ -15,6 +15,11 @@ public interface IVertexType
     extends IElement {
 
     /**
+     * @return the abstractness of this vertex type
+     */
+    EAbstractness getAbstractness();
+
+    /**
      * @return the defined attributes of this vertex type.
      */
     List<IVertexAttributeDecl> getAttributes();

@@ -15,9 +15,19 @@ public interface IEdgeType
     extends IElement {
 
     /**
+     * @return the abstractness of this edge type
+     */
+    EAbstractness getAbstractness();
+
+    /**
      * @return the defined attributes of this edge type.
      */
     List<IEdgeAttributeDecl> getAttributes();
+
+    /**
+     * @return whether edges of this type can form a cyclic graph.
+     */
+    ECyclicity getCyclicity();
 
     /**
      * @return the name of the role for the vertex at the head of edges of this type.
@@ -28,6 +38,16 @@ public interface IEdgeType
      * @return the destination vertex type for edges of this type.
      */
     IVertexType getHeadVertexType();
+
+    /**
+     * @return whether edges of this type must be unique between any two given vertexes.
+     */
+    EMultiEdgedness getMultiEdgedness();
+
+    /**
+     * @return whether edges of this type can connect a vertex to itself.
+     */
+    ESelfEdgedness getSelfEdgedness();
 
     /**
      * @return the super type of this edge type.
@@ -43,6 +63,14 @@ public interface IEdgeType
      * @return the origin vertex type for edges of this type.
      */
     IVertexType getTailVertexType();
+
+    /**
+     * @return whether this edge type is abstract, i.e has no concrete instances. Note that a super type must be
+     * abstract.
+     */
+    default boolean isAbstract() {
+        return this.getAbstractness() == EAbstractness.ABSTRACT;
+    }
 
     /**
      * Determines whether this edge type is a direct or indirect subtype of the given edge type.

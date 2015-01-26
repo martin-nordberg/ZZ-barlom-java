@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.impl.elements;
 
+import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -28,14 +29,16 @@ public final class VertexType
      * @param parentPackage the package containing the vertex type.
      * @param name          the name of the vertex type.
      * @param superType     the super type.
+     * @param abstractness  whether the vertex type is abstract.
      */
     public VertexType(
-        UUID id, IPackage parentPackage, String name, IVertexType superType
+        UUID id, IPackage parentPackage, String name, IVertexType superType, EAbstractness abstractness
     ) {
 
         super( id, parentPackage, name );
 
         this.superType = superType;
+        this.abstractness = abstractness;
         this.attributes = new ArrayList<>();
 
         ( (IPackageSpi) parentPackage ).addVertexType( this );
@@ -43,8 +46,13 @@ public final class VertexType
     }
 
     @Override
-    public boolean isSubTypeOf( IVertexType vertexType ) {
-        return this == vertexType || this.getSuperType().get().isSubTypeOf( vertexType );
+    public void addAttribute( IVertexAttributeDecl attribute ) {
+        this.attributes.add( attribute );
+    }
+
+    @Override
+    public EAbstractness getAbstractness() {
+        return this.abstractness;
     }
 
     @Override
@@ -58,9 +66,12 @@ public final class VertexType
     }
 
     @Override
-    public void addAttribute( IVertexAttributeDecl attribute ) {
-        this.attributes.add( attribute );
+    public boolean isSubTypeOf( IVertexType vertexType ) {
+        return this == vertexType || this.getSuperType().get().isSubTypeOf( vertexType );
     }
+
+    /** Whether this vertex type is abstract. */
+    private final EAbstractness abstractness;
 
     /** The attributes of this vertex type. */
     private final List<IVertexAttributeDecl> attributes;

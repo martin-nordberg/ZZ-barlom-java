@@ -9,6 +9,10 @@ import org.grestler.dbutilities.api.IConnection;
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
+import org.grestler.metamodel.api.elements.EAbstractness;
+import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.EMultiEdgedness;
+import org.grestler.metamodel.api.elements.ESelfEdgedness;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -108,10 +112,14 @@ public class EdgeTypeLoader
             parentPackage,
             record.name,
             superType.get(),
+            record.abstractness,
             tailVertexType,
             headVertexType,
             record.tailRoleName,
-            record.headRoleName
+            record.headRoleName,
+            record.cyclicity,
+            record.multiEdgedness,
+            record.selfEdgedness
         );
 
     }
@@ -129,11 +137,19 @@ public class EdgeTypeLoader
             this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );
             this.superTypeId = resultSet.getUuid( "SUPER_TYPE_ID" );
+            this.abstractness = EAbstractness.fromBoolean( resultSet.getBoolean( "IS_ABSTRACT" ) );
             this.tailVertexTypeId = resultSet.getUuid( "TAIL_VERTEX_TYPE_ID" );
             this.headVertexTypeId = resultSet.getUuid( "HEAD_VERTEX_TYPE_ID" );
             this.tailRoleName = resultSet.getOptionalString( "TAIL_ROLE_NAME" );
             this.headRoleName = resultSet.getOptionalString( "HEAD_ROLE_NAME" );
+            this.cyclicity = ECyclicity.fromBoolean( resultSet.getOptionalBoolean( "IS_ACYCLIC" ) );
+            this.multiEdgedness = EMultiEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) );
+            this.selfEdgedness = ESelfEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_SELF_EDGE_ALLOWED" ) );
         }
+
+        public final EAbstractness abstractness;
+
+        public final ECyclicity cyclicity;
 
         public final Optional<String> headRoleName;
 
@@ -141,16 +157,19 @@ public class EdgeTypeLoader
 
         public final UUID id;
 
+        public final EMultiEdgedness multiEdgedness;
+
         public final String name;
 
         public final UUID parentPackageId;
+
+        public final ESelfEdgedness selfEdgedness;
 
         public final UUID superTypeId;
 
         public final Optional<String> tailRoleName;
 
         public final UUID tailVertexTypeId;
-
     }
 
 }

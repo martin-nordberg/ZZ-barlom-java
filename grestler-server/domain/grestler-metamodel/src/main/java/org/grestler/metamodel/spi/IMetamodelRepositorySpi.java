@@ -14,6 +14,10 @@ import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
+import org.grestler.metamodel.api.elements.EAbstractness;
+import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.EMultiEdgedness;
+import org.grestler.metamodel.api.elements.ESelfEdgedness;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -82,11 +86,15 @@ public interface IMetamodelRepositorySpi
      * @param parentPackage  the parent package for the edge type.
      * @param name           the name of the edge type.
      * @param superType      the super type of the edge type.
+     * @param abstractness   whether the edge type is abstract or concrete.
      * @param tailVertexType the vertex type at the start of edges of the new edge type.
      * @param headVertexType the vertex type at the end of edges of the new edge type.
+     * @param tailRoleName   the role name for the tail vertex of edges of the new type.
+     * @param headRoleName   the role name for the head vertex of edges of the new type.
+     * @param cyclicity      whether edges of the new type are allowed to be cyclic.
+     * @param multiEdgedness whether the new edge type allows multiple edges between two given vertexes.
+     * @param selfEdgedness  whether the new edge type allows edges from a vertex to itself.
      *
-     * @param tailRoleName
-     * @param headRoleName
      * @return the loaded edge type.
      */
     IEdgeType loadEdgeType(
@@ -94,8 +102,14 @@ public interface IMetamodelRepositorySpi
         IPackage parentPackage,
         String name,
         IEdgeType superType,
+        EAbstractness abstractness,
         IVertexType tailVertexType,
-        IVertexType headVertexType, Optional<String> tailRoleName, Optional<String> headRoleName
+        IVertexType headVertexType,
+        Optional<String> tailRoleName,
+        Optional<String> headRoleName,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfEdgedness selfEdgedness
     );
 
     /**
@@ -226,9 +240,12 @@ public interface IMetamodelRepositorySpi
      * @param parentPackage the parent package for the vertex type.
      * @param name          the name of the vertex type.
      * @param superType     the super type of the vertex type.
+     * @param abstractness  whether the vertex type is abstract.
      *
      * @return the loaded vertex type.
      */
-    IVertexType loadVertexType( UUID id, IPackage parentPackage, String name, IVertexType superType );
+    IVertexType loadVertexType(
+        UUID id, IPackage parentPackage, String name, IVertexType superType, EAbstractness abstractness
+    );
 
 }
