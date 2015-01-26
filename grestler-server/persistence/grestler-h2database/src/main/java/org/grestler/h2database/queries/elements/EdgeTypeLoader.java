@@ -104,7 +104,14 @@ public class EdgeTypeLoader
         }
 
         return repository.loadEdgeType(
-            record.id, parentPackage, record.name, superType.get(), tailVertexType, headVertexType
+            record.id,
+            parentPackage,
+            record.name,
+            superType.get(),
+            tailVertexType,
+            headVertexType,
+            record.tailRoleName,
+            record.headRoleName
         );
 
     }
@@ -124,7 +131,11 @@ public class EdgeTypeLoader
             this.superTypeId = resultSet.getUuid( "SUPER_TYPE_ID" );
             this.tailVertexTypeId = resultSet.getUuid( "TAIL_VERTEX_TYPE_ID" );
             this.headVertexTypeId = resultSet.getUuid( "HEAD_VERTEX_TYPE_ID" );
+            this.tailRoleName = resultSet.getOptionalString( "TAIL_ROLE_NAME" );
+            this.headRoleName = resultSet.getOptionalString( "HEAD_ROLE_NAME" );
         }
+
+        public final Optional<String> headRoleName;
 
         public final UUID headVertexTypeId;
 
@@ -135,6 +146,8 @@ public class EdgeTypeLoader
         public final UUID parentPackageId;
 
         public final UUID superTypeId;
+
+        public final Optional<String> tailRoleName;
 
         public final UUID tailVertexTypeId;
 

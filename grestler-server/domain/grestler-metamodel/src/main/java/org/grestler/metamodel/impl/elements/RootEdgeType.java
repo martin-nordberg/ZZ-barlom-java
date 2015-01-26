@@ -64,6 +64,11 @@ public class RootEdgeType
     }
 
     @Override
+    public Optional<String> getHeadRoleName() {
+        return Optional.empty();
+    }
+
+    @Override
     public IVertexType getHeadVertexType() {
         return this.rootVertexType;
     }
@@ -85,6 +90,11 @@ public class RootEdgeType
 
     @Override
     public Optional<IEdgeType> getSuperType() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> getTailRoleName() {
         return Optional.empty();
     }
 

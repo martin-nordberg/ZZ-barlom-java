@@ -189,7 +189,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadStringAttributeType(
-            record.id, parentPackage.get(), record.name, record.maxLength, record.regexPattern
+            record.id, parentPackage.get(), record.name, record.minLength, record.maxLength, record.regexPattern
         );
 
     }
@@ -474,13 +474,15 @@ public class AttributeTypeLoader
 
             super( resultSet );
 
+            this.minLength = resultSet.getOptionalInt( "MIN_LENGTH" );
             this.maxLength = resultSet.getInt( "MAX_LENGTH" );
-
             this.regexPattern = resultSet.getOptionalString( "REGEX_PATTERN" );
 
         }
 
         public final int maxLength;
+
+        public final OptionalInt minLength;
 
         public final Optional<String> regexPattern;
     }

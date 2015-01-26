@@ -20,6 +20,11 @@ public interface IEdgeType
     List<IEdgeAttributeDecl> getAttributes();
 
     /**
+     * @return the name of the role for the vertex at the head of edges of this type.
+     */
+    Optional<String> getHeadRoleName();
+
+    /**
      * @return the destination vertex type for edges of this type.
      */
     IVertexType getHeadVertexType();
@@ -28,6 +33,11 @@ public interface IEdgeType
      * @return the super type of this edge type.
      */
     Optional<IEdgeType> getSuperType();
+
+    /**
+     * @return the name of the role for the vertex at the tail of edges of this type.
+     */
+    Optional<String> getTailRoleName();
 
     /**
      * @return the origin vertex type for edges of this type.

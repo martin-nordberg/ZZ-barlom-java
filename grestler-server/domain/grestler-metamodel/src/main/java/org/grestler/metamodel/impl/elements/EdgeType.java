@@ -32,6 +32,8 @@ public final class EdgeType
      * @param superType      the super type.
      * @param tailVertexType the vertex type at the start of the edge type.
      * @param headVertexType the vertex type at the end of the edge type.
+     * @param tailRoleName   the role name for vertexes at the tail of this edge type
+     * @param headRoleName   the role name for vertexes at the head of this edge type
      */
     public EdgeType(
         UUID id,
@@ -39,13 +41,17 @@ public final class EdgeType
         String name,
         IEdgeType superType,
         IVertexType tailVertexType,
-        IVertexType headVertexType
+        IVertexType headVertexType,
+        Optional<String> tailRoleName,
+        Optional<String> headRoleName
     ) {
         super( id, parentPackage, name );
 
         this.superType = superType;
         this.tailVertexType = tailVertexType;
         this.headVertexType = headVertexType;
+        this.tailRoleName = tailRoleName;
+        this.headRoleName = headRoleName;
 
         this.attributes = new ArrayList<>();
 
@@ -71,6 +77,11 @@ public final class EdgeType
     }
 
     @Override
+    public Optional<String> getHeadRoleName() {
+        return this.headRoleName;
+    }
+
+    @Override
     public IVertexType getHeadVertexType() {
         return this.headVertexType;
     }
@@ -78,6 +89,11 @@ public final class EdgeType
     @Override
     public Optional<IEdgeType> getSuperType() {
         return Optional.of( this.superType );
+    }
+
+    @Override
+    public Optional<String> getTailRoleName() {
+        return this.tailRoleName;
     }
 
     @Override
@@ -92,11 +108,17 @@ public final class EdgeType
 
     private final List<IEdgeAttributeDecl> attributes;
 
+    /** The name of the role for the vertex at the head of edges of this type. */
+    private final Optional<String> headRoleName;
+
     /** The vertex type at the head of edges of this type. */
     private final IVertexType headVertexType;
 
     /** The super type for this edge type. */
     private final IEdgeType superType;
+
+    /** The name of the role for the vertex at the tail of edges of this type. */
+    private final Optional<String> tailRoleName;
 
     /** The vertex type at the tail of edges of this type. */
     private final IVertexType tailVertexType;

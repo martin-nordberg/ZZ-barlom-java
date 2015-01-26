@@ -6,6 +6,7 @@
 package org.grestler.metamodel.api.attributes;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.regex.Pattern;
 
 /**
@@ -23,6 +24,11 @@ public interface IStringAttributeType
      * @return the maximum allowed length for attributes of this type.
      */
     int getMaxLength();
+
+    /**
+     * @return the minimum allowed length for attributes of this type.
+     */
+    OptionalInt getMinLength();
 
     /**
      * @return a regular expression that must be matched by values of this attribute type.

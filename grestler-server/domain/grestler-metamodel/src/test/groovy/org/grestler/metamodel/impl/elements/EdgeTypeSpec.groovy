@@ -44,9 +44,9 @@ class EdgeTypeSpec
         IVertexType v0 = new RootVertexType( id, root );
         IVertexType v1 = new VertexType( id, root, "v1", v0 );
         IEdgeType e0 = new RootEdgeType( id, root, v0 );
-        IEdgeType e1 = new EdgeType( id, root, name, e0, v0, v1 );
-        IEdgeType e2 = new EdgeType( id, root, name, e1, v0, v1 );
-        IEdgeType e3 = new EdgeType( id, root, name, e0, v0, v1 );
+        IEdgeType e1 = new EdgeType( id, root, name, e0, v0, v1, Optional.empty(), Optional.empty() );
+        IEdgeType e2 = new EdgeType( id, root, name, e1, v0, v1, Optional.empty(), Optional.empty() );
+        IEdgeType e3 = new EdgeType( id, root, name, e0, v0, v1, Optional.empty(), Optional.empty() );
 
         expect:
         e1.superType.get() == e0;

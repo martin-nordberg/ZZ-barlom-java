@@ -85,6 +85,8 @@ public interface IMetamodelRepositorySpi
      * @param tailVertexType the vertex type at the start of edges of the new edge type.
      * @param headVertexType the vertex type at the end of edges of the new edge type.
      *
+     * @param tailRoleName
+     * @param headRoleName
      * @return the loaded edge type.
      */
     IEdgeType loadEdgeType(
@@ -93,7 +95,7 @@ public interface IMetamodelRepositorySpi
         String name,
         IEdgeType superType,
         IVertexType tailVertexType,
-        IVertexType headVertexType
+        IVertexType headVertexType, Optional<String> tailRoleName, Optional<String> headRoleName
     );
 
     /**
@@ -174,13 +176,19 @@ public interface IMetamodelRepositorySpi
      * @param id            the unique ID of the attribute type.
      * @param parentPackage the parent package for the attribute type.
      * @param name          the name of the attribute type.
+     * @param minLength     the minimum length for attributes with this type.
      * @param maxLength     the maximum length for attributes with this type.
      * @param regexPattern  a regular expression that must be matched by attributes with this type.
      *
      * @return the loaded attribute type.
      */
     IStringAttributeType loadStringAttributeType(
-        UUID id, IPackage parentPackage, String name, int maxLength, Optional<String> regexPattern
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalInt minLength,
+        int maxLength,
+        Optional<String> regexPattern
     );
 
     /**

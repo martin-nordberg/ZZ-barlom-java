@@ -9,6 +9,7 @@ import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -25,14 +26,21 @@ public final class StringAttributeType
      * @param id            the unique ID of the attribute type.
      * @param parentPackage the parent attribute type.
      * @param name          the name of the attribute type.
+     * @param minLength     the minimum length for values with this attribute type.
      * @param maxLength     the maximum length for values with this attribute type.
      * @param regexPattern  a regular expression that must be matched by values with this attribute type.
      */
     public StringAttributeType(
-        UUID id, IPackage parentPackage, String name, int maxLength, Optional<String> regexPattern
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalInt minLength,
+        int maxLength,
+        Optional<String> regexPattern
     ) {
         super( id, parentPackage, name );
 
+        this.minLength = minLength;
         this.maxLength = maxLength;
 
         if ( regexPattern.isPresent() ) {
@@ -49,12 +57,20 @@ public final class StringAttributeType
     }
 
     @Override
+    public OptionalInt getMinLength() {
+        return this.minLength;
+    }
+
+    @Override
     public Optional<Pattern> getRegexPattern() {
         return this.regexPattern;
     }
 
     /** The maximum length for values with this attribute type. */
     private final int maxLength;
+
+    /** The minimum length for attributes of this type. */
+    private final OptionalInt minLength;
 
     /** The regular expression that must be matched by values with this attribute type. */
     private final Optional<Pattern> regexPattern;

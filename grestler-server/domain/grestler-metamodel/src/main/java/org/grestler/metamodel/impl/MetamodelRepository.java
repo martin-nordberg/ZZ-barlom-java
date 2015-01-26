@@ -217,10 +217,14 @@ public final class MetamodelRepository
         String name,
         IEdgeType superType,
         IVertexType tailVertexType,
-        IVertexType headVertexType
+        IVertexType headVertexType,
+        Optional<String> tailRoleName,
+        Optional<String> headRoleName
     ) {
 
-        IEdgeType result = new EdgeType( id, parentPackage, name, superType, tailVertexType, headVertexType );
+        IEdgeType result = new EdgeType(
+            id, parentPackage, name, superType, tailVertexType, headVertexType, tailRoleName, headRoleName
+        );
 
         this.edgeTypes.add( result );
 
@@ -301,9 +305,16 @@ public final class MetamodelRepository
 
     @Override
     public IStringAttributeType loadStringAttributeType(
-        UUID id, IPackage parentPackage, String name, int maxLength, Optional<String> regexPattern
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalInt minLength,
+        int maxLength,
+        Optional<String> regexPattern
     ) {
-        IStringAttributeType result = new StringAttributeType( id, parentPackage, name, maxLength, regexPattern );
+        IStringAttributeType result = new StringAttributeType(
+            id, parentPackage, name, minLength, maxLength, regexPattern
+        );
 
         this.attributeTypes.add( result );
 
