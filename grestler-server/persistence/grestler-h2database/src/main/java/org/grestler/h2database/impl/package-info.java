@@ -4,7 +4,7 @@
 //
 
 /**
- * Package defining an H2 implementation of IDataSource.
+ * Package defining an H2 implementation of IDataSource, IConnection, and IResultSet.
  */
 
 package org.grestler.h2database.impl;

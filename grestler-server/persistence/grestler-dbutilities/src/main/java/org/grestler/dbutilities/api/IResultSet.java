@@ -12,7 +12,7 @@ import java.util.OptionalInt;
 import java.util.UUID;
 
 /**
- * Interface to a record-based result set with methods to read fields from the current record.
+ * Interface to a record-based result set with methods to read fields from the current record by column name.
  */
 public interface IResultSet {
 

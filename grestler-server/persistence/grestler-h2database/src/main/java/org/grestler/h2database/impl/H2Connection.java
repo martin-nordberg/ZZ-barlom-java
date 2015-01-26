@@ -14,6 +14,11 @@ import java.sql.ResultSet;
 public class H2Connection
     extends AbstractConnection {
 
+    /**
+     * Constructs a new H2 connection wrapping the given JDBC connection.
+     *
+     * @param connection the JDBC connection to wrap.
+     */
     public H2Connection( Connection connection ) {
         super( connection );
     }

@@ -20,13 +20,15 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
 /**
- * Wrapper for an H2 data source with pooled connections.
+ * Wrapper for an H2 data source providing pooled connections.
  */
 public final class H2DataSource
     implements IDataSource {
 
     /**
      * Constructs a new H2 data source.
+     *
+     * @param dataSourceName the name of the data source (used in configuration property names).
      */
     public H2DataSource( String dataSourceName ) {
 

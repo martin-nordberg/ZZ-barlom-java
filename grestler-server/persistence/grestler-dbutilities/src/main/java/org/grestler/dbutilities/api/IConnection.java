@@ -12,7 +12,9 @@ public interface IConnection
     extends AutoCloseable {
 
     /**
-     * @throws DatabaseException if closing fails.
+     * Closes this connection.
+     *
+     * @throws DatabaseException if closing fails (overriding AutoCloseable's Exception).
      */
     @Override
     void close();

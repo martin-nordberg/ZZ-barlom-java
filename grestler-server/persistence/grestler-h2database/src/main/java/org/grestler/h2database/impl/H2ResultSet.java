@@ -17,6 +17,11 @@ import java.sql.ResultSet;
 public class H2ResultSet
     extends AbstractResultSet {
 
+    /**
+     * Constructs a new H2 result set wrapping the given JDBC result set.
+     *
+     * @param resultSet the JDBC result set to encapsulate.
+     */
     public H2ResultSet( ResultSet resultSet ) {
         super( resultSet );
     }
