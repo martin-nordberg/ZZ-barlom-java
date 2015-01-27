@@ -9,6 +9,7 @@ import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.metamodel.api.attributes.EAttributeOptionality
 import org.grestler.metamodel.api.attributes.EDataType
+import org.grestler.metamodel.api.elements.IDirectedEdgeType
 import org.grestler.metamodel.impl.MetamodelRepository
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import spock.lang.Specification
@@ -46,7 +47,7 @@ class GenealogyModelSpec
         // vertex types
         m.findVertexTypesAll().size() == 2;
 
-        def rootVertexType = m.findVertexTypeRoot().get();
+        def rootVertexType = m.findVertexTypeBase().get();
         def vtPerson = m.findVertexTypeById( UUID.fromString( "e4c4a701-a294-11e4-b20d-08002751500b" ) ).get();
         vtPerson.parentPackage == genealogyPkg;
         vtPerson.name == "Person";
@@ -72,8 +73,8 @@ class GenealogyModelSpec
         vtPerson.attributes[4].type.dataType == EDataType.UUID;
 
         // edge types
-        def rootEdgeType = m.findEdgeTypeRoot().get();
-        def etHasFather = m.findEdgeTypeById( UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" ) ).get();
+        def rootEdgeType = m.findDirectedEdgeTypeBase().get();
+        IDirectedEdgeType etHasFather = m.findEdgeTypeById( UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" ) ).get() as IDirectedEdgeType;
         etHasFather.parentPackage == genealogyPkg;
         etHasFather.name == "Has Father";
         etHasFather.superType.get() == rootEdgeType;
@@ -81,7 +82,7 @@ class GenealogyModelSpec
         etHasFather.headVertexType == vtPerson;
         etHasFather.attributes.size() == 0;
 
-        def etHasMother = m.findEdgeTypeById( UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" ) ).get();
+        IDirectedEdgeType etHasMother = m.findEdgeTypeById( UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" ) ).get() as IDirectedEdgeType;
         etHasMother.parentPackage == genealogyPkg;
         etHasMother.name == "Has Mother";
         etHasMother.superType.get() == rootEdgeType;

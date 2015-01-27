@@ -30,13 +30,13 @@ class EdgeTypeLoaderSpec
 
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, atloader, vtloader, etloader, adloader );
 
-        def rootEdgeType = m.findEdgeTypeRoot();
+        def rootEdgeType = m.findDirectedEdgeTypeBase();
 
         expect:
         rootEdgeType.isPresent();
         rootEdgeType.get().name == "Edge";
         !rootEdgeType.get().superType.isPresent();
-        m.findEdgeTypesAll().size() == 1;
+        m.findEdgeTypesAll().size() == 2;
         m.findEdgeTypeById( rootEdgeType.get().id ).equals( rootEdgeType );
 
     }

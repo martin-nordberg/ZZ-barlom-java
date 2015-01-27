@@ -76,8 +76,6 @@ public final class DirectedEdgeType
         this.minHeadInDegree = minHeadInDegree;
         this.maxHeadInDegree = maxHeadInDegree;
 
-        ( (IPackageSpi) parentPackage ).addEdgeType( this );
-
     }
 
     @Override

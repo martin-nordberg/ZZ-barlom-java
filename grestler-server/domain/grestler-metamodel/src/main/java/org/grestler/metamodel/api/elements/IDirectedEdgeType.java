@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 /**
- * Top level interface to an edge type.
+ * Top level interface to a directed edge type.
  */
 public interface IDirectedEdgeType
     extends IEdgeType {
@@ -25,6 +25,34 @@ public interface IDirectedEdgeType
     IVertexType getHeadVertexType();
 
     /**
+     * The maximum number of edges into the head vertex for an edge of this type.
+     *
+     * @return the maximum head in degree (optional).
+     */
+    OptionalInt getMaxHeadInDegree();
+
+    /**
+     * The maximum number of edges out of the tail vertex for an edge of this type.
+     *
+     * @return the maximum tail out degree (optional).
+     */
+    OptionalInt getMaxTailOutDegree();
+
+    /**
+     * The minimum number of edges into the head vertex for an edge of this type.
+     *
+     * @return the minimum head in degree (optional).
+     */
+    OptionalInt getMinHeadInDegree();
+
+    /**
+     * The minimum number of edges out of the tail vertex for an edge of this type.
+     *
+     * @return the minimum tail out degree (optional).
+     */
+    OptionalInt getMinTailOutDegree();
+
+    /**
      * @return the name of the role for the vertex at the tail of edges of this type.
      */
     Optional<String> getTailRoleName();
@@ -33,29 +61,5 @@ public interface IDirectedEdgeType
      * @return the origin vertex type for edges of this type.
      */
     IVertexType getTailVertexType();
-
-    /**
-     * The minimum number of edges out of the tail vertex for an edge of this type.
-     * @return the minimum tail out degree (optional).
-     */
-    OptionalInt getMinTailOutDegree();
-
-    /**
-     * The maximum number of edges out of the tail vertex for an edge of this type.
-     * @return the maximum tail out degree (optional).
-     */
-    OptionalInt getMaxTailOutDegree();
-
-    /**
-     * The minimum number of edges into the head vertex for an edge of this type.
-     * @return the minimum head in degree (optional).
-     */
-    OptionalInt getMinHeadInDegree();
-
-    /**
-     * The maximum number of edges into the head vertex for an edge of this type.
-     * @return the maximum head in degree (optional).
-     */
-    OptionalInt getMaxHeadInDegree();
 
 }

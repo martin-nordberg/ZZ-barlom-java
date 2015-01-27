@@ -30,7 +30,7 @@ class VertexTypeLoaderSpec
 
         IMetamodelRepositorySpi m = new MetamodelRepository( ploader, atloader, vtloader, etloader, adloader );
 
-        def rootVertexType = m.findVertexTypeRoot();
+        def rootVertexType = m.findVertexTypeBase();
 
         expect:
         rootVertexType.isPresent();

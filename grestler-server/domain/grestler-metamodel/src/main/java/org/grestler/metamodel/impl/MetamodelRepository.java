@@ -21,6 +21,7 @@ import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.impl.attributes.BooleanAttributeType;
@@ -30,11 +31,13 @@ import org.grestler.metamodel.impl.attributes.Integer32AttributeType;
 import org.grestler.metamodel.impl.attributes.StringAttributeType;
 import org.grestler.metamodel.impl.attributes.UuidAttributeType;
 import org.grestler.metamodel.impl.elements.BaseDirectedEdgeType;
+import org.grestler.metamodel.impl.elements.BaseUndirectedEdgeType;
 import org.grestler.metamodel.impl.elements.BaseVertexType;
 import org.grestler.metamodel.impl.elements.DirectedEdgeType;
 import org.grestler.metamodel.impl.elements.EdgeAttributeDecl;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.impl.elements.RootPackage;
+import org.grestler.metamodel.impl.elements.UndirectedEdgeType;
 import org.grestler.metamodel.impl.elements.VertexAttributeDecl;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
@@ -111,6 +114,11 @@ public final class MetamodelRepository
     }
 
     @Override
+    public Optional<IDirectedEdgeType> findDirectedEdgeTypeBase() {
+        return Optional.of( this.baseDirectedEdgeType );
+    }
+
+    @Override
     public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
 
         // Search for the edge type with given UUID. -- TODO: may be worth map by ID
@@ -122,11 +130,6 @@ public final class MetamodelRepository
 
         return Optional.empty();
 
-    }
-
-    @Override
-    public Optional<IEdgeType> findEdgeTypeRoot() {
-        return Optional.ofNullable( this.rootEdgeType );
     }
 
     @Override
@@ -159,6 +162,16 @@ public final class MetamodelRepository
     }
 
     @Override
+    public Optional<IUndirectedEdgeType> findUndirectedEdgeTypeBase() {
+        return Optional.of( this.baseUndirectedEdgeType );
+    }
+
+    @Override
+    public Optional<IVertexType> findVertexTypeBase() {
+        return Optional.ofNullable( this.baseVertexType );
+    }
+
+    @Override
     public Optional<IVertexType> findVertexTypeById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
@@ -173,13 +186,46 @@ public final class MetamodelRepository
     }
 
     @Override
-    public Optional<IVertexType> findVertexTypeRoot() {
-        return Optional.ofNullable( this.rootVertexType );
+    public List<IVertexType> findVertexTypesAll() {
+        return this.vertexTypes;
     }
 
     @Override
-    public List<IVertexType> findVertexTypesAll() {
-        return this.vertexTypes;
+    public IDirectedEdgeType loadBaseDirectedEdgeType( UUID id, IPackage parentPackage ) {
+
+        IDirectedEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.baseVertexType );
+
+        this.edgeTypes.add( result );
+        this.baseDirectedEdgeType = result;
+
+        return result;
+
+    }
+
+    @Override
+    public IUndirectedEdgeType loadBaseUndirectedEdgeType(
+        UUID id, IPackage parentPackage
+    ) {
+
+        IUndirectedEdgeType result = new BaseUndirectedEdgeType( id, parentPackage, this.baseVertexType );
+
+        this.edgeTypes.add( result );
+        this.baseUndirectedEdgeType = result;
+
+        return result;
+
+    }
+
+    @Override
+    public IVertexType loadBaseVertexType( UUID id, IPackage parentPackage ) {
+
+        IVertexType result = new BaseVertexType( id, parentPackage );
+
+        this.vertexTypes.add( result );
+        this.baseVertexType = result;
+
+        return result;
+
     }
 
     @Override
@@ -294,38 +340,12 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IEdgeType loadRootEdgeType(
-        UUID id, IPackage parentPackage
-    ) {
-
-        IEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.rootVertexType );
-
-        this.edgeTypes.add( result );
-        this.rootEdgeType = result;
-
-        return result;
-
-    }
-
-    @Override
     public IPackage loadRootPackage( UUID id ) {
 
         IPackage result = new RootPackage( id );
 
         this.packages.add( result );
         this.rootPackage = result;
-
-        return result;
-
-    }
-
-    @Override
-    public IVertexType loadRootVertexType( UUID id, IPackage parentPackage ) {
-
-        IVertexType result = new BaseVertexType( id, parentPackage );
-
-        this.vertexTypes.add( result );
-        this.rootVertexType = result;
 
         return result;
 
@@ -347,6 +367,41 @@ public final class MetamodelRepository
         this.attributeTypes.add( result );
 
         return result;
+    }
+
+    @Override
+    public IUndirectedEdgeType loadUndirectedEdgeType(
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        IEdgeType superType,
+        EAbstractness abstractness,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfLooping selfLooping,
+        IVertexType vertexType,
+        OptionalInt minDegree,
+        OptionalInt maxDegree
+    ) {
+
+        IUndirectedEdgeType result = new UndirectedEdgeType(
+            id,
+            parentPackage,
+            name,
+            superType,
+            abstractness,
+            cyclicity,
+            multiEdgedness,
+            selfLooping,
+            vertexType,
+            minDegree,
+            maxDegree
+        );
+
+        this.edgeTypes.add( result );
+
+        return result;
+
     }
 
     @Override
@@ -388,10 +443,12 @@ public final class MetamodelRepository
 
     private final List<IVertexType> vertexTypes;
 
-    private IEdgeType rootEdgeType = null;
+    private IDirectedEdgeType baseDirectedEdgeType = null;
+
+    private IUndirectedEdgeType baseUndirectedEdgeType = null;
+
+    private IVertexType baseVertexType = null;
 
     private IPackage rootPackage = null;
-
-    private IVertexType rootVertexType = null;
 
 }

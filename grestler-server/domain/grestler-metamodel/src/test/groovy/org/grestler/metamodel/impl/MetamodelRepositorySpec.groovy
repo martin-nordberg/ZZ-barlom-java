@@ -33,7 +33,7 @@ class MetamodelRepositorySpec
                 { r -> } as IAttributeTypeLoader,
                 { r ->
                     def rootPkg = r.findPackageRoot().get();
-                    def rootVertexType = r.loadRootVertexType( Uuids.makeUuid(), rootPkg );
+                    def rootVertexType = r.loadBaseVertexType( Uuids.makeUuid(), rootPkg );
                     r.loadVertexType( id1, rootPkg, "V1", rootVertexType, EAbstractness.ABSTRACT );
                     r.loadVertexType( Uuids.makeUuid(), rootPkg, "V2", rootVertexType, EAbstractness.ABSTRACT );
                     r.loadVertexType( Uuids.makeUuid(), rootPkg, "V3", rootVertexType, EAbstractness.ABSTRACT );

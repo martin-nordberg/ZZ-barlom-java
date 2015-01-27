@@ -22,6 +22,7 @@ import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
@@ -36,6 +37,40 @@ import java.util.UUID;
  */
 public interface IMetamodelRepositorySpi
     extends IMetamodelRepository {
+
+    /**
+     * Loads the queried base directed edge type into the repository.
+     *
+     * @param id            the unique ID of the base edge type.
+     * @param parentPackage the parent package for the base edge type.
+     *
+     * @return the loaded edge type.
+     */
+    IDirectedEdgeType loadBaseDirectedEdgeType(
+        UUID id, IPackage parentPackage
+    );
+
+    /**
+     * Loads the queried base undirected edge type into the repository.
+     *
+     * @param id            the unique ID of the base edge type.
+     * @param parentPackage the parent package for the base edge type.
+     *
+     * @return the loaded edge type.
+     */
+    IUndirectedEdgeType loadBaseUndirectedEdgeType(
+        UUID id, IPackage parentPackage
+    );
+
+    /**
+     * Loads a queried vertex type into the repository.
+     *
+     * @param id            the unique ID of the vertex type.
+     * @param parentPackage the parent (root) package for the vertex type.
+     *
+     * @return the loaded vertex type.
+     */
+    IVertexType loadBaseVertexType( UUID id, IPackage parentPackage );
 
     /**
      * Loads a queried boolean attribute type into the repository.
@@ -66,7 +101,7 @@ public interface IMetamodelRepositorySpi
     );
 
     /**
-     * Loads a queried edge type into the repository.
+     * Loads a queried directed edge type into the repository.
      *
      * @param id               the unique ID of the edge type.
      * @param parentPackage    the parent package for the edge type.
@@ -163,18 +198,6 @@ public interface IMetamodelRepositorySpi
     IPackage loadPackage( UUID id, IPackage parentPackage, String name );
 
     /**
-     * Loads a queried root edge type into the repository.
-     *
-     * @param id            the unique ID of the root edge type.
-     * @param parentPackage the parent package for the root edge type.
-     *
-     * @return the loaded edge type.
-     */
-    IEdgeType loadRootEdgeType(
-        UUID id, IPackage parentPackage
-    );
-
-    /**
      * Loads the queried root package into the repository.
      *
      * @param id the unique ID of the package.
@@ -182,16 +205,6 @@ public interface IMetamodelRepositorySpi
      * @return the loaded package.
      */
     IPackage loadRootPackage( UUID id );
-
-    /**
-     * Loads a queried vertex type into the repository.
-     *
-     * @param id            the unique ID of the vertex type.
-     * @param parentPackage the parent (root) package for the vertex type.
-     *
-     * @return the loaded vertex type.
-     */
-    IVertexType loadRootVertexType( UUID id, IPackage parentPackage );
 
     /**
      * Loads a queried string attribute type into the repository.
@@ -212,6 +225,37 @@ public interface IMetamodelRepositorySpi
         OptionalInt minLength,
         int maxLength,
         Optional<String> regexPattern
+    );
+
+    /**
+     * Loads a queried undirected edge type into the repository.
+     *
+     * @param id             the unique ID of the edge type.
+     * @param parentPackage  the parent package for the edge type.
+     * @param name           the name of the edge type.
+     * @param superType      the super type of the edge type.
+     * @param abstractness   whether the edge type is abstract or concrete.
+     * @param cyclicity      whether edges of the new type are allowed to be cyclic.
+     * @param multiEdgedness whether the new edge type allows multiple edges between two given vertexes.
+     * @param selfLooping    whether the new edge type allows edges from a vertex to itself.
+     * @param vertexType     the vertex type at the start of edges of the new edge type.
+     * @param minDegree      the minimum degree for any vertex of an edge of this type.
+     * @param maxDegree      the maximum degree for any vertex of an edge of this type.
+     *
+     * @return the loaded edge type.
+     */
+    IUndirectedEdgeType loadUndirectedEdgeType(
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        IEdgeType superType,
+        EAbstractness abstractness,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfLooping selfLooping,
+        IVertexType vertexType,
+        OptionalInt minDegree,
+        OptionalInt maxDegree
     );
 
     /**

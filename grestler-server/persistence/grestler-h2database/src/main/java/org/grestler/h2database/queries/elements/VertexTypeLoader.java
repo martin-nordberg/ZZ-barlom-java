@@ -83,7 +83,7 @@ public class VertexTypeLoader
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return repository.loadRootVertexType( record.id, parentPackage );
+            return repository.loadBaseVertexType( record.id, parentPackage );
         }
 
         // Find an existing vertex super type by UUID.

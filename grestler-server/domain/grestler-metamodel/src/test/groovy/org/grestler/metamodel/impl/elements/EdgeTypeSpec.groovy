@@ -23,15 +23,15 @@ class EdgeTypeSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IVertexType rootVertexType = new BaseVertexType( id, root );
-        IEdgeType e = new BaseDirectedEdgeType( id, root, rootVertexType );
+        IVertexType baseVertexType = new BaseVertexType( id, root );
+        IEdgeType e = new BaseDirectedEdgeType( id, root, baseVertexType );
 
         expect:
         e.name == "Edge";
         !e.superType.isPresent();
         e.isSubTypeOf( e );
-        e.tailVertexType == rootVertexType;
-        e.headVertexType == rootVertexType;
+        e.tailVertexType == baseVertexType;
+        e.headVertexType == baseVertexType;
 
     }
 

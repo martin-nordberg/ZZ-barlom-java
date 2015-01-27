@@ -6,8 +6,10 @@
 package org.grestler.metamodel.api;
 
 import org.grestler.metamodel.api.attributes.IAttributeType;
+import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 import java.util.List;
@@ -34,6 +36,13 @@ public interface IMetamodelRepository {
     List<IAttributeType> findAttributeTypesAll();
 
     /**
+     * Finds the base directed edge type.
+     *
+     * @return the base edge type or empty if not loaded yet.
+     */
+    Optional<IDirectedEdgeType> findDirectedEdgeTypeBase();
+
+    /**
      * Finds the edge type with given ID.
      *
      * @param id the UUID of the edge type to find.
@@ -41,13 +50,6 @@ public interface IMetamodelRepository {
      * @return the edge type found.
      */
     Optional<IEdgeType> findEdgeTypeById( UUID id );
-
-    /**
-     * Finds the root edge type.
-     *
-     * @return the root edge type or empty if not loaded yet.
-     */
-    Optional<IEdgeType> findEdgeTypeRoot();
 
     /**
      * @return a list of all edge types in the repository.
@@ -65,6 +67,7 @@ public interface IMetamodelRepository {
 
     /**
      * Finds the root package.
+     *
      * @return the root package or empty if not loaded yet.
      */
     Optional<IPackage> findPackageRoot();
@@ -75,6 +78,20 @@ public interface IMetamodelRepository {
     List<IPackage> findPackagesAll();
 
     /**
+     * Finds the base undirected edge type.
+     *
+     * @return the base edge type or empty if not loaded yet.
+     */
+    Optional<IUndirectedEdgeType> findUndirectedEdgeTypeBase();
+
+    /**
+     * Finds the base vertex type.
+     *
+     * @return the base vertex type or empty if not loaded yet.
+     */
+    Optional<IVertexType> findVertexTypeBase();
+
+    /**
      * Finds the vertex type with given ID.
      *
      * @param id the UUID of the vertex type to find.
@@ -82,13 +99,6 @@ public interface IMetamodelRepository {
      * @return the vertex type found.
      */
     Optional<IVertexType> findVertexTypeById( UUID id );
-
-    /**
-     * Finds the root vertex type.
-     *
-     * @return the root vertex type or empty if not loaded yet.
-     */
-    Optional<IVertexType> findVertexTypeRoot();
 
     /**
      * @return a list of all vertex types in the repository.
