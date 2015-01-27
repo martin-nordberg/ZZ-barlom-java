@@ -8,7 +8,7 @@ package org.grestler.metamodel.impl.elements;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -37,7 +37,7 @@ public final class DirectedEdgeType
      * @param cyclicity        whether the edge type is constrained to be acyclic.
      * @param multiEdgedness   whether the edge type is constrained to disallow multiple edges between two given
      *                         vertexes.
-     * @param selfEdgedness    whether the edge type disallows edges from a vertex to itself.
+     * @param selfLooping      whether the edge type disallows edges from a vertex to itself.
      * @param tailVertexType   the vertex type at the start of the edge type.
      * @param headVertexType   the vertex type at the end of the edge type.
      * @param tailRoleName     the role name for vertexes at the tail of this edge type
@@ -55,7 +55,7 @@ public final class DirectedEdgeType
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
-        ESelfEdgedness selfEdgedness,
+        ESelfLooping selfLooping,
         IVertexType tailVertexType,
         IVertexType headVertexType,
         Optional<String> tailRoleName,
@@ -65,7 +65,7 @@ public final class DirectedEdgeType
         OptionalInt minHeadInDegree,
         OptionalInt maxHeadInDegree
     ) {
-        super( id, parentPackage, name, superType, abstractness, cyclicity, multiEdgedness, selfEdgedness );
+        super( id, parentPackage, name, superType, abstractness, cyclicity, multiEdgedness, selfLooping );
 
         this.tailVertexType = tailVertexType;
         this.headVertexType = headVertexType;

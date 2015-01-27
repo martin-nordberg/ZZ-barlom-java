@@ -12,7 +12,7 @@ import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -102,7 +102,7 @@ public class EdgeTypeLoader
             record.abstractness,
             record.cyclicity,
             record.multiEdgedness,
-            record.selfEdgedness,
+            record.selfLooping,
             tailVertexType,
             headVertexType,
             record.tailRoleName,
@@ -151,7 +151,7 @@ public class EdgeTypeLoader
             this.abstractness = EAbstractness.fromBoolean( resultSet.getBoolean( "IS_ABSTRACT" ) );
             this.cyclicity = ECyclicity.fromBoolean( resultSet.getOptionalBoolean( "IS_ACYCLIC" ) );
             this.multiEdgedness = EMultiEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) );
-            this.selfEdgedness = ESelfEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_SELF_EDGE_ALLOWED" ) );
+            this.selfLooping = ESelfLooping.fromBoolean( resultSet.getOptionalBoolean( "IS_SELF_LOOP_ALLOWED" ) );
             this.tailVertexTypeId = resultSet.getUuid( "TAIL_VERTEX_TYPE_ID" );
             this.headVertexTypeId = resultSet.getUuid( "HEAD_VERTEX_TYPE_ID" );
             this.tailRoleName = resultSet.getOptionalString( "TAIL_ROLE_NAME" );
@@ -186,7 +186,7 @@ public class EdgeTypeLoader
 
         public final UUID parentPackageId;
 
-        public final ESelfEdgedness selfEdgedness;
+        public final ESelfLooping selfLooping;
 
         public final UUID superTypeId;
 

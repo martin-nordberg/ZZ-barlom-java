@@ -8,7 +8,7 @@ package org.grestler.metamodel.impl.elements;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -37,7 +37,7 @@ abstract class EdgeType
      * @param cyclicity      whether the edge type is constrained to be acyclic.
      * @param multiEdgedness whether the edge type is constrained to disallow multiple edges between two given
      *                       vertexes.
-     * @param selfEdgedness  whether the edge type disallows edges from a vertex to itself.
+     * @param selfLooping    whether the edge type disallows edges from a vertex to itself.
      */
     protected EdgeType(
         UUID id,
@@ -47,7 +47,7 @@ abstract class EdgeType
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
-        ESelfEdgedness selfEdgedness
+        ESelfLooping selfLooping
     ) {
         super( id, parentPackage, name );
 
@@ -55,7 +55,7 @@ abstract class EdgeType
         this.abstractness = abstractness;
         this.cyclicity = cyclicity;
         this.multiEdgedness = multiEdgedness;
-        this.selfEdgedness = selfEdgedness;
+        this.selfLooping = selfLooping;
 
         this.attributes = new ArrayList<>();
 
@@ -75,7 +75,7 @@ abstract class EdgeType
             .write( "abstractness", this.abstractness.name() )
             .write( "cyclicity", this.cyclicity.name() )
             .write( "multiEdgedness", this.multiEdgedness.name() )
-            .write( "selfEdgedness", this.selfEdgedness.name() );
+            .write( "selfLooping", this.selfLooping.name() );
 
         // TODO: attribute declarations
     }
@@ -101,8 +101,8 @@ abstract class EdgeType
     }
 
     @Override
-    public final ESelfEdgedness getSelfEdgedness() {
-        return this.selfEdgedness;
+    public final ESelfLooping getSelfLooping() {
+        return this.selfLooping;
     }
 
     @Override
@@ -128,7 +128,7 @@ abstract class EdgeType
     private final EMultiEdgedness multiEdgedness;
 
     /** Whetehr this edge type allows an edge from a vertex to itself. */
-    private final ESelfEdgedness selfEdgedness;
+    private final ESelfLooping selfLooping;
 
     /** The super type for this edge type. */
     private final IEdgeType superType;

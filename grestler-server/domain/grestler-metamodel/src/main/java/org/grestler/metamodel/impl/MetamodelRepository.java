@@ -16,7 +16,7 @@ import org.grestler.metamodel.api.attributes.IUuidAttributeType;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
@@ -217,7 +217,7 @@ public final class MetamodelRepository
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
-        ESelfEdgedness selfEdgedness,
+        ESelfLooping selfLooping,
         IVertexType tailVertexType,
         IVertexType headVertexType,
         Optional<String> tailRoleName,
@@ -236,7 +236,7 @@ public final class MetamodelRepository
             abstractness,
             cyclicity,
             multiEdgedness,
-            selfEdgedness,
+            selfLooping,
             tailVertexType,
             headVertexType,
             tailRoleName,

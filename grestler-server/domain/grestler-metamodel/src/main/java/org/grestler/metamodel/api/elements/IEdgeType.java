@@ -37,7 +37,7 @@ public interface IEdgeType
     /**
      * @return whether edges of this type can connect a vertex to itself.
      */
-    ESelfEdgedness getSelfEdgedness();
+    ESelfLooping getSelfLooping();
 
     /**
      * @return the super type of this edge type.
@@ -50,6 +50,13 @@ public interface IEdgeType
      */
     default boolean isAbstract() {
         return this.getAbstractness() == EAbstractness.ABSTRACT;
+    }
+
+    /**
+     * @return whether graphs formed by this edge type are simple, i.e. have neither self-loops not multi-edges.
+     */
+    default boolean isSimple() {
+        return this.getMultiEdgedness() == EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED && this.getSelfLooping() == ESelfLooping.SELF_LOOPS_NOT_ALLOWED;
     }
 
     /**

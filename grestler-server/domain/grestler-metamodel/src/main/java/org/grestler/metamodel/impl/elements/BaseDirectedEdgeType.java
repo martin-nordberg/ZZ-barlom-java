@@ -8,7 +8,7 @@ package org.grestler.metamodel.impl.elements;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
@@ -95,6 +95,26 @@ public class BaseDirectedEdgeType
     }
 
     @Override
+    public OptionalInt getMaxHeadInDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMaxTailOutDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMinHeadInDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMinTailOutDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
     public EMultiEdgedness getMultiEdgedness() {
         return EMultiEdgedness.UNCONSTRAINED;
     }
@@ -110,8 +130,8 @@ public class BaseDirectedEdgeType
     }
 
     @Override
-    public ESelfEdgedness getSelfEdgedness() {
-        return ESelfEdgedness.UNCONSTRAINED;
+    public ESelfLooping getSelfLooping() {
+        return ESelfLooping.UNCONSTRAINED;
     }
 
     @Override
@@ -130,35 +150,15 @@ public class BaseDirectedEdgeType
     }
 
     @Override
-    public OptionalInt getMinTailOutDegree() {
-        return OptionalInt.empty();
-    }
-
-    @Override
-    public OptionalInt getMaxTailOutDegree() {
-        return OptionalInt.empty();
-    }
-
-    @Override
-    public OptionalInt getMinHeadInDegree() {
-        return OptionalInt.empty();
-    }
-
-    @Override
-    public OptionalInt getMaxHeadInDegree() {
-        return OptionalInt.empty();
-    }
-
-    @Override
     public boolean isSubTypeOf( IEdgeType edgeType ) {
         return this == edgeType;
     }
 
     private final List<IEdgeAttributeDecl> attributes;
 
+    private final IVertexType baseVertexType;
+
     private final UUID id;
 
     private final IPackage parentPackage;
-
-    private final IVertexType baseVertexType;
 }

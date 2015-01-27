@@ -17,7 +17,7 @@ import org.grestler.metamodel.api.attributes.IUuidAttributeType;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
@@ -75,7 +75,7 @@ public interface IMetamodelRepositorySpi
      * @param abstractness     whether the edge type is abstract or concrete.
      * @param cyclicity        whether edges of the new type are allowed to be cyclic.
      * @param multiEdgedness   whether the new edge type allows multiple edges between two given vertexes.
-     * @param selfEdgedness    whether the new edge type allows edges from a vertex to itself.
+     * @param selfLooping      whether the new edge type allows edges from a vertex to itself.
      * @param tailVertexType   the vertex type at the start of edges of the new edge type.
      * @param headVertexType   the vertex type at the end of edges of the new edge type.
      * @param tailRoleName     the role name for the tail vertex of edges of the new type.
@@ -95,7 +95,7 @@ public interface IMetamodelRepositorySpi
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
-        ESelfEdgedness selfEdgedness,
+        ESelfLooping selfLooping,
         IVertexType tailVertexType,
         IVertexType headVertexType,
         Optional<String> tailRoleName,
