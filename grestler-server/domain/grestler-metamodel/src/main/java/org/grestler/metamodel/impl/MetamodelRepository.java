@@ -17,6 +17,7 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -28,12 +29,12 @@ import org.grestler.metamodel.impl.attributes.Float64AttributeType;
 import org.grestler.metamodel.impl.attributes.Integer32AttributeType;
 import org.grestler.metamodel.impl.attributes.StringAttributeType;
 import org.grestler.metamodel.impl.attributes.UuidAttributeType;
+import org.grestler.metamodel.impl.elements.BaseDirectedEdgeType;
+import org.grestler.metamodel.impl.elements.BaseVertexType;
+import org.grestler.metamodel.impl.elements.DirectedEdgeType;
 import org.grestler.metamodel.impl.elements.EdgeAttributeDecl;
-import org.grestler.metamodel.impl.elements.EdgeType;
 import org.grestler.metamodel.impl.elements.Package;
-import org.grestler.metamodel.impl.elements.RootEdgeType;
 import org.grestler.metamodel.impl.elements.RootPackage;
-import org.grestler.metamodel.impl.elements.RootVertexType;
 import org.grestler.metamodel.impl.elements.VertexAttributeDecl;
 import org.grestler.metamodel.impl.elements.VertexType;
 import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
@@ -208,47 +209,55 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IEdgeAttributeDecl loadEdgeAttributeDecl(
-        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
-    ) {
-        return new EdgeAttributeDecl( id, parentEdgeType, name, type, optionality );
-    }
-
-    @Override
-    public IEdgeType loadEdgeType(
+    public IDirectedEdgeType loadDirectedEdgeType(
         UUID id,
         IPackage parentPackage,
         String name,
         IEdgeType superType,
         EAbstractness abstractness,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfEdgedness selfEdgedness,
         IVertexType tailVertexType,
         IVertexType headVertexType,
         Optional<String> tailRoleName,
         Optional<String> headRoleName,
-        ECyclicity cyclicity,
-        EMultiEdgedness multiEdgedness,
-        ESelfEdgedness selfEdgedness
+        OptionalInt minTailOutDegree,
+        OptionalInt maxTailOutDegree,
+        OptionalInt minHeadInDegree,
+        OptionalInt maxHeadInDegree
     ) {
 
-        IEdgeType result = new EdgeType(
+        IDirectedEdgeType result = new DirectedEdgeType(
             id,
             parentPackage,
             name,
             superType,
             abstractness,
+            cyclicity,
+            multiEdgedness,
+            selfEdgedness,
             tailVertexType,
             headVertexType,
             tailRoleName,
             headRoleName,
-            cyclicity,
-            multiEdgedness,
-            selfEdgedness
+            minTailOutDegree,
+            maxTailOutDegree,
+            minHeadInDegree,
+            maxHeadInDegree
         );
 
         this.edgeTypes.add( result );
 
         return result;
 
+    }
+
+    @Override
+    public IEdgeAttributeDecl loadEdgeAttributeDecl(
+        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
+    ) {
+        return new EdgeAttributeDecl( id, parentEdgeType, name, type, optionality );
     }
 
     @Override
@@ -289,7 +298,7 @@ public final class MetamodelRepository
         UUID id, IPackage parentPackage
     ) {
 
-        IEdgeType result = new RootEdgeType( id, parentPackage, this.rootVertexType );
+        IEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.rootVertexType );
 
         this.edgeTypes.add( result );
         this.rootEdgeType = result;
@@ -313,7 +322,7 @@ public final class MetamodelRepository
     @Override
     public IVertexType loadRootVertexType( UUID id, IPackage parentPackage ) {
 
-        IVertexType result = new RootVertexType( id, parentPackage );
+        IVertexType result = new BaseVertexType( id, parentPackage );
 
         this.vertexTypes.add( result );
         this.rootVertexType = result;

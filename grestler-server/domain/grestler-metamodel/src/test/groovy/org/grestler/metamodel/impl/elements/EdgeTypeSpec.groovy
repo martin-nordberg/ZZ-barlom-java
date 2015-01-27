@@ -23,8 +23,8 @@ class EdgeTypeSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IVertexType rootVertexType = new RootVertexType( id, root );
-        IEdgeType e = new RootEdgeType( id, root, rootVertexType );
+        IVertexType rootVertexType = new BaseVertexType( id, root );
+        IEdgeType e = new BaseDirectedEdgeType( id, root, rootVertexType );
 
         expect:
         e.name == "Edge";
@@ -39,50 +39,62 @@ class EdgeTypeSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IVertexType v0 = new RootVertexType( id, root );
+        IVertexType v0 = new BaseVertexType( id, root );
         IVertexType v1 = new VertexType( id, root, "v1", v0, EAbstractness.ABSTRACT );
-        IEdgeType e0 = new RootEdgeType( id, root, v0 );
-        IEdgeType e1 = new EdgeType(
+        IEdgeType e0 = new BaseDirectedEdgeType( id, root, v0 );
+        IEdgeType e1 = new DirectedEdgeType(
                 id,
                 root,
                 name,
                 e0,
                 EAbstractness.ABSTRACT,
+                ECyclicity.UNCONSTRAINED,
+                EMultiEdgedness.UNCONSTRAINED,
+                ESelfEdgedness.UNCONSTRAINED,
                 v0,
                 v1,
                 Optional.empty(),
                 Optional.empty(),
-                ECyclicity.UNCONSTRAINED,
-                EMultiEdgedness.UNCONSTRAINED,
-                ESelfEdgedness.UNCONSTRAINED
+                OptionalInt.empty(),
+                OptionalInt.empty(),
+                OptionalInt.empty(),
+                OptionalInt.empty()
         );
-        IEdgeType e2 = new EdgeType(
+        IEdgeType e2 = new DirectedEdgeType(
                 id,
                 root,
                 name,
                 e1,
                 EAbstractness.ABSTRACT,
+                ECyclicity.UNCONSTRAINED,
+                EMultiEdgedness.UNCONSTRAINED,
+                ESelfEdgedness.UNCONSTRAINED,
                 v0,
                 v1,
                 Optional.empty(),
                 Optional.empty(),
-                ECyclicity.UNCONSTRAINED,
-                EMultiEdgedness.UNCONSTRAINED,
-                ESelfEdgedness.UNCONSTRAINED
+                OptionalInt.empty(),
+                OptionalInt.empty(),
+                OptionalInt.empty(),
+                OptionalInt.empty()
         );
-        IEdgeType e3 = new EdgeType(
+        IEdgeType e3 = new DirectedEdgeType(
                 id,
                 root,
                 name,
                 e0,
                 EAbstractness.ABSTRACT,
+                ECyclicity.UNCONSTRAINED,
+                EMultiEdgedness.UNCONSTRAINED,
+                ESelfEdgedness.UNCONSTRAINED,
                 v0,
                 v1,
                 Optional.empty(),
                 Optional.empty(),
-                ECyclicity.UNCONSTRAINED,
-                EMultiEdgedness.UNCONSTRAINED,
-                ESelfEdgedness.UNCONSTRAINED
+                OptionalInt.empty(),
+                OptionalInt.empty(),
+                OptionalInt.empty(),
+                OptionalInt.empty()
         );
 
         expect:

@@ -18,6 +18,7 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -65,6 +66,47 @@ public interface IMetamodelRepositorySpi
     );
 
     /**
+     * Loads a queried edge type into the repository.
+     *
+     * @param id               the unique ID of the edge type.
+     * @param parentPackage    the parent package for the edge type.
+     * @param name             the name of the edge type.
+     * @param superType        the super type of the edge type.
+     * @param abstractness     whether the edge type is abstract or concrete.
+     * @param cyclicity        whether edges of the new type are allowed to be cyclic.
+     * @param multiEdgedness   whether the new edge type allows multiple edges between two given vertexes.
+     * @param selfEdgedness    whether the new edge type allows edges from a vertex to itself.
+     * @param tailVertexType   the vertex type at the start of edges of the new edge type.
+     * @param headVertexType   the vertex type at the end of edges of the new edge type.
+     * @param tailRoleName     the role name for the tail vertex of edges of the new type.
+     * @param headRoleName     the role name for the head vertex of edges of the new type.
+     * @param minTailOutDegree the minimum out-degree for the tail vertex of an edge of this type.
+     * @param maxTailOutDegree the maximum out-degree for the tail vertex of an edge of this type.
+     * @param minHeadInDegree  the minimum in-degree for the head vertex of an edge of this type.
+     * @param maxHeadInDegree  the maximum in-degree for the head vertex of an edge of this type.
+     *
+     * @return the loaded edge type.
+     */
+    IDirectedEdgeType loadDirectedEdgeType(
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        IEdgeType superType,
+        EAbstractness abstractness,
+        ECyclicity cyclicity,
+        EMultiEdgedness multiEdgedness,
+        ESelfEdgedness selfEdgedness,
+        IVertexType tailVertexType,
+        IVertexType headVertexType,
+        Optional<String> tailRoleName,
+        Optional<String> headRoleName,
+        OptionalInt minTailOutDegree,
+        OptionalInt maxTailOutDegree,
+        OptionalInt minHeadInDegree,
+        OptionalInt maxHeadInDegree
+    );
+
+    /**
      * Loads a queried edge attribute declaration into the repository.
      *
      * @param id             the unique ID of the attribute declaration.
@@ -77,39 +119,6 @@ public interface IMetamodelRepositorySpi
      */
     IEdgeAttributeDecl loadEdgeAttributeDecl(
         UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
-    );
-
-    /**
-     * Loads a queried edge type into the repository.
-     *
-     * @param id             the unique ID of the edge type.
-     * @param parentPackage  the parent package for the edge type.
-     * @param name           the name of the edge type.
-     * @param superType      the super type of the edge type.
-     * @param abstractness   whether the edge type is abstract or concrete.
-     * @param tailVertexType the vertex type at the start of edges of the new edge type.
-     * @param headVertexType the vertex type at the end of edges of the new edge type.
-     * @param tailRoleName   the role name for the tail vertex of edges of the new type.
-     * @param headRoleName   the role name for the head vertex of edges of the new type.
-     * @param cyclicity      whether edges of the new type are allowed to be cyclic.
-     * @param multiEdgedness whether the new edge type allows multiple edges between two given vertexes.
-     * @param selfEdgedness  whether the new edge type allows edges from a vertex to itself.
-     *
-     * @return the loaded edge type.
-     */
-    IEdgeType loadEdgeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        IEdgeType superType,
-        EAbstractness abstractness,
-        IVertexType tailVertexType,
-        IVertexType headVertexType,
-        Optional<String> tailRoleName,
-        Optional<String> headRoleName,
-        ECyclicity cyclicity,
-        EMultiEdgedness multiEdgedness,
-        ESelfEdgedness selfEdgedness
     );
 
     /**

@@ -30,16 +30,6 @@ public interface IEdgeType
     ECyclicity getCyclicity();
 
     /**
-     * @return the name of the role for the vertex at the head of edges of this type.
-     */
-    Optional<String> getHeadRoleName();
-
-    /**
-     * @return the destination vertex type for edges of this type.
-     */
-    IVertexType getHeadVertexType();
-
-    /**
      * @return whether edges of this type must be unique between any two given vertexes.
      */
     EMultiEdgedness getMultiEdgedness();
@@ -53,16 +43,6 @@ public interface IEdgeType
      * @return the super type of this edge type.
      */
     Optional<IEdgeType> getSuperType();
-
-    /**
-     * @return the name of the role for the vertex at the tail of edges of this type.
-     */
-    Optional<String> getTailRoleName();
-
-    /**
-     * @return the origin vertex type for edges of this type.
-     */
-    IVertexType getTailVertexType();
 
     /**
      * @return whether this edge type is abstract, i.e has no concrete instances. Note that a super type must be

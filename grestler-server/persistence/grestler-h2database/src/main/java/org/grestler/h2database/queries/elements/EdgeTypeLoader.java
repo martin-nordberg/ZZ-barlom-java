@@ -23,6 +23,7 @@ import org.grestler.utilities.configuration.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.UUID;
 
 /**
@@ -43,26 +44,12 @@ public class EdgeTypeLoader
     @Override
     public void loadAllEdgeTypes( IMetamodelRepositorySpi repository ) {
 
-        Configuration config = new Configuration( H2DatabaseModule.class );
-
-        List<EdgeTypeRecord> etRecords = new ArrayList<>();
-
-        // Perform the database query, accumulating the records found.
-        try ( IConnection connection = this.dataSource.openConnection() ) {
-            connection.executeQuery(
-                rs -> etRecords.add( new EdgeTypeRecord( rs ) ), config.readString( "EdgeType.All" )
-            );
-        }
-
-        // Copy the results into the repository.
-        for ( EdgeTypeRecord etRecord : etRecords ) {
-            this.findOrCreateEdgeType( etRecord, etRecords, repository );
-        }
+        this.loadAllDirectedEdgeTypes( repository );
 
     }
 
     /**
-     * Finds a edge type in the metamodel repository or creates it if not yet there.
+     * Finds a directed edge type in the metamodel repository or creates it if not yet there.
      *
      * @param record     the attributes of the edge type.
      * @param records    the attributes of all edge types.
@@ -70,8 +57,8 @@ public class EdgeTypeLoader
      *
      * @return the found or newly created edge type.
      */
-    private IEdgeType findOrCreateEdgeType(
-        EdgeTypeRecord record, List<EdgeTypeRecord> records, IMetamodelRepositorySpi repository
+    private IEdgeType findOrCreateDirectedEdgeType(
+        DirectedEdgeTypeRecord record, List<DirectedEdgeTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the edge type already in the repository.
@@ -100,27 +87,51 @@ public class EdgeTypeLoader
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
             // ... recursively register the supertype.
-            for ( EdgeTypeRecord srecord : records ) {
+            for ( DirectedEdgeTypeRecord srecord : records ) {
                 if ( srecord.id.equals( record.superTypeId ) ) {
-                    superType = Optional.of( this.findOrCreateEdgeType( srecord, records, repository ) );
+                    superType = Optional.of( this.findOrCreateDirectedEdgeType( srecord, records, repository ) );
                 }
             }
         }
 
-        return repository.loadEdgeType(
+        return repository.loadDirectedEdgeType(
             record.id,
             parentPackage,
             record.name,
             superType.get(),
             record.abstractness,
+            record.cyclicity,
+            record.multiEdgedness,
+            record.selfEdgedness,
             tailVertexType,
             headVertexType,
             record.tailRoleName,
             record.headRoleName,
-            record.cyclicity,
-            record.multiEdgedness,
-            record.selfEdgedness
+            record.minTailOutDegree,
+            record.maxTailOutDegree,
+            record.minHeadInDegree,
+            record.maxHeadInDegree
         );
+
+    }
+
+    private void loadAllDirectedEdgeTypes( IMetamodelRepositorySpi repository ) {
+
+        Configuration config = new Configuration( H2DatabaseModule.class );
+
+        List<DirectedEdgeTypeRecord> etRecords = new ArrayList<>();
+
+        // Perform the database query, accumulating the records found.
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+            connection.executeQuery(
+                rs -> etRecords.add( new DirectedEdgeTypeRecord( rs ) ), config.readString( "DirectedEdgeType.All" )
+            );
+        }
+
+        // Copy the results into the repository.
+        for ( DirectedEdgeTypeRecord etRecord : etRecords ) {
+            this.findOrCreateDirectedEdgeType( etRecord, etRecords, repository );
+        }
 
     }
 
@@ -128,23 +139,27 @@ public class EdgeTypeLoader
     private final IDataSource dataSource;
 
     /**
-     * Data structure for edge type records.
+     * Data structure for directed edge type records.
      */
-    private static class EdgeTypeRecord {
+    private static class DirectedEdgeTypeRecord {
 
-        EdgeTypeRecord( IResultSet resultSet ) {
+        DirectedEdgeTypeRecord( IResultSet resultSet ) {
             this.id = resultSet.getUuid( "ID" );
             this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );
             this.superTypeId = resultSet.getUuid( "SUPER_TYPE_ID" );
             this.abstractness = EAbstractness.fromBoolean( resultSet.getBoolean( "IS_ABSTRACT" ) );
+            this.cyclicity = ECyclicity.fromBoolean( resultSet.getOptionalBoolean( "IS_ACYCLIC" ) );
+            this.multiEdgedness = EMultiEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) );
+            this.selfEdgedness = ESelfEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_SELF_EDGE_ALLOWED" ) );
             this.tailVertexTypeId = resultSet.getUuid( "TAIL_VERTEX_TYPE_ID" );
             this.headVertexTypeId = resultSet.getUuid( "HEAD_VERTEX_TYPE_ID" );
             this.tailRoleName = resultSet.getOptionalString( "TAIL_ROLE_NAME" );
             this.headRoleName = resultSet.getOptionalString( "HEAD_ROLE_NAME" );
-            this.cyclicity = ECyclicity.fromBoolean( resultSet.getOptionalBoolean( "IS_ACYCLIC" ) );
-            this.multiEdgedness = EMultiEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) );
-            this.selfEdgedness = ESelfEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_SELF_EDGE_ALLOWED" ) );
+            this.minTailOutDegree = resultSet.getOptionalInt( "MIN_TAIL_OUT_DEGREE" );
+            this.maxTailOutDegree = resultSet.getOptionalInt( "MAX_TAIL_OUT_DEGREE" );
+            this.minHeadInDegree = resultSet.getOptionalInt( "MIN_HEAD_IN_DEGREE" );
+            this.maxHeadInDegree = resultSet.getOptionalInt( "MAX_HEAD_IN_DEGREE" );
         }
 
         public final EAbstractness abstractness;
@@ -156,6 +171,14 @@ public class EdgeTypeLoader
         public final UUID headVertexTypeId;
 
         public final UUID id;
+
+        public final OptionalInt maxHeadInDegree;
+
+        public final OptionalInt maxTailOutDegree;
+
+        public final OptionalInt minHeadInDegree;
+
+        public final OptionalInt minTailOutDegree;
 
         public final EMultiEdgedness multiEdgedness;
 

@@ -24,7 +24,7 @@ class VertexTypeSpec
     def "A top level vertex type is constructed and read"() {
 
         given:
-        IVertexType v = new RootVertexType( id, new RootPackage( Uuids.makeUuid() ) );
+        IVertexType v = new BaseVertexType( id, new RootPackage( Uuids.makeUuid() ) );
 
         expect:
         v.id == id;
@@ -38,7 +38,7 @@ class VertexTypeSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IVertexType v = new RootVertexType( id, root );
+        IVertexType v = new BaseVertexType( id, root );
         IVertexType v1 = new VertexType( id, root, name, v, EAbstractness.ABSTRACT );
         IVertexType v2 = new VertexType( id, root, name, v1, EAbstractness.ABSTRACT );
         IVertexType w = new VertexType( id, root, name, v, EAbstractness.ABSTRACT );

@@ -9,6 +9,7 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfEdgedness;
+import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
@@ -18,28 +19,29 @@ import javax.json.stream.JsonGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.UUID;
 
 /**
- * Implementation of the top-level root edge type.
+ * Implementation of the top-level base directed edge type.
  */
-public class RootEdgeType
-    implements IEdgeType, IEdgeTypeSpi {
+public class BaseDirectedEdgeType
+    implements IDirectedEdgeType, IEdgeTypeSpi {
 
     /**
-     * Constructs a new root edge type.
+     * Constructs a new base directed edge type.
      *
      * @param id             the unique ID of the edge type.
      * @param parentPackage  the package containing the edge type.
-     * @param rootVertexType the root vertex type connected by the edge type.
+     * @param baseVertexType the base vertex type connected by the edge type.
      */
-    public RootEdgeType(
-        UUID id, IPackage parentPackage, IVertexType rootVertexType
+    public BaseDirectedEdgeType(
+        UUID id, IPackage parentPackage, IVertexType baseVertexType
     ) {
 
         this.id = id;
         this.parentPackage = parentPackage;
-        this.rootVertexType = rootVertexType;
+        this.baseVertexType = baseVertexType;
 
         this.attributes = new ArrayList<>();
 
@@ -58,8 +60,8 @@ public class RootEdgeType
             .write( "parentPackageId", this.parentPackage.getId().toString() )
             .write( "name", "Vertex" )
             .write( "path", this.getPath() )
-            .write( "tailVertexTypeId", this.rootVertexType.getId().toString() )
-            .write( "headVertexTypeId", this.rootVertexType.getId().toString() );
+            .write( "tailVertexTypeId", this.baseVertexType.getId().toString() )
+            .write( "headVertexTypeId", this.baseVertexType.getId().toString() );
     }
 
     @Override
@@ -84,7 +86,7 @@ public class RootEdgeType
 
     @Override
     public IVertexType getHeadVertexType() {
-        return this.rootVertexType;
+        return this.baseVertexType;
     }
 
     @Override
@@ -124,7 +126,27 @@ public class RootEdgeType
 
     @Override
     public IVertexType getTailVertexType() {
-        return this.rootVertexType;
+        return this.baseVertexType;
+    }
+
+    @Override
+    public OptionalInt getMinTailOutDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMaxTailOutDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMinHeadInDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMaxHeadInDegree() {
+        return OptionalInt.empty();
     }
 
     @Override
@@ -138,5 +160,5 @@ public class RootEdgeType
 
     private final IPackage parentPackage;
 
-    private final IVertexType rootVertexType;
+    private final IVertexType baseVertexType;
 }
