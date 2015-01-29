@@ -29,6 +29,11 @@ public interface IVertexAttributeDecl {
     UUID getId();
 
     /**
+     * @return whether this is the default label for the vertex.
+     */
+    ELabelDefaulting getLabelDefaulting();
+
+    /**
      * @return the name of this attribute.
      */
     String getName();

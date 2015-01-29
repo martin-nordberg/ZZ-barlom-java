@@ -11,6 +11,7 @@ import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
+import org.grestler.metamodel.api.elements.ELabelDefaulting;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
@@ -90,7 +91,12 @@ public class AttributeDeclLoader
         Optional<IAttributeType> attributeType = repository.findAttributeTypeById( record.attributeTypeId );
 
         return repository.loadVertexAttributeDecl(
-            record.id, parentVertexType.get(), record.name, attributeType.get(), record.optionality
+            record.id,
+            parentVertexType.get(),
+            record.name,
+            attributeType.get(),
+            record.optionality,
+            record.labelDefaulting
         );
 
     }
@@ -152,9 +158,9 @@ public class AttributeDeclLoader
     /**
      * Data structure for boolean attribute type records.
      */
-    private static class EdgeAttributeDeclRecord {
+    private static final class EdgeAttributeDeclRecord {
 
-        EdgeAttributeDeclRecord( IResultSet resultSet ) {
+        private EdgeAttributeDeclRecord( IResultSet resultSet ) {
 
             this.id = resultSet.getUuid( "ID" );
             this.parentEdgeTypeId = resultSet.getUuid( "PARENT_EDGE_TYPE_ID" );
@@ -163,41 +169,45 @@ public class AttributeDeclLoader
             this.optionality = EAttributeOptionality.fromBoolean( resultSet.getBoolean( "IS_REQUIRED" ) );
         }
 
+        public final UUID attributeTypeId;
+
         public final UUID id;
 
         public final String name;
 
+        public final EAttributeOptionality optionality;
+
         public final UUID parentEdgeTypeId;
-
-        private final UUID attributeTypeId;
-
-        private final EAttributeOptionality optionality;
 
     }
 
     /**
      * Data structure for UUID attribute type records.
      */
-    private static class VertexAttributeDeclRecord {
+    private static final class VertexAttributeDeclRecord {
 
-        VertexAttributeDeclRecord( IResultSet resultSet ) {
+        private VertexAttributeDeclRecord( IResultSet resultSet ) {
 
             this.id = resultSet.getUuid( "ID" );
             this.parentVertexTypeId = resultSet.getUuid( "PARENT_VERTEX_TYPE_ID" );
             this.name = resultSet.getString( "NAME" );
             this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
             this.optionality = EAttributeOptionality.fromBoolean( resultSet.getBoolean( "IS_REQUIRED" ) );
+            this.labelDefaulting = ELabelDefaulting.fromBoolean( resultSet.getBoolean( "IS_DEFAULT_LABEL" ) );
+
         }
+
+        public final UUID attributeTypeId;
 
         public final UUID id;
 
+        public final ELabelDefaulting labelDefaulting;
+
         public final String name;
 
+        public final EAttributeOptionality optionality;
+
         public final UUID parentVertexTypeId;
-
-        private final UUID attributeTypeId;
-
-        private final EAttributeOptionality optionality;
 
     }
 

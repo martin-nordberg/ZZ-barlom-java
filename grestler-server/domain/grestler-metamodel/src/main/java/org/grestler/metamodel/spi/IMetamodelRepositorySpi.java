@@ -16,6 +16,7 @@ import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.ELabelDefaulting;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;
@@ -279,11 +280,17 @@ public interface IMetamodelRepositorySpi
      * @param name             the name of the attribute.
      * @param type             the type of the attribute.
      * @param optionality      whether this attribute is required.
+     * @param labelDefaulting  whether this is the default label for vertexes of the parent type.
      *
      * @return the loaded vertex attribute.
      */
     IVertexAttributeDecl loadVertexAttributeDecl(
-        UUID id, IVertexType parentVertexType, String name, IAttributeType type, EAttributeOptionality optionality
+        UUID id,
+        IVertexType parentVertexType,
+        String name,
+        IAttributeType type,
+        EAttributeOptionality optionality,
+        ELabelDefaulting labelDefaulting
     );
 
     /**

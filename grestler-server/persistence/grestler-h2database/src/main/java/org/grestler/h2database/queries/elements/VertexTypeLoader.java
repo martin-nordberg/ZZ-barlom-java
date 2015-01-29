@@ -109,9 +109,9 @@ public class VertexTypeLoader
     /**
      * Data structure for vertex type records.
      */
-    private static class VertexTypeRecord {
+    private static final class VertexTypeRecord {
 
-        VertexTypeRecord( IResultSet resultSet ) {
+        private VertexTypeRecord( IResultSet resultSet ) {
             this.id = resultSet.getUuid( "ID" );
             this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );

@@ -104,9 +104,9 @@ public class PackageLoader
     /**
      * Data structure for package records.
      */
-    private static class PackageRecord {
+    private static final class PackageRecord {
 
-        PackageRecord( IResultSet resultSet ) {
+        private PackageRecord( IResultSet resultSet ) {
             this.id = resultSet.getUuid( "ID" );
             this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );

@@ -7,6 +7,7 @@ package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
+import org.grestler.metamodel.api.elements.ELabelDefaulting;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
@@ -26,18 +27,27 @@ public final class VertexAttributeDecl
      * @param parentVertexType the parent vertex type.
      * @param name             the name of the attribute.
      * @param type             the type of the attribute.
-     * @param optionality         whether this attribute is optionality.
+     * @param optionality      whether this attribute is optionality.
+     * @param labelDefaulting  whether this is the default label for vertexes of the parent type.
      */
     public VertexAttributeDecl(
-        UUID id, IVertexType parentVertexType, String name, IAttributeType type, EAttributeOptionality optionality
+        UUID id,
+        IVertexType parentVertexType,
+        String name,
+        IAttributeType type,
+        EAttributeOptionality optionality,
+        ELabelDefaulting labelDefaulting
     ) {
+
         this.id = id;
         this.parentVertexType = parentVertexType;
         this.name = name;
         this.type = type;
         this.optionality = optionality;
+        this.labelDefaulting = labelDefaulting;
 
         ( (IVertexTypeSpi) this.parentVertexType ).addAttribute( this );
+
     }
 
     @Override
@@ -48,6 +58,7 @@ public final class VertexAttributeDecl
             .write( "name", this.name )
             .write( "typeId", this.type.getId().toString() )
             .write( "optionality", this.optionality.name() )
+            .write( "labelDefaulting", this.labelDefaulting.name() )
             .writeEnd();
     }
 
@@ -57,18 +68,23 @@ public final class VertexAttributeDecl
     }
 
     @Override
+    public ELabelDefaulting getLabelDefaulting() {
+        return this.labelDefaulting;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }
 
     @Override
-    public IVertexType getParentVertexType() {
-        return this.parentVertexType;
+    public EAttributeOptionality getOptionality() {
+        return this.optionality;
     }
 
     @Override
-    public EAttributeOptionality getOptionality() {
-        return this.optionality;
+    public IVertexType getParentVertexType() {
+        return this.parentVertexType;
     }
 
     @Override
@@ -79,16 +95,18 @@ public final class VertexAttributeDecl
     /** The unique ID of this attribute declaration. */
     private final UUID id;
 
+    /** Whether this attribute serves as the default label for vertexes of the parent type. */
+    private final ELabelDefaulting labelDefaulting;
+
     /** The name of this attribute declaration. */
     private final String name;
-
-    /** The parent vertex type of this attribute declaration. */
-    private final IVertexType parentVertexType;
 
     /** Whether this attribute is required for instances of the parent vertex type. */
     private final EAttributeOptionality optionality;
 
+    /** The parent vertex type of this attribute declaration. */
+    private final IVertexType parentVertexType;
+
     /** The type of this attribute declaration. */
     private final IAttributeType type;
-
 }

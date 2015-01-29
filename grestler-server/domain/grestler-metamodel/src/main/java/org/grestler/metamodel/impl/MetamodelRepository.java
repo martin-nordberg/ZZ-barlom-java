@@ -15,6 +15,7 @@ import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
+import org.grestler.metamodel.api.elements.ELabelDefaulting;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;
@@ -417,9 +418,14 @@ public final class MetamodelRepository
 
     @Override
     public IVertexAttributeDecl loadVertexAttributeDecl(
-        UUID id, IVertexType parentVertexType, String name, IAttributeType type, EAttributeOptionality optionality
+        UUID id,
+        IVertexType parentVertexType,
+        String name,
+        IAttributeType type,
+        EAttributeOptionality optionality,
+        ELabelDefaulting labelDefaulting
     ) {
-        return new VertexAttributeDecl( id, parentVertexType, name, type, optionality );
+        return new VertexAttributeDecl( id, parentVertexType, name, type, optionality, labelDefaulting );
     }
 
     @Override

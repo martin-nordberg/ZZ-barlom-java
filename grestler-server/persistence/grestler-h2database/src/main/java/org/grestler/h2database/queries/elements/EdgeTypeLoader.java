@@ -223,10 +223,10 @@ public class EdgeTypeLoader
     /**
      * Data structure for directed edge type records.
      */
-    private static class DirectedEdgeTypeRecord
+    private static final class DirectedEdgeTypeRecord
         extends EdgeTypeRecord {
 
-        DirectedEdgeTypeRecord( IResultSet resultSet ) {
+        private DirectedEdgeTypeRecord( IResultSet resultSet ) {
 
             super( resultSet );
 
@@ -255,6 +255,7 @@ public class EdgeTypeLoader
         public final Optional<String> tailRoleName;
 
         public final UUID tailVertexTypeId;
+
     }
 
     /**
@@ -262,7 +263,7 @@ public class EdgeTypeLoader
      */
     private static class EdgeTypeRecord {
 
-        EdgeTypeRecord( IResultSet resultSet ) {
+        protected EdgeTypeRecord( IResultSet resultSet ) {
             this.id = resultSet.getUuid( "ID" );
             this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
             this.name = resultSet.getString( "NAME" );
@@ -294,16 +295,17 @@ public class EdgeTypeLoader
     /**
      * Data structure for undirected edge type records.
      */
-    private static class UndirectedEdgeTypeRecord
+    private static final class UndirectedEdgeTypeRecord
         extends EdgeTypeRecord {
 
-        UndirectedEdgeTypeRecord( IResultSet resultSet ) {
+        private UndirectedEdgeTypeRecord( IResultSet resultSet ) {
 
             super( resultSet );
 
             this.vertexTypeId = resultSet.getUuid( "VERTEX_TYPE_ID" );
             this.minDegree = resultSet.getOptionalInt( "MIN_DEGREE" );
             this.maxDegree = resultSet.getOptionalInt( "MAX_DEGREE" );
+
         }
 
         public final OptionalInt maxDegree;
