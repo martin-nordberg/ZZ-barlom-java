@@ -77,7 +77,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadBooleanAttributeType(
-            record.id, parentPackage.get(), record.name
+            record.id, parentPackage.get(), record.name, record.defaultValue
         );
 
     }
@@ -133,7 +133,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadFloat64AttributeType(
-            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue
+            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue, record.defaultValue
         );
 
     }
@@ -161,7 +161,7 @@ public class AttributeTypeLoader
         Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadInteger32AttributeType(
-            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue
+            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue, record.defaultValue
         );
 
     }
@@ -399,7 +399,11 @@ public class AttributeTypeLoader
 
         BooleanAttributeTypeRecord( IResultSet resultSet ) {
             super( resultSet );
+
+            this.defaultValue = resultSet.getOptionalBoolean( "DEFAULT_VALUE" );
         }
+
+        public final Optional<Boolean> defaultValue;
 
     }
 
@@ -435,12 +439,16 @@ public class AttributeTypeLoader
 
             this.minValue = resultSet.getOptionalDouble( "MIN_VALUE" );
             this.maxValue = resultSet.getOptionalDouble( "MAX_VALUE" );
+            this.defaultValue = resultSet.getOptionalDouble( "DEFAULT_VALUE" );
 
         }
+
+        public final OptionalDouble defaultValue;
 
         public final OptionalDouble maxValue;
 
         public final OptionalDouble minValue;
+
     }
 
     /**
@@ -455,13 +463,16 @@ public class AttributeTypeLoader
 
             this.minValue = resultSet.getOptionalInt( "MIN_VALUE" );
             this.maxValue = resultSet.getOptionalInt( "MAX_VALUE" );
+            this.defaultValue = resultSet.getOptionalInt( "DEFAULT_VALUE" );
 
         }
 
+        public final OptionalInt defaultValue;
 
         public final OptionalInt maxValue;
 
         public final OptionalInt minValue;
+
     }
 
     /**

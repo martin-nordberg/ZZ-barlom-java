@@ -5,8 +5,6 @@
 
 package org.grestler.metamodel.api.attributes;
 
-import java.util.Date;
-import java.util.Optional;
 import java.util.OptionalDouble;
 
 /**
@@ -21,14 +19,18 @@ public interface IFloat64AttributeType
     }
 
     /**
-     * @return the maximum possible value (inclusive) for attributes of this type.
+     * @return the default value for attributes of this type.
      */
-    OptionalDouble getMinValue();
+    OptionalDouble getDefaultValue();
 
     /**
      * @return the minimum possible value (inclusive) for attributes of this type.
      */
     OptionalDouble getMaxValue();
 
+    /**
+     * @return the maximum possible value (inclusive) for attributes of this type.
+     */
+    OptionalDouble getMinValue();
 
 }

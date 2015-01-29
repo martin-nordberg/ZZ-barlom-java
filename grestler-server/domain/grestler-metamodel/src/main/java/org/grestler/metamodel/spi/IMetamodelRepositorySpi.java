@@ -79,11 +79,12 @@ public interface IMetamodelRepositorySpi
      * @param id            the unique ID of the attribute type.
      * @param parentPackage the parent package for the attribute type.
      * @param name          the name of the attribute type.
+     * @param defaultValue  the default value for attributes of this type.
      *
      * @return the loaded attribute type.
      */
     IBooleanAttributeType loadBooleanAttributeType(
-        UUID id, IPackage parentPackage, String name
+        UUID id, IPackage parentPackage, String name, Optional<Boolean> defaultValue
     );
 
     /**
@@ -165,11 +166,17 @@ public interface IMetamodelRepositorySpi
      * @param name          the name of the attribute type.
      * @param minValue      the minimum value for attributes with this type.
      * @param maxValue      the minimum value for attributes with this type.
+     * @param defaultValue  the default value for attribuets of this type.
      *
      * @return the loaded attribute type.
      */
     IFloat64AttributeType loadFloat64AttributeType(
-        UUID id, IPackage parentPackage, String name, OptionalDouble minValue, OptionalDouble maxValue
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalDouble minValue,
+        OptionalDouble maxValue,
+        OptionalDouble defaultValue
     );
 
     /**
@@ -180,11 +187,17 @@ public interface IMetamodelRepositorySpi
      * @param name          the name of the attribute type.
      * @param minValue      the minimum value for attributes with this type.
      * @param maxValue      the minimum value for attributes with this type.
+     * @param defaultValue  the default value for attributes of this type.
      *
      * @return the loaded attribute type.
      */
     IInteger32AttributeType loadInteger32AttributeType(
-        UUID id, IPackage parentPackage, String name, OptionalInt minValue, OptionalInt maxValue
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalInt minValue,
+        OptionalInt maxValue,
+        OptionalInt defaultValue
     );
 
     /**

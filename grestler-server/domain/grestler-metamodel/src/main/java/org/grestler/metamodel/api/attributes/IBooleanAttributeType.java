@@ -5,6 +5,8 @@
 
 package org.grestler.metamodel.api.attributes;
 
+import java.util.Optional;
+
 /**
  * Interface to a boolean attribute type.
  */
@@ -15,5 +17,12 @@ public interface IBooleanAttributeType
     default EDataType getDataType() {
         return EDataType.BOOLEAN;
     }
+
+    /**
+     * The default value for attributes of this type.
+     *
+     * @return the default value.
+     */
+    Optional<Boolean> getDefaultValue();
 
 }

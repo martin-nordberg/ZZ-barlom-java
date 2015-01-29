@@ -19,14 +19,18 @@ public interface IInteger32AttributeType
     }
 
     /**
-     * @return the maximum possible value (inclusive) for attributes of this type.
+     * @return the default value for attributes of this type.
      */
-    OptionalInt getMinValue();
+    OptionalInt getDefaultValue();
 
     /**
      * @return the minimum possible value (inclusive) for attributes of this type.
      */
     OptionalInt getMaxValue();
 
+    /**
+     * @return the maximum possible value (inclusive) for attributes of this type.
+     */
+    OptionalInt getMinValue();
 
 }

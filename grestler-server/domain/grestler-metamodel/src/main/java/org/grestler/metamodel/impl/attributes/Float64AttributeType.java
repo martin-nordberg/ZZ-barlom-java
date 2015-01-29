@@ -26,14 +26,26 @@ public final class Float64AttributeType
      * @param name          the name of the attribute type.
      * @param minValue      the minimum value for attributes of this type.
      * @param maxValue      the minimum value for attributes of this type.
+     * @param defaultValue  the default value for attributes of this type.
      */
     public Float64AttributeType(
-        UUID id, IPackage parentPackage, String name, OptionalDouble minValue, OptionalDouble maxValue
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalDouble minValue,
+        OptionalDouble maxValue,
+        OptionalDouble defaultValue
     ) {
         super( id, parentPackage, name );
 
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public OptionalDouble getDefaultValue() {
+        return this.defaultValue;
     }
 
     @Override
@@ -45,6 +57,9 @@ public final class Float64AttributeType
     public OptionalDouble getMinValue() {
         return this.minValue;
     }
+
+    /** The default value for attributes of this type. */
+    private final OptionalDouble defaultValue;
 
     /** The minimum allowed value for attributes with this type. */
     private final OptionalDouble maxValue;

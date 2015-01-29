@@ -231,10 +231,10 @@ public final class MetamodelRepository
 
     @Override
     public IBooleanAttributeType loadBooleanAttributeType(
-        UUID id, IPackage parentPackage, String name
+        UUID id, IPackage parentPackage, String name, Optional<Boolean> defaultValue
     ) {
 
-        IBooleanAttributeType result = new BooleanAttributeType( id, parentPackage, name );
+        IBooleanAttributeType result = new BooleanAttributeType( id, parentPackage, name, defaultValue );
 
         this.attributeTypes.add( result );
 
@@ -309,9 +309,16 @@ public final class MetamodelRepository
 
     @Override
     public IFloat64AttributeType loadFloat64AttributeType(
-        UUID id, IPackage parentPackage, String name, OptionalDouble minValue, OptionalDouble maxValue
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalDouble minValue,
+        OptionalDouble maxValue,
+        OptionalDouble defaultValue
     ) {
-        IFloat64AttributeType result = new Float64AttributeType( id, parentPackage, name, minValue, maxValue );
+        IFloat64AttributeType result = new Float64AttributeType(
+            id, parentPackage, name, minValue, maxValue, defaultValue
+        );
 
         this.attributeTypes.add( result );
 
@@ -320,9 +327,16 @@ public final class MetamodelRepository
 
     @Override
     public IInteger32AttributeType loadInteger32AttributeType(
-        UUID id, IPackage parentPackage, String name, OptionalInt minValue, OptionalInt maxValue
+        UUID id,
+        IPackage parentPackage,
+        String name,
+        OptionalInt minValue,
+        OptionalInt maxValue,
+        OptionalInt defaultValue
     ) {
-        IInteger32AttributeType result = new Integer32AttributeType( id, parentPackage, name, minValue, maxValue );
+        IInteger32AttributeType result = new Integer32AttributeType(
+            id, parentPackage, name, minValue, maxValue, defaultValue
+        );
 
         this.attributeTypes.add( result );
 
