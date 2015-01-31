@@ -7,6 +7,7 @@ package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IPackageDependency;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 /**
@@ -27,6 +28,13 @@ interface IPackageSpi {
      * @param edgeType the edge type to add.
      */
     void addEdgeType( IEdgeType edgeType );
+
+    /**
+     * Registers a package dependency with this package.
+     *
+     * @param packageDependency the added package dependency.
+     */
+    void addPackageDependency( IPackageDependency packageDependency );
 
     /**
      * Adds a child vertex tyoe that is part of this package.

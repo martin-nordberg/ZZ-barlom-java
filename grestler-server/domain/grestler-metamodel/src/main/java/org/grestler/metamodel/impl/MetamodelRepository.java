@@ -22,6 +22,7 @@ import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IPackageDependency;
 import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -37,6 +38,7 @@ import org.grestler.metamodel.impl.elements.BaseVertexType;
 import org.grestler.metamodel.impl.elements.DirectedEdgeType;
 import org.grestler.metamodel.impl.elements.EdgeAttributeDecl;
 import org.grestler.metamodel.impl.elements.Package;
+import org.grestler.metamodel.impl.elements.PackageDependency;
 import org.grestler.metamodel.impl.elements.RootPackage;
 import org.grestler.metamodel.impl.elements.UndirectedEdgeType;
 import org.grestler.metamodel.impl.elements.VertexAttributeDecl;
@@ -45,6 +47,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 
@@ -76,6 +79,7 @@ public final class MetamodelRepository
     @Inject
     public MetamodelRepository(
         IPackageLoader packageLoader,
+        IPackageDependencyLoader packageDependencyLoader,
         IAttributeTypeLoader attributeTypeLoader,
         IVertexTypeLoader vertexTypeLoader,
         IEdgeTypeLoader edgeTypeLoader,
@@ -88,6 +92,7 @@ public final class MetamodelRepository
         this.attributeTypes = new ArrayList<>();
 
         packageLoader.loadAllPackages( this );
+        packageDependencyLoader.loadAllPackageDependencies( this );
         attributeTypeLoader.loadAllAttributeTypes( this );
         vertexTypeLoader.loadAllVertexTypes( this );
         edgeTypeLoader.loadAllEdgeTypes( this );
@@ -352,6 +357,13 @@ public final class MetamodelRepository
 
         return result;
 
+    }
+
+    @Override
+    public IPackageDependency loadPackageDependency(
+        UUID id, IPackage clientPackage, IPackage supplierPackage
+    ) {
+        return new PackageDependency( id, clientPackage, supplierPackage );
     }
 
     @Override

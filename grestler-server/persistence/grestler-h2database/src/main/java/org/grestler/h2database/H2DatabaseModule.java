@@ -12,11 +12,13 @@ import org.grestler.h2database.impl.H2DataSource;
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader;
 import org.grestler.h2database.queries.elements.AttributeDeclLoader;
 import org.grestler.h2database.queries.elements.EdgeTypeLoader;
+import org.grestler.h2database.queries.elements.PackageDependencyLoader;
 import org.grestler.h2database.queries.elements.PackageLoader;
 import org.grestler.h2database.queries.elements.VertexTypeLoader;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 
@@ -72,6 +74,18 @@ public class H2DatabaseModule {
     @Provides
     public IEdgeTypeLoader provideEdgeTypeLoader( IDataSource dataSource ) {
         return new EdgeTypeLoader( dataSource );
+    }
+
+    /**
+     * Provides a package dependency loader for H2.
+     *
+     * @param dataSource the H2 data source.
+     *
+     * @return the constructed package dependency loader.
+     */
+    @Provides
+    public IPackageDependencyLoader providePackageDependencyLoader( IDataSource dataSource ) {
+        return new PackageDependencyLoader( dataSource );
     }
 
     /**

@@ -23,6 +23,7 @@ import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IPackageDependency;
 import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
@@ -210,6 +211,17 @@ public interface IMetamodelRepositorySpi
      * @return the loaded package.
      */
     IPackage loadPackage( UUID id, IPackage parentPackage, String name );
+
+    /**
+     * Loads a queried package dependency into the repository.
+     *
+     * @param id              the unique ID of the dependency itself.
+     * @param clientPackage   the package that uses another package.
+     * @param supplierPackage the package used.
+     *
+     * @return the new dependency.
+     */
+    IPackageDependency loadPackageDependency( UUID id, IPackage clientPackage, IPackage supplierPackage );
 
     /**
      * Loads the queried root package into the repository.

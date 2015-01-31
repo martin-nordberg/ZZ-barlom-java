@@ -64,7 +64,7 @@ public class AttributeDeclLoader
         EdgeAttributeDeclRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        // Find the parent package
+        // Find the edge type and the attribute type
         Optional<IEdgeType> parentEdgeType = repository.findEdgeTypeById( record.parentEdgeTypeId );
         Optional<IAttributeType> attributeType = repository.findAttributeTypeById( record.attributeTypeId );
 

@@ -10,6 +10,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader
+import org.grestler.metamodel.spi.elements.IPackageDependencyLoader
 import org.grestler.metamodel.spi.elements.IPackageLoader
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader
 import org.grestler.utilities.uuids.Uuids
@@ -30,6 +31,7 @@ class MetamodelRepositorySpec
         given:
         IMetamodelRepositorySpi m = new MetamodelRepository(
                 { r -> r.loadRootPackage( id0 ) } as IPackageLoader,
+                { r -> } as IPackageDependencyLoader,
                 { r -> } as IAttributeTypeLoader,
                 { r ->
                     def rootPkg = r.findPackageRoot().get();

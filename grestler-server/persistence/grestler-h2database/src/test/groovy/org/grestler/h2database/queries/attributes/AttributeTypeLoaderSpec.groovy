@@ -8,6 +8,7 @@ package org.grestler.h2database.queries.attributes
 import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.elements.AttributeDeclLoader
 import org.grestler.h2database.queries.elements.EdgeTypeLoader
+import org.grestler.h2database.queries.elements.PackageDependencyLoader
 import org.grestler.h2database.queries.elements.PackageLoader
 import org.grestler.h2database.queries.elements.VertexTypeLoader
 import org.grestler.metamodel.impl.MetamodelRepository
@@ -27,12 +28,13 @@ class AttributeTypeLoaderSpec
         def dataSource = new H2DataSource( "test0" );
 
         def ploader = new PackageLoader( dataSource );
+        def pdloader = new PackageDependencyLoader( dataSource );
         def atloader = new AttributeTypeLoader( dataSource );
         def vtloader = new VertexTypeLoader( dataSource );
         def etloader = new EdgeTypeLoader( dataSource )
         def adloader = new AttributeDeclLoader( dataSource );
 
-        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, atloader, vtloader, etloader, adloader );
+        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, pdloader, atloader, vtloader, etloader, adloader );
 
         expect:
         !m.findAttributeTypeById( Uuids.makeUuid() ).isPresent();

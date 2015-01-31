@@ -12,6 +12,7 @@ import org.grestler.metamodel.impl.MetamodelRepository;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 
@@ -29,11 +30,12 @@ public class MetamodelModule {
     /**
      * Constructs a new metamodel repository.
      *
-     * @param packageLoader       the source for loading packages.
-     * @param attributeTypeLoader the source for loading attribute types.
-     * @param vertexTypeLoader    the source for loading vertex types.
-     * @param edgeTypeLoader      the source for loading edge types.
-     * @param attributeDeclLoader the source for loading attribute declarations.
+     * @param packageLoader           the source for loading packages.
+     * @param packageDependencyLoader the source for loading package dependencies.
+     * @param attributeTypeLoader     the source for loading attribute types.
+     * @param vertexTypeLoader        the source for loading vertex types.
+     * @param edgeTypeLoader          the source for loading edge types.
+     * @param attributeDeclLoader     the source for loading attribute declarations.
      *
      * @return the newly created repository.
      */
@@ -41,6 +43,7 @@ public class MetamodelModule {
     @Singleton
     public IMetamodelRepository provideMetamodel(
         IPackageLoader packageLoader,
+        IPackageDependencyLoader packageDependencyLoader,
         IAttributeTypeLoader attributeTypeLoader,
         IVertexTypeLoader vertexTypeLoader,
         IEdgeTypeLoader edgeTypeLoader,
@@ -48,6 +51,7 @@ public class MetamodelModule {
     ) {
         return new MetamodelRepository(
             packageLoader,
+            packageDependencyLoader,
             attributeTypeLoader,
             vertexTypeLoader,
             edgeTypeLoader,
