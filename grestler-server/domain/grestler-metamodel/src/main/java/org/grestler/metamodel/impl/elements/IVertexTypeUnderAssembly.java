@@ -11,7 +11,7 @@ import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
  * Internal interface for vertex types.
  */
 @SuppressWarnings( "InterfaceMayBeAnnotatedFunctional" )
-interface IVertexTypeSpi {
+interface IVertexTypeUnderAssembly {
 
     /**
      * Adds an attribute to this vertex type while constructing the metamodel.

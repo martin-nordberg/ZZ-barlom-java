@@ -26,7 +26,7 @@ import java.util.UUID;
  * Implementation of the top-level base directed edge type.
  */
 public class BaseDirectedEdgeType
-    implements IDirectedEdgeType, IEdgeTypeSpi {
+    implements IDirectedEdgeType, IEdgeTypeUnderAssembly {
 
     /**
      * Constructs a new base directed edge type.
@@ -45,7 +45,7 @@ public class BaseDirectedEdgeType
 
         this.attributes = new ArrayList<>();
 
-        ( (IPackageSpi) parentPackage ).addEdgeType( this );
+        ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
 
     }
 

@@ -20,7 +20,7 @@ import java.util.UUID;
  * Implementation of the top-level base vertex type.
  */
 public final class BaseVertexType
-    implements IVertexType, IVertexTypeSpi {
+    implements IVertexType, IVertexTypeUnderAssembly {
 
     /**
      * Constructs a new root vertex type.
@@ -36,7 +36,7 @@ public final class BaseVertexType
         this.parentPackage = parentPackage;
         this.attributes = new ArrayList<>();
 
-        ( (IPackageSpi) parentPackage ).addVertexType( this );
+        ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
 
     }
 

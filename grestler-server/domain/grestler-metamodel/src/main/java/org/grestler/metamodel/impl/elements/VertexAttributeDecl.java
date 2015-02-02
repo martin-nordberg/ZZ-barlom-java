@@ -46,7 +46,7 @@ public final class VertexAttributeDecl
         this.optionality = optionality;
         this.labelDefaulting = labelDefaulting;
 
-        ( (IVertexTypeSpi) this.parentVertexType ).addAttribute( this );
+        ( (IVertexTypeUnderAssembly) this.parentVertexType ).addAttribute( this );
 
     }
 

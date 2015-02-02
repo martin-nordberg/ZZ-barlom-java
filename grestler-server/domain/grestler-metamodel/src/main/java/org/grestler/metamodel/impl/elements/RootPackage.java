@@ -21,7 +21,7 @@ import java.util.UUID;
  * Implementation of the top level root package.
  */
 public class RootPackage
-    implements IPackage, IPackageSpi {
+    implements IPackage, IPackageUnderAssembly {
 
     /**
      * Constructs a new root package.

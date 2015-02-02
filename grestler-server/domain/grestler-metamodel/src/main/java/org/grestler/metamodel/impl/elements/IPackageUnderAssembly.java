@@ -13,7 +13,7 @@ import org.grestler.metamodel.api.elements.IVertexType;
 /**
  * Internal interface supported by packages.
  */
-interface IPackageSpi {
+interface IPackageUnderAssembly {
 
     /**
      * Adds a child package to this package.
@@ -37,7 +37,7 @@ interface IPackageSpi {
     void addPackageDependency( IPackageDependency packageDependency );
 
     /**
-     * Adds a child vertex tyoe that is part of this package.
+     * Adds a child vertex type that is part of this package.
      *
      * @param vertexType the vertex type to add.
      */

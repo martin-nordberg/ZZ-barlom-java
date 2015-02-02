@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public final class VertexType
     extends Element
-    implements IVertexType, IVertexTypeSpi {
+    implements IVertexType, IVertexTypeUnderAssembly {
 
     /**
      * Constructs a new vertex type.
@@ -41,7 +41,7 @@ public final class VertexType
         this.abstractness = abstractness;
         this.attributes = new ArrayList<>();
 
-        ( (IPackageSpi) parentPackage ).addVertexType( this );
+        ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
 
     }
 

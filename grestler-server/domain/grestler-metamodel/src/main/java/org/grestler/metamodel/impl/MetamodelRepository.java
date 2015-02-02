@@ -5,6 +5,8 @@
 
 package org.grestler.metamodel.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
@@ -50,6 +52,7 @@ import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
+import org.grestler.utilities.instrumentation.OperationTimeLogger;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -91,12 +94,18 @@ public final class MetamodelRepository
         this.edgeTypes = new ArrayList<>();
         this.attributeTypes = new ArrayList<>();
 
-        packageLoader.loadAllPackages( this );
-        packageDependencyLoader.loadAllPackageDependencies( this );
-        attributeTypeLoader.loadAllAttributeTypes( this );
-        vertexTypeLoader.loadAllVertexTypes( this );
-        edgeTypeLoader.loadAllEdgeTypes( this );
-        attributeDeclLoader.loadAllAttributeDecls( this );
+        try (
+            OperationTimeLogger ignored = new OperationTimeLogger(
+                MetamodelRepository.LOG, "Metamodel repository loaded in {}."
+            )
+        ) {
+            packageLoader.loadAllPackages( this );
+            packageDependencyLoader.loadAllPackageDependencies( this );
+            attributeTypeLoader.loadAllAttributeTypes( this );
+            vertexTypeLoader.loadAllVertexTypes( this );
+            edgeTypeLoader.loadAllEdgeTypes( this );
+            attributeDeclLoader.loadAllAttributeDecls( this );
+        }
 
     }
 
@@ -466,6 +475,8 @@ public final class MetamodelRepository
         return result;
 
     }
+
+    private static final Logger LOG = LogManager.getLogger();
 
     private final List<IAttributeType> attributeTypes;
 

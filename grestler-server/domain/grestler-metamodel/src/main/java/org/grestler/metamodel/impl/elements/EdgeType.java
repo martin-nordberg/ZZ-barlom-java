@@ -24,7 +24,7 @@ import java.util.UUID;
  */
 abstract class EdgeType
     extends Element
-    implements IEdgeType, IEdgeTypeSpi {
+    implements IEdgeType, IEdgeTypeUnderAssembly {
 
     /**
      * Constructs a new edge type.
@@ -59,7 +59,7 @@ abstract class EdgeType
 
         this.attributes = new ArrayList<>();
 
-        ( (IPackageSpi) parentPackage ).addEdgeType( this );
+        ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
 
     }
 

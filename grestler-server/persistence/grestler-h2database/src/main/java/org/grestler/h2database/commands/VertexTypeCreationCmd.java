@@ -5,52 +5,43 @@
 
 package org.grestler.h2database.commands;
 
-import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.metamodel.api.IMetamodelCommand;
+import org.grestler.utilities.uuids.Uuids;
+
+import javax.json.stream.JsonParser;
+import java.util.UUID;
 
 /**
  * Command to create a vertex type.
  */
-public class VertexTypeCreationCmd {
+public class VertexTypeCreationCmd
+    implements IMetamodelCommand {
 
     /**
      * Constructs a new vertex type creation command.
      */
-    public VertexTypeCreationCmd(){}
-
-    /**
-     * Saves a newly created vertex type to the database.
-     *
-     * @param vertexType the vertex type to save.
-     */
-    public void createVertexType( IVertexType vertexType ) {
-
-//        this.database.withVoidTransaction(
-//            tx -> {
-//
-//                if ( vertexType.getSuperType().isPresent() ) {
-//                    this.database.update(
-//                        "INSERT INTO GRESTLER_VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
-//                        vertexType.getId(),
-//                        vertexType.getName(),
-//                        vertexType.getSuperType().get().getId()
-//                    );
-//                }
-//                else {
-//                    this.database.update(
-//                        "INSERT INTO GRESTLER_VERTEX_TYPE (ID, NAME, SUPER_TYPE_ID) VALUES (?, ?, ?)",
-//                        vertexType.getId(),
-//                        vertexType.getName(),
-//                        vertexType.getId()
-//                    );
-//                }
-//
-//                // TODO: create the corresponding table
-//
-//                // TODO: log the action
-//
-//            }
-//        );
-
+    public VertexTypeCreationCmd( IDataSource dataSource, JsonParser jsonCommandArgs ) {
+        this.id = Uuids.makeUuid();
+        this.dataSource = dataSource;
+        this.jsonCommandArguments = jsonCommandArgs;
     }
+
+    @Override
+    public void execute() {
+        // TODO:
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+
+    private final IDataSource dataSource;
+
+    private final UUID id;
+
+    private final JsonParser jsonCommandArguments;
 
 }

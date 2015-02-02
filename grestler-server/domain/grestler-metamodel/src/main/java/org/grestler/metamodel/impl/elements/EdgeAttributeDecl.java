@@ -22,11 +22,11 @@ public final class EdgeAttributeDecl
     /**
      * Constructs a new edge attribute declaration.
      *
-     * @param id               the unique ID of the attribute declaration.
+     * @param id             the unique ID of the attribute declaration.
      * @param parentEdgeType the parent edge type.
-     * @param name             the name of the attribute.
-     * @param type             the type of the attribute.
-     * @param optionality         whether this attribute is optionality.
+     * @param name           the name of the attribute.
+     * @param type           the type of the attribute.
+     * @param optionality    whether this attribute is optionality.
      */
     public EdgeAttributeDecl(
         UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
@@ -37,7 +37,7 @@ public final class EdgeAttributeDecl
         this.type = type;
         this.optionality = optionality;
 
-        ( (IEdgeTypeSpi) this.parentEdgeType ).addAttribute( this );
+        ( (IEdgeTypeUnderAssembly) this.parentEdgeType ).addAttribute( this );
     }
 
     @Override
@@ -62,13 +62,13 @@ public final class EdgeAttributeDecl
     }
 
     @Override
-    public IEdgeType getParentEdgeType() {
-        return this.parentEdgeType;
+    public EAttributeOptionality getOptionality() {
+        return this.optionality;
     }
 
     @Override
-    public EAttributeOptionality getOptionality() {
-        return this.optionality;
+    public IEdgeType getParentEdgeType() {
+        return this.parentEdgeType;
     }
 
     @Override
@@ -82,11 +82,11 @@ public final class EdgeAttributeDecl
     /** The name of this attribute declaration. */
     private final String name;
 
-    /** The parent edge type of this attribute declaration. */
-    private final IEdgeType parentEdgeType;
-
     /** Whether this attribute is required for instances of the parent edge type. */
     private final EAttributeOptionality optionality;
+
+    /** The parent edge type of this attribute declaration. */
+    private final IEdgeType parentEdgeType;
 
     /** The type of this attribute declaration. */
     private final IAttributeType type;

@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public final class Package
     extends Element
-    implements IPackage, IPackageSpi {
+    implements IPackage, IPackageUnderAssembly {
 
     /**
      * Constructs a new package.
@@ -40,7 +40,7 @@ public final class Package
 
         this.packageDependencies = new PackageDependencies( this );
 
-        ( (IPackageSpi) parentPackage ).addChildPackage( this );
+        ( (IPackageUnderAssembly) parentPackage ).addChildPackage( this );
 
     }
 

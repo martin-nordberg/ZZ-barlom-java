@@ -8,6 +8,7 @@ package org.grestler.h2database;
 import dagger.Module;
 import dagger.Provides;
 import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.h2database.commands.MetamodelCommandFactory;
 import org.grestler.h2database.impl.H2DataSource;
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader;
 import org.grestler.h2database.queries.elements.AttributeDeclLoader;
@@ -15,6 +16,7 @@ import org.grestler.h2database.queries.elements.EdgeTypeLoader;
 import org.grestler.h2database.queries.elements.PackageDependencyLoader;
 import org.grestler.h2database.queries.elements.PackageLoader;
 import org.grestler.h2database.queries.elements.VertexTypeLoader;
+import org.grestler.metamodel.api.IMetamodelCommandFactory;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
@@ -74,6 +76,11 @@ public class H2DatabaseModule {
     @Provides
     public IEdgeTypeLoader provideEdgeTypeLoader( IDataSource dataSource ) {
         return new EdgeTypeLoader( dataSource );
+    }
+
+    @Provides
+    public IMetamodelCommandFactory provideMetamodelCommandFactory( IDataSource dataSource ) {
+        return new MetamodelCommandFactory( dataSource );
     }
 
     /**

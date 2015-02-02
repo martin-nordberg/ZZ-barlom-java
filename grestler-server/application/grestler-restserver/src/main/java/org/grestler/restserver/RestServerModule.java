@@ -8,14 +8,17 @@ package org.grestler.restserver;
 import dagger.Module;
 import dagger.Provides;
 import org.grestler.metamodel.MetamodelModule;
+import org.grestler.metamodel.api.IMetamodelCommandFactory;
 import org.grestler.metamodel.api.IMetamodelRepository;
 import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
+import org.grestler.restserver.services.metamodel.MetamodelCommands;
 import org.grestler.restserver.services.metamodel.PackageQueries;
 import org.grestler.restserver.services.metamodel.VertexTypeQueries;
 
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
+import javax.json.stream.JsonParserFactory;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,11 +42,30 @@ public class RestServerModule {
     @Provides
     public JsonGeneratorFactory provideJsonGeneratorFactory() {
 
-        // TODO: make configurable
-        Map<String, String> prettyPrinting = new HashMap<>();
-        prettyPrinting.put( JsonGenerator.PRETTY_PRINTING, "true" );
+        // TODO: make externally configurable
+        Map<String, String> generatorConfig = new HashMap<>();
+        generatorConfig.put( JsonGenerator.PRETTY_PRINTING, "true" );
 
-        return Json.createGeneratorFactory( prettyPrinting );
+        return Json.createGeneratorFactory( generatorConfig );
+    }
+
+    @Provides
+    public JsonParserFactory provideJsonParserFactory() {
+
+        // TODO: make externally configurable
+        Map<String, String> parserConfig = new HashMap<>();
+        // TODO: anything needed here?
+
+        return Json.createParserFactory( parserConfig );
+    }
+
+    @Provides
+    public MetamodelCommands provideMetamodelCommands(
+        IMetamodelCommandFactory commandFactory, JsonParserFactory jsonParserFactory
+    ) {
+        // TODO: Support read-only REST server configuration with no command processing
+
+        return new MetamodelCommands( commandFactory, jsonParserFactory );
     }
 
     @Provides

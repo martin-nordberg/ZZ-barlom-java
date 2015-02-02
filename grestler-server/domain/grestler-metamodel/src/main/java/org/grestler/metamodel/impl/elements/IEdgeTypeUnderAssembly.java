@@ -11,7 +11,7 @@ import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
  * Internal interface for edge types.
  */
 @SuppressWarnings( "InterfaceMayBeAnnotatedFunctional" )
-interface IEdgeTypeSpi {
+interface IEdgeTypeUnderAssembly {
 
     /**
      * Adds an attribute to this vertex type while constructing the metamodel.
