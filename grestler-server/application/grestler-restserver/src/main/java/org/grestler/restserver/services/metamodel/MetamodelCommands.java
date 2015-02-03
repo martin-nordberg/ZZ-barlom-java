@@ -44,23 +44,23 @@ public class MetamodelCommands {
     @Path( "/{commandName}" )
     @Consumes( "application/json" )
     @Produces( "application/json" )
-    public String getEdgeTypeByIdOrPath( String jsonCommandArgsStr, @PathParam( "commandName" ) String commandName ) {
+    public String executeCommand( String jsonCommandArgsStr, @PathParam( "commandName" ) String commandName ) {
 
         MetamodelCommands.LOG.info( "Executing command {}.", commandName );
 
-        JsonObject jsonCommandArgs = this.jsonReaderFactory.createReader( new StringReader( jsonCommandArgsStr ) )
-                                                           .readObject();
+        JsonObject jsonCmdArgs = this.jsonReaderFactory.createReader( new StringReader( jsonCommandArgsStr ) )
+                                                       .readObject();
 
         IMetamodelCommand command = this.commandFactory.makeCommand( commandName );
 
         try {
-            command.execute( jsonCommandArgs );
-            return "{ \"success\": true, \"id\": \"" + command.getId() + "\" }";
+            command.execute( jsonCmdArgs );
+            return "{ \"success\": true, \"cmdId\": \"" + command.getCmdId() + "\" }";
         }
         catch ( Exception e ) {
             // TODO: 422 error for failed validation
             // TODO: 409 error for duplication
-            return "{ \"success\": false, \"id\": \"\" + command.getId() + \"\\, \"message\": \"" + e.getMessage() + "\" }";
+            return "{ \"success\": false, \"cmdId\": \"\" + command.getCmdId() + \"\\, \"message\": \"" + e.getMessage() + "\" }";
         }
     }
 

@@ -7,14 +7,15 @@ package org.grestler.h2database.commands;
 
 import org.grestler.dbutilities.api.IConnection;
 import org.grestler.dbutilities.api.IDataSource;
+import org.grestler.h2database.H2DatabaseException;
 import org.grestler.h2database.H2DatabaseModule;
-import org.grestler.metamodel.api.IMetamodelCommand;
 import org.grestler.metamodel.api.elements.EAbstractness;
+import org.grestler.metamodel.impl.AbstractMetamodelCommand;
 import org.grestler.utilities.configuration.Configuration;
-import org.grestler.utilities.uuids.Uuids;
 
 import javax.json.JsonObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,44 +23,53 @@ import java.util.UUID;
  * Command to create a vertex type.
  */
 public class VertexTypeCreationCmd
-    implements IMetamodelCommand {
+    extends AbstractMetamodelCommand {
 
     /**
      * Constructs a new vertex type creation command.
      */
     public VertexTypeCreationCmd( IDataSource dataSource ) {
-        this.id = Uuids.makeUuid();
         this.dataSource = dataSource;
     }
 
     @Override
-    public void execute( JsonObject jsonCommandArgs ) {
+    public void execute( JsonObject jsonCmdArgs ) {
 
         // Parse the JSON arguments.
         // TODO: handle input validation problems
-        UUID vertexTypeId = UUID.fromString( jsonCommandArgs.getString( "id" ) );
-        UUID parentPackageId = UUID.fromString( jsonCommandArgs.getString( "parentPackageId" ) );
-        String name = jsonCommandArgs.getString( "name" );
-        UUID superTypeId = UUID.fromString( jsonCommandArgs.getString( "superTypeId" ) );
-        EAbstractness abstractness = EAbstractness.valueOf( jsonCommandArgs.getString( "abstractness" ) );
+        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
+        UUID parentPackageId = UUID.fromString( jsonCmdArgs.getString( "parentPackageId" ) );
+        String name = jsonCmdArgs.getString( "name" );
+        UUID superTypeId = UUID.fromString( jsonCmdArgs.getString( "superTypeId" ) );
+        EAbstractness abstractness = EAbstractness.valueOf( jsonCmdArgs.getString( "abstractness" ) );
 
         // Build a map of the arguments.
         Map<String, Object> args = new HashMap<>();
-        args.put( "id", vertexTypeId );
+        args.put( "id", id );
         args.put( "parentPackageId", parentPackageId );
         args.put( "name", name );
         args.put( "superTypeId", superTypeId );
         args.put( "isAbstract", abstractness.isAbstract() );
 
-        // Read the SQL command.
-        Configuration config = new Configuration( H2DatabaseModule.class );
-        String sql = config.readString( "VertexType.Insert" );
+        args.put( "cmdId", this.getCmdId() );
+        args.put( "jsonCmdArgs", jsonCmdArgs.toString() );
 
-        // Insert the new vertex type record.
+        // Read the SQL commands.
+        Configuration config = new Configuration( H2DatabaseModule.class );
+        List<String> sqlInserts = config.readStrings( "VertexType.Insert" );
+
+        // Insert the new vertex type record and the command itself.
         try ( IConnection connection = this.dataSource.openConnection() ) {
 
             connection.executeInTransaction(
-                () -> connection.executeCommand( sql, args )
+                () -> {
+                    for ( String sqlInsert : sqlInserts ) {
+                        int count = connection.executeCommand( sqlInsert, args );
+                        if ( count != 1 ) {
+                            throw new H2DatabaseException( "Expected to insert one record but inserted " + count );
+                        }
+                    }
+                }
             );
 
         }
@@ -67,14 +77,7 @@ public class VertexTypeCreationCmd
         // TODO: handle database validation problems or connection problems
     }
 
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-
+    /** The data source in which to create the vertex type. */
     private final IDataSource dataSource;
-
-    private final UUID id;
 
 }

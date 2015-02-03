@@ -16,12 +16,12 @@ public interface IMetamodelCommand {
     /**
      * Executes this command.
      */
-    void execute( JsonObject jsonCommandArgs );
+    void execute( JsonObject jsonCmdArgs );
 
     /**
      * @return the unique ID of this command.
      */
-    UUID getId();
+    UUID getCmdId();
 
     // TODO: undo (by creating a new command)
 

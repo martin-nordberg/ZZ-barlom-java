@@ -66,4 +66,18 @@ class ConfigurationSpec
 
     }
 
+    def "A string list of properties can be read"() {
+
+        given:
+        def config = new Configuration( ConfigurationSpec.class )
+
+        def result = config.readStrings( "key7" )
+
+        expect:
+        result[0] == "one"
+        result[1] == "two"
+        result[2] == "three"
+
+    }
+
 }

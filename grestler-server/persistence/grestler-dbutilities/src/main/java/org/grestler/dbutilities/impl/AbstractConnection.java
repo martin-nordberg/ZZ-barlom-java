@@ -46,6 +46,11 @@ public abstract class AbstractConnection
     @Override
     public int executeCommand( String sqlQuery, Map<String, Object> args ) {
 
+        assert sqlQuery.startsWith( "INSERT" ) || sqlQuery.startsWith( "UPDATE" ) || sqlQuery.startsWith( "DELETE" );
+
+        AbstractConnection.LOG.info( "Executing command: {}.", sqlQuery );
+        AbstractConnection.LOG.info( "Command Arguments: {}.", args.toString() );
+
         try {
 
             try ( PreparedStatement stmt = this.prepareStatement( sqlQuery, args ) ) {
@@ -162,9 +167,7 @@ public abstract class AbstractConnection
         return result;
     }
 
-    /**
-     * The logger for this class.
-     */
+    /** The logger for this class. */
     private static final Logger LOG = LogManager.getLogger();
 
     /** The wrapped JDBC connection. */
