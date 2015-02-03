@@ -5,6 +5,8 @@
 
 package org.grestler.dbutilities.api;
 
+import java.util.Map;
+
 /**
  * Interface to a database connection.
  */
@@ -18,6 +20,25 @@ public interface IConnection
      */
     @Override
     void close();
+
+    /**
+     * Executes a SQL command.
+     *
+     * @param sqlQuery the SQL command (with named parameters).
+     * @param args     the arguments to substitute into the query.
+     *
+     * @return the number of rows affected by the command.
+     *
+     * @throws DatabaseException if the command fails.
+     */
+    int executeCommand( String sqlQuery, Map<String, Object> args );
+
+    /**
+     * Executes a task while a transaction is open for the connection.
+     *
+     * @param transactionalCallback the task to execute inside a transaction.
+     */
+    void executeInTransaction( ITransactionalCallback transactionalCallback );
 
     /**
      * Executes a single SQL select query. Calls a callback for each record found.
@@ -45,4 +66,20 @@ public interface IConnection
         void handleRecord( IResultSet resultSet );
 
     }
+
+    /**
+     * Interface for transactional callbacks.
+     */
+    @FunctionalInterface
+    interface ITransactionalCallback {
+
+        /**
+         * Callback occurring with a transaction open.
+         *
+         * @throws DatabaseException if the transactional task fails.
+         */
+        void execute();
+
+    }
+
 }

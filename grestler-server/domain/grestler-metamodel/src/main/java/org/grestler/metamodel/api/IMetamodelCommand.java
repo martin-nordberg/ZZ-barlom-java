@@ -5,6 +5,7 @@
 
 package org.grestler.metamodel.api;
 
+import javax.json.JsonObject;
 import java.util.UUID;
 
 /**
@@ -15,7 +16,7 @@ public interface IMetamodelCommand {
     /**
      * Executes this command.
      */
-    void execute();
+    void execute( JsonObject jsonCommandArgs );
 
     /**
      * @return the unique ID of this command.

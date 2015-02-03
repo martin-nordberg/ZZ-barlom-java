@@ -10,8 +10,6 @@ import org.grestler.h2database.H2DatabaseException;
 import org.grestler.metamodel.api.IMetamodelCommand;
 import org.grestler.metamodel.api.IMetamodelCommandFactory;
 
-import javax.json.stream.JsonParser;
-
 /**
  * Factory for metamodel commands supported by the H2 Database provider.
  */
@@ -28,12 +26,10 @@ public class MetamodelCommandFactory
     }
 
     @Override
-    public IMetamodelCommand makeCommand(
-        String commandName, JsonParser jsonCommandArgs
-    ) {
+    public IMetamodelCommand makeCommand( String commandName ) {
         switch ( commandName.toLowerCase() ) {
             case "vertextypecreation":
-                return new VertexTypeCreationCmd( this.dataSource, jsonCommandArgs );
+                return new VertexTypeCreationCmd( this.dataSource );
             default:
                 throw new H2DatabaseException( "Unknown command: \"" + commandName + "\"." );
         }

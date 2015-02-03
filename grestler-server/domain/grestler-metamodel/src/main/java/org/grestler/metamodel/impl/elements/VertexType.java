@@ -10,6 +10,7 @@ import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
+import javax.json.stream.JsonGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,17 @@ public final class VertexType
     @Override
     public void addAttribute( IVertexAttributeDecl attribute ) {
         this.attributes.add( attribute );
+    }
+
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        json.write( "superTypeId", this.superType.getId().toString() )
+            .write( "abstractness", this.abstractness.name() );
+
+        // TODO: attribute declarations
     }
 
     @Override

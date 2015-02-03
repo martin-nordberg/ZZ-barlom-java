@@ -16,9 +16,9 @@ import org.grestler.restserver.services.metamodel.PackageQueries;
 import org.grestler.restserver.services.metamodel.VertexTypeQueries;
 
 import javax.json.Json;
+import javax.json.JsonReaderFactory;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
-import javax.json.stream.JsonParserFactory;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,22 +50,22 @@ public class RestServerModule {
     }
 
     @Provides
-    public JsonParserFactory provideJsonParserFactory() {
+    public JsonReaderFactory provideJsonReader() {
 
         // TODO: make externally configurable
         Map<String, String> parserConfig = new HashMap<>();
         // TODO: anything needed here?
 
-        return Json.createParserFactory( parserConfig );
+        return Json.createReaderFactory( parserConfig );
     }
 
     @Provides
     public MetamodelCommands provideMetamodelCommands(
-        IMetamodelCommandFactory commandFactory, JsonParserFactory jsonParserFactory
+        IMetamodelCommandFactory commandFactory, JsonReaderFactory jsonReaderFactory
     ) {
         // TODO: Support read-only REST server configuration with no command processing
 
-        return new MetamodelCommands( commandFactory, jsonParserFactory );
+        return new MetamodelCommands( commandFactory, jsonReaderFactory );
     }
 
     @Provides

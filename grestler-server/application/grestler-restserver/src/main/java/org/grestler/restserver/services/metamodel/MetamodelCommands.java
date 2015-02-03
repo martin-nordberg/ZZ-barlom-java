@@ -11,8 +11,8 @@ import org.grestler.metamodel.api.IMetamodelCommand;
 import org.grestler.metamodel.api.IMetamodelCommandFactory;
 
 import javax.inject.Inject;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParserFactory;
+import javax.json.JsonObject;
+import javax.json.JsonReaderFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,13 +30,13 @@ public class MetamodelCommands {
      * Constructs a new edge type query service backed by given metamodel repository.
      *
      * @param commandFactory    the factory for making new commands.
-     * @param jsonParserFactory parser factory for incoming JSON.
+     * @param jsonReaderFactory parser factory for incoming JSON.
      */
     @Inject
-    public MetamodelCommands( IMetamodelCommandFactory commandFactory, JsonParserFactory jsonParserFactory ) {
+    public MetamodelCommands( IMetamodelCommandFactory commandFactory, JsonReaderFactory jsonReaderFactory ) {
 
         this.commandFactory = commandFactory;
-        this.jsonParserFactory = jsonParserFactory;
+        this.jsonReaderFactory = jsonReaderFactory;
 
     }
 
@@ -48,12 +48,13 @@ public class MetamodelCommands {
 
         MetamodelCommands.LOG.info( "Executing command {}.", commandName );
 
-        JsonParser jsonCommandArgs = this.jsonParserFactory.createParser( new StringReader( jsonCommandArgsStr ) );
+        JsonObject jsonCommandArgs = this.jsonReaderFactory.createReader( new StringReader( jsonCommandArgsStr ) )
+                                                           .readObject();
 
-        IMetamodelCommand command = this.commandFactory.makeCommand( commandName, jsonCommandArgs );
+        IMetamodelCommand command = this.commandFactory.makeCommand( commandName );
 
         try {
-            command.execute();
+            command.execute( jsonCommandArgs );
             return "{ \"success\": true, \"id\": \"" + command.getId() + "\" }";
         }
         catch ( Exception e ) {
@@ -67,6 +68,6 @@ public class MetamodelCommands {
 
     private final IMetamodelCommandFactory commandFactory;
 
-    private final JsonParserFactory jsonParserFactory;
+    private final JsonReaderFactory jsonReaderFactory;
 
 }
