@@ -6,13 +6,15 @@
 package org.grestler.dbutilities.api;
 
 import org.apache.logging.log4j.Logger;
+import org.grestler.utilities.exceptions.IValidationError;
 import org.grestler.utilities.exceptions.LoggedException;
 
 /**
  * Abstract base exception for database errors.
  */
-public class DatabaseException
-    extends LoggedException {
+public abstract class DatabaseException
+    extends LoggedException
+    implements IValidationError {
 
     /**
      * Constructs a new database-related exception with no inner cause.

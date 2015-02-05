@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -27,6 +27,8 @@ public class VertexTypeCreationCmd
 
     /**
      * Constructs a new vertex type creation command.
+     *
+     * @param dataSource the data source in which to save the new vertex type.
      */
     public VertexTypeCreationCmd( IDataSource dataSource ) {
         this.dataSource = dataSource;
@@ -66,7 +68,7 @@ public class VertexTypeCreationCmd
                     for ( String sqlInsert : sqlInserts ) {
                         int count = connection.executeCommand( sqlInsert, args );
                         if ( count != 1 ) {
-                            throw new H2DatabaseException( "Expected to insert one record but inserted " + count );
+                            throw new H2DatabaseException( "Expected to insert one record but inserted " + count + "." );
                         }
                     }
                 }

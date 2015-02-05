@@ -12,10 +12,10 @@ package org.grestler.metamodel.api;
 public interface IMetamodelCommandFactory {
 
     /**
-     * Creates a new command with given name for given arguments.
+     * Creates a new command with given type.
      *
-     * @param commandName the name of a command.
+     * @param commandTypeName the name of a command type.
      */
-    IMetamodelCommand makeCommand( String commandName );
+    IMetamodelCommand makeCommand( String commandTypeName );
 
 }

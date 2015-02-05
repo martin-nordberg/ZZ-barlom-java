@@ -26,13 +26,15 @@ public class MetamodelCommandFactory
     }
 
     @Override
-    public IMetamodelCommand makeCommand( String commandName ) {
-        switch ( commandName.toLowerCase() ) {
+    public IMetamodelCommand makeCommand( String commandTypeName ) {
+
+        switch ( commandTypeName.toLowerCase() ) {
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this.dataSource );
             default:
-                throw new H2DatabaseException( "Unknown command: \"" + commandName + "\"." );
+                throw new H2DatabaseException( "Unknown command type: \"" + commandTypeName + "\"." );
         }
+
     }
 
     /** The data source the commands made by this factory will make use of. */

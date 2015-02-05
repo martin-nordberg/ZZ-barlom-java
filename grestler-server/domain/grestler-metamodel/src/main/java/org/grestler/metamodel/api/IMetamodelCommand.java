@@ -15,6 +15,8 @@ public interface IMetamodelCommand {
 
     /**
      * Executes this command.
+     *
+     * @param jsonCmdArgs the arguments for the command as a JSON object.
      */
     void execute( JsonObject jsonCmdArgs );
 
@@ -22,7 +24,5 @@ public interface IMetamodelCommand {
      * @return the unique ID of this command.
      */
     UUID getCmdId();
-
-    // TODO: undo (by creating a new command)
 
 }

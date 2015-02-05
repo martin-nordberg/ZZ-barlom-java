@@ -7,6 +7,7 @@ package org.grestler.restserver;
 
 import org.grestler.restserver.filters.CacheControlFilter;
 import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
+import org.grestler.restserver.services.metamodel.MetamodelCommands;
 import org.grestler.restserver.services.metamodel.PackageQueries;
 import org.grestler.restserver.services.metamodel.VertexTypeQueries;
 
@@ -26,7 +27,10 @@ public class ApplicationServices
      */
     @Inject
     public ApplicationServices(
-        PackageQueries packageQueries, VertexTypeQueries vertexTypeQueries, EdgeTypeQueries edgeTypeQueries
+        PackageQueries packageQueries,
+        VertexTypeQueries vertexTypeQueries,
+        EdgeTypeQueries edgeTypeQueries,
+        MetamodelCommands metamodelCommands
     ) {
 
         this.singletons = new HashSet<>();
@@ -35,6 +39,9 @@ public class ApplicationServices
         this.singletons.add( packageQueries );
         this.singletons.add( vertexTypeQueries );
         this.singletons.add( edgeTypeQueries );
+
+        // register RESTful command services
+        this.singletons.add( metamodelCommands );
 
         // register filters
         this.singletons.add( new CacheControlFilter() );

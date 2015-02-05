@@ -68,29 +68,31 @@ public abstract class AbstractConnection
     @Override
     public void executeInTransaction( ITransactionalCallback transactionalCallback ) {
 
+        // Start the transaction.
+        this.startTransaction();
+
         try {
+            // Execute the task.
+            transactionalCallback.execute();
 
-            // Start the transaction.
-            this.connection.setAutoCommit( false );
-
-            try {
-                // Execute the task.
-                transactionalCallback.execute();
-
-                // Commit the transaction.
-                this.connection.commit();
-            }
-            catch ( Exception e ) {
-                // On error rollback the transaction.
-                this.connection.rollback();
-
-                this.throwException( "Transaction failed.", e );
-            }
-
+            // Commit the transaction.
+            this.connection.commit();
         }
-        catch ( SQLException e ) {
-            this.throwException( "Failed to open transaction.", e );
+        catch ( DatabaseException e ) {
+            // On error rollback the transaction.
+            this.rollbackTransaction();
+
+            // Just rethrow the lower level database exception.
+            throw e;
         }
+        catch ( Exception e ) {
+            // On error rollback the transaction.
+            this.rollbackTransaction();
+
+            // Wrap the exception.
+            this.throwException( "Transaction failed.", e );
+        }
+
     }
 
     @Override
@@ -126,8 +128,6 @@ public abstract class AbstractConnection
      * @param resultSet the JDBC result set to be wrapped.
      */
     protected abstract IResultSetSpi makeResultSet( ResultSet resultSet );
-
-    // TODO: executeQuery with (named) parameters
 
     /**
      * Throws an exception wrapping the underlying SQLException from JDBC.
@@ -165,6 +165,36 @@ public abstract class AbstractConnection
         }
 
         return result;
+    }
+
+    // TODO: executeQuery with (named) parameters
+
+    /**
+     * Rolls back a transaction after an error.
+     */
+    private void rollbackTransaction() {
+
+        try {
+            this.connection.rollback();
+        }
+        catch ( SQLException e ) {
+            this.throwException( "Failed to rollback transaction!", e );
+        }
+
+    }
+
+    /**
+     * Starts a new transaction.
+     */
+    private void startTransaction() {
+
+        try {
+            this.connection.setAutoCommit( false );
+        }
+        catch ( SQLException e ) {
+            this.throwException( "Failed to open transaction.", e );
+        }
+
     }
 
     /** The logger for this class. */
