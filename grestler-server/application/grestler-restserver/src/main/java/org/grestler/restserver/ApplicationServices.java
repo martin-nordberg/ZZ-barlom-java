@@ -6,6 +6,7 @@
 package org.grestler.restserver;
 
 import org.grestler.restserver.filters.CacheControlFilter;
+import org.grestler.restserver.services.metamodel.AttributeTypeQueries;
 import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
 import org.grestler.restserver.services.metamodel.MetamodelCommands;
 import org.grestler.restserver.services.metamodel.PackageQueries;
@@ -30,6 +31,7 @@ public class ApplicationServices
         PackageQueries packageQueries,
         VertexTypeQueries vertexTypeQueries,
         EdgeTypeQueries edgeTypeQueries,
+        AttributeTypeQueries attributeTypeQueries,
         MetamodelCommands metamodelCommands
     ) {
 
@@ -39,6 +41,7 @@ public class ApplicationServices
         this.singletons.add( packageQueries );
         this.singletons.add( vertexTypeQueries );
         this.singletons.add( edgeTypeQueries );
+        this.singletons.add( attributeTypeQueries );
 
         // register RESTful command services
         this.singletons.add( metamodelCommands );

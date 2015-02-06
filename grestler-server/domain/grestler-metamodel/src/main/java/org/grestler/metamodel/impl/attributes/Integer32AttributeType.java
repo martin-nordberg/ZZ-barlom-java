@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.attributes;
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
+import javax.json.stream.JsonGenerator;
 import java.util.OptionalInt;
 import java.util.UUID;
 
@@ -41,6 +42,17 @@ public class Integer32AttributeType
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        this.minValue.ifPresent( minValue -> json.write( "minValue", minValue ) );
+        this.maxValue.ifPresent( maxValue -> json.write( "maxValue", maxValue ) );
+        this.defaultValue.ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
+
     }
 
     @Override

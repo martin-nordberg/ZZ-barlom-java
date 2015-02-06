@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.attributes;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
+import javax.json.stream.JsonGenerator;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +32,15 @@ public final class BooleanAttributeType
     ) {
         super( id, parentPackage, name );
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        this.defaultValue.ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
+
     }
 
     @Override

@@ -8,7 +8,9 @@ package org.grestler.metamodel.impl.attributes;
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
+import javax.json.stream.JsonGenerator;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +37,24 @@ public final class DateTimeAttributeType
 
         this.maxValue = maxValue;
         this.minValue = minValue;
+
+    }
+
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        this.maxValue.ifPresent(
+            maxValue -> json.write(
+                "maxValue", maxValue.format( DateTimeFormatter.ISO_INSTANT )
+            )
+        );
+        this.minValue.ifPresent(
+            minValue -> json.write(
+                "minValue", minValue.format( DateTimeFormatter.ISO_INSTANT )
+            )
+        );
 
     }
 

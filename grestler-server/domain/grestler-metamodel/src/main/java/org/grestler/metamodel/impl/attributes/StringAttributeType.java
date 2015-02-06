@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.attributes;
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
+import javax.json.stream.JsonGenerator;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
@@ -49,6 +50,17 @@ public final class StringAttributeType
         else {
             this.regexPattern = Optional.empty();
         }
+    }
+
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        this.minLength.ifPresent( minLength -> json.write( "minLength", minLength ) );
+        json.write( "maxLength", this.maxLength );
+        this.regexPattern.ifPresent( regexPattern -> json.write( "regexPattern", regexPattern.toString() ) );
+
     }
 
     @Override

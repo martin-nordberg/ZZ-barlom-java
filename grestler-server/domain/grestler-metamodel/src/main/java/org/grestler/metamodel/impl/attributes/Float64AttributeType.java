@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.attributes;
 import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
+import javax.json.stream.JsonGenerator;
 import java.util.OptionalDouble;
 import java.util.UUID;
 
@@ -41,6 +42,17 @@ public final class Float64AttributeType
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        this.minValue.ifPresent( minValue -> json.write( "minValue", minValue ) );
+        this.maxValue.ifPresent( maxValue -> json.write( "maxValue", maxValue ) );
+        this.defaultValue.ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
+
     }
 
     @Override

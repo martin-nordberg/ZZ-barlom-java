@@ -10,6 +10,7 @@ import dagger.Provides;
 import org.grestler.metamodel.MetamodelModule;
 import org.grestler.metamodel.api.IMetamodelCommandFactory;
 import org.grestler.metamodel.api.IMetamodelRepository;
+import org.grestler.restserver.services.metamodel.AttributeTypeQueries;
 import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
 import org.grestler.restserver.services.metamodel.MetamodelCommands;
 import org.grestler.restserver.services.metamodel.PackageQueries;
@@ -31,6 +32,13 @@ import java.util.Map;
     injects = ApplicationServices.class,
     library = true )
 public class RestServerModule {
+
+    @Provides
+    public AttributeTypeQueries provideAttributeTypeQueries(
+        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
+    ) {
+        return new AttributeTypeQueries( metamodelRepository, jsonGeneratorFactory );
+    }
 
     @Provides
     public EdgeTypeQueries provideEdgeTypeQueries(
@@ -81,4 +89,5 @@ public class RestServerModule {
     ) {
         return new VertexTypeQueries( metamodelRepository, jsonGeneratorFactory );
     }
+
 }
