@@ -9,7 +9,8 @@ import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
 
 import javax.json.stream.JsonGenerator;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,8 +32,9 @@ public final class DateTimeAttributeType
      * @param maxValue      the minimum value for attributes of this type.
      */
     public DateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<LocalDateTime> minValue, Optional<LocalDateTime> maxValue
+        UUID id, IPackage parentPackage, String name, Optional<Instant> minValue, Optional<Instant> maxValue
     ) {
+
         super( id, parentPackage, name );
 
         this.maxValue = maxValue;
@@ -45,33 +47,36 @@ public final class DateTimeAttributeType
 
         super.generateJsonAttributes( json );
 
+        DateTimeFormatter jsonDateTimeFormatter = DateTimeFormatter.ofPattern( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" )
+                                                                   .withZone( ZoneOffset.UTC );
+
         this.maxValue.ifPresent(
             maxValue -> json.write(
-                "maxValue", maxValue.format( DateTimeFormatter.ISO_INSTANT )
+                "maxValue", jsonDateTimeFormatter.format( maxValue )
             )
         );
         this.minValue.ifPresent(
             minValue -> json.write(
-                "minValue", minValue.format( DateTimeFormatter.ISO_INSTANT )
+                "minValue", jsonDateTimeFormatter.format( minValue )
             )
         );
 
     }
 
     @Override
-    public Optional<LocalDateTime> getMaxValue() {
+    public Optional<Instant> getMaxValue() {
         return this.maxValue;
     }
 
     @Override
-    public Optional<LocalDateTime> getMinValue() {
+    public Optional<Instant> getMinValue() {
         return this.minValue;
     }
 
     /** The maximum allowed value for attributes with this type. */
-    private final Optional<LocalDateTime> maxValue;
+    private final Optional<Instant> maxValue;
 
     /** The minimum allowed value for attributes with this type. */
-    private final Optional<LocalDateTime> minValue;
+    private final Optional<Instant> minValue;
 
 }

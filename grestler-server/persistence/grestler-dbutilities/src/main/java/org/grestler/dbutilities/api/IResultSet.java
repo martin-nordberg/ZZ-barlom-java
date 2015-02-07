@@ -5,7 +5,7 @@
 
 package org.grestler.dbutilities.api;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -37,7 +37,7 @@ public interface IResultSet {
      *
      * @throws DatabaseException if the value is unexpectedly null or an error occurs reading the given column.
      */
-    LocalDateTime getDateTime( String columnName );
+    Instant getDateTime( String columnName );
 
     /**
      * Reads a required double column.
@@ -81,7 +81,7 @@ public interface IResultSet {
      *
      * @throws DatabaseException if the value an error occurs reading the given column.
      */
-    Optional<LocalDateTime> getOptionalDateTime( String columnName );
+    Optional<Instant> getOptionalDateTime( String columnName );
 
     /**
      * Reads an optional double column.

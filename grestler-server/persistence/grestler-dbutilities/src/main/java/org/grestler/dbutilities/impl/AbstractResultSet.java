@@ -11,7 +11,7 @@ import org.grestler.dbutilities.spi.IResultSetSpi;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -59,20 +59,20 @@ public abstract class AbstractResultSet
     }
 
     @Override
-    public LocalDateTime getDateTime( String columnName ) {
+    public Instant getDateTime( String columnName ) {
         try {
             Timestamp result = this.resultSet.getTimestamp( columnName );
             if ( result == null ) {
                 this.throwException( "Unexpectedly null date/time column " + columnName + "." );
             }
             else {
-                return result.toLocalDateTime();
+                return result.toInstant();
             }
         }
         catch ( SQLException e ) {
             this.throwException( "Error reading boolean column " + columnName + ".", e );
         }
-        return LocalDateTime.now();
+        return Instant.now();
     }
 
     @Override
@@ -120,11 +120,11 @@ public abstract class AbstractResultSet
     }
 
     @Override
-    public Optional<LocalDateTime> getOptionalDateTime( String columnName ) {
+    public Optional<Instant> getOptionalDateTime( String columnName ) {
         try {
             Timestamp result = this.resultSet.getTimestamp( columnName );
             if ( result != null ) {
-                return Optional.of( result.toLocalDateTime() );
+                return Optional.of( result.toInstant() );
             }
         }
         catch ( SQLException e ) {

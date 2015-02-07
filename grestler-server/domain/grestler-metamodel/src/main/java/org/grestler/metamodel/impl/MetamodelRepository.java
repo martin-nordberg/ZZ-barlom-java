@@ -55,7 +55,7 @@ import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 import org.grestler.utilities.instrumentation.OperationTimeLogger;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -258,7 +258,7 @@ public final class MetamodelRepository
 
     @Override
     public IDateTimeAttributeType loadDateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<LocalDateTime> minValue, Optional<LocalDateTime> maxValue
+        UUID id, IPackage parentPackage, String name, Optional<Instant> minValue, Optional<Instant> maxValue
     ) {
 
         IDateTimeAttributeType result = new DateTimeAttributeType( id, parentPackage, name, minValue, maxValue );

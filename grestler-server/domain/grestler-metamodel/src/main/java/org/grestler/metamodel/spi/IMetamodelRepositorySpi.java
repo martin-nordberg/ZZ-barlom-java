@@ -28,7 +28,7 @@ import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -100,7 +100,7 @@ public interface IMetamodelRepositorySpi
      * @return the loaded attribute type.
      */
     IDateTimeAttributeType loadDateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<LocalDateTime> minValue, Optional<LocalDateTime> maxValue
+        UUID id, IPackage parentPackage, String name, Optional<Instant> minValue, Optional<Instant> maxValue
     );
 
     /**

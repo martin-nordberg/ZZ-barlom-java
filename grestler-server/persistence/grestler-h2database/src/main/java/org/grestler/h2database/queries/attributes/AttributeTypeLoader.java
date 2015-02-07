@@ -15,7 +15,7 @@ import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.utilities.configuration.Configuration;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -422,9 +422,9 @@ public class AttributeTypeLoader
 
         }
 
-        public final Optional<LocalDateTime> maxValue;
+        public final Optional<Instant> maxValue;
 
-        public final Optional<LocalDateTime> minValue;
+        public final Optional<Instant> minValue;
     }
 
     /**
