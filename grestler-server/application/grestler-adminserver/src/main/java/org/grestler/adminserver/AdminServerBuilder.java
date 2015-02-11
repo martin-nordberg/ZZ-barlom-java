@@ -96,6 +96,10 @@ public final class AdminServerBuilder {
                 "/home/mnordberg/Workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp"
             )
         );
+
+        // Add MIME types for unusual file types.
+        fileResourceHandler.getMimeTypes().addMimeMapping( "mustache", "text/ractive; charset=UTF-8" );
+
         fileServerContext.setHandler( fileResourceHandler );
 
         return fileServerContext;

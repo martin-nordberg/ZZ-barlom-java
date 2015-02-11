@@ -3,10 +3,39 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Grestler Admin Console</title>
+
+    <!-- RequireJS Configuration -->
+    <script>
+        var require = {
+            paths: {
+                ractive: 'lib/ractive-0.6.1/ractive',
+                text: 'lib/requirejs-2.1.16/text'
+            }
+        };
+    </script>
+
+    <!-- RequireJS -->
+    <script src="lib/requirejs-2.1.16/require.js" defer></script>
+
+    <!-- Main script for the page -->
+    <script src="js/sample.js" defer></script>
+
 </head>
 <body>
     <h1>Grestler</h1>
+    <ul>
+        <li><a href="/grestlerdata/metadata/packages">Packages</a></li>
+        <li><a href="/grestlerdata/metadata/vertextypes">Vertex Types</a></li>
+        <li><a href="/grestlerdata/metadata/edgetypes">Edge Types</a></li>
+    </ul>
     <hr>
     <a href="/grestleradmin/exit">Shut Down</a>
+    <hr>
+
+    <h1>Ractive Sample</h1>
+
+    <!-- Ractive content target -->
+    <div id='container'></div>
+
 </body>
 </html>
