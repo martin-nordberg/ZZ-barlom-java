@@ -1,11 +1,8 @@
 
-require( [ 'ractive', 'text!templates/helloworld.html.mustache' ],
-         function( Ractive, helloWorldTemplate ) {
+require( [ 'scripts/example', 'ractive', 'text!templates/helloworld.html.mustache' ],
+         function( example, Ractive, helloWorldTemplate ) {
 
-    var model = {
-        modifier: "cruel",
-        name: "world"
-    };
+    var model = new example.Example();
 
     var view = new Ractive({
 
