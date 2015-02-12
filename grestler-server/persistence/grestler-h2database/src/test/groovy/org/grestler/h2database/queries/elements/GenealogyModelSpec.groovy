@@ -10,8 +10,8 @@ import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.metamodel.api.attributes.EAttributeOptionality
 import org.grestler.metamodel.api.attributes.EDataType
 import org.grestler.metamodel.api.elements.IDirectedEdgeType
-import org.grestler.metamodel.impl.MetamodelRepository
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi
+import org.grestler.metamodel.impl.metamodel.MetamodelRepository
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi
 import spock.lang.Specification
 
 /**

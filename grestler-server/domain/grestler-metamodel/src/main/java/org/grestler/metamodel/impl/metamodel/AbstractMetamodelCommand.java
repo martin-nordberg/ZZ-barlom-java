@@ -3,9 +3,9 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.impl;
+package org.grestler.metamodel.impl.metamodel;
 
-import org.grestler.metamodel.api.IMetamodelCommand;
+import org.grestler.metamodel.api.metamodel.IMetamodelCommand;
 import org.grestler.utilities.uuids.Uuids;
 
 import java.util.UUID;

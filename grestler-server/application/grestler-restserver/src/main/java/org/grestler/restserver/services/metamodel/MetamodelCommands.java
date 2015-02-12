@@ -7,8 +7,8 @@ package org.grestler.restserver.services.metamodel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.grestler.metamodel.api.IMetamodelCommand;
-import org.grestler.metamodel.api.IMetamodelCommandFactory;
+import org.grestler.metamodel.api.metamodel.IMetamodelCommand;
+import org.grestler.metamodel.api.metamodel.IMetamodelCommandFactory;
 import org.grestler.utilities.exceptions.IValidationError;
 
 import javax.inject.Inject;

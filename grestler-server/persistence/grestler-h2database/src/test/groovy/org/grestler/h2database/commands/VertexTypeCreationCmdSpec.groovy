@@ -9,8 +9,8 @@ import org.grestler.dbutilities.api.DatabaseException
 import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.h2database.queries.elements.*
-import org.grestler.metamodel.impl.MetamodelRepository
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi
+import org.grestler.metamodel.impl.metamodel.MetamodelRepository
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi
 import org.grestler.utilities.exceptions.EValidationType
 import spock.lang.Specification
 

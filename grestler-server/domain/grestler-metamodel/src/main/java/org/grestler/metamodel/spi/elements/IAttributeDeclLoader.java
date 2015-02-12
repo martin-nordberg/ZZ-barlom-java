@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.spi.elements;
 
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
 
 /**
  * Interface for a back end attribute declaration loader.

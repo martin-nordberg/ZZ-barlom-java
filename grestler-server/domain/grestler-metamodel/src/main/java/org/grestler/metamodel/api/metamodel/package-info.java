@@ -7,4 +7,4 @@
  * Package defining the API for the Grestler metamodel.
  */
 
-package org.grestler.metamodel.api;
+package org.grestler.metamodel.api.metamodel;

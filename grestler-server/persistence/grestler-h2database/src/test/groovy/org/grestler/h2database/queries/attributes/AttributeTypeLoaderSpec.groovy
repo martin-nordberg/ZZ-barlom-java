@@ -11,8 +11,8 @@ import org.grestler.h2database.queries.elements.EdgeTypeLoader
 import org.grestler.h2database.queries.elements.PackageDependencyLoader
 import org.grestler.h2database.queries.elements.PackageLoader
 import org.grestler.h2database.queries.elements.VertexTypeLoader
-import org.grestler.metamodel.impl.MetamodelRepository
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi
+import org.grestler.metamodel.impl.metamodel.MetamodelRepository
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 

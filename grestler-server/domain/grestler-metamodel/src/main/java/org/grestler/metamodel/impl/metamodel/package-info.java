@@ -7,4 +7,4 @@
  * Package for main Grestler metamodel repository implementation.
  */
 
-package org.grestler.metamodel.impl;
+package org.grestler.metamodel.impl.metamodel;

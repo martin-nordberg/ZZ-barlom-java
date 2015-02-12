@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.spi.attributes;
 
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
 
 /**
  * Interface defining attribute type queries.

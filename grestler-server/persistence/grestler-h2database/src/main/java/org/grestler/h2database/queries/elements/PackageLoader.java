@@ -10,7 +10,7 @@ import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.dbutilities.api.IResultSet;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.utilities.configuration.Configuration;
 

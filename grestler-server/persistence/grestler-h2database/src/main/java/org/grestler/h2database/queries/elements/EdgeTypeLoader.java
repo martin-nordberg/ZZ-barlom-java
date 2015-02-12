@@ -16,7 +16,7 @@ import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.utilities.configuration.Configuration;
 

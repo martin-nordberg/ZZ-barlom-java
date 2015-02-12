@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.api;
+package org.grestler.metamodel.api.metamodel;
 
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IDirectedEdgeType;

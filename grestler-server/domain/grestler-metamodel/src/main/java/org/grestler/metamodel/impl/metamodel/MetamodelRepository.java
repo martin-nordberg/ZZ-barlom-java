@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.impl;
+package org.grestler.metamodel.impl.metamodel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +45,7 @@ import org.grestler.metamodel.impl.elements.RootPackage;
 import org.grestler.metamodel.impl.elements.UndirectedEdgeType;
 import org.grestler.metamodel.impl.elements.VertexAttributeDecl;
 import org.grestler.metamodel.impl.elements.VertexType;
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;

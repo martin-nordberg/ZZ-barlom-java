@@ -3,9 +3,9 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.spi;
+package org.grestler.metamodel.spi.metamodel;
 
-import org.grestler.metamodel.api.IMetamodelRepository;
+import org.grestler.metamodel.api.metamodel.IMetamodelRepository;
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;

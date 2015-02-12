@@ -16,7 +16,7 @@ import org.grestler.h2database.queries.elements.EdgeTypeLoader;
 import org.grestler.h2database.queries.elements.PackageDependencyLoader;
 import org.grestler.h2database.queries.elements.PackageLoader;
 import org.grestler.h2database.queries.elements.VertexTypeLoader;
-import org.grestler.metamodel.api.IMetamodelCommandFactory;
+import org.grestler.metamodel.api.metamodel.IMetamodelCommandFactory;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;

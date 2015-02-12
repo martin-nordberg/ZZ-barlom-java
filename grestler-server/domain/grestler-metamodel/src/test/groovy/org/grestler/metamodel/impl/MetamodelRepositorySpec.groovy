@@ -6,7 +6,8 @@
 package org.grestler.metamodel.impl
 
 import org.grestler.metamodel.api.elements.EAbstractness
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi
+import org.grestler.metamodel.impl.metamodel.MetamodelRepository
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader

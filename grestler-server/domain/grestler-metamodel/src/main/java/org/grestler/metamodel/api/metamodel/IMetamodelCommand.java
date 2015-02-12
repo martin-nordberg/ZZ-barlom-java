@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.api;
+package org.grestler.metamodel.api.metamodel;
 
 import javax.json.JsonObject;
 import java.util.UUID;

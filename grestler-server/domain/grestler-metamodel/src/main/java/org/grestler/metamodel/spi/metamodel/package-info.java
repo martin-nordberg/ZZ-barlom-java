@@ -7,4 +7,4 @@
  * Package defining interfaces used by persistence service providers for loading a metamodel repository.
  */
 
-package org.grestler.metamodel.spi;
+package org.grestler.metamodel.spi.metamodel;

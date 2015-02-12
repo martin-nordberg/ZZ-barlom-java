@@ -5,7 +5,7 @@
 
 package org.grestler.metamodel.spi.elements;
 
-import org.grestler.metamodel.spi.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
 
 /**
  * Interface defining vertex type queries.
