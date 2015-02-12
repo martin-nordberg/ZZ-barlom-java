@@ -12,7 +12,7 @@ import org.grestler.metamodel.api.attributes.IAttributeType;
  * Interface to an edge attribute declaration.
  */
 public interface IEdgeAttributeDecl
-    extends IElement {
+    extends INamedElement {
 
     /**
      * @return whether this is a required attribute.
@@ -20,7 +20,7 @@ public interface IEdgeAttributeDecl
     EAttributeOptionality getOptionality();
 
     @Override
-    default IElement getParent() {
+    default INamedElement getParent() {
         return this.getParentEdgeType();
     }
 

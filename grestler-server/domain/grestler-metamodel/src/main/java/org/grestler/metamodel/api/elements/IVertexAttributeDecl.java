@@ -12,7 +12,7 @@ import org.grestler.metamodel.api.attributes.IAttributeType;
  * Interface to a vertex attribute declaration.
  */
 public interface IVertexAttributeDecl
-    extends IElement {
+    extends INamedElement {
 
     /**
      * @return whether this is the default label for the vertex.
@@ -25,7 +25,7 @@ public interface IVertexAttributeDecl
     EAttributeOptionality getOptionality();
 
     @Override
-    default IElement getParent() {
+    default INamedElement getParent() {
         return this.getParentVertexType();
     }
 

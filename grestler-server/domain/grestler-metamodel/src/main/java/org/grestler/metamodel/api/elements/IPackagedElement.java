@@ -9,10 +9,10 @@ package org.grestler.metamodel.api.elements;
  * Shared general interface for metadata elements that are direct children of packages.
  */
 public interface IPackagedElement
-    extends IElement {
+    extends INamedElement {
 
     @Override
-    default IElement getParent() {
+    default INamedElement getParent() {
         return this.getParentPackage();
     }
 

@@ -5,22 +5,21 @@
 
 package org.grestler.metamodel.api.elements;
 
-import java.util.UUID;
-
 /**
  * Interface to a package dependency.
  */
-public interface IPackageDependency {
+public interface IPackageDependency
+    extends IDocumentedElement {
 
     /**
      * @return the package that makes use of the supplier package.
      */
     IPackage getClientPackage();
 
-    /**
-     * @return the unique ID of this dependency.
-     */
-    UUID getId();
+    @Override
+    default INamedElement getParent() {
+        return this.getClientPackage();
+    }
 
     /**
      * @return the package that is depended upon.

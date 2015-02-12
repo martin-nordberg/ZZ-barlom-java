@@ -13,8 +13,7 @@ import java.util.UUID;
 /**
  * Shared top level base interface for metadata elements.
  */
-
-public interface IElement {
+public interface IDocumentedElement {
 
     /**
      * Generates the JSON representation of this element to the given generator.
@@ -40,29 +39,10 @@ public interface IElement {
     UUID getId();
 
     /**
-     * @return the name of this element.
-     */
-    String getName();
-
-    /**
      * @return the parent element containing this element.
      */
-    IElement getParent();
-
-    /**
-     * @return the fully qualified path to this element.
-     */
-    default String getPath() {
-
-        String result = this.getParent().getPath();
-
-        if ( !result.isEmpty() ) {
-            return result + "." + this.getName();
-        }
-
-        return this.getName();
-
-    }
+    @SuppressWarnings( "ClassReferencesSubclass" )
+    INamedElement getParent();
 
     /**
      * @return a JSON representation of this element.

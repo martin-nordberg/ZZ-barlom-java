@@ -17,7 +17,7 @@ import java.util.UUID;
  * Implementation class for edge attribute declarations.
  */
 public final class EdgeAttributeDecl
-    extends Element
+    extends NamedElement
     implements IEdgeAttributeDecl {
 
     /**

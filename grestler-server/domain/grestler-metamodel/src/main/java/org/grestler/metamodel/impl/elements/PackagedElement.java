@@ -10,7 +10,7 @@ import java.util.UUID;
  * Implementation of abstract element.
  */
 public abstract class PackagedElement
-    extends Element
+    extends NamedElement
     implements IPackagedElement {
 
     /**

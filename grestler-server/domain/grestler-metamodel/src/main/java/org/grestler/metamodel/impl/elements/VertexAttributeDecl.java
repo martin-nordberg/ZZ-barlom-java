@@ -18,7 +18,7 @@ import java.util.UUID;
  * Implementation class for vertex attribute declarations.
  */
 public final class VertexAttributeDecl
-    extends Element
+    extends NamedElement
     implements IVertexAttributeDecl {
 
     /**

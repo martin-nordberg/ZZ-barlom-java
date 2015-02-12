@@ -8,12 +8,14 @@ package org.grestler.metamodel.impl.elements;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackageDependency;
 
+import javax.json.stream.JsonGenerator;
 import java.util.UUID;
 
 /**
  * Implementation class for package dependencies.
  */
 public final class PackageDependency
+    extends DocumentedElement
     implements IPackageDependency {
 
     /**
@@ -26,23 +28,29 @@ public final class PackageDependency
     public PackageDependency(
         UUID id, IPackage clientPackage, IPackage supplierPackage
     ) {
-        this.id = id;
+
+        super( id );
+
         this.clientPackage = clientPackage;
         this.supplierPackage = supplierPackage;
 
-        // TOD: register both ends
+        // TODO: register both ends
+
     }
 
-    // TODO: JSON
+    @Override
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        json.write( "clientPackageId", this.clientPackage.getId().toString() )
+            .write( "supplierPackageId", this.supplierPackage.getId().toString() );
+
+    }
 
     @Override
     public IPackage getClientPackage() {
         return this.clientPackage;
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
     }
 
     @Override
@@ -52,9 +60,6 @@ public final class PackageDependency
 
     /** The package that makes use of the supplier. */
     private final IPackage clientPackage;
-
-    /** The unique ID of this attribute declaration. */
-    private final UUID id;
 
     /** The package depended upon. */
     private final IPackage supplierPackage;
