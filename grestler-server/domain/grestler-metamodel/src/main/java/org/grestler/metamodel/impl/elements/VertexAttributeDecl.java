@@ -18,6 +18,7 @@ import java.util.UUID;
  * Implementation class for vertex attribute declarations.
  */
 public final class VertexAttributeDecl
+    extends Element
     implements IVertexAttributeDecl {
 
     /**
@@ -39,42 +40,31 @@ public final class VertexAttributeDecl
         ELabelDefaulting labelDefaulting
     ) {
 
-        this.id = id;
+        super( id, name );
+
         this.parentVertexType = parentVertexType;
-        this.name = name;
         this.type = type;
         this.optionality = optionality;
         this.labelDefaulting = labelDefaulting;
 
-        ( (IVertexTypeUnderAssembly) this.parentVertexType ).addAttribute( this );
+        ( (IVertexTypeUnderAssembly) parentVertexType ).addAttribute( this );
 
     }
 
     @Override
-    public void generateJson( JsonGenerator json ) {
-        json.writeStartObject()
-            .write( "id", this.id.toString() )
-            .write( "parentVertexTypeId", this.parentVertexType.getId().toString() )
-            .write( "name", this.name )
-            .write( "typeId", this.type.getId().toString() )
+    public void generateJsonAttributes( JsonGenerator json ) {
+
+        super.generateJsonAttributes( json );
+
+        json.write( "typeId", this.type.getId().toString() )
             .write( "optionality", this.optionality.name() )
-            .write( "labelDefaulting", this.labelDefaulting.name() )
-            .writeEnd();
-    }
+            .write( "labelDefaulting", this.labelDefaulting.name() );
 
-    @Override
-    public UUID getId() {
-        return this.id;
     }
 
     @Override
     public ELabelDefaulting getLabelDefaulting() {
         return this.labelDefaulting;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
     }
 
     @Override
@@ -92,19 +82,13 @@ public final class VertexAttributeDecl
         return this.type;
     }
 
-    /** The unique ID of this attribute declaration. */
-    private final UUID id;
-
     /** Whether this attribute serves as the default label for vertexes of the parent type. */
     private final ELabelDefaulting labelDefaulting;
-
-    /** The name of this attribute declaration. */
-    private final String name;
 
     /** Whether this attribute is required for instances of the parent vertex type. */
     private final EAttributeOptionality optionality;
 
-    /** The parent vertex type of this attribute declaration. */
+    /** The parent vertex type with this attribute. */
     private final IVertexType parentVertexType;
 
     /** The type of this attribute declaration. */

@@ -20,7 +20,7 @@ import java.util.UUID;
  * Implementation class for Grestler packages.
  */
 public final class Package
-    extends Element
+    extends PackagedElement
     implements IPackage, IPackageUnderAssembly {
 
     /**

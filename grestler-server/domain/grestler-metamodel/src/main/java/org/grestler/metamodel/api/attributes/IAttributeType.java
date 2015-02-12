@@ -5,13 +5,13 @@
 
 package org.grestler.metamodel.api.attributes;
 
-import org.grestler.metamodel.api.elements.IElement;
+import org.grestler.metamodel.api.elements.IPackagedElement;
 
 /**
  * Base interface for an abstract attribute type.
  */
 public interface IAttributeType
-    extends IElement {
+    extends IPackagedElement {
 
     /**
      * @return the fundamental data type for attributes of this type.

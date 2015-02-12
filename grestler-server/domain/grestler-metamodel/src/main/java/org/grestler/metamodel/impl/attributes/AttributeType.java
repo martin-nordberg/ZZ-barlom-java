@@ -7,7 +7,7 @@ package org.grestler.metamodel.impl.attributes;
 
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.metamodel.impl.elements.Element;
+import org.grestler.metamodel.impl.elements.PackagedElement;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
  * Attribute type implementation.
  */
 public abstract class AttributeType
-    extends Element
+    extends PackagedElement
     implements IAttributeType {
 
     /**

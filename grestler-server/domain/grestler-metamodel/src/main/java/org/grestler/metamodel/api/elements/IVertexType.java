@@ -12,7 +12,7 @@ import java.util.Optional;
  * Top level interface to a vertex type.
  */
 public interface IVertexType
-    extends IElement {
+    extends IPackagedElement {
 
     /**
      * @return the abstractness of this vertex type

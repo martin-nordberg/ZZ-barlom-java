@@ -20,7 +20,7 @@ import java.util.UUID;
  * Implementation class for vertex types.
  */
 public final class VertexType
-    extends Element
+    extends PackagedElement
     implements IVertexType, IVertexTypeUnderAssembly {
 
     /**

@@ -33,10 +33,10 @@ class Float64AttributeTypeSpec
 
         where:
         id  | parentPackage | name     | minValue | maxValue | defaultValue || json
-        id1 | pkg1          | 'f64at1' | empty    | empty    | empty        || '{"id":"00000003-0000-0000-0000-000000000000","parentPackageId":"00000001-0000-0000-0000-000000000000","name":"f64at1","path":"pkg1.f64at1","dataType":"FLOAT64"}'
-        id2 | pkg2          | 'f64at2' | zero     | empty    | empty        || '{"id":"00000004-0000-0000-0000-000000000000","parentPackageId":"00000002-0000-0000-0000-000000000000","name":"f64at2","path":"pkg1.pkg2.f64at2","dataType":"FLOAT64","minValue":0.0}'
-        id1 | pkg2          | 'f64at3' | empty    | hundred  | fifty        || '{"id":"00000003-0000-0000-0000-000000000000","parentPackageId":"00000002-0000-0000-0000-000000000000","name":"f64at3","path":"pkg1.pkg2.f64at3","dataType":"FLOAT64","maxValue":100.0,"defaultValue":50.0}'
-        id2 | root          | 'f64at4' | zero     | hundred  | empty        || '{"id":"00000004-0000-0000-0000-000000000000","parentPackageId":"00000000-0000-0000-0000-000000000000","name":"f64at4","path":"f64at4","dataType":"FLOAT64","minValue":0.0,"maxValue":100.0}'
+        id1 | pkg1          | 'f64at1' | empty    | empty    | empty        || '{"id":"00000003-0000-0000-0000-000000000000","name":"f64at1","path":"pkg1.f64at1","parentPackageId":"00000001-0000-0000-0000-000000000000","dataType":"FLOAT64"}'
+        id2 | pkg2          | 'f64at2' | zero     | empty    | empty        || '{"id":"00000004-0000-0000-0000-000000000000","name":"f64at2","path":"pkg1.pkg2.f64at2","parentPackageId":"00000002-0000-0000-0000-000000000000","dataType":"FLOAT64","minValue":0.0}'
+        id1 | pkg2          | 'f64at3' | empty    | hundred  | fifty        || '{"id":"00000003-0000-0000-0000-000000000000","name":"f64at3","path":"pkg1.pkg2.f64at3","parentPackageId":"00000002-0000-0000-0000-000000000000","dataType":"FLOAT64","maxValue":100.0,"defaultValue":50.0}'
+        id2 | root          | 'f64at4' | zero     | hundred  | empty        || '{"id":"00000004-0000-0000-0000-000000000000","name":"f64at4","path":"f64at4","parentPackageId":"00000000-0000-0000-0000-000000000000","dataType":"FLOAT64","minValue":0.0,"maxValue":100.0}'
 
     }
 

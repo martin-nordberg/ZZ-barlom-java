@@ -12,7 +12,7 @@ import java.util.List;
  * Interface to a package of vertex types and edge types.
  */
 public interface IPackage
-    extends IElement {
+    extends IPackagedElement {
 
     /**
      * @return the packages that are children of this one.

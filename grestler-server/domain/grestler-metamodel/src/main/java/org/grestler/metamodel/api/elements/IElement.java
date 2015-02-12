@@ -11,8 +11,9 @@ import java.io.StringWriter;
 import java.util.UUID;
 
 /**
- * Shared general interface for metadata elements.
+ * Shared top level base interface for metadata elements.
  */
+
 public interface IElement {
 
     /**
@@ -44,39 +45,22 @@ public interface IElement {
     String getName();
 
     /**
-     * @return the parent of this element.
+     * @return the parent element containing this element.
      */
-    @SuppressWarnings( "ClassReferencesSubclass" )
-    IPackage getParentPackage();
+    IElement getParent();
 
     /**
      * @return the fully qualified path to this element.
      */
     default String getPath() {
 
-        String result = this.getParentPackage().getPath();
+        String result = this.getParent().getPath();
 
         if ( !result.isEmpty() ) {
             return result + "." + this.getName();
         }
 
         return this.getName();
-
-    }
-
-    /**
-     * Determines whether this package is a direct or indirect child of the given package.
-     *
-     * @param parentPackage the potential parent.
-     *
-     * @return true if this package is a child or grandchild of the given parent package.
-     */
-    @SuppressWarnings( "ClassReferencesSubclass" )
-    default boolean isChildOf( IPackage parentPackage ) {
-
-        IPackage parentPkg = this.getParentPackage();
-
-        return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
 
     }
 

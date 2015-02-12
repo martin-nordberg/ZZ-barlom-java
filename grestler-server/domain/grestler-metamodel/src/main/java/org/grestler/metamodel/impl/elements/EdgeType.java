@@ -23,7 +23,7 @@ import java.util.UUID;
  * Implementation class for edge types.
  */
 abstract class EdgeType
-    extends Element
+    extends PackagedElement
     implements IEdgeType, IEdgeTypeUnderAssembly {
 
     /**
@@ -70,7 +70,9 @@ abstract class EdgeType
 
     @Override
     public void generateJsonAttributes( JsonGenerator json ) {
+
         super.generateJsonAttributes( json );
+
         json.write( "superTypeId", this.superType.getId().toString() )
             .write( "abstractness", this.abstractness.name() )
             .write( "cyclicity", this.cyclicity.name() )
@@ -78,6 +80,7 @@ abstract class EdgeType
             .write( "selfLooping", this.selfLooping.name() );
 
         // TODO: attribute declarations
+
     }
 
     @Override

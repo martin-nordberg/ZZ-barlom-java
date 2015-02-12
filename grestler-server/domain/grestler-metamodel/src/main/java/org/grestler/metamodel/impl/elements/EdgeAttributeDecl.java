@@ -17,6 +17,7 @@ import java.util.UUID;
  * Implementation class for edge attribute declarations.
  */
 public final class EdgeAttributeDecl
+    extends Element
     implements IEdgeAttributeDecl {
 
     /**
@@ -31,34 +32,20 @@ public final class EdgeAttributeDecl
     public EdgeAttributeDecl(
         UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
     ) {
-        this.id = id;
+
+        super( id, name );
+
         this.parentEdgeType = parentEdgeType;
-        this.name = name;
         this.type = type;
         this.optionality = optionality;
 
-        ( (IEdgeTypeUnderAssembly) this.parentEdgeType ).addAttribute( this );
+        ( (IEdgeTypeUnderAssembly) parentEdgeType ).addAttribute( this );
+
     }
 
     @Override
-    public void generateJson( JsonGenerator json ) {
-        json.writeStartObject()
-            .write( "id", this.id.toString() )
-            .write( "parentEdgeTypeId", this.parentEdgeType.getId().toString() )
-            .write( "name", this.name )
-            .write( "typeId", this.type.getId().toString() )
-            .write( "optionality", this.optionality.name() )
-            .writeEnd();
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
+    public void generateJsonAttributes( JsonGenerator json ) {
+        json.write( "typeId", this.type.getId().toString() ).write( "optionality", this.optionality.name() );
     }
 
     @Override
@@ -76,16 +63,10 @@ public final class EdgeAttributeDecl
         return this.type;
     }
 
-    /** The unique ID of this attribute declaration. */
-    private final UUID id;
-
-    /** The name of this attribute declaration. */
-    private final String name;
-
     /** Whether this attribute is required for instances of the parent edge type. */
     private final EAttributeOptionality optionality;
 
-    /** The parent edge type of this attribute declaration. */
+    /** The parent edge type with this attribute. */
     private final IEdgeType parentEdgeType;
 
     /** The type of this attribute declaration. */

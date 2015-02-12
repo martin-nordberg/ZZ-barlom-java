@@ -12,7 +12,7 @@ import java.util.Optional;
  * Top level interface to an edge type.
  */
 public interface IEdgeType
-    extends IElement {
+    extends IPackagedElement {
 
     /**
      * @return the abstractness of this edge type
