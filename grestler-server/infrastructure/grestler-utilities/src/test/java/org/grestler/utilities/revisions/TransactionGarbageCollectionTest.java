@@ -88,12 +88,12 @@ public class TransactionGarbageCollectionTest {
                 Runnable task1 = () -> {
                     this.myValue = new V<>( new Value() );
                 };
-                StmTransactionContext.doInTransaction( 2, task1 );
+                StmTransactionContext.doInReadWriteTransaction( 2, task1 );
                 for ( int i = 0; i < 50000; i += 1 ) {
                     Runnable task = () -> {
                         this.myValue.set( new Value() );
                     };
-                    StmTransactionContext.doInTransaction( 5, task );
+                    StmTransactionContext.doInReadWriteTransaction( 5, task );
                     if ( i % 100 == 0 ) {
                         Thread.yield();
                     }

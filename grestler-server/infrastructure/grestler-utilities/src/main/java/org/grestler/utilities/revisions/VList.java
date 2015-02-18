@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Handle to a versioned item that is a list of items.
  */
-public class VList<T>
+public final class VList<T>
     extends AbstractVersionedItem {
 
     /**
@@ -23,13 +23,12 @@ public class VList<T>
     public VList() {
 
         // Track everything through the current transaction.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         this.latestRevision = new AtomicReference<>( null );
         this.latestRevision.set(
             new Revision<>(
-                currentTransaction.getTargetRevisionNumber(),
-                this.latestRevision.get()
+                currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
             )
         );
 
@@ -49,7 +48,7 @@ public class VList<T>
         Objects.requireNonNull( value );
 
         // Work within the transaction of the current thread.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
@@ -68,7 +67,7 @@ public class VList<T>
             }
 
             // if revision is committed and older or equal to our source revision, need a new one
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
                 break;
             }
 
@@ -76,8 +75,7 @@ public class VList<T>
 
         // create the new revision at the front of the chain
         final Revision<T> revision = new Revision<>(
-            currentTransaction.getTargetRevisionNumber(),
-            this.latestRevision.get()
+            currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
         );
         revision.addedValues.add( value );
         this.latestRevision.set( revision );
@@ -95,7 +93,7 @@ public class VList<T>
     public List<T> get() {
 
         // Track everything through the current transaction.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         // Work within the transaction of the current thread.
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
@@ -120,7 +118,7 @@ public class VList<T>
             }
 
             // If revision is committed and older or equal to our source revision, read it.
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
                 // Keep track of everything we've read.
                 currentTransaction.addVersionedItemRead( this );
 
@@ -146,7 +144,7 @@ public class VList<T>
         Objects.requireNonNull( value );
 
         // Work within the transaction of the current thread.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
@@ -165,7 +163,7 @@ public class VList<T>
             }
 
             // if revision is committed and older or equal to our source revision, need a new one
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
                 break;
             }
 
@@ -173,8 +171,7 @@ public class VList<T>
 
         // create the new revision at the front of the chain
         final Revision<T> revision = new Revision<>(
-            currentTransaction.getTargetRevisionNumber(),
-            this.latestRevision.get()
+            currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
         );
         revision.removedValues.add( value );
         this.latestRevision.set( revision );
@@ -188,7 +185,7 @@ public class VList<T>
     void ensureNotWrittenByOtherTransaction() {
 
         // Work within the transaction of the current thread.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
@@ -205,7 +202,7 @@ public class VList<T>
             }
 
             // if revision is committed and older or equal to our source revision, then done
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
                 break;
             }
 

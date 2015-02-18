@@ -9,6 +9,7 @@ package org.grestler.utilities.revisions;
  * Status of a transaction.
  */
 public enum ETransactionStatus {
+    NO_TRANSACTION,
     IN_PROGRESS,
     COMMITTED,
     ABORTED;

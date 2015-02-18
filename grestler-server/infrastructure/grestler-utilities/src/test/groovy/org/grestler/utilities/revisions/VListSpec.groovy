@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014 Martin E. Nordberg III
+// (C) Copyright 2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -8,30 +8,10 @@ package org.grestler.utilities.revisions
 import spock.lang.Specification
 
 /**
- * Simple exercising of Transactions.
+ * Specification for versioned boxes..
  */
-class TransactionSpec
+class VListSpec
         extends Specification {
-
-    def "Transactions allow a versioned item to be created and changed"() {
-
-        given:
-        V<Integer> stuff
-        StmTransactionContext.doInReadWriteTransaction( 1 ) {
-            stuff = new V<>( 1 );
-        }
-
-        when:
-        StmTransactionContext.doInReadWriteTransaction( 1 ) {
-            stuff.set( 2 );
-        }
-
-        then:
-        StmTransactionContext.doInReadWriteTransaction( 1 ) {
-            assert stuff.get() == 2
-        }
-
-    }
 
     def "Transactions allow a versioned list to be created and changed"() {
 
@@ -63,10 +43,15 @@ class TransactionSpec
         StmTransactionContext.doInReadWriteTransaction( 1 ) {
             stList = stuff.get();
         }
-        assert stList.get( 0 ) == 3;
-        assert stList.get( 1 ) == 4;
-        assert stList.get( 2 ) == 5;
-        assert stList.size() == 3;
+
+        expect:
+        stList.get( i ) == v;
+
+        where:
+        i || v
+        0 || 3
+        1 || 4
+        2 || 5
 
 
     }

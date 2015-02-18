@@ -19,7 +19,7 @@ abstract class AbstractVersionedItem {
      * Constructs a new abstract versioned item with unique identity.
      */
     protected AbstractVersionedItem() {
-        this.hashCode = lastHashCode.incrementAndGet();
+        this.hashCode = AbstractVersionedItem.lastHashCode.incrementAndGet();
     }
 
     @SuppressWarnings( "SimplifiableIfStatement" )
@@ -30,17 +30,17 @@ abstract class AbstractVersionedItem {
             return true;
         }
 
-        if ( that == null || getClass() != that.getClass() ) {
+        if ( that == null || this.getClass() != that.getClass() ) {
             return false;
         }
 
-        return hashCode == ( (AbstractVersionedItem) that ).hashCode;
+        return this.hashCode == ( (AbstractVersionedItem) that ).hashCode;
 
     }
 
     @Override
     public final int hashCode() {
-        return hashCode;
+        return this.hashCode;
     }
 
     /**
@@ -65,6 +65,7 @@ abstract class AbstractVersionedItem {
     /**
      * The last used hash code.
      */
+    @SuppressWarnings( "FieldMayBeFinal" )
     private static AtomicInteger lastHashCode = new AtomicInteger( 0 );
 
     /**

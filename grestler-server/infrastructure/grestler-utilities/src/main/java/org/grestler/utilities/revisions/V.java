@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @param <T> the type of the value that is managed through its revisions.
  */
-public class V<T>
+public final class V<T>
     extends AbstractVersionedItem {
 
     /**
@@ -28,7 +28,7 @@ public class V<T>
         Objects.requireNonNull( value );
 
         // Track everything through the current transaction.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         // Make sure we have a read/write transaction
         currentTransaction.ensureWriteable();
@@ -53,7 +53,7 @@ public class V<T>
     public T get() {
 
         // Track everything through the current transaction.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         // Work within the transaction of the current thread.
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
@@ -103,7 +103,7 @@ public class V<T>
         Objects.requireNonNull( value );
 
         // Work within the transaction of the current thread.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         // Make sure we have a read/write transaction
         currentTransaction.ensureWriteable();
@@ -125,7 +125,7 @@ public class V<T>
             }
 
             // If revision is committed and older or equal to our source revision, need a new one.
-            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0 ) {
+            if ( revisionNumber <= sourceRevisionNumber && revisionNumber > 0L ) {
 
                 // ... except if not changed, treat as a read.
                 if ( value == revision.value ) {
@@ -155,7 +155,7 @@ public class V<T>
     void ensureNotWrittenByOtherTransaction() {
 
         // Work within the transaction of the current thread.
-        StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
+        IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 

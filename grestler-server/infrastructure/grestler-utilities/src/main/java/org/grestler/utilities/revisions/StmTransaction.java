@@ -17,10 +17,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * Utility class for managing in-memory transactions. The code is similar to "versioned boxes", the concept behind JVSTM
  * for software transactional memory. However, this code is much more streamlined, though very experimental.
  */
-class StmTransaction {
+final class StmTransaction
+    implements IStmTransaction {
 
     /**
      * Constructs a new transaction.
+     *
+     * @param writeability whether the transaction will allow writing changes.
      */
     StmTransaction( ETransactionWriteability writeability ) {
 
@@ -54,10 +57,8 @@ class StmTransaction {
 
     }
 
-    /**
-     * Aborts this transaction; abandons the revisions made by the transaction.
-     */
-    void abort() {
+    @Override
+    public void abort() {
 
         // Revision number = 0 indicates an aborted transaction.
         this.targetRevisionNumber.set( 0L );
@@ -73,13 +74,8 @@ class StmTransaction {
 
     }
 
-    /**
-     * Tracks all versioned items read by this transaction. The transaction will confirm that all these items remain
-     * unwritten by some other transaction before this transaction commits.
-     *
-     * @param versionedItem the item that has been read.
-     */
-    void addVersionedItemRead( AbstractVersionedItem versionedItem ) {
+    @Override
+    public void addVersionedItemRead( AbstractVersionedItem versionedItem ) {
 
         // Sanity check the input.
         Objects.requireNonNull( versionedItem );
@@ -89,14 +85,8 @@ class StmTransaction {
 
     }
 
-    /**
-     * Tracks all versioned items written by this transaction. The versions written by this transaction will be cleaned
-     * up after the transaction aborts. Any earlier versions will be cleaned up after all transactions using any earlier
-     * versions and their source have completed.
-     *
-     * @param versionedItem the item that has been written.
-     */
-    void addVersionedItemWritten( AbstractVersionedItem versionedItem ) {
+    @Override
+    public void addVersionedItemWritten( AbstractVersionedItem versionedItem ) {
 
         // Sanity check the input.
         Objects.requireNonNull( versionedItem );
@@ -111,13 +101,8 @@ class StmTransaction {
 
     }
 
-    /**
-     * Commits this transaction.
-     *
-     * @throws WriteConflictException if some other transaction has concurrently written values read during this
-     *                                transaction.
-     */
-    void commit() {
+    @Override
+    public void commit() {
 
         // TBD: notify observers of read & written items inside transaction -- use a callback interface
 
@@ -139,30 +124,26 @@ class StmTransaction {
 
     }
 
-    /**
-     * Ensures that the transaction is writeable.
-     */
-    void ensureWriteable() {
+    @Override
+    public void ensureWriteable() {
         if ( this.writeability != ETransactionWriteability.READ_WRITE ) {
             throw new IllegalStateException( "Attempted to write a value during a read-only transaction." );
         }
     }
 
-    /**
-     * @return the revision number of information to be read by this transaction.
-     */
-    long getSourceRevisionNumber() {
+    @SuppressWarnings( "ReturnOfNull" )
+    @Override
+    public IStmTransaction getEnclosingTransaction() {
+        return null;
+    }
+
+    @Override
+    public long getSourceRevisionNumber() {
         return this.sourceRevisionNumber;
     }
 
-    /**
-     * Determines the status of this transaction from its target revision number.
-     * <p>
-     * TBD: this seems to have no use
-     *
-     * @return the transaction status (IN_PROGRESS, COMMITTED, or ABORTED).
-     */
-    ETransactionStatus getStatus() {
+    @Override
+    public ETransactionStatus getStatus() {
         long targetRevNumber = this.targetRevisionNumber.get();
         if ( targetRevNumber < 0L ) {
             return ETransactionStatus.IN_PROGRESS;
@@ -173,19 +154,13 @@ class StmTransaction {
         return ETransactionStatus.COMMITTED;
     }
 
-    /**
-     * @return the revision number of information written by this transaction (negative while transaction is running;
-     * positive after committed.
-     */
-    AtomicLong getTargetRevisionNumber() {
+    @Override
+    public AtomicLong getTargetRevisionNumber() {
         return this.targetRevisionNumber;
     }
 
-    /**
-     * Takes note that some read operation has seen a newer version and will certainly fail with a write conflict if
-     * this transaction writes anything. Fails immediately if this transaction has already written anything.
-     */
-    void setNewerRevisionSeen() {
+    @Override
+    public void setNewerRevisionSeen() {
 
         // If we have previously written something, then we've detected a write conflict; fail early.
         if ( !this.versionedItemsWritten.isEmpty() ) {
