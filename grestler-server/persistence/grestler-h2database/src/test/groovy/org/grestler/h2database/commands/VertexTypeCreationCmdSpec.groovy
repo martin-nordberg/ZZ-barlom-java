@@ -72,7 +72,7 @@ class VertexTypeCreationCmdSpec
         then:
         DatabaseException e = thrown();
         e.getValidationType() == EValidationType.DUPLICATE_ENTITY_CREATION;
-        e.getValidationMessage() == "Duplicate vertex type creation."
+        e.getValidationMessage() == "Duplicate element creation."
 
     }
 

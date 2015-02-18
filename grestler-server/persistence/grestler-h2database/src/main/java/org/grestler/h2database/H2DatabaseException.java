@@ -104,7 +104,7 @@ public class H2DatabaseException
                 return entry.getValue();
             }
         }
-        return "entity";
+        return "element";
     }
 
     /** Mapped fragments for duplicate entity problems. */
