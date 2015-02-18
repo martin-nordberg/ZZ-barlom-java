@@ -10,42 +10,53 @@ import java.util.Objects;
 /**
  * Utility class for managing STM transactions.
  */
-public class StmTransactionContext {
+public final class StmTransactionContext {
 
     private StmTransactionContext() {
         throw new UnsupportedOperationException( "Static utility class only." );
     }
 
     /**
-     * Creates a new transaction. The lifecycle of the transaction must be managed by the client, which is responsible
-     * for calling either commitTransaction or abortTransaction on the result.
-     *
-     * @return the newly started transaction.
+     * Aborts the current transaction.
      */
-    public static StmTransaction beginTransaction() {
+    public static void abortTransaction() {
 
-        // Force transactions to be one per thread.
-        if ( transactionOfCurrentThread.get() != null ) {
-            throw new IllegalStateException( "Transaction already in progress for this thread." );
+        StmTransaction transaction = StmTransactionContext.getTransactionOfCurrentThread();
+
+        try {
+            // Abort the changes.
+            transaction.abort();
+        }
+        finally {
+            // Clear the thread's transaction.
+            // TODO: nested transactions
+            StmTransactionContext.transactionOfCurrentThread.set( null );
         }
 
-        StmTransaction result = new StmTransaction();
-
-        transactionOfCurrentThread.set( result );
-
-        return result;
     }
 
     /**
-     * Commits the given transaction.
-     *
-     * @param transaction the in-progress transaction for the current thread.
+     * Creates a new read-only transaction. The lifecycle of the transaction must be managed by the client, which is
+     * responsible for calling either commitTransaction or abortTransaction.
      */
-    public static void commitTransaction( StmTransaction transaction ) {
+    public static void beginReadOnlyTransaction() {
+        StmTransactionContext.beginTransaction( ETransactionWriteability.READ_ONLY );
+    }
 
-        if ( transaction != getTransactionOfCurrentThread() ) {
-            throw new IllegalStateException( "Attempted to commit transaction not set for the current thread." );
-        }
+    /**
+     * Creates a new read-write transaction. The lifecycle of the transaction must be managed by the client, which is
+     * responsible for calling either commitTransaction or abortTransaction.
+     */
+    public static void beginReadWriteTransaction() {
+        StmTransactionContext.beginTransaction( ETransactionWriteability.READ_WRITE );
+    }
+
+    /**
+     * Commits the current transaction.
+     */
+    public static void commitTransaction() {
+
+        StmTransaction transaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         try {
             // Commit the changes.
@@ -58,8 +69,83 @@ public class StmTransactionContext {
         }
         finally {
             // Clear the thread's transaction.
-            transactionOfCurrentThread.set( null );
+            // TODO: nested transactions
+            StmTransactionContext.transactionOfCurrentThread.set( null );
         }
+
+    }
+
+    /**
+     * Performs the work of the given read-only callback inside a newly created transaction.
+     *
+     * @param task the work to be done inside a transaction.
+     */
+    public static void doInReadOnlyTransaction( Runnable task ) {
+
+        // TODO: nested transactions
+
+        // If a transaction is already in progress, just run the task directly; otherwise create one.
+        if ( StmTransactionContext.transactionOfCurrentThread.get() != null ) {
+            task.run();
+        }
+        else {
+            StmTransactionContext.doInTransaction( ETransactionWriteability.READ_ONLY, 0, task );
+        }
+
+    }
+
+    /**
+     * Performs the work of the given read-write callback inside a newly created transaction.
+     *
+     * @param task       the work to be done inside a transaction.
+     * @param maxRetries the maximum number of times to retry the transaction if write conflicts are encountered (must
+     *                   be zero or more, zero meaning try but don't retry); ignored for nested transactions.
+     *
+     * @throws MaximumRetriesExceededException if the transaction fails even after the specified number of retries.
+     */
+    public static void doInReadWriteTransaction( int maxRetries, Runnable task ) {
+
+        // TODO: nested transactions
+
+        // If a transaction is already in progress, just run the task directly.
+        if ( StmTransactionContext.transactionOfCurrentThread.get() != null ) {
+            StmTransactionContext.transactionOfCurrentThread.get().ensureWriteable();
+            task.run();
+        }
+        else {
+            StmTransactionContext.doInTransaction( ETransactionWriteability.READ_WRITE, maxRetries, task );
+        }
+    }
+
+    /**
+     * @return the transaction that has been established for the currently running thread
+     */
+    static StmTransaction getTransactionOfCurrentThread() {
+
+        // Get the thread-local transaction.
+        StmTransaction result = StmTransactionContext.transactionOfCurrentThread.get();
+
+        // If there is none, then it's a programming error.
+        if ( result == null ) {
+            throw new IllegalStateException( "Attempted to complete a transactional operation without a transaction." );
+        }
+
+        return result;
+
+    }
+
+    /**
+     * Creates a new read-only transaction. The lifecycle of the transaction must be managed by the client, which is
+     * responsible for calling either commit or abort on the result.
+     */
+    private static void beginTransaction( ETransactionWriteability writeability ) {
+
+        // Force transactions to be one per thread.
+        if ( StmTransactionContext.transactionOfCurrentThread.get() != null ) {
+            throw new IllegalStateException( "Transaction already in progress for this thread." );
+        }
+
+        StmTransactionContext.transactionOfCurrentThread.set( new StmTransaction( writeability ) );
 
     }
 
@@ -72,7 +158,7 @@ public class StmTransactionContext {
      *
      * @throws MaximumRetriesExceededException if the transaction fails even after the specified number of retries.
      */
-    public static void doInTransaction( int maxRetries, Runnable task ) {
+    private static void doInTransaction( ETransactionWriteability writeability, int maxRetries, Runnable task ) {
 
         // Sanity check the input.
         Objects.requireNonNull( task );
@@ -80,8 +166,10 @@ public class StmTransactionContext {
             throw new IllegalArgumentException( "Retry count must be greater than or equal to zero." );
         }
 
+        // TODO: nested transactions
+
         // Force transactions to be one per thread.
-        if ( transactionOfCurrentThread.get() != null ) {
+        if ( StmTransactionContext.transactionOfCurrentThread.get() != null ) {
             throw new IllegalStateException( "Transaction already in progress for this thread." );
         }
 
@@ -90,10 +178,10 @@ public class StmTransactionContext {
             for ( int retry = 0; retry <= maxRetries; retry += 1 ) {
 
                 try {
-                    StmTransaction transaction = new StmTransaction();
+                    StmTransaction transaction = new StmTransaction( writeability );
 
                     try {
-                        transactionOfCurrentThread.set( transaction );
+                        StmTransactionContext.transactionOfCurrentThread.set( transaction );
 
                         // Execute the transactional task.
                         task.run();
@@ -111,7 +199,8 @@ public class StmTransactionContext {
                     }
                     finally {
                         // Clear the thread's transaction.
-                        transactionOfCurrentThread.set( null );
+                        // TODO: nested transactions
+                        StmTransactionContext.transactionOfCurrentThread.set( null );
                     }
                 }
                 catch ( WriteConflictException e ) {
@@ -137,25 +226,9 @@ public class StmTransactionContext {
     }
 
     /**
-     * @return the transaction that has been established for the currently running thread
-     */
-    static StmTransaction getTransactionOfCurrentThread() {
-
-        // Get the thread-local transaction.
-        StmTransaction result = transactionOfCurrentThread.get();
-
-        // If there is none, then it's a programming error.
-        if ( result == null ) {
-            throw new IllegalStateException( "Attempted to complete a transactional operation without a transaction." );
-        }
-
-        return result;
-
-    }
-
-    /**
      * Thread-local storage for the transaction in use by the current thread (can be only one per thread).
      */
+    @SuppressWarnings( "FieldMayBeFinal" )
     private static ThreadLocal<StmTransaction> transactionOfCurrentThread = new ThreadLocal<>();
 
 }

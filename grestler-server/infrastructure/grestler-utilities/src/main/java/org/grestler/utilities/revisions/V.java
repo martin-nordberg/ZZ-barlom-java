@@ -30,12 +30,13 @@ public class V<T>
         // Track everything through the current transaction.
         StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
+        // Make sure we have a read/write transaction
+        currentTransaction.ensureWriteable();
+
         this.latestRevision = new AtomicReference<>( null );
         this.latestRevision.set(
             new Revision<>(
-                value,
-                currentTransaction.getTargetRevisionNumber(),
-                this.latestRevision.get()
+                value, currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
             )
         );
 
@@ -104,6 +105,9 @@ public class V<T>
         // Work within the transaction of the current thread.
         StmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
 
+        // Make sure we have a read/write transaction
+        currentTransaction.ensureWriteable();
+
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
@@ -138,9 +142,7 @@ public class V<T>
         // Create the new revision at the front of the chain.
         this.latestRevision.set(
             new Revision<>(
-                value,
-                currentTransaction.getTargetRevisionNumber(),
-                this.latestRevision.get()
+                value, currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
             )
         );
 

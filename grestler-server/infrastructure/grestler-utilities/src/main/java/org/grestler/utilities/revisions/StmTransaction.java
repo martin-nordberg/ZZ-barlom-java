@@ -17,13 +17,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * Utility class for managing in-memory transactions. The code is similar to "versioned boxes", the concept behind JVSTM
  * for software transactional memory. However, this code is much more streamlined, though very experimental.
  */
-public class StmTransaction
-    implements AutoCloseable {
+class StmTransaction {
 
     /**
      * Constructs a new transaction.
      */
-    StmTransaction() {
+    StmTransaction( ETransactionWriteability writeability ) {
+
+        this.writeability = writeability;
 
         // Spin until we get a next rev number and put it in the queue of rev numbers in use w/o concurrent change.
         // (We avoid concurrent change because if another thread bumped the revisions in use, it might also have
@@ -51,11 +52,6 @@ public class StmTransaction
         // Establish a link for putting this transaction in a linked list of completed transactions.
         this.nextTransactionAwaitingCleanUp = new AtomicReference<>( null );
 
-    }
-
-    @Override
-    public void close() {
-        StmTransactionContext.commitTransaction( this );
     }
 
     /**
@@ -141,6 +137,15 @@ public class StmTransaction
         // Trigger any clean up that is possible from no longer needing our source version.
         this.cleanUpOlderRevisions();
 
+    }
+
+    /**
+     * Ensures that the transaction is writeable.
+     */
+    void ensureWriteable() {
+        if ( this.writeability != ETransactionWriteability.READ_WRITE ) {
+            throw new IllegalStateException( "Attempted to write a value during a read-only transaction." );
+        }
     }
 
     /**
@@ -343,6 +348,11 @@ public class StmTransaction
      * The versioned item written by this transaction.
      */
     private final Set<AbstractVersionedItem> versionedItemsWritten;
+
+    /**
+     * Whether this transaction is allowed to write changes.
+     */
+    private final ETransactionWriteability writeability;
 
     /**
      * A newer revision number seen during reading will cause a write conflict if anything writes through this
