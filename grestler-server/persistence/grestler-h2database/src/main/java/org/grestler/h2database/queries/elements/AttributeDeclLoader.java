@@ -16,7 +16,7 @@ import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
-import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.utilities.configuration.Configuration;
 

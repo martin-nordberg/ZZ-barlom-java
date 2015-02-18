@@ -3,9 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.api.metamodel;
-
-import org.grestler.metamodel.api.metamodel.IMetamodelCommand;
+package org.grestler.metamodel.api.cmdquery;
 
 /**
  * Interface for creating commands by name.

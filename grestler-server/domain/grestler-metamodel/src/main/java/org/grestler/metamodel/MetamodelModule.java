@@ -7,8 +7,8 @@ package org.grestler.metamodel;
 
 import dagger.Module;
 import dagger.Provides;
-import org.grestler.metamodel.api.metamodel.IMetamodelRepository;
-import org.grestler.metamodel.impl.metamodel.MetamodelRepository;
+import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
+import org.grestler.metamodel.impl.cmdquery.MetamodelRepository;
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;

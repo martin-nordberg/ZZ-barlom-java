@@ -7,7 +7,7 @@ package org.grestler.restserver.services.metamodel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.grestler.metamodel.api.metamodel.IMetamodelRepository;
+import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
 import org.grestler.metamodel.api.elements.IVertexType;
 
 import javax.inject.Inject;

@@ -7,8 +7,8 @@ package org.grestler.h2database.commands;
 
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.h2database.H2DatabaseException;
-import org.grestler.metamodel.api.metamodel.IMetamodelCommand;
-import org.grestler.metamodel.api.metamodel.IMetamodelCommandFactory;
+import org.grestler.metamodel.api.cmdquery.IMetamodelCommand;
+import org.grestler.metamodel.api.cmdquery.IMetamodelCommandFactory;
 
 /**
  * Factory for metamodel commands supported by the H2 Database provider.

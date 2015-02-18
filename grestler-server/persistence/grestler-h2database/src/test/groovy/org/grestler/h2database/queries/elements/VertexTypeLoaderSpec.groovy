@@ -7,8 +7,8 @@ package org.grestler.h2database.queries.elements
 
 import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
-import org.grestler.metamodel.impl.metamodel.MetamodelRepository
-import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi
+import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
+import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
 import spock.lang.Specification
 
 /**
@@ -29,7 +29,14 @@ class VertexTypeLoaderSpec
         def etloader = new EdgeTypeLoader( dataSource )
         def adloader = new AttributeDeclLoader( dataSource );
 
-        IMetamodelRepositorySpi m = new MetamodelRepository( ploader, pdloader, atloader, vtloader, etloader, adloader );
+        IMetamodelRepositorySpi m = new MetamodelRepository(
+                ploader,
+                pdloader,
+                atloader,
+                vtloader,
+                etloader,
+                adloader
+        );
 
         def rootVertexType = m.findVertexTypeBase();
 

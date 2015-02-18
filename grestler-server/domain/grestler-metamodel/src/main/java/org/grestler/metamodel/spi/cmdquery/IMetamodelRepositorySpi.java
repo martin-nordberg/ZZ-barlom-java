@@ -3,9 +3,8 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.spi.metamodel;
+package org.grestler.metamodel.spi.cmdquery;
 
-import org.grestler.metamodel.api.metamodel.IMetamodelRepository;
 import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.attributes.IBooleanAttributeType;
@@ -14,6 +13,7 @@ import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.attributes.IUuidAttributeType;
+import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.ELabelDefaulting;

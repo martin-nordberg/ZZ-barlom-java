@@ -12,7 +12,7 @@ import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
-import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi;
+import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 import org.grestler.utilities.configuration.Configuration;
 

@@ -10,7 +10,7 @@ import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.h2database.H2DatabaseException;
 import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.metamodel.api.elements.EAbstractness;
-import org.grestler.metamodel.impl.metamodel.AbstractMetamodelCommand;
+import org.grestler.metamodel.impl.cmdquery.AbstractMetamodelCommand;
 import org.grestler.utilities.configuration.Configuration;
 
 import javax.json.JsonObject;

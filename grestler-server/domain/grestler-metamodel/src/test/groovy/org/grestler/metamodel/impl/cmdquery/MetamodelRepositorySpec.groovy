@@ -3,17 +3,13 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.impl
+package org.grestler.metamodel.impl.cmdquery
 
 import org.grestler.metamodel.api.elements.EAbstractness
-import org.grestler.metamodel.impl.metamodel.MetamodelRepository
-import org.grestler.metamodel.spi.metamodel.IMetamodelRepositorySpi
+import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
-import org.grestler.metamodel.spi.elements.IAttributeDeclLoader
-import org.grestler.metamodel.spi.elements.IEdgeTypeLoader
-import org.grestler.metamodel.spi.elements.IPackageDependencyLoader
-import org.grestler.metamodel.spi.elements.IPackageLoader
-import org.grestler.metamodel.spi.elements.IVertexTypeLoader
+import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
+import org.grestler.metamodel.spi.elements.*
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
