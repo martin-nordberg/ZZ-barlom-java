@@ -53,10 +53,12 @@ import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
 import org.grestler.utilities.instrumentation.OperationTimeLogger;
+import org.grestler.utilities.revisions.StmTransactionContext;
+import org.grestler.utilities.revisions.V;
+import org.grestler.utilities.revisions.VList;
 
 import javax.inject.Inject;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -89,22 +91,32 @@ public final class MetamodelRepository
         IAttributeDeclLoader attributeDeclLoader
     ) {
 
-        this.packages = new ArrayList<>();
-        this.vertexTypes = new ArrayList<>();
-        this.edgeTypes = new ArrayList<>();
-        this.attributeTypes = new ArrayList<>();
+        try {
+            StmTransactionContext.beginReadWriteTransaction();
 
-        try (
-            OperationTimeLogger ignored = new OperationTimeLogger(
-                MetamodelRepository.LOG, "Metamodel repository loaded in {}."
-            )
-        ) {
-            packageLoader.loadAllPackages( this );
-            packageDependencyLoader.loadAllPackageDependencies( this );
-            attributeTypeLoader.loadAllAttributeTypes( this );
-            vertexTypeLoader.loadAllVertexTypes( this );
-            edgeTypeLoader.loadAllEdgeTypes( this );
-            attributeDeclLoader.loadAllAttributeDecls( this );
+            this.packages = new VList<>();
+            this.vertexTypes = new VList<>();
+            this.edgeTypes = new VList<>();
+            this.attributeTypes = new VList<>();
+
+            try (
+                OperationTimeLogger ignored = new OperationTimeLogger(
+                    MetamodelRepository.LOG, "Metamodel repository loaded in {}."
+                )
+            ) {
+                packageLoader.loadAllPackages( this );
+                packageDependencyLoader.loadAllPackageDependencies( this );
+                attributeTypeLoader.loadAllAttributeTypes( this );
+                vertexTypeLoader.loadAllVertexTypes( this );
+                edgeTypeLoader.loadAllEdgeTypes( this );
+                attributeDeclLoader.loadAllAttributeDecls( this );
+            }
+
+            StmTransactionContext.commitTransaction();
+        }
+        catch ( Throwable e ) {
+            StmTransactionContext.abortTransaction();
+            throw e;
         }
 
     }
@@ -113,7 +125,7 @@ public final class MetamodelRepository
     public Optional<IAttributeType> findAttributeTypeById( UUID id ) {
 
         // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IAttributeType e : this.attributeTypes ) {
+        for ( IAttributeType e : this.attributeTypes.get() ) {
             if ( e.getId().equals( id ) ) {
                 return Optional.of( e );
             }
@@ -125,19 +137,22 @@ public final class MetamodelRepository
 
     @Override
     public List<IAttributeType> findAttributeTypesAll() {
-        return this.attributeTypes;
+        return this.attributeTypes.get();
     }
 
     @Override
     public Optional<IDirectedEdgeType> findDirectedEdgeTypeBase() {
-        return Optional.of( this.baseDirectedEdgeType );
+        if ( this.baseDirectedEdgeType == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( this.baseDirectedEdgeType.get() );
     }
 
     @Override
     public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
 
         // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IEdgeType e : this.edgeTypes ) {
+        for ( IEdgeType e : this.edgeTypes.get() ) {
             if ( e.getId().equals( id ) ) {
                 return Optional.of( e );
             }
@@ -149,14 +164,14 @@ public final class MetamodelRepository
 
     @Override
     public List<IEdgeType> findEdgeTypesAll() {
-        return this.edgeTypes;
+        return this.edgeTypes.get();
     }
 
     @Override
     public Optional<IPackage> findPackageById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IPackage p : this.packages ) {
+        for ( IPackage p : this.packages.get() ) {
             if ( p.getId().equals( id ) ) {
                 return Optional.of( p );
             }
@@ -168,29 +183,38 @@ public final class MetamodelRepository
 
     @Override
     public Optional<IPackage> findPackageRoot() {
-        return Optional.ofNullable( this.rootPackage );
+        if ( this.rootPackage == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( this.rootPackage.get() );
     }
 
     @Override
     public List<IPackage> findPackagesAll() {
-        return this.packages;
+        return this.packages.get();
     }
 
     @Override
     public Optional<IUndirectedEdgeType> findUndirectedEdgeTypeBase() {
-        return Optional.of( this.baseUndirectedEdgeType );
+        if ( this.baseUndirectedEdgeType == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( this.baseUndirectedEdgeType.get() );
     }
 
     @Override
     public Optional<IVertexType> findVertexTypeBase() {
-        return Optional.ofNullable( this.baseVertexType );
+        if ( this.baseVertexType == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( this.baseVertexType.get() );
     }
 
     @Override
     public Optional<IVertexType> findVertexTypeById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IVertexType v : this.vertexTypes ) {
+        for ( IVertexType v : this.vertexTypes.get() ) {
             if ( v.getId().equals( id ) ) {
                 return Optional.of( v );
             }
@@ -202,16 +226,16 @@ public final class MetamodelRepository
 
     @Override
     public List<IVertexType> findVertexTypesAll() {
-        return this.vertexTypes;
+        return this.vertexTypes.get();
     }
 
     @Override
     public IDirectedEdgeType loadBaseDirectedEdgeType( UUID id, IPackage parentPackage ) {
 
-        IDirectedEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.baseVertexType );
+        IDirectedEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.baseVertexType.get() );
 
         this.edgeTypes.add( result );
-        this.baseDirectedEdgeType = result;
+        this.baseDirectedEdgeType = new V<>( result );
 
         return result;
 
@@ -222,10 +246,10 @@ public final class MetamodelRepository
         UUID id, IPackage parentPackage
     ) {
 
-        IUndirectedEdgeType result = new BaseUndirectedEdgeType( id, parentPackage, this.baseVertexType );
+        IUndirectedEdgeType result = new BaseUndirectedEdgeType( id, parentPackage, this.baseVertexType.get() );
 
         this.edgeTypes.add( result );
-        this.baseUndirectedEdgeType = result;
+        this.baseUndirectedEdgeType = new V<>( result );
 
         return result;
 
@@ -237,7 +261,7 @@ public final class MetamodelRepository
         IVertexType result = new BaseVertexType( id, parentPackage );
 
         this.vertexTypes.add( result );
-        this.baseVertexType = result;
+        this.baseVertexType = new V<>( result );
 
         return result;
 
@@ -381,7 +405,7 @@ public final class MetamodelRepository
         IPackage result = new RootPackage( id );
 
         this.packages.add( result );
-        this.rootPackage = result;
+        this.rootPackage = new V<>( result );
 
         return result;
 
@@ -478,20 +502,20 @@ public final class MetamodelRepository
 
     private static final Logger LOG = LogManager.getLogger();
 
-    private final List<IAttributeType> attributeTypes;
+    private final VList<IAttributeType> attributeTypes;
 
-    private final List<IEdgeType> edgeTypes;
+    private final VList<IEdgeType> edgeTypes;
 
-    private final List<IPackage> packages;
+    private final VList<IPackage> packages;
 
-    private final List<IVertexType> vertexTypes;
+    private final VList<IVertexType> vertexTypes;
 
-    private IDirectedEdgeType baseDirectedEdgeType = null;
+    private V<IDirectedEdgeType> baseDirectedEdgeType = null;
 
-    private IUndirectedEdgeType baseUndirectedEdgeType = null;
+    private V<IUndirectedEdgeType> baseUndirectedEdgeType = null;
 
-    private IVertexType baseVertexType = null;
+    private V<IVertexType> baseVertexType = null;
 
-    private IPackage rootPackage = null;
+    private V<IPackage> rootPackage = null;
 
 }

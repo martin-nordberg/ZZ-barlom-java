@@ -12,6 +12,7 @@ import org.grestler.h2database.queries.elements.*
 import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
 import org.grestler.utilities.exceptions.EValidationType
+import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 import javax.json.Json
@@ -25,6 +26,8 @@ class VertexTypeCreationCmdSpec
     def "A vertex type creation command creates a vertex type"() {
 
         given:
+        StmTransactionContext.beginReadWriteTransaction();
+
         def vtId = "12345678-7a26-11e4-a545-08002741a702";
         def json = '{"id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample1","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
@@ -55,6 +58,8 @@ class VertexTypeCreationCmdSpec
         vertexType.get().superType.isPresent();
         vertexType.get().abstractness.isAbstract();
 
+        cleanup:
+        StmTransactionContext.commitTransaction();
     }
 
     def "Duplicate vertex type creation is prevented"() {

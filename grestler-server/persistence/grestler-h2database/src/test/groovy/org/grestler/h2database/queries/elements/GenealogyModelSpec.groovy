@@ -12,6 +12,7 @@ import org.grestler.metamodel.api.attributes.EDataType
 import org.grestler.metamodel.api.elements.IDirectedEdgeType
 import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
+import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -23,6 +24,7 @@ class GenealogyModelSpec
     def "The genealogy schema loads correctly"() {
 
         given:
+        StmTransactionContext.beginReadWriteTransaction();
 
         def dataSource = new H2DataSource( "test1" );
 
@@ -105,6 +107,8 @@ class GenealogyModelSpec
         etHasMother.attributes[0].type.name == "Calls Weekly";
         etHasMother.attributes[0].type.dataType == EDataType.BOOLEAN;
 
+        cleanup:
+        StmTransactionContext.commitTransaction();
     }
 
 }

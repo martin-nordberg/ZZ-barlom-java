@@ -9,6 +9,7 @@ import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
+import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -20,6 +21,8 @@ class EdgeTypeLoaderSpec
     def "An edge type loader retrieves the top level base edge type"() {
 
         given:
+        StmTransactionContext.beginReadWriteTransaction();
+
         def dataSource = new H2DataSource( "test0" );
 
         def ploader = new PackageLoader( dataSource );
@@ -47,6 +50,8 @@ class EdgeTypeLoaderSpec
         m.findEdgeTypesAll().size() == 2;
         m.findEdgeTypeById( rootEdgeType.get().id ).equals( rootEdgeType );
 
+        cleanup:
+        StmTransactionContext.commitTransaction();
     }
 
 }

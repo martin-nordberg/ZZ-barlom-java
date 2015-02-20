@@ -9,6 +9,7 @@ import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.attributes.AttributeTypeLoader
 import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
+import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -20,6 +21,8 @@ class PackageLoaderSpec
     def "A package loader retrieves the top level root package"() {
 
         given:
+        StmTransactionContext.beginReadWriteTransaction();
+
         def dataSource = new H2DataSource( "test0" );
 
         def ploader = new PackageLoader( dataSource );
@@ -46,6 +49,9 @@ class PackageLoaderSpec
         rootPkg.get().parentPackage == rootPkg.get();
         m.findPackagesAll().size() == 1;
         m.findPackageById( rootPkg.get().id ).equals( rootPkg );
+
+        cleanup:
+        StmTransactionContext.commitTransaction();
     }
 
 }

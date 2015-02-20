@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
+import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.stream.JsonGenerator;
@@ -59,18 +60,22 @@ public class AttributeTypeQueries {
 
         // TODO: distinguish UUID from path
 
-        Optional<IAttributeType> attributeType = this.metamodelRepository.findAttributeTypeById(
-            UUID.fromString(
-                idOrPath
-            )
-        );
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Optional<IAttributeType> attributeType = this.metamodelRepository.findAttributeTypeById(
+                    UUID.fromString(
+                        idOrPath
+                    )
+                );
 
-        if ( attributeType.isPresent() ) {
-            attributeType.get().generateJson( json );
-        }
-        else {
-            json.writeNull();
-        }
+                if ( attributeType.isPresent() ) {
+                    attributeType.get().generateJson( json );
+                }
+                else {
+                    json.writeNull();
+                }
+            }
+        );
 
         json.close();
         return result.toString();
@@ -95,8 +100,12 @@ public class AttributeTypeQueries {
         json.writeStartObject();
         json.writeStartArray( "attributeTypes" );
 
-        List<IAttributeType> attributeTypes = this.metamodelRepository.findAttributeTypesAll();
-        attributeTypes.forEach( attributeType -> attributeType.generateJson( json ) );
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                List<IAttributeType> attributeTypes = this.metamodelRepository.findAttributeTypesAll();
+                attributeTypes.forEach( attributeType -> attributeType.generateJson( json ) );
+            }
+        );
 
         json.writeEnd();
         json.writeEnd();

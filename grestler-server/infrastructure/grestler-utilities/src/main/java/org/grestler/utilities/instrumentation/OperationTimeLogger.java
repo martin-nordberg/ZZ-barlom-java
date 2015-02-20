@@ -31,7 +31,7 @@ public class OperationTimeLogger
     public void close() {
         long elapsedTime = System.nanoTime() - this.startTime;
 
-        String elapsedTimeStr = "";
+        String elapsedTimeStr;
         if ( elapsedTime < 1000L ) {
             elapsedTimeStr = elapsedTime + " ns";
         }

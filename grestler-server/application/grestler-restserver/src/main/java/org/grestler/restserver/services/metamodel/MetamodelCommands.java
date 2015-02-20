@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.cmdquery.IMetamodelCommand;
 import org.grestler.metamodel.api.cmdquery.IMetamodelCommandFactory;
 import org.grestler.utilities.exceptions.IValidationError;
+import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -75,7 +76,9 @@ public class MetamodelCommands {
         try {
 
             // Execute the command.
-            command.execute( jsonCmdArgs );
+            StmTransactionContext.doInReadWriteTransaction(
+                1, () -> command.execute( jsonCmdArgs )
+            );
 
             // Return JSON for success.
             return "{ \"success\": true, \"cmdId\": \"" + command.getCmdId() + "\" }";
@@ -91,6 +94,7 @@ public class MetamodelCommands {
                     case RELATED_ENTITY_NOT_FOUND:
                         // TODO: 422 error code instead, but it's not in RESTEasy
                         throw new BadRequestException( ev.getValidationMessage() );
+                    case NONSPECIFIC:
                     default:
                         throw new BadRequestException( ev.getValidationMessage() );
                 }

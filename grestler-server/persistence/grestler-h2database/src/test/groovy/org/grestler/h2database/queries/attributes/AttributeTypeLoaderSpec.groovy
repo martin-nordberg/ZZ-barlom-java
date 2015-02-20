@@ -9,6 +9,7 @@ import org.grestler.h2database.impl.H2DataSource
 import org.grestler.h2database.queries.elements.*
 import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
+import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -21,6 +22,8 @@ class AttributeTypeLoaderSpec
     def "An attribute type loader retrieves nothing (for starters)"() {
 
         given:
+        StmTransactionContext.beginReadWriteTransaction();
+
         def dataSource = new H2DataSource( "test0" );
 
         def ploader = new PackageLoader( dataSource );
@@ -43,6 +46,8 @@ class AttributeTypeLoaderSpec
         !m.findAttributeTypeById( Uuids.makeUuid() ).isPresent();
         m.findAttributeTypesAll().size() == 0;
 
+        cleanup:
+        StmTransactionContext.commitTransaction();
     }
 
 }

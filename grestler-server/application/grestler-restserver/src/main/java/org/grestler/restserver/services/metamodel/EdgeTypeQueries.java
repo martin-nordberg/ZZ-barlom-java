@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
 import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.stream.JsonGenerator;
@@ -61,18 +62,22 @@ public class EdgeTypeQueries {
 
         // TODO: distinguish UUID from path
 
-        Optional<IEdgeType> edgeType = this.metamodelRepository.findEdgeTypeById(
-            UUID.fromString(
-                idOrPath
-            )
-        );
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Optional<IEdgeType> edgeType = this.metamodelRepository.findEdgeTypeById(
+                    UUID.fromString(
+                        idOrPath
+                    )
+                );
 
-        if ( edgeType.isPresent() ) {
-            edgeType.get().generateJson( json );
-        }
-        else {
-            json.writeNull();
-        }
+                if ( edgeType.isPresent() ) {
+                    edgeType.get().generateJson( json );
+                }
+                else {
+                    json.writeNull();
+                }
+            }
+        );
 
         json.close();
         return result.toString();
@@ -97,8 +102,12 @@ public class EdgeTypeQueries {
         json.writeStartObject();
         json.writeStartArray( "edgeTypes" );
 
-        List<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
-        edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                List<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
+                edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
+            }
+        );
 
         json.writeEnd();
         json.writeEnd();

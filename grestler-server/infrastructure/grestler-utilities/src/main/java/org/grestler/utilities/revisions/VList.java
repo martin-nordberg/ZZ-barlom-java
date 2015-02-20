@@ -13,6 +13,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Handle to a versioned item that is a list of items.
+ * <p>
+ * TODO: Revamp this whole thing - functional data structure - has bugs for add/remove same item in same transaction -
+ * not very efficient currently - possibly this thing should directly implement java.util interfaces
  */
 public final class VList<T>
     extends AbstractVersionedItem {

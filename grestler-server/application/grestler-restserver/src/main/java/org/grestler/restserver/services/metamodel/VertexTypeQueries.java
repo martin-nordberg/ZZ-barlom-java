@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.stream.JsonGenerator;
@@ -59,18 +60,22 @@ public class VertexTypeQueries {
 
         // TODO: distinguish UUID from path
 
-        Optional<IVertexType> vertexType = this.metamodelRepository.findVertexTypeById(
-            UUID.fromString(
-                idOrPath
-            )
-        );
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Optional<IVertexType> vertexType = this.metamodelRepository.findVertexTypeById(
+                    UUID.fromString(
+                        idOrPath
+                    )
+                );
 
-        if ( vertexType.isPresent() ) {
-            vertexType.get().generateJson( json );
-        }
-        else {
-            json.writeNull();
-        }
+                if ( vertexType.isPresent() ) {
+                    vertexType.get().generateJson( json );
+                }
+                else {
+                    json.writeNull();
+                }
+            }
+        );
 
         json.close();
         return result.toString();
@@ -95,8 +100,12 @@ public class VertexTypeQueries {
         json.writeStartObject();
         json.writeStartArray( "vertexTypes" );
 
-        List<IVertexType> vertexTypes = this.metamodelRepository.findVertexTypesAll();
-        vertexTypes.forEach( vertexType -> vertexType.generateJson( json ) );
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                List<IVertexType> vertexTypes = this.metamodelRepository.findVertexTypesAll();
+                vertexTypes.forEach( vertexType -> vertexType.generateJson( json ) );
+            }
+        );
 
         json.writeEnd();
         json.writeEnd();

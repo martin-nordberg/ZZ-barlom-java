@@ -6,10 +6,10 @@
 package org.grestler.metamodel.impl.cmdquery
 
 import org.grestler.metamodel.api.elements.EAbstractness
-import org.grestler.metamodel.impl.cmdquery.MetamodelRepository
 import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader
 import org.grestler.metamodel.spi.cmdquery.IMetamodelRepositorySpi
 import org.grestler.metamodel.spi.elements.*
+import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -26,6 +26,8 @@ class MetamodelRepositorySpec
     def "A metamodel repository lets added vertex types be retrieved"() {
 
         given:
+        StmTransactionContext.beginReadWriteTransaction();
+
         IMetamodelRepositorySpi m = new MetamodelRepository(
                 { r -> r.loadRootPackage( id0 ) } as IPackageLoader,
                 { r -> } as IPackageDependencyLoader,
@@ -45,6 +47,9 @@ class MetamodelRepositorySpec
         expect:
         m.findVertexTypeById( id1 ).get().name == "V1";
         m.findVertexTypesAll().size() == 5;
+
+        cleanup:
+        StmTransactionContext.commitTransaction();
 
     }
 
