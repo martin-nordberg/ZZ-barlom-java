@@ -160,6 +160,11 @@ final class StmTransaction
     }
 
     @Override
+    public ETransactionWriteability getWriteability() {
+        return this.writeability;
+    }
+
+    @Override
     public void setNewerRevisionSeen() {
 
         // If we have previously written something, then we've detected a write conflict; fail early.

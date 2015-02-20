@@ -5,6 +5,8 @@
 
 package org.grestler.h2database.commands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.h2database.H2DatabaseException;
 import org.grestler.metamodel.api.cmdquery.IMetamodelCommand;
@@ -32,10 +34,15 @@ public class MetamodelCommandFactory
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this.dataSource );
             default:
-                throw new H2DatabaseException( "Unknown command type: \"" + commandTypeName + "\"." );
+                throw new H2DatabaseException(
+                    MetamodelCommandFactory.LOG, "Unknown command type: \"" + commandTypeName + "\"."
+                );
         }
 
     }
+
+    /** The logger for this class. */
+    private static final Logger LOG = LogManager.getLogger();
 
     /** The data source the commands made by this factory will make use of. */
     private final IDataSource dataSource;

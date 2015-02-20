@@ -94,7 +94,7 @@ public final class H2DataSource
             return new H2Connection( this.getConnection() );
         }
         catch ( SQLException e ) {
-            throw new H2DatabaseException( "Failed to open connection.", e );
+            throw new H2DatabaseException( H2DataSource.LOG, "Failed to open connection.", e );
         }
     }
 

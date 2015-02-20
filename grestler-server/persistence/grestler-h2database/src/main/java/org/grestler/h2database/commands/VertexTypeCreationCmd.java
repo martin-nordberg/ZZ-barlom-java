@@ -5,6 +5,8 @@
 
 package org.grestler.h2database.commands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.api.IConnection;
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.h2database.H2DatabaseException;
@@ -68,7 +70,9 @@ public class VertexTypeCreationCmd
                     for ( String sqlInsert : sqlInserts ) {
                         int count = connection.executeCommand( sqlInsert, args );
                         if ( count != 1 ) {
-                            throw new H2DatabaseException( "Expected to insert one record but inserted " + count + "." );
+                            throw new H2DatabaseException(
+                                VertexTypeCreationCmd.LOG, "Expected to insert one record but inserted " + count + "."
+                            );
                         }
                     }
                 }
@@ -78,6 +82,9 @@ public class VertexTypeCreationCmd
 
         // TODO: handle database validation problems or connection problems
     }
+
+    /** The logger for this class. */
+    private static final Logger LOG = LogManager.getLogger();
 
     /** The data source in which to create the vertex type. */
     private final IDataSource dataSource;

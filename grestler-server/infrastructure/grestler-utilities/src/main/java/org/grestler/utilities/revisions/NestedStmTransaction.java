@@ -17,15 +17,24 @@ final class NestedStmTransaction
     /**
      * Constructs a new transaction.
      *
+     * @param writeability         the writeability of the new transaction (must be compatible with enclosing
+     *                             transaction).
      * @param enclosingTransaction the outer transaction that encloses this nested one.
      */
-    NestedStmTransaction( IStmTransaction enclosingTransaction ) {
+    NestedStmTransaction( ETransactionWriteability writeability, IStmTransaction enclosingTransaction ) {
+
+        if ( writeability == ETransactionWriteability.READ_WRITE ) {
+            enclosingTransaction.ensureWriteable();
+        }
+
         this.enclosingTransaction = enclosingTransaction;
+        this.writeability = writeability;
+
     }
 
     @Override
     public void abort() {
-        this.enclosingTransaction.abort();
+        throw new NestedStmTransactionAborted();
     }
 
     @Override
@@ -69,6 +78,11 @@ final class NestedStmTransaction
     }
 
     @Override
+    public ETransactionWriteability getWriteability() {
+        return this.writeability;
+    }
+
+    @Override
     public void setNewerRevisionSeen() {
         this.enclosingTransaction.setNewerRevisionSeen();
     }
@@ -76,4 +90,6 @@ final class NestedStmTransaction
     /** The outer transaction that encloses this nested one. */
     private final IStmTransaction enclosingTransaction;
 
+    /** The writeability of this transaction. */
+    private final ETransactionWriteability writeability;
 }

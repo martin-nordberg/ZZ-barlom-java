@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @param <T> the type of the value that is managed through its revisions.
  */
+@SuppressWarnings( "ClassNamingConvention" )
 public final class V<T>
     extends AbstractVersionedItem {
 
@@ -180,6 +181,7 @@ public final class V<T>
 
     }
 
+    @SuppressWarnings( "AssignmentToNull" )
     @Override
     void removeAbortedRevision() {
 
@@ -218,7 +220,7 @@ public final class V<T>
     }
 
     @Override
-    void removeUnusedRevisions( long oldestUsableRevNumber ) {
+    void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
         for ( Revision<T> revision = this.latestRevision.get();
@@ -228,7 +230,7 @@ public final class V<T>
             final long revisionNumber = revision.revisionNumber.get();
 
             // Truncate revisions older than the oldest usable revision.
-            if ( revisionNumber == oldestUsableRevNumber ) {
+            if ( revisionNumber == oldestUsableRevisionNumber ) {
                 revision.priorRevision.set( null );
                 break;
             }

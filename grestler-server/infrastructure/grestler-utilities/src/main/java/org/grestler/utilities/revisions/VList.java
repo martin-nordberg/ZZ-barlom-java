@@ -128,9 +128,8 @@ public final class VList<T>
 
         }
 
-        assert false : "No revision found for transaction.";
+        throw new NullPointerException( "No revision found for transaction." );
 
-        return null;
     }
 
     /**
@@ -210,6 +209,7 @@ public final class VList<T>
 
     }
 
+    @SuppressWarnings( "AssignmentToNull" )
     @Override
     void removeAbortedRevision() {
 
@@ -317,22 +317,22 @@ public final class VList<T>
         /**
          * A reference to the previous revision of the versioned item.
          */
-        final AtomicReference<Revision<T>> priorRevision;
+        public final AtomicReference<Revision<T>> priorRevision;
 
         /**
          * The revision number of this revision (uniquely from the transaction that wrote it).
          */
-        final AtomicLong revisionNumber;
+        public final AtomicLong revisionNumber;
 
         /**
          * The items added to the list during this revision.
          */
-        List<T> addedValues;
+        public List<T> addedValues;
 
         /**
          * The items removed from the list during this revision.
          */
-        List<T> removedValues;
+        public List<T> removedValues;
 
     }
 

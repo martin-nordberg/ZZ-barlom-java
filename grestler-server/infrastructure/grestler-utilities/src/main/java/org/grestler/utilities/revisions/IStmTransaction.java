@@ -74,6 +74,11 @@ interface IStmTransaction {
     AtomicLong getTargetRevisionNumber();
 
     /**
+     * @return the writeability of this transaction.
+     */
+    ETransactionWriteability getWriteability();
+
+    /**
      * Takes note that some read operation has seen a newer version and will certainly fail with a write conflict if
      * this transaction writes anything. Fails immediately if this transaction has already written anything.
      */

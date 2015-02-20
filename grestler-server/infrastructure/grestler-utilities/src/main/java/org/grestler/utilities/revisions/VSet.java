@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Handle to a versioned item that is a set of items. TBD: This is practically a clone of VList; either refactor out a
  * generic base class or else implement a better versioned set.
  */
+@SuppressWarnings( "ClassNamingConvention" )
 public class VSet<T>
     extends AbstractVersionedItem {
 
@@ -131,9 +132,8 @@ public class VSet<T>
 
         }
 
-        assert false : "No revision found for transaction.";
+        throw new NullPointerException( "No revision found for transaction." );
 
-        return null;
     }
 
     /**
@@ -213,6 +213,7 @@ public class VSet<T>
 
     }
 
+    @SuppressWarnings( "AssignmentToNull" )
     @Override
     void removeAbortedRevision() {
 
@@ -320,22 +321,22 @@ public class VSet<T>
         /**
          * A reference to the previous revision of the versioned item.
          */
-        final AtomicReference<Revision<T>> priorRevision;
+        public final AtomicReference<Revision<T>> priorRevision;
 
         /**
          * The revision number of this revision (uniquely from the transaction that wrote it).
          */
-        final AtomicLong revisionNumber;
+        public final AtomicLong revisionNumber;
 
         /**
          * The items added to the set during this revision.
          */
-        List<T> addedValues;
+        public List<T> addedValues;
 
         /**
          * The items removed from the set during this revision.
          */
-        List<T> removedValues;
+        public List<T> removedValues;
 
     }
 

@@ -5,7 +5,6 @@
 
 package org.grestler.h2database;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.api.DatabaseException;
 import org.grestler.utilities.exceptions.EValidationType;
@@ -22,11 +21,12 @@ public class H2DatabaseException
     /**
      * Constructs a new H2 database exception.
      *
+     * @param log     the logger for logging the exception.
      * @param message the message for the error.
      */
-    public H2DatabaseException( String message ) {
+    public H2DatabaseException( Logger log, String message ) {
 
-        super( H2DatabaseException.LOG, message );
+        super( log, message );
 
         this.validationError = new ValidationError( EValidationType.NONSPECIFIC, message );
 
@@ -35,12 +35,13 @@ public class H2DatabaseException
     /**
      * Constructs a new H2 database exception wrapping a lower level exception.
      *
+     * @param log     the logger for logging the exception.
      * @param message the message for the error.
      * @param cause   the lower level exception.
      */
-    public H2DatabaseException( String message, Throwable cause ) {
+    public H2DatabaseException( Logger log, String message, Throwable cause ) {
 
-        super( H2DatabaseException.LOG, message, cause );
+        super( log, message, cause );
 
         this.validationError = H2DatabaseException.determineValidationError( cause );
 
@@ -115,9 +116,6 @@ public class H2DatabaseException
         H2DatabaseException.DUPLICATE_ENTITY_FRAGMENTS.put( "PK_GRESTLER_VERTEX_TYPE", "vertex type" );
         // TODO: more entries ...
     }
-
-    /** The logger for this class. */
-    private static final Logger LOG = LogManager.getLogger();
 
     /** Mapped fragments for missing related entity problems. */
     private static final Map<String, String> RELATED_ENTITY_FRAGMENTS = new HashMap<>();

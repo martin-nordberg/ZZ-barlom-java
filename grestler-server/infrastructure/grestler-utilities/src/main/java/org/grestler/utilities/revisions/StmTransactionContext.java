@@ -140,12 +140,15 @@ public final class StmTransactionContext {
      */
     private static void beginTransaction( ETransactionWriteability writeability ) {
 
-        // Force transactions to be one per thread.
-        if ( StmTransactionContext.transactionOfCurrentThread.get() != null ) {
-            throw new IllegalStateException( "Transaction already in progress for this thread." );
+        IStmTransaction transaction = StmTransactionContext.transactionOfCurrentThread.get();
+        if ( transaction == null ) {
+            transaction = new StmTransaction( writeability );
+        }
+        else {
+            transaction = new NestedStmTransaction( writeability, transaction );
         }
 
-        StmTransactionContext.transactionOfCurrentThread.set( new StmTransaction( writeability ) );
+        StmTransactionContext.transactionOfCurrentThread.set( transaction );
 
     }
 
@@ -176,7 +179,7 @@ public final class StmTransactionContext {
                         transaction = new StmTransaction( writeability );
                     }
                     else {
-                        transaction = new NestedStmTransaction( transaction );
+                        transaction = new NestedStmTransaction( writeability, transaction );
                     }
 
                     try {
