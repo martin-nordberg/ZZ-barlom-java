@@ -39,20 +39,15 @@ class VListSpec
         }
 
         then:
-        def stList = null;
-        StmTransactionContext.doInReadWriteTransaction( 1 ) {
-            stList = stuff.get();
-        }
+        StmTransactionContext.beginReadOnlyTransaction();
 
         expect:
-        stList.get( i ) == v;
+        stuff.get( 0 ) == 3;
+        stuff.get( 1 ) == 4;
+        stuff.get( 2 ) == 5;
 
-        where:
-        i || v
-        0 || 3
-        1 || 4
-        2 || 5
-
+        cleanup:
+        StmTransactionContext.commitTransaction();
 
     }
 

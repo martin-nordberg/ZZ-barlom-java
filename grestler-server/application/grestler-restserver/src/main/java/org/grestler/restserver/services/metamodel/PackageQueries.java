@@ -19,7 +19,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.io.StringWriter;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -100,7 +99,7 @@ public class PackageQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                List<IPackage> packages = this.metamodelRepository.findPackagesAll();
+                Iterable<IPackage> packages = this.metamodelRepository.findPackagesAll();
                 packages.forEach( pkg -> pkg.generateJson( json ) );
             }
         );

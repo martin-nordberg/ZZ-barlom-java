@@ -35,7 +35,7 @@ final class NestedStmTransaction
 
     @Override
     public void abort( Optional<Exception> e ) {
-        throw new NestedStmTransactionAborted( e );
+        throw new NestedStmTransactionAbortedException( e );
     }
 
     @Override

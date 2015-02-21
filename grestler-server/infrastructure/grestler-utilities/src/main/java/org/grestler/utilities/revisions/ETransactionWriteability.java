@@ -11,4 +11,6 @@ package org.grestler.utilities.revisions;
 public enum ETransactionWriteability {
     READ_ONLY,
     READ_WRITE;
+
+    // TODO: READ_WITH_NESTED_WRITES
 }

@@ -96,7 +96,7 @@ class StmTransactionContextSpec
         StmTransactionContext.abortTransaction( Optional.empty() );
 
         then:
-        thrown NestedStmTransactionAborted;
+        thrown NestedStmTransactionAbortedException;
         StmTransactionContext.getStatus() == ETransactionStatus.IN_PROGRESS;
 
         cleanup:

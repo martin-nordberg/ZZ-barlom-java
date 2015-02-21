@@ -11,8 +11,8 @@ import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.collections.IIndexable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,7 +33,7 @@ public interface IMetamodelRepository {
     /**
      * @return a list of all attribute types in the repository.
      */
-    List<IAttributeType> findAttributeTypesAll();
+    IIndexable<IAttributeType> findAttributeTypesAll();
 
     /**
      * Finds the base directed edge type.
@@ -54,7 +54,7 @@ public interface IMetamodelRepository {
     /**
      * @return a list of all edge types in the repository.
      */
-    List<IEdgeType> findEdgeTypesAll();
+    IIndexable<IEdgeType> findEdgeTypesAll();
 
     /**
      * Finds the package with given ID.
@@ -75,7 +75,7 @@ public interface IMetamodelRepository {
     /**
      * @return a list of all packages in the repository.
      */
-    List<IPackage> findPackagesAll();
+    IIndexable<IPackage> findPackagesAll();
 
     /**
      * Finds the base undirected edge type.
@@ -103,6 +103,6 @@ public interface IMetamodelRepository {
     /**
      * @return a list of all vertex types in the repository.
      */
-    List<IVertexType> findVertexTypesAll();
+    IIndexable<IVertexType> findVertexTypesAll();
 
 }

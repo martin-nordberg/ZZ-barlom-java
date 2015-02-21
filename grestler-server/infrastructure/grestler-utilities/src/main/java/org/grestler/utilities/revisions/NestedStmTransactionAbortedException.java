@@ -10,13 +10,13 @@ import java.util.Optional;
 /**
  * Exception thrown when a nested transaction is aborted.
  */
-public class NestedStmTransactionAborted
+public class NestedStmTransactionAbortedException
     extends RuntimeException {
 
     /**
      * Constructs a new exception.
      */
-    public NestedStmTransactionAborted( Optional<Exception> e ) {
+    public NestedStmTransactionAbortedException( Optional<Exception> e ) {
         super( "Nested transaction aborted. (Partial recovery not supported.)", e.orElse( null ) );
     }
 

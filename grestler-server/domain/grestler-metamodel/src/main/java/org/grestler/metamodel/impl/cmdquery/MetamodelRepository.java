@@ -52,6 +52,7 @@ import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.elements.IPackageLoader;
 import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
+import org.grestler.utilities.collections.IIndexable;
 import org.grestler.utilities.instrumentation.OperationTimeLogger;
 import org.grestler.utilities.revisions.StmTransactionContext;
 import org.grestler.utilities.revisions.V;
@@ -59,7 +60,6 @@ import org.grestler.utilities.revisions.VList;
 
 import javax.inject.Inject;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -125,7 +125,7 @@ public final class MetamodelRepository
     public Optional<IAttributeType> findAttributeTypeById( UUID id ) {
 
         // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IAttributeType e : this.attributeTypes.get() ) {
+        for ( IAttributeType e : this.attributeTypes ) {
             if ( e.getId().equals( id ) ) {
                 return Optional.of( e );
             }
@@ -136,8 +136,8 @@ public final class MetamodelRepository
     }
 
     @Override
-    public List<IAttributeType> findAttributeTypesAll() {
-        return this.attributeTypes.get();
+    public IIndexable<IAttributeType> findAttributeTypesAll() {
+        return this.attributeTypes;
     }
 
     @Override
@@ -152,7 +152,7 @@ public final class MetamodelRepository
     public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
 
         // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IEdgeType e : this.edgeTypes.get() ) {
+        for ( IEdgeType e : this.edgeTypes ) {
             if ( e.getId().equals( id ) ) {
                 return Optional.of( e );
             }
@@ -163,15 +163,15 @@ public final class MetamodelRepository
     }
 
     @Override
-    public List<IEdgeType> findEdgeTypesAll() {
-        return this.edgeTypes.get();
+    public IIndexable<IEdgeType> findEdgeTypesAll() {
+        return this.edgeTypes;
     }
 
     @Override
     public Optional<IPackage> findPackageById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IPackage p : this.packages.get() ) {
+        for ( IPackage p : this.packages ) {
             if ( p.getId().equals( id ) ) {
                 return Optional.of( p );
             }
@@ -190,8 +190,8 @@ public final class MetamodelRepository
     }
 
     @Override
-    public List<IPackage> findPackagesAll() {
-        return this.packages.get();
+    public IIndexable<IPackage> findPackagesAll() {
+        return this.packages;
     }
 
     @Override
@@ -214,7 +214,7 @@ public final class MetamodelRepository
     public Optional<IVertexType> findVertexTypeById( UUID id ) {
 
         // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IVertexType v : this.vertexTypes.get() ) {
+        for ( IVertexType v : this.vertexTypes ) {
             if ( v.getId().equals( id ) ) {
                 return Optional.of( v );
             }
@@ -225,8 +225,8 @@ public final class MetamodelRepository
     }
 
     @Override
-    public List<IVertexType> findVertexTypesAll() {
-        return this.vertexTypes.get();
+    public IIndexable<IVertexType> findVertexTypesAll() {
+        return this.vertexTypes;
     }
 
     @Override

@@ -5,15 +5,18 @@
 
 package org.grestler.utilities.revisions;
 
-import java.util.ArrayList;
+import org.grestler.utilities.collections.IIndexable;
+
 import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A versioned item that is a list of items.
  */
 @SuppressWarnings( { "unchecked", "SuspiciousArrayCast" } )
-public final class VList<T> {
+public final class VList<T>
+    implements IIndexable<T> {
 
     /**
      * Constructs a new empty versioned list with given starting value for the current transaction's revision.
@@ -49,26 +52,24 @@ public final class VList<T> {
 
     }
 
-    /**
-     * Reads the version of the item list relevant for the transaction active in the currently running thread.
-     *
-     * @return a copy of the list of items as of the start of the transaction or else as written by the transaction.
-     */
-    @SuppressWarnings( "ManualArrayToCollectionCopy" )
-    public List<T> get() {
+    @Override
+    public T get( int index ) {
 
-        // Reference the old data.
+        // Reference the data.
         int oldSize = this.size.get();
         T[] oldData = this.data.get();
 
-        // Copy the array into the list.
-        List<T> result = new ArrayList<>( oldSize );
-        for ( int i = 0; i < oldSize; i += 1 ) {
-            result.add( oldData[i] );
+        if ( index >= oldSize || index < 0 ) {
+            throw new NoSuchElementException( "VList indexed out of bounds. Size = " + oldSize + " ; index = " + index + "." );
         }
 
-        return result;
+        return oldData[index];
 
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new VListIterator<>( this.size.get(), this.data.get() );
     }
 
     /**
@@ -131,6 +132,11 @@ public final class VList<T> {
 
     }
 
+    @Override
+    public int size() {
+        return this.size.get();
+    }
+
     /** Empty starting point for the underlying data. */
     private static final Object[] EMPTY = { };
 
@@ -143,4 +149,43 @@ public final class VList<T> {
     /** The versioned size of the list. */
     private final V<Integer> size;
 
+    /**
+     * Class providing a read-only iterator over a version of the list.
+     */
+    public static class VListIterator<T>
+        implements Iterator<T> {
+
+        @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
+        VListIterator( int size, T[] data ) {
+            this.iterSize = size;
+            this.iterData = data;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.position < this.iterSize;
+        }
+
+        @Override
+        public T next() {
+            if ( this.hasNext() ) {
+                T result = this.iterData[this.position];
+                this.position += 1;
+                return result;
+            }
+            else {
+                throw new NoSuchElementException();
+            }
+        }
+
+        /** The array version to iterate over. */
+        private final T[] iterData;
+
+        /** The size of the data as of the iterated version. */
+        private final int iterSize;
+
+        /** The position of the iterator in the array. */
+        private int position = 0;
+
+    }
 }
