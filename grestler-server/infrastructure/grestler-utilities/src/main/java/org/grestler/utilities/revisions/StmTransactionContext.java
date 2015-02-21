@@ -6,6 +6,7 @@
 package org.grestler.utilities.revisions;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Utility class for managing STM transactions.
@@ -19,13 +20,13 @@ public final class StmTransactionContext {
     /**
      * Aborts the current transaction.
      */
-    public static void abortTransaction() {
+    public static void abortTransaction( Optional<Exception> e ) {
 
         IStmTransaction transaction = StmTransactionContext.getTransactionOfCurrentThread();
 
         try {
             // Abort the changes.
-            transaction.abort();
+            transaction.abort( e );
         }
         finally {
             // Clear the thread's transaction.
@@ -61,9 +62,9 @@ public final class StmTransactionContext {
             // Commit the changes.
             transaction.commit();
         }
-        catch ( Throwable e ) {
+        catch ( Exception e ) {
             // On any error abort the transaction.
-            transaction.abort();
+            transaction.abort( Optional.of( e ) );
             throw e;
         }
         finally {
@@ -194,9 +195,9 @@ public final class StmTransactionContext {
                         // If succeeded, no more retries are needed.
                         return;
                     }
-                    catch ( Throwable e ) {
+                    catch ( Exception e ) {
                         // On any error abort the transaction.
-                        transaction.abort();
+                        transaction.abort( Optional.of( e ) );
                         throw e;
                     }
                     finally {

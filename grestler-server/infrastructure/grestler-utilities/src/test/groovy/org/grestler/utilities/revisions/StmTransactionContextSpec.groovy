@@ -29,7 +29,7 @@ class StmTransactionContextSpec
     def "A read-only transaction can be started and aborted"() {
         given:
         StmTransactionContext.beginReadOnlyTransaction();
-        StmTransactionContext.abortTransaction();
+        StmTransactionContext.abortTransaction( Optional.empty() );
 
         expect:
         StmTransactionContext.getStatus() == ETransactionStatus.NO_TRANSACTION;
@@ -38,7 +38,7 @@ class StmTransactionContextSpec
     def "A read-write transaction can be started and aborted"() {
         given:
         StmTransactionContext.beginReadWriteTransaction();
-        StmTransactionContext.abortTransaction();
+        StmTransactionContext.abortTransaction( Optional.empty() );
 
         expect:
         StmTransactionContext.getStatus() == ETransactionStatus.NO_TRANSACTION;
@@ -84,7 +84,7 @@ class StmTransactionContextSpec
         StmTransactionContext.getStatus() == ETransactionStatus.IN_PROGRESS;
 
         cleanup:
-        StmTransactionContext.abortTransaction();
+        StmTransactionContext.abortTransaction( Optional.empty() );
     }
 
     def "Aborting a nested transaction is unrecoverable"() {
@@ -93,14 +93,14 @@ class StmTransactionContextSpec
         StmTransactionContext.beginReadWriteTransaction();
 
         when:
-        StmTransactionContext.abortTransaction();
+        StmTransactionContext.abortTransaction( Optional.empty() );
 
         then:
         thrown NestedStmTransactionAborted;
         StmTransactionContext.getStatus() == ETransactionStatus.IN_PROGRESS;
 
         cleanup:
-        StmTransactionContext.abortTransaction();
+        StmTransactionContext.abortTransaction( Optional.empty() );
     }
 
 }

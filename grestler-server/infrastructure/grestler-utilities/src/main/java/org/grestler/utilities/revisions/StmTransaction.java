@@ -7,6 +7,7 @@ package org.grestler.utilities.revisions;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -58,7 +59,7 @@ final class StmTransaction
     }
 
     @Override
-    public void abort() {
+    public void abort( Optional<Exception> e ) {
 
         // Revision number = 0 indicates an aborted transaction.
         this.targetRevisionNumber.set( 0L );

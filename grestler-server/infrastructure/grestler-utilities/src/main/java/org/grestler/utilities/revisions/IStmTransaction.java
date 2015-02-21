@@ -5,6 +5,7 @@
 
 package org.grestler.utilities.revisions;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -15,8 +16,10 @@ interface IStmTransaction {
 
     /**
      * Aborts this transaction; abandons the revisions made by the transaction.
+     *
+     * @param e the exception that caused a client to abort. the transaction.
      */
-    void abort();
+    void abort( Optional<Exception> e );
 
     /**
      * Tracks all versioned items read by this transaction. The transaction will confirm that all these items remain

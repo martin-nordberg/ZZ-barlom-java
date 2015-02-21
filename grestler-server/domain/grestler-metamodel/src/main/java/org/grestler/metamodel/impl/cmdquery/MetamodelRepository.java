@@ -114,8 +114,8 @@ public final class MetamodelRepository
 
             StmTransactionContext.commitTransaction();
         }
-        catch ( Throwable e ) {
-            StmTransactionContext.abortTransaction();
+        catch ( Exception e ) {
+            StmTransactionContext.abortTransaction( Optional.of( e ) );
             throw e;
         }
 

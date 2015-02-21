@@ -5,6 +5,7 @@
 
 package org.grestler.utilities.revisions;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -33,8 +34,8 @@ final class NestedStmTransaction
     }
 
     @Override
-    public void abort() {
-        throw new NestedStmTransactionAborted();
+    public void abort( Optional<Exception> e ) {
+        throw new NestedStmTransactionAborted( e );
     }
 
     @Override
