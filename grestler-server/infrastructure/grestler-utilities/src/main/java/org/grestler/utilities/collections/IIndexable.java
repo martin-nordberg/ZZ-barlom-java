@@ -13,8 +13,8 @@ public interface IIndexable<T>
      *
      * @return the value.
      *
-     * @throws java.util.NoSuchElementException if the index is out-of-bounds.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
      */
-    T get( int index );
+    T getAt( int index );
 
 }

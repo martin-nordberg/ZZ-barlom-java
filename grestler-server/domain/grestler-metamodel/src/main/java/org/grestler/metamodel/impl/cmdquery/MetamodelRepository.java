@@ -56,7 +56,7 @@ import org.grestler.utilities.collections.IIndexable;
 import org.grestler.utilities.instrumentation.OperationTimeLogger;
 import org.grestler.utilities.revisions.StmTransactionContext;
 import org.grestler.utilities.revisions.V;
-import org.grestler.utilities.revisions.VList;
+import org.grestler.utilities.revisions.VArray;
 
 import javax.inject.Inject;
 import java.time.Instant;
@@ -94,10 +94,10 @@ public final class MetamodelRepository
         try {
             StmTransactionContext.beginReadWriteTransaction();
 
-            this.packages = new VList<>();
-            this.vertexTypes = new VList<>();
-            this.edgeTypes = new VList<>();
-            this.attributeTypes = new VList<>();
+            this.packages = new VArray<>();
+            this.vertexTypes = new VArray<>();
+            this.edgeTypes = new VArray<>();
+            this.attributeTypes = new VArray<>();
 
             try (
                 OperationTimeLogger ignored = new OperationTimeLogger(
@@ -502,13 +502,13 @@ public final class MetamodelRepository
 
     private static final Logger LOG = LogManager.getLogger();
 
-    private final VList<IAttributeType> attributeTypes;
+    private final VArray<IAttributeType> attributeTypes;
 
-    private final VList<IEdgeType> edgeTypes;
+    private final VArray<IEdgeType> edgeTypes;
 
-    private final VList<IPackage> packages;
+    private final VArray<IPackage> packages;
 
-    private final VList<IVertexType> vertexTypes;
+    private final VArray<IVertexType> vertexTypes;
 
     private V<IDirectedEdgeType> baseDirectedEdgeType = null;
 

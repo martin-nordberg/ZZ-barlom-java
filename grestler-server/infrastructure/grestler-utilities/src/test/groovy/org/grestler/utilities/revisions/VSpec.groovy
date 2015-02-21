@@ -8,7 +8,7 @@ package org.grestler.utilities.revisions
 import spock.lang.Specification
 
 /**
- * Specification for versioned boxes..
+ * Specification for versioned boxes.
  */
 class VSpec
         extends Specification {
@@ -27,9 +27,13 @@ class VSpec
         }
 
         then:
-        StmTransactionContext.doInReadOnlyTransaction {
-            assert stuff.get() == 2
-        }
+        StmTransactionContext.beginReadOnlyTransaction();
+
+        expect:
+        stuff.get() == 2;
+
+        cleanup:
+        StmTransactionContext.commitTransaction();
 
     }
 

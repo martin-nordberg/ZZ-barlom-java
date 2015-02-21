@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2015 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -10,20 +10,18 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A version-managing handle to a value with transactional revisions.
- *
- * @param <T> the type of the value that is managed through its revisions.
+ * A version-managing handle to an integer value with transactional revisions.
  */
 @SuppressWarnings( "ClassNamingConvention" )
-public final class V<T>
+public final class VInt
     extends AbstractVersionedItem {
 
     /**
-     * Constructs a new versioned handle with given starting value for the current transaction's revision.
+     * Constructs a new versioned integer with given starting value for the current transaction's revision.
      *
      * @param value the initial value.
      */
-    public V( T value ) {
+    public VInt( int value ) {
 
         // Sanity check the input.
         Objects.requireNonNull( value );
@@ -36,7 +34,7 @@ public final class V<T>
 
         this.latestRevision = new AtomicReference<>( null );
         this.latestRevision.set(
-            new Revision<>(
+            new Revision(
                 value, currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
             )
         );
@@ -47,11 +45,18 @@ public final class V<T>
     }
 
     /**
-     * Reads the version of the item relevant for the transaction active in the currently running thread.
+     * Decrement the integer value by one.
+     */
+    public void decrement() {
+        this.set( this.get() - 1 );
+    }
+
+    /**
+     * Reads the version of the integer relevant for the transaction active in the currently running thread.
      *
      * @return the value as of the start of the transaction or else as written by the transaction
      */
-    public T get() {
+    public int get() {
 
         // Track everything through the current transaction.
         IStmTransaction currentTransaction = StmTransactionContext.getTransactionOfCurrentThread();
@@ -61,7 +66,7 @@ public final class V<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get();
+        for ( Revision revision = this.latestRevision.get();
               revision != null;
               revision = revision.priorRevision.get() ) {
 
@@ -94,11 +99,18 @@ public final class V<T>
     }
 
     /**
-     * Writes a new revision of the item managed by this handle.
+     * Increment the integer value by one.
+     */
+    public void increment() {
+        this.set( this.get() + 1 );
+    }
+
+    /**
+     * Writes a new revision of the integer managed by this handle.
      *
      * @param value The new raw value to become the next revision of this item.
      */
-    public void set( T value ) {
+    public void set( int value ) {
 
         // Sanity check the input
         Objects.requireNonNull( value );
@@ -113,7 +125,7 @@ public final class V<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions ...
-        for ( Revision<T> revision = this.latestRevision.get();
+        for ( Revision revision = this.latestRevision.get();
               revision != null;
               revision = revision.priorRevision.get() ) {
 
@@ -142,7 +154,7 @@ public final class V<T>
 
         // Create the new revision at the front of the chain.
         this.latestRevision.set(
-            new Revision<>(
+            new Revision(
                 value, currentTransaction.getTargetRevisionNumber(), this.latestRevision.get()
             )
         );
@@ -161,7 +173,7 @@ public final class V<T>
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
         // Loop through the revisions ...
-        for ( Revision<T> revision = this.latestRevision.get();
+        for ( Revision revision = this.latestRevision.get();
               revision != null;
               revision = revision.priorRevision.get() ) {
 
@@ -186,7 +198,7 @@ public final class V<T>
     void removeAbortedRevision() {
 
         // First check the latest revision.
-        Revision<T> revision = this.latestRevision.get();
+        Revision revision = this.latestRevision.get();
 
         while ( revision.revisionNumber.get() == 0L ) {
             if ( this.latestRevision.compareAndSet( revision, revision.priorRevision.get() ) ) {
@@ -195,7 +207,7 @@ public final class V<T>
         }
 
         // Loop through the revisions.
-        Revision<T> priorRevision = revision.priorRevision.get();
+        Revision priorRevision = revision.priorRevision.get();
         while ( priorRevision != null ) {
 
             final long revisionNumber = priorRevision.revisionNumber.get();
@@ -223,7 +235,7 @@ public final class V<T>
     void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get();
+        for ( Revision revision = this.latestRevision.get();
               revision != null;
               revision = revision.priorRevision.get() ) {
 
@@ -243,16 +255,14 @@ public final class V<T>
      * Reference to the latest revision. Revisions are kept in a custom linked list with the newest revision at the head
      * of the list.
      */
-    private final AtomicReference<Revision<T>> latestRevision;
+    private final AtomicReference<Revision> latestRevision;
 
     /**
      * Internal record structure for revisions in the linked list of revisions.
-     *
-     * @param <T> the type of the value that is managed through its revisions.
      */
-    private static class Revision<T> {
+    private static class Revision {
 
-        Revision( T value, AtomicLong revisionNumber, Revision<T> priorRevision ) {
+        Revision( int value, AtomicLong revisionNumber, Revision priorRevision ) {
             this.priorRevision = new AtomicReference<>( priorRevision );
             this.revisionNumber = revisionNumber;
             this.value = value;
@@ -261,7 +271,7 @@ public final class V<T>
         /**
          * A reference to the previous revision of the versioned item.
          */
-        public final AtomicReference<Revision<T>> priorRevision;
+        public final AtomicReference<Revision> priorRevision;
 
         /**
          * The revision number of this revision (uniquely from the transaction that wrote it).
@@ -271,7 +281,7 @@ public final class V<T>
         /**
          * The value of the versioned item at this revision.
          */
-        public T value;
+        public int value;
 
     }
 
