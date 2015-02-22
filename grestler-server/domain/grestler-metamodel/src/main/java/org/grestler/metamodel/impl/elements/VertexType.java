@@ -9,10 +9,11 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.collections.ISizedIterable;
+import org.grestler.utilities.revisions.V;
+import org.grestler.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,9 +39,9 @@ public final class VertexType
 
         super( id, parentPackage, name );
 
-        this.superType = superType;
-        this.abstractness = abstractness;
-        this.attributes = new ArrayList<>();
+        this.superType = new V<>( superType );
+        this.abstractness = new V<>( abstractness );
+        this.attributes = new VArray<>();
 
         ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
 
@@ -56,25 +57,25 @@ public final class VertexType
 
         super.generateJsonAttributes( json );
 
-        json.write( "superTypeId", this.superType.getId().toString() )
-            .write( "abstractness", this.abstractness.name() );
+        json.write( "superTypeId", this.getSuperType().get().getId().toString() )
+            .write( "abstractness", this.getAbstractness().name() );
 
         // TODO: attribute declarations
     }
 
     @Override
     public EAbstractness getAbstractness() {
-        return this.abstractness;
+        return this.abstractness.get();
     }
 
     @Override
-    public List<IVertexAttributeDecl> getAttributes() {
+    public ISizedIterable<IVertexAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
     @Override
     public Optional<IVertexType> getSuperType() {
-        return Optional.of( this.superType );
+        return Optional.of( this.superType.get() );
     }
 
     @Override
@@ -83,12 +84,12 @@ public final class VertexType
     }
 
     /** Whether this vertex type is abstract. */
-    private final EAbstractness abstractness;
+    private final V<EAbstractness> abstractness;
 
     /** The attributes of this vertex type. */
-    private final List<IVertexAttributeDecl> attributes;
+    private final VArray<IVertexAttributeDecl> attributes;
 
     /** The super type of this vertex type. */
-    private final IVertexType superType;
+    private final V<IVertexType> superType;
 
 }

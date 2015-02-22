@@ -13,6 +13,7 @@ import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.Optional;
@@ -67,14 +68,14 @@ public final class DirectedEdgeType
     ) {
         super( id, parentPackage, name, superType, abstractness, cyclicity, multiEdgedness, selfLooping );
 
-        this.tailVertexType = tailVertexType;
-        this.headVertexType = headVertexType;
-        this.tailRoleName = tailRoleName;
-        this.headRoleName = headRoleName;
-        this.minTailOutDegree = minTailOutDegree;
-        this.maxTailOutDegree = maxTailOutDegree;
-        this.minHeadInDegree = minHeadInDegree;
-        this.maxHeadInDegree = maxHeadInDegree;
+        this.tailVertexType = new V<>( tailVertexType );
+        this.headVertexType = new V<>( headVertexType );
+        this.tailRoleName = new V<>( tailRoleName );
+        this.headRoleName = new V<>( headRoleName );
+        this.minTailOutDegree = new V<>( minTailOutDegree );
+        this.maxTailOutDegree = new V<>( maxTailOutDegree );
+        this.minHeadInDegree = new V<>( minHeadInDegree );
+        this.maxHeadInDegree = new V<>( maxHeadInDegree );
 
     }
 
@@ -83,80 +84,80 @@ public final class DirectedEdgeType
 
         super.generateJsonAttributes( json );
 
-        json.write( "tailVertexTypeId", this.tailVertexType.getId().toString() )
-            .write( "headVertexTypeId", this.headVertexType.getId().toString() );
+        json.write( "tailVertexTypeId", this.getTailVertexType().getId().toString() )
+            .write( "headVertexTypeId", this.getHeadVertexType().getId().toString() );
 
-        this.tailRoleName.ifPresent( tailRoleName -> json.write( "tailRoleName", tailRoleName ) );
-        this.headRoleName.ifPresent( headRoleName -> json.write( "headRoleName", headRoleName ) );
-        this.minTailOutDegree.ifPresent( minTailOutDegree -> json.write( "minTailOutDegree", minTailOutDegree ) );
-        this.maxTailOutDegree.ifPresent( maxTailOutDegree -> json.write( "maxTailOutDegree", maxTailOutDegree ) );
-        this.minHeadInDegree.ifPresent( minHeadInDegree -> json.write( "minHeadInDegree", minHeadInDegree ) );
-        this.maxHeadInDegree.ifPresent( maxHeadInDegree -> json.write( "maxHeadInDegree", maxHeadInDegree ) );
+        this.getTailRoleName().ifPresent( tailRoleName -> json.write( "tailRoleName", tailRoleName ) );
+        this.getHeadRoleName().ifPresent( headRoleName -> json.write( "headRoleName", headRoleName ) );
+        this.getMinTailOutDegree().ifPresent( minTailOutDegree -> json.write( "minTailOutDegree", minTailOutDegree ) );
+        this.getMaxTailOutDegree().ifPresent( maxTailOutDegree -> json.write( "maxTailOutDegree", maxTailOutDegree ) );
+        this.getMinHeadInDegree().ifPresent( minHeadInDegree -> json.write( "minHeadInDegree", minHeadInDegree ) );
+        this.getMaxHeadInDegree().ifPresent( maxHeadInDegree -> json.write( "maxHeadInDegree", maxHeadInDegree ) );
 
     }
 
     @Override
     public Optional<String> getHeadRoleName() {
-        return this.headRoleName;
+        return this.headRoleName.get();
     }
 
     @Override
     public IVertexType getHeadVertexType() {
-        return this.headVertexType;
+        return this.headVertexType.get();
     }
 
     @Override
     public OptionalInt getMaxHeadInDegree() {
-        return this.maxHeadInDegree;
+        return this.maxHeadInDegree.get();
     }
 
     @Override
     public OptionalInt getMaxTailOutDegree() {
-        return this.maxTailOutDegree;
+        return this.maxTailOutDegree.get();
     }
 
     @Override
     public OptionalInt getMinHeadInDegree() {
-        return this.minHeadInDegree;
+        return this.minHeadInDegree.get();
     }
 
     @Override
     public OptionalInt getMinTailOutDegree() {
-        return this.minTailOutDegree;
+        return this.minTailOutDegree.get();
     }
 
     @Override
     public Optional<String> getTailRoleName() {
-        return this.tailRoleName;
+        return this.tailRoleName.get();
     }
 
     @Override
     public IVertexType getTailVertexType() {
-        return this.tailVertexType;
+        return this.tailVertexType.get();
     }
 
     /** The name of the role for the vertex at the head of edges of this type. */
-    private final Optional<String> headRoleName;
+    private final V<Optional<String>> headRoleName;
 
     /** The vertex type at the head of edges of this type. */
-    private final IVertexType headVertexType;
+    private final V<IVertexType> headVertexType;
 
     /** The maximum in-degree for the head vertex of edges of this type. */
-    private final OptionalInt maxHeadInDegree;
+    private final V<OptionalInt> maxHeadInDegree;
 
     /** The maximum out-degree for the tail vertex of edges of this type. */
-    private final OptionalInt maxTailOutDegree;
+    private final V<OptionalInt> maxTailOutDegree;
 
     /** The minimum in-degree for the head vertex of edges of this type. */
-    private final OptionalInt minHeadInDegree;
+    private final V<OptionalInt> minHeadInDegree;
 
     /** The minimum out-degree for the tail vertex of edges of this type. */
-    private final OptionalInt minTailOutDegree;
+    private final V<OptionalInt> minTailOutDegree;
 
     /** The name of the role for the vertex at the tail of edges of this type. */
-    private final Optional<String> tailRoleName;
+    private final V<Optional<String>> tailRoleName;
 
     /** The vertex type at the tail of edges of this type. */
-    private final IVertexType tailVertexType;
+    private final V<IVertexType> tailVertexType;
 
 }

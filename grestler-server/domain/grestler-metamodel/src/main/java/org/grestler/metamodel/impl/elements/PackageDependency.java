@@ -34,7 +34,9 @@ public final class PackageDependency
         this.clientPackage = clientPackage;
         this.supplierPackage = supplierPackage;
 
-        // TODO: register both ends
+        // Register both ends.
+        ( (IPackageUnderAssembly) clientPackage ).addPackageDependency( this );
+        ( (IPackageUnderAssembly) supplierPackage ).addPackageDependency( this );
 
     }
 

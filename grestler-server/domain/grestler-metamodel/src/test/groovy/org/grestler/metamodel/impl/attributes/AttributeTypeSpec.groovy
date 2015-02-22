@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.attributes
 import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.impl.elements.Package
 import org.grestler.metamodel.impl.elements.RootPackage
+import org.grestler.utilities.revisions.StmTransactionContext
 import spock.lang.Specification
 
 /**
@@ -26,10 +27,26 @@ class AttributeTypeSpec
 
     static UUID id2 = UUID.fromString( '00000004-0000-0000-0000-000000000000' );
 
-    static IPackage root = new RootPackage( rootId );
+    static IPackage root;
 
-    static IPackage pkg1 = new Package( pkgId1, root, 'pkg1' );
+    static IPackage pkg1;
 
-    static IPackage pkg2 = new Package( pkgId2, pkg1, 'pkg2' );
+    static IPackage pkg2;
+
+    def setup() {
+        StmTransactionContext.beginReadWriteTransaction();
+    }
+
+    def setupSpec() {
+        StmTransactionContext.doInReadWriteTransaction( 1 ) {
+            root = new RootPackage( rootId );
+            pkg1 = new Package( pkgId1, root, 'pkg1' );
+            pkg2 = new Package( pkgId2, pkg1, 'pkg2' );
+        }
+    }
+
+    def cleanup() {
+        StmTransactionContext.commitTransaction();
+    }
 
 }

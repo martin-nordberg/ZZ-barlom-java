@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.elements
 import org.grestler.metamodel.api.elements.EAbstractness
 import org.grestler.metamodel.api.elements.IPackage
 import org.grestler.metamodel.api.elements.IVertexType
+import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -20,6 +21,14 @@ class VertexTypeSpec
     UUID id = Uuids.makeUuid();
 
     String name = "Example";
+
+    def setup() {
+        StmTransactionContext.beginReadWriteTransaction();
+    }
+
+    def cleanup() {
+        StmTransactionContext.commitTransaction();
+    }
 
     def "A top level vertex type is constructed and read"() {
 

@@ -10,10 +10,9 @@ import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackageDependency;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.collections.ISizedIterable;
+import org.grestler.utilities.revisions.VArray;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,9 +33,9 @@ public final class Package
 
         super( id, parentPackage, name );
 
-        this.childPackages = new ArrayList<>();
-        this.edgeTypes = new ArrayList<>();
-        this.vertexTypes = new ArrayList<>();
+        this.childPackages = new VArray<>();
+        this.edgeTypes = new VArray<>();
+        this.vertexTypes = new VArray<>();
 
         this.packageDependencies = new PackageDependencies( this );
 
@@ -65,27 +64,27 @@ public final class Package
     }
 
     @Override
-    public List<IPackage> getChildPackages() {
+    public ISizedIterable<IPackage> getChildPackages() {
         return this.childPackages;
     }
 
     @Override
-    public Collection<IPackage> getClientPackages( EDependencyDepth dependencyDepth ) {
+    public ISizedIterable<IPackage> getClientPackages( EDependencyDepth dependencyDepth ) {
         return this.packageDependencies.getClientPackages( dependencyDepth );
     }
 
     @Override
-    public List<IEdgeType> getEdgeTypes() {
+    public ISizedIterable<IEdgeType> getEdgeTypes() {
         return this.edgeTypes;
     }
 
     @Override
-    public Collection<IPackage> getSupplierPackages( EDependencyDepth dependencyDepth ) {
+    public ISizedIterable<IPackage> getSupplierPackages( EDependencyDepth dependencyDepth ) {
         return this.packageDependencies.getSupplierPackages( dependencyDepth );
     }
 
     @Override
-    public List<IVertexType> getVertexTypes() {
+    public ISizedIterable<IVertexType> getVertexTypes() {
         return this.vertexTypes;
     }
 
@@ -95,15 +94,15 @@ public final class Package
     }
 
     /** The sub-packages of this package. */
-    private final List<IPackage> childPackages;
+    private final VArray<IPackage> childPackages;
 
     /** The edge types within this package. */
-    private final List<IEdgeType> edgeTypes;
+    private final VArray<IEdgeType> edgeTypes;
 
     /** Helper class that manages this package's dependencies. */
     private final PackageDependencies packageDependencies;
 
     /** The vertex types within this package. */
-    private final List<IVertexType> vertexTypes;
+    private final VArray<IVertexType> vertexTypes;
 
 }

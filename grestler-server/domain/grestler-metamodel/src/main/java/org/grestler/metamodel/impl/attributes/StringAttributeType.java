@@ -7,6 +7,8 @@ package org.grestler.metamodel.impl.attributes;
 
 import org.grestler.metamodel.api.attributes.IStringAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.utilities.revisions.V;
+import org.grestler.utilities.revisions.VInt;
 
 import javax.json.stream.JsonGenerator;
 import java.util.Optional;
@@ -41,14 +43,14 @@ public final class StringAttributeType
     ) {
         super( id, parentPackage, name );
 
-        this.minLength = minLength;
-        this.maxLength = maxLength;
+        this.minLength = new V<>( minLength );
+        this.maxLength = new VInt( maxLength );
 
         if ( regexPattern.isPresent() ) {
-            this.regexPattern = Optional.of( Pattern.compile( regexPattern.get() ) );
+            this.regexPattern = new V<>( Optional.of( Pattern.compile( regexPattern.get() ) ) );
         }
         else {
-            this.regexPattern = Optional.empty();
+            this.regexPattern = new V<>( Optional.empty() );
         }
     }
 
@@ -57,34 +59,34 @@ public final class StringAttributeType
 
         super.generateJsonAttributes( json );
 
-        this.minLength.ifPresent( minLength -> json.write( "minLength", minLength ) );
-        json.write( "maxLength", this.maxLength );
-        this.regexPattern.ifPresent( regexPattern -> json.write( "regexPattern", regexPattern.toString() ) );
+        this.minLength.get().ifPresent( minLength -> json.write( "minLength", minLength ) );
+        json.write( "maxLength", this.maxLength.get() );
+        this.regexPattern.get().ifPresent( regexPattern -> json.write( "regexPattern", regexPattern.toString() ) );
 
     }
 
     @Override
     public int getMaxLength() {
-        return this.maxLength;
+        return this.maxLength.get();
     }
 
     @Override
     public OptionalInt getMinLength() {
-        return this.minLength;
+        return this.minLength.get();
     }
 
     @Override
     public Optional<Pattern> getRegexPattern() {
-        return this.regexPattern;
+        return this.regexPattern.get();
     }
 
     /** The maximum length for values with this attribute type. */
-    private final int maxLength;
+    private final VInt maxLength;
 
     /** The minimum length for attributes of this type. */
-    private final OptionalInt minLength;
+    private final V<OptionalInt> minLength;
 
     /** The regular expression that must be matched by values with this attribute type. */
-    private final Optional<Pattern> regexPattern;
+    private final V<Optional<Pattern>> regexPattern;
 
 }

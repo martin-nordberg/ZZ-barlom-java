@@ -8,10 +8,11 @@ package org.grestler.metamodel.impl.elements;
 import org.grestler.metamodel.api.elements.EDependencyDepth;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackageDependency;
+import org.grestler.utilities.collections.ISizedIterable;
+import org.grestler.utilities.collections.ReadOnlyCollectionAdapter;
+import org.grestler.utilities.revisions.VArray;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -26,8 +27,8 @@ final class PackageDependencies {
 
         this.ownerPkg = ownerPkg;
 
-        this.clientPackages = new ArrayList<>();
-        this.supplierPackages = new ArrayList<>();
+        this.clientPackages = new VArray<>();
+        this.supplierPackages = new VArray<>();
 
     }
 
@@ -53,18 +54,18 @@ final class PackageDependencies {
      *
      * @return the collection of packages from the dependency graph.
      */
-    Collection<IPackage> getClientPackages( EDependencyDepth dependencyDepth ) {
+    ISizedIterable<IPackage> getClientPackages( EDependencyDepth dependencyDepth ) {
 
         if ( dependencyDepth.isTransitive() ) {
             Collection<IPackage> result = new TreeSet<>( ( p1, p2 ) -> p1.getId().compareTo( p2.getId() ) );
             this.clientPackages.forEach(
                 p -> {
                     if ( result.add( p ) ) {
-                        result.addAll( p.getClientPackages( dependencyDepth ) );
+                        p.getClientPackages( dependencyDepth ).forEach( result::add );
                     }
                 }
             );
-            return result;
+            return new ReadOnlyCollectionAdapter<>( result );
         }
 
         return this.clientPackages;
@@ -78,18 +79,18 @@ final class PackageDependencies {
      *
      * @return the collection of packages found.
      */
-    Collection<IPackage> getSupplierPackages( EDependencyDepth dependencyDepth ) {
+    ISizedIterable<IPackage> getSupplierPackages( EDependencyDepth dependencyDepth ) {
 
         if ( dependencyDepth.isTransitive() ) {
             Collection<IPackage> result = new TreeSet<>( ( p1, p2 ) -> p1.getId().compareTo( p2.getId() ) );
             this.supplierPackages.forEach(
                 p -> {
                     if ( result.add( p ) ) {
-                        result.addAll( p.getSupplierPackages( dependencyDepth ) );
+                        p.getClientPackages( dependencyDepth ).forEach( result::add );
                     }
                 }
             );
-            return result;
+            return new ReadOnlyCollectionAdapter<>( result );
         }
 
         return this.supplierPackages;
@@ -129,12 +130,12 @@ final class PackageDependencies {
     }
 
     /** The packages that depend upon this one. */
-    private final List<IPackage> clientPackages;
+    private final VArray<IPackage> clientPackages;
 
     /** The package that delegates to this helper class. */
     private final IPackage ownerPkg;
 
     /** The packages that this one depends upon. */
-    private final List<IPackage> supplierPackages;
+    private final VArray<IPackage> supplierPackages;
 
 }

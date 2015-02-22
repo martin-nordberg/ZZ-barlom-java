@@ -57,6 +57,7 @@ import org.grestler.utilities.instrumentation.OperationTimeLogger;
 import org.grestler.utilities.revisions.StmTransactionContext;
 import org.grestler.utilities.revisions.V;
 import org.grestler.utilities.revisions.VArray;
+import org.grestler.utilities.revisions.VHashMap;
 
 import javax.inject.Inject;
 import java.time.Instant;
@@ -99,6 +100,11 @@ public final class MetamodelRepository
             this.edgeTypes = new VArray<>();
             this.attributeTypes = new VArray<>();
 
+            this.packagesById = new VHashMap<>( 500 );
+            this.vertexTypesById = new VHashMap<>( 500 );
+            this.edgeTypesById = new VHashMap<>( 500 );
+            this.attributeTypesById = new VHashMap<>( 500 );
+
             try (
                 OperationTimeLogger ignored = new OperationTimeLogger(
                     MetamodelRepository.LOG, "Metamodel repository loaded in {}."
@@ -123,16 +129,7 @@ public final class MetamodelRepository
 
     @Override
     public Optional<IAttributeType> findAttributeTypeById( UUID id ) {
-
-        // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IAttributeType e : this.attributeTypes ) {
-            if ( e.getId().equals( id ) ) {
-                return Optional.of( e );
-            }
-        }
-
-        return Optional.empty();
-
+        return this.attributeTypesById.get( id );
     }
 
     @Override
@@ -150,16 +147,7 @@ public final class MetamodelRepository
 
     @Override
     public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
-
-        // Search for the edge type with given UUID. -- TODO: may be worth map by ID
-        for ( IEdgeType e : this.edgeTypes ) {
-            if ( e.getId().equals( id ) ) {
-                return Optional.of( e );
-            }
-        }
-
-        return Optional.empty();
-
+        return this.edgeTypesById.get( id );
     }
 
     @Override
@@ -169,16 +157,7 @@ public final class MetamodelRepository
 
     @Override
     public Optional<IPackage> findPackageById( UUID id ) {
-
-        // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IPackage p : this.packages ) {
-            if ( p.getId().equals( id ) ) {
-                return Optional.of( p );
-            }
-        }
-
-        return Optional.empty();
-
+        return this.packagesById.get( id );
     }
 
     @Override
@@ -212,16 +191,7 @@ public final class MetamodelRepository
 
     @Override
     public Optional<IVertexType> findVertexTypeById( UUID id ) {
-
-        // Search for the vertex type with given UUID. -- TODO: may be worth map by ID
-        for ( IVertexType v : this.vertexTypes ) {
-            if ( v.getId().equals( id ) ) {
-                return Optional.of( v );
-            }
-        }
-
-        return Optional.empty();
-
+        return this.vertexTypesById.get( id );
     }
 
     @Override
@@ -235,6 +205,7 @@ public final class MetamodelRepository
         IDirectedEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.baseVertexType.get() );
 
         this.edgeTypes.add( result );
+        this.edgeTypesById.put( id, result );
         this.baseDirectedEdgeType = new V<>( result );
 
         return result;
@@ -249,6 +220,7 @@ public final class MetamodelRepository
         IUndirectedEdgeType result = new BaseUndirectedEdgeType( id, parentPackage, this.baseVertexType.get() );
 
         this.edgeTypes.add( result );
+        this.edgeTypesById.put( id, result );
         this.baseUndirectedEdgeType = new V<>( result );
 
         return result;
@@ -261,6 +233,7 @@ public final class MetamodelRepository
         IVertexType result = new BaseVertexType( id, parentPackage );
 
         this.vertexTypes.add( result );
+        this.vertexTypesById.put( id, result );
         this.baseVertexType = new V<>( result );
 
         return result;
@@ -275,6 +248,7 @@ public final class MetamodelRepository
         IBooleanAttributeType result = new BooleanAttributeType( id, parentPackage, name, defaultValue );
 
         this.attributeTypes.add( result );
+        this.attributeTypesById.put( id, result );
 
         return result;
 
@@ -288,6 +262,7 @@ public final class MetamodelRepository
         IDateTimeAttributeType result = new DateTimeAttributeType( id, parentPackage, name, minValue, maxValue );
 
         this.attributeTypes.add( result );
+        this.attributeTypesById.put( id, result );
 
         return result;
 
@@ -333,6 +308,7 @@ public final class MetamodelRepository
         );
 
         this.edgeTypes.add( result );
+        this.edgeTypesById.put( id, result );
 
         return result;
 
@@ -359,6 +335,7 @@ public final class MetamodelRepository
         );
 
         this.attributeTypes.add( result );
+        this.attributeTypesById.put( id, result );
 
         return result;
     }
@@ -377,6 +354,7 @@ public final class MetamodelRepository
         );
 
         this.attributeTypes.add( result );
+        this.attributeTypesById.put( id, result );
 
         return result;
     }
@@ -387,6 +365,7 @@ public final class MetamodelRepository
         IPackage result = new Package( id, parentPackage, name );
 
         this.packages.add( result );
+        this.packagesById.put( id, result );
 
         return result;
 
@@ -405,6 +384,7 @@ public final class MetamodelRepository
         IPackage result = new RootPackage( id );
 
         this.packages.add( result );
+        this.packagesById.put( id, result );
         this.rootPackage = new V<>( result );
 
         return result;
@@ -425,6 +405,7 @@ public final class MetamodelRepository
         );
 
         this.attributeTypes.add( result );
+        this.attributeTypesById.put( id, result );
 
         return result;
     }
@@ -459,6 +440,7 @@ public final class MetamodelRepository
         );
 
         this.edgeTypes.add( result );
+        this.edgeTypesById.put( id, result );
 
         return result;
 
@@ -471,6 +453,7 @@ public final class MetamodelRepository
         IUuidAttributeType result = new UuidAttributeType( id, parentPackage, name );
 
         this.attributeTypes.add( result );
+        this.attributeTypesById.put( id, result );
 
         return result;
     }
@@ -495,6 +478,7 @@ public final class MetamodelRepository
         IVertexType result = new VertexType( id, parentPackage, name, superType, abstractness );
 
         this.vertexTypes.add( result );
+        this.vertexTypesById.put( id, result );
 
         return result;
 
@@ -504,11 +488,19 @@ public final class MetamodelRepository
 
     private final VArray<IAttributeType> attributeTypes;
 
+    private final VHashMap<UUID, IAttributeType> attributeTypesById;
+
     private final VArray<IEdgeType> edgeTypes;
+
+    private final VHashMap<UUID, IEdgeType> edgeTypesById;
 
     private final VArray<IPackage> packages;
 
+    private final VHashMap<UUID, IPackage> packagesById;
+
     private final VArray<IVertexType> vertexTypes;
+
+    private final VHashMap<UUID, IVertexType> vertexTypesById;
 
     private V<IDirectedEdgeType> baseDirectedEdgeType = null;
 

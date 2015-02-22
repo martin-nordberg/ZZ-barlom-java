@@ -7,6 +7,7 @@ package org.grestler.metamodel.impl.attributes;
 
 import org.grestler.metamodel.api.attributes.IFloat64AttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.OptionalDouble;
@@ -39,9 +40,9 @@ public final class Float64AttributeType
     ) {
         super( id, parentPackage, name );
 
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.defaultValue = defaultValue;
+        this.minValue = new V<>( minValue );
+        this.maxValue = new V<>( maxValue );
+        this.defaultValue = new V<>( defaultValue );
     }
 
     @Override
@@ -49,34 +50,34 @@ public final class Float64AttributeType
 
         super.generateJsonAttributes( json );
 
-        this.minValue.ifPresent( minValue -> json.write( "minValue", minValue ) );
-        this.maxValue.ifPresent( maxValue -> json.write( "maxValue", maxValue ) );
-        this.defaultValue.ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
+        this.minValue.get().ifPresent( minValue -> json.write( "minValue", minValue ) );
+        this.maxValue.get().ifPresent( maxValue -> json.write( "maxValue", maxValue ) );
+        this.defaultValue.get().ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
 
     }
 
     @Override
     public OptionalDouble getDefaultValue() {
-        return this.defaultValue;
+        return this.defaultValue.get();
     }
 
     @Override
     public OptionalDouble getMaxValue() {
-        return this.maxValue;
+        return this.maxValue.get();
     }
 
     @Override
     public OptionalDouble getMinValue() {
-        return this.minValue;
+        return this.minValue.get();
     }
 
     /** The default value for attributes of this type. */
-    private final OptionalDouble defaultValue;
+    private final V<OptionalDouble> defaultValue;
 
     /** The minimum allowed value for attributes with this type. */
-    private final OptionalDouble maxValue;
+    private final V<OptionalDouble> maxValue;
 
     /** The maximum allowed value for attributes with this type. */
-    private final OptionalDouble minValue;
+    private final V<OptionalDouble> minValue;
 
 }

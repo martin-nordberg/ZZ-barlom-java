@@ -5,7 +5,8 @@
 
 package org.grestler.metamodel.api.elements;
 
-import java.util.List;
+import org.grestler.utilities.collections.ISizedIterable;
+
 import java.util.Optional;
 
 /**
@@ -22,7 +23,7 @@ public interface IVertexType
     /**
      * @return the defined attributes of this vertex type.
      */
-    List<IVertexAttributeDecl> getAttributes();
+    ISizedIterable<IVertexAttributeDecl> getAttributes();
 
     /**
      * @return the super type of this vertex type.

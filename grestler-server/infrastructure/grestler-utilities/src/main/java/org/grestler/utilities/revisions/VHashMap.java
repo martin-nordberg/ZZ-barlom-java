@@ -46,7 +46,7 @@ public class VHashMap<K, V> {
     public Optional<V> get( K key ) {
 
         // Compute the hash code.
-        int hash = key.hashCode() % this.entryLists.length;
+        int hash = this.getHashIndex( key );
 
         // Index into the table for the list of entries with that hash.
         Iterable<KeyValue<K, V>> entryList = (Iterable<KeyValue<K, V>>) this.entryLists[hash];
@@ -77,7 +77,7 @@ public class VHashMap<K, V> {
         Objects.requireNonNull( value );
 
         // Compute the hash code.
-        int hash = key.hashCode() % this.entryLists.length;
+        int hash = this.getHashIndex( key );
 
         // Index into the table for the list of entries with that hash.
         VArray<KeyValue<K, V>> entryList = (VArray<KeyValue<K, V>>) this.entryLists[hash];
@@ -118,7 +118,7 @@ public class VHashMap<K, V> {
     public Optional<V> remove( K key ) {
 
         // Compute the hash code.
-        int hash = key.hashCode() % this.entryLists.length;
+        int hash = this.getHashIndex( key );
 
         // Index into the table for the list of entries with that hash.
         VArray<KeyValue<K, V>> entryList = (VArray<KeyValue<K, V>>) this.entryLists[hash];
@@ -164,6 +164,21 @@ public class VHashMap<K, V> {
 
         return result;
 
+    }
+
+    /**
+     * Get the hash table index from the key.
+     *
+     * @param key the key to be hashed into the table.
+     *
+     * @return the corresponding hash table index.
+     */
+    private int getHashIndex( K key ) {
+        int result = key.hashCode() % this.entryLists.length;
+        if ( result < 0 ) {
+            return result + this.entryLists.length;
+        }
+        return result;
     }
 
     /** Table of lists of entries in the map indexed by key hash code. */

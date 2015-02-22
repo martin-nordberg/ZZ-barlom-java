@@ -5,8 +5,7 @@
 
 package org.grestler.metamodel.api.elements;
 
-import java.util.Collection;
-import java.util.List;
+import org.grestler.utilities.collections.ISizedIterable;
 
 /**
  * Interface to a package of vertex types and edge types.
@@ -17,7 +16,7 @@ public interface IPackage
     /**
      * @return the packages that are children of this one.
      */
-    List<IPackage> getChildPackages();
+    ISizedIterable<IPackage> getChildPackages();
 
     /**
      * Determines the packages that depend upon this one.
@@ -26,12 +25,12 @@ public interface IPackage
      *
      * @return the packages that depend upon this package.
      */
-    Collection<IPackage> getClientPackages( EDependencyDepth dependencyDepth );
+    ISizedIterable<IPackage> getClientPackages( EDependencyDepth dependencyDepth );
 
     /**
      * @return the Edge types that are children of this package.
      */
-    List<IEdgeType> getEdgeTypes();
+    ISizedIterable<IEdgeType> getEdgeTypes();
 
     /**
      * Determines the packages that this package depends upon.
@@ -40,12 +39,12 @@ public interface IPackage
      *
      * @return the packages that this package depends upon.
      */
-    Collection<IPackage> getSupplierPackages( EDependencyDepth dependencyDepth );
+    ISizedIterable<IPackage> getSupplierPackages( EDependencyDepth dependencyDepth );
 
     /**
      * @return the vertex types that are children of this package.
      */
-    List<IVertexType> getVertexTypes();
+    ISizedIterable<IVertexType> getVertexTypes();
 
     /**
      * Whether this package depends upon the given one (directly or indirectly).

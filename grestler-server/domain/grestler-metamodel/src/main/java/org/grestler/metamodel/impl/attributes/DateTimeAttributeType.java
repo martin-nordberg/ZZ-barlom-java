@@ -7,6 +7,7 @@ package org.grestler.metamodel.impl.attributes;
 
 import org.grestler.metamodel.api.attributes.IDateTimeAttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.time.Instant;
@@ -37,8 +38,8 @@ public final class DateTimeAttributeType
 
         super( id, parentPackage, name );
 
-        this.maxValue = maxValue;
-        this.minValue = minValue;
+        this.maxValue = new V<>( maxValue );
+        this.minValue = new V<>( minValue );
 
     }
 
@@ -50,12 +51,12 @@ public final class DateTimeAttributeType
         DateTimeFormatter jsonDateTimeFormatter = DateTimeFormatter.ofPattern( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" )
                                                                    .withZone( ZoneOffset.UTC );
 
-        this.maxValue.ifPresent(
+        this.maxValue.get().ifPresent(
             maxValue -> json.write(
                 "maxValue", jsonDateTimeFormatter.format( maxValue )
             )
         );
-        this.minValue.ifPresent(
+        this.minValue.get().ifPresent(
             minValue -> json.write(
                 "minValue", jsonDateTimeFormatter.format( minValue )
             )
@@ -65,18 +66,18 @@ public final class DateTimeAttributeType
 
     @Override
     public Optional<Instant> getMaxValue() {
-        return this.maxValue;
+        return this.maxValue.get();
     }
 
     @Override
     public Optional<Instant> getMinValue() {
-        return this.minValue;
+        return this.minValue.get();
     }
 
     /** The maximum allowed value for attributes with this type. */
-    private final Optional<Instant> maxValue;
+    private final V<Optional<Instant>> maxValue;
 
     /** The minimum allowed value for attributes with this type. */
-    private final Optional<Instant> minValue;
+    private final V<Optional<Instant>> minValue;
 
 }

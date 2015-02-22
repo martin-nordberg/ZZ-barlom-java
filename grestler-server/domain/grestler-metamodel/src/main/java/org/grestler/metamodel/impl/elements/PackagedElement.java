@@ -2,6 +2,7 @@ package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackagedElement;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
@@ -24,7 +25,7 @@ public abstract class PackagedElement
 
         super( id, name );
 
-        this.parentPackage = parentPackage;
+        this.parentPackage = new V<>( parentPackage );
 
         // TODO: unique name per parent package
 
@@ -35,16 +36,16 @@ public abstract class PackagedElement
 
         super.generateJsonAttributes( json );
 
-        json.write( "parentPackageId", this.parentPackage.getId().toString() );
+        json.write( "parentPackageId", this.getParentPackage().getId().toString() );
 
     }
 
     @Override
     public IPackage getParentPackage() {
-        return this.parentPackage;
+        return this.parentPackage.get();
     }
 
     /** The parent package containing this packaged element. */
-    private final IPackage parentPackage;
+    private final V<IPackage> parentPackage;
 
 }

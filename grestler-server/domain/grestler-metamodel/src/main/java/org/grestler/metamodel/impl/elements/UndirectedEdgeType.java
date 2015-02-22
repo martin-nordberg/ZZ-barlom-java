@@ -13,6 +13,7 @@ import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.OptionalInt;
@@ -56,9 +57,9 @@ public final class UndirectedEdgeType
     ) {
         super( id, parentPackage, name, superType, abstractness, cyclicity, multiEdgedness, selfLooping );
 
-        this.vertexType = vertexType;
-        this.minDegree = minDegree;
-        this.maxDegree = maxDegree;
+        this.vertexType = new V<>( vertexType );
+        this.minDegree = new V<>( minDegree );
+        this.maxDegree = new V<>( maxDegree );
 
     }
 
@@ -67,34 +68,34 @@ public final class UndirectedEdgeType
 
         super.generateJsonAttributes( json );
 
-        json.write( "vertexTypeId", this.vertexType.getId().toString() );
+        json.write( "vertexTypeId", this.getVertexType().getId().toString() );
 
-        this.minDegree.ifPresent( minDegree -> json.write( "minDegree", minDegree ) );
-        this.maxDegree.ifPresent( maxDegree -> json.write( "maxDegree", maxDegree ) );
+        this.getMinDegree().ifPresent( minDegree -> json.write( "minDegree", minDegree ) );
+        this.getMaxDegree().ifPresent( maxDegree -> json.write( "maxDegree", maxDegree ) );
     }
 
     @Override
     public OptionalInt getMaxDegree() {
-        return this.maxDegree;
+        return this.maxDegree.get();
     }
 
     @Override
     public OptionalInt getMinDegree() {
-        return this.minDegree;
+        return this.minDegree.get();
     }
 
     @Override
     public IVertexType getVertexType() {
-        return this.vertexType;
+        return this.vertexType.get();
     }
 
     /** The maximum in-degree for the head vertex of edges of this type. */
-    private final OptionalInt maxDegree;
+    private final V<OptionalInt> maxDegree;
 
     /** The minimum in-degree for the head vertex of edges of this type. */
-    private final OptionalInt minDegree;
+    private final V<OptionalInt> minDegree;
 
     /** The vertex type for edges of this type. */
-    private final IVertexType vertexType;
+    private final V<IVertexType> vertexType;
 
 }

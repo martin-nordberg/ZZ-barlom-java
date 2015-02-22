@@ -6,6 +6,7 @@
 package org.grestler.metamodel.impl.elements
 
 import org.grestler.metamodel.api.elements.*
+import org.grestler.utilities.revisions.StmTransactionContext
 import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
@@ -18,6 +19,14 @@ class EdgeTypeSpec
     UUID id = Uuids.makeUuid();
 
     String name = "Example";
+
+    def setup() {
+        StmTransactionContext.beginReadWriteTransaction();
+    }
+
+    def cleanup() {
+        StmTransactionContext.commitTransaction();
+    }
 
     def "A top level edge type is constructed and can be read"() {
 

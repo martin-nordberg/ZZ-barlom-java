@@ -10,6 +10,7 @@ import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.ELabelDefaulting;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
@@ -42,10 +43,10 @@ public final class VertexAttributeDecl
 
         super( id, name );
 
-        this.parentVertexType = parentVertexType;
-        this.type = type;
-        this.optionality = optionality;
-        this.labelDefaulting = labelDefaulting;
+        this.parentVertexType = new V<>( parentVertexType );
+        this.type = new V<>( type );
+        this.optionality = new V<>( optionality );
+        this.labelDefaulting = new V<>( labelDefaulting );
 
         ( (IVertexTypeUnderAssembly) parentVertexType ).addAttribute( this );
 
@@ -56,41 +57,41 @@ public final class VertexAttributeDecl
 
         super.generateJsonAttributes( json );
 
-        json.write( "typeId", this.type.getId().toString() )
-            .write( "optionality", this.optionality.name() )
-            .write( "labelDefaulting", this.labelDefaulting.name() );
+        json.write( "typeId", this.getType().getId().toString() )
+            .write( "optionality", this.getOptionality().name() )
+            .write( "labelDefaulting", this.getLabelDefaulting().name() );
 
     }
 
     @Override
     public ELabelDefaulting getLabelDefaulting() {
-        return this.labelDefaulting;
+        return this.labelDefaulting.get();
     }
 
     @Override
     public EAttributeOptionality getOptionality() {
-        return this.optionality;
+        return this.optionality.get();
     }
 
     @Override
     public IVertexType getParentVertexType() {
-        return this.parentVertexType;
+        return this.parentVertexType.get();
     }
 
     @Override
     public IAttributeType getType() {
-        return this.type;
+        return this.type.get();
     }
 
     /** Whether this attribute serves as the default label for vertexes of the parent type. */
-    private final ELabelDefaulting labelDefaulting;
+    private final V<ELabelDefaulting> labelDefaulting;
 
     /** Whether this attribute is required for instances of the parent vertex type. */
-    private final EAttributeOptionality optionality;
+    private final V<EAttributeOptionality> optionality;
 
     /** The parent vertex type with this attribute. */
-    private final IVertexType parentVertexType;
+    private final V<IVertexType> parentVertexType;
 
     /** The type of this attribute declaration. */
-    private final IAttributeType type;
+    private final V<IAttributeType> type;
 }

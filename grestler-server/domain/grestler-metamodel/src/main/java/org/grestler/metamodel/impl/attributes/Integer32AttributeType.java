@@ -7,6 +7,7 @@ package org.grestler.metamodel.impl.attributes;
 
 import org.grestler.metamodel.api.attributes.IInteger32AttributeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.OptionalInt;
@@ -39,9 +40,9 @@ public class Integer32AttributeType
     ) {
         super( id, parentPackage, name );
 
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.defaultValue = defaultValue;
+        this.minValue = new V<>( minValue );
+        this.maxValue = new V<>( maxValue );
+        this.defaultValue = new V<>( defaultValue );
     }
 
     @Override
@@ -49,30 +50,30 @@ public class Integer32AttributeType
 
         super.generateJsonAttributes( json );
 
-        this.minValue.ifPresent( minValue -> json.write( "minValue", minValue ) );
-        this.maxValue.ifPresent( maxValue -> json.write( "maxValue", maxValue ) );
-        this.defaultValue.ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
+        this.minValue.get().ifPresent( minValue -> json.write( "minValue", minValue ) );
+        this.maxValue.get().ifPresent( maxValue -> json.write( "maxValue", maxValue ) );
+        this.defaultValue.get().ifPresent( defaultValue -> json.write( "defaultValue", defaultValue ) );
 
     }
 
     @Override
     public OptionalInt getDefaultValue() {
-        return this.defaultValue;
+        return this.defaultValue.get();
     }
 
     @Override
     public OptionalInt getMaxValue() {
-        return this.maxValue;
+        return this.maxValue.get();
     }
 
     @Override
     public OptionalInt getMinValue() {
-        return this.minValue;
+        return this.minValue.get();
     }
 
-    private final OptionalInt defaultValue;
+    private final V<OptionalInt> defaultValue;
 
-    private final OptionalInt maxValue;
+    private final V<OptionalInt> maxValue;
 
-    private final OptionalInt minValue;
+    private final V<OptionalInt> minValue;
 }

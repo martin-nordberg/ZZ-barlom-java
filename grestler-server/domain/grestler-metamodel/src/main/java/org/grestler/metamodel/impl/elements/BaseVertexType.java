@@ -9,10 +9,10 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IVertexAttributeDecl;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.collections.ISizedIterable;
+import org.grestler.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,7 +34,7 @@ public final class BaseVertexType
 
         this.id = id;
         this.parentPackage = parentPackage;
-        this.attributes = new ArrayList<>();
+        this.attributes = new VArray<>();
 
         ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
 
@@ -59,7 +59,7 @@ public final class BaseVertexType
     }
 
     @Override
-    public List<IVertexAttributeDecl> getAttributes() {
+    public ISizedIterable<IVertexAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
@@ -89,7 +89,7 @@ public final class BaseVertexType
     }
 
     /** The attributes of this vertex type. */
-    private final List<IVertexAttributeDecl> attributes;
+    private final VArray<IVertexAttributeDecl> attributes;
 
     /** The unique ID of this vertex type. */
     private final UUID id;

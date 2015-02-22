@@ -6,6 +6,7 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.INamedElement;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public abstract class NamedElement
 
         super( id );
 
-        this.name = name;
+        this.name = new V<>( name );
 
     }
 
@@ -37,16 +38,16 @@ public abstract class NamedElement
 
         super.generateJsonAttributes( json );
 
-        json.write( "name", this.name ).write( "path", this.getPath() );
+        json.write( "name", this.getName() ).write( "path", this.getPath() );
 
     }
 
     @Override
     public final String getName() {
-        return this.name;
+        return this.name.get();
     }
 
     /** The name of this element. */
-    private final String name;
+    private final V<String> name;
 
 }

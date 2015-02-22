@@ -9,6 +9,7 @@ import org.grestler.metamodel.api.attributes.EAttributeOptionality;
 import org.grestler.metamodel.api.attributes.IAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
@@ -35,9 +36,9 @@ public final class EdgeAttributeDecl
 
         super( id, name );
 
-        this.parentEdgeType = parentEdgeType;
-        this.type = type;
-        this.optionality = optionality;
+        this.parentEdgeType = new V<>( parentEdgeType );
+        this.type = new V<>( type );
+        this.optionality = new V<>( optionality );
 
         ( (IEdgeTypeUnderAssembly) parentEdgeType ).addAttribute( this );
 
@@ -45,31 +46,31 @@ public final class EdgeAttributeDecl
 
     @Override
     public void generateJsonAttributes( JsonGenerator json ) {
-        json.write( "typeId", this.type.getId().toString() ).write( "optionality", this.optionality.name() );
+        json.write( "typeId", this.getType().getId().toString() ).write( "optionality", this.getOptionality().name() );
     }
 
     @Override
     public EAttributeOptionality getOptionality() {
-        return this.optionality;
+        return this.optionality.get();
     }
 
     @Override
     public IEdgeType getParentEdgeType() {
-        return this.parentEdgeType;
+        return this.parentEdgeType.get();
     }
 
     @Override
     public IAttributeType getType() {
-        return this.type;
+        return this.type.get();
     }
 
     /** Whether this attribute is required for instances of the parent edge type. */
-    private final EAttributeOptionality optionality;
+    private final V<EAttributeOptionality> optionality;
 
     /** The parent edge type with this attribute. */
-    private final IEdgeType parentEdgeType;
+    private final V<IEdgeType> parentEdgeType;
 
     /** The type of this attribute declaration. */
-    private final IAttributeType type;
+    private final V<IAttributeType> type;
 
 }

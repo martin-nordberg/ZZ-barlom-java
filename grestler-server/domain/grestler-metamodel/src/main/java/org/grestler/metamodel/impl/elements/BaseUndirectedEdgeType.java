@@ -14,10 +14,10 @@ import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.utilities.collections.ISizedIterable;
+import org.grestler.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
@@ -43,7 +43,7 @@ public class BaseUndirectedEdgeType
         this.parentPackage = parentPackage;
         this.baseVertexType = baseVertexType;
 
-        this.attributes = new ArrayList<>();
+        this.attributes = new VArray<>();
 
         ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
 
@@ -69,7 +69,7 @@ public class BaseUndirectedEdgeType
     }
 
     @Override
-    public List<IEdgeAttributeDecl> getAttributes() {
+    public ISizedIterable<IEdgeAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
@@ -128,7 +128,7 @@ public class BaseUndirectedEdgeType
         return this == edgeType;
     }
 
-    private final List<IEdgeAttributeDecl> attributes;
+    private final VArray<IEdgeAttributeDecl> attributes;
 
     private final IVertexType baseVertexType;
 

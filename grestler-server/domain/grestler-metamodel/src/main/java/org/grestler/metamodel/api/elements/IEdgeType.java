@@ -5,7 +5,8 @@
 
 package org.grestler.metamodel.api.elements;
 
-import java.util.List;
+import org.grestler.utilities.collections.ISizedIterable;
+
 import java.util.Optional;
 
 /**
@@ -22,7 +23,7 @@ public interface IEdgeType
     /**
      * @return the defined attributes of this edge type.
      */
-    List<IEdgeAttributeDecl> getAttributes();
+    ISizedIterable<IEdgeAttributeDecl> getAttributes();
 
     /**
      * @return whether edges of this type can form a cyclic graph.

@@ -12,10 +12,11 @@ import org.grestler.metamodel.api.elements.ESelfLooping;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.utilities.collections.ISizedIterable;
+import org.grestler.utilities.revisions.V;
+import org.grestler.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,13 +52,13 @@ abstract class EdgeType
     ) {
         super( id, parentPackage, name );
 
-        this.superType = superType;
-        this.abstractness = abstractness;
-        this.cyclicity = cyclicity;
-        this.multiEdgedness = multiEdgedness;
-        this.selfLooping = selfLooping;
+        this.superType = new V<>( superType );
+        this.abstractness = new V<>( abstractness );
+        this.cyclicity = new V<>( cyclicity );
+        this.multiEdgedness = new V<>( multiEdgedness );
+        this.selfLooping = new V<>( selfLooping );
 
-        this.attributes = new ArrayList<>();
+        this.attributes = new VArray<>();
 
         ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
 
@@ -73,11 +74,11 @@ abstract class EdgeType
 
         super.generateJsonAttributes( json );
 
-        json.write( "superTypeId", this.superType.getId().toString() )
-            .write( "abstractness", this.abstractness.name() )
-            .write( "cyclicity", this.cyclicity.name() )
-            .write( "multiEdgedness", this.multiEdgedness.name() )
-            .write( "selfLooping", this.selfLooping.name() );
+        json.write( "superTypeId", this.getSuperType().get().getId().toString() )
+            .write( "abstractness", this.getAbstractness().name() )
+            .write( "cyclicity", this.getCyclicity().name() )
+            .write( "multiEdgedness", this.getMultiEdgedness().name() )
+            .write( "selfLooping", this.getSelfLooping().name() );
 
         // TODO: attribute declarations
 
@@ -85,32 +86,32 @@ abstract class EdgeType
 
     @Override
     public final EAbstractness getAbstractness() {
-        return this.abstractness;
+        return this.abstractness.get();
     }
 
     @Override
-    public final List<IEdgeAttributeDecl> getAttributes() {
+    public final ISizedIterable<IEdgeAttributeDecl> getAttributes() {
         return this.attributes;
     }
 
     @Override
     public final ECyclicity getCyclicity() {
-        return this.cyclicity;
+        return this.cyclicity.get();
     }
 
     @Override
     public final EMultiEdgedness getMultiEdgedness() {
-        return this.multiEdgedness;
+        return this.multiEdgedness.get();
     }
 
     @Override
     public final ESelfLooping getSelfLooping() {
-        return this.selfLooping;
+        return this.selfLooping.get();
     }
 
     @Override
     public final Optional<IEdgeType> getSuperType() {
-        return Optional.of( this.superType );
+        return Optional.of( this.superType.get() );
     }
 
     @Override
@@ -119,21 +120,21 @@ abstract class EdgeType
     }
 
     /** Whether this edge type is abstract. */
-    private final EAbstractness abstractness;
+    private final V<EAbstractness> abstractness;
 
     /** The attribute declarations within this edge type. */
-    private final List<IEdgeAttributeDecl> attributes;
+    private final VArray<IEdgeAttributeDecl> attributes;
 
     /** Whetehr this edge type is acyclic. */
-    private final ECyclicity cyclicity;
+    private final V<ECyclicity> cyclicity;
 
     /** Whether this edge type allows multiple edges between two given vertexes. */
-    private final EMultiEdgedness multiEdgedness;
+    private final V<EMultiEdgedness> multiEdgedness;
 
     /** Whetehr this edge type allows an edge from a vertex to itself. */
-    private final ESelfLooping selfLooping;
+    private final V<ESelfLooping> selfLooping;
 
     /** The super type for this edge type. */
-    private final IEdgeType superType;
+    private final V<IEdgeType> superType;
 
 }
