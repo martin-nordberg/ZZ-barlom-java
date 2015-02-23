@@ -62,6 +62,9 @@ abstract class EdgeType
 
         ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
 
+        // TODO: track sub-types
+        // TODO: Move super type down a level in the inheritance directed/undirected
+
     }
 
     @Override
@@ -119,19 +122,71 @@ abstract class EdgeType
         return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
+    @Override
+    public final void removeAttribute( IEdgeAttributeDecl attribute ) {
+        this.attributes.remove( attribute );
+    }
+
+    /**
+     * Changes whether this edge type is abstract.
+     *
+     * @param abstractness the new abstractness value.
+     */
+    public void setAbstractness( EAbstractness abstractness ) {
+        this.abstractness.set( abstractness );
+    }
+
+    /**
+     * Changes the cyclicity of this edge type.
+     *
+     * @param cyclicity the new cyclicity.
+     */
+    public void setCyclicity( ECyclicity cyclicity ) {
+        this.cyclicity.set( cyclicity );
+    }
+
+    /**
+     * Changes whether this edge type allows multi-edges.
+     *
+     * @param multiEdgedness the new value.
+     */
+    public void setMultiEdgedness( EMultiEdgedness multiEdgedness ) {
+        this.multiEdgedness.set( multiEdgedness );
+    }
+
+    /**
+     * Changes whether this edge type allows self-looping.
+     *
+     * @param selfLooping the new value.
+     */
+    public void setSelfLooping( ESelfLooping selfLooping ) {
+        this.selfLooping.set( selfLooping );
+    }
+
+    /**
+     * Changes the super type of this edge type.
+     *
+     * @param superType the new super type.
+     */
+    public void setSuperType( IEdgeType superType ) {
+        // TODO: untrack sub-type
+        this.superType.set( superType );
+        // TODO: track new sub-type
+    }
+
     /** Whether this edge type is abstract. */
     private final V<EAbstractness> abstractness;
 
     /** The attribute declarations within this edge type. */
     private final VArray<IEdgeAttributeDecl> attributes;
 
-    /** Whetehr this edge type is acyclic. */
+    /** Whether this edge type is acyclic. */
     private final V<ECyclicity> cyclicity;
 
     /** Whether this edge type allows multiple edges between two given vertexes. */
     private final V<EMultiEdgedness> multiEdgedness;
 
-    /** Whetehr this edge type allows an edge from a vertex to itself. */
+    /** Whether this edge type allows an edge from a vertex to itself. */
     private final V<ESelfLooping> selfLooping;
 
     /** The super type for this edge type. */

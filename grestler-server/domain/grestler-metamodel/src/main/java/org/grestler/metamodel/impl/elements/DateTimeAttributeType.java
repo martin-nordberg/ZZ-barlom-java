@@ -74,6 +74,24 @@ public final class DateTimeAttributeType
         return this.minValue.get();
     }
 
+    /**
+     * Updates the maximum value for this attribute type.
+     *
+     * @param maxValue the new maximum for attributes of this type.
+     */
+    public void setMaxValue( Optional<Instant> maxValue ) {
+        this.maxValue.set( maxValue );
+    }
+
+    /**
+     * Updates the minimum value for this attribute type.
+     *
+     * @param minValue the new minimum for attributes of this type.
+     */
+    public void setMinValue( Optional<Instant> minValue ) {
+        this.minValue.set( minValue );
+    }
+
     /** The maximum allowed value for attributes with this type. */
     private final V<Optional<Instant>> maxValue;
 

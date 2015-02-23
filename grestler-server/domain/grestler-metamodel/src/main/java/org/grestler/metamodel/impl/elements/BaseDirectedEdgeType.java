@@ -154,6 +154,11 @@ public class BaseDirectedEdgeType
         return this == edgeType;
     }
 
+    @Override
+    public void removeAttribute( IEdgeAttributeDecl attribute ) {
+        this.attributes.remove( attribute );
+    }
+
     private final VArray<IEdgeAttributeDecl> attributes;
 
     private final IVertexType baseVertexType;

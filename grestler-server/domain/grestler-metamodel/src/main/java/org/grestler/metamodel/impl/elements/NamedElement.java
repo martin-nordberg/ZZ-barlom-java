@@ -47,6 +47,15 @@ public abstract class NamedElement
         return this.name.get();
     }
 
+    /**
+     * Changes the name of this element.
+     *
+     * @param name the new name.
+     */
+    public void setName( String name ) {
+        this.name.set( name );
+    }
+
     /** The name of this element. */
     private final V<String> name;
 

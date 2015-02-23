@@ -83,6 +83,49 @@ public final class VertexAttributeDecl
         return this.type.get();
     }
 
+    /**
+     * Changes whether this is the default label for its vertex type.
+     *
+     * @param labelDefaulting the new defaulting.
+     */
+    public void setLabelDefaulting( ELabelDefaulting labelDefaulting ) {
+        // TODO: enforce one default per vertex type
+        this.labelDefaulting.set( labelDefaulting );
+    }
+
+    /**
+     * Changes whether this is an optional attribute.
+     *
+     * @param optionality the new optionality.
+     */
+    public void setOptionality( EAttributeOptionality optionality ) {
+        this.optionality.set( optionality );
+    }
+
+    /**
+     * Moves this attribute type to another vertex type.
+     *
+     * @param parentVertexType the new parent vertex type.
+     */
+    public void setParentVertexType( IVertexType parentVertexType ) {
+
+        ( (IVertexTypeUnderAssembly) this.parentVertexType.get() ).removeAttribute( this );
+
+        this.parentVertexType.set( parentVertexType );
+
+        ( (IVertexTypeUnderAssembly) parentVertexType ).addAttribute( this );
+
+    }
+
+    /**
+     * Changes the type of this attribute.
+     *
+     * @param type the new attribute type.
+     */
+    public void setType( IAttributeType type ) {
+        this.type.set( type );
+    }
+
     /** Whether this attribute serves as the default label for vertexes of the parent type. */
     private final V<ELabelDefaulting> labelDefaulting;
 

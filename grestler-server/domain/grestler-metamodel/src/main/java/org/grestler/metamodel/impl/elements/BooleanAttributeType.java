@@ -49,6 +49,15 @@ public final class BooleanAttributeType
         return this.defaultValue.get();
     }
 
+    /**
+     * Changes the default value for this attribute type.
+     *
+     * @param defaultValue the new default.
+     */
+    public void setDefaultValue( Optional<Boolean> defaultValue ) {
+        this.defaultValue.set( defaultValue );
+    }
+
     /** The default value for attributes of this type. */
     private final V<Optional<Boolean>> defaultValue;
 

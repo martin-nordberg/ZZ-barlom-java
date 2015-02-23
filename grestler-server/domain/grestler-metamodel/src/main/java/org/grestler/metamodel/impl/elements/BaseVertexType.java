@@ -88,6 +88,11 @@ public final class BaseVertexType
         return this == vertexType;
     }
 
+    @Override
+    public void removeAttribute( IVertexAttributeDecl attribute ) {
+        this.attributes.remove( attribute );
+    }
+
     /** The attributes of this vertex type. */
     private final VArray<IVertexAttributeDecl> attributes;
 

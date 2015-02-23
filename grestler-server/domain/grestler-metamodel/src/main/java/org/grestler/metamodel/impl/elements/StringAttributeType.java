@@ -80,6 +80,38 @@ public final class StringAttributeType
         return this.regexPattern.get();
     }
 
+    /**
+     * Changes the maximum length for attributes of this type.
+     *
+     * @param maxLength the new maximum.
+     */
+    public void setMaxLength( int maxLength ) {
+        this.maxLength.set( maxLength );
+    }
+
+    /**
+     * Changes the minimum length for attributes of this type.
+     *
+     * @param minLength the new minimum.
+     */
+    public void setMinLength( OptionalInt minLength ) {
+        this.minLength.set( minLength );
+    }
+
+    /**
+     * Changes the regular expression that must be matched by attributes of this type.
+     *
+     * @param regexPattern the new regular expression.
+     */
+    public void setRegexPattern( Optional<String> regexPattern ) {
+        if ( regexPattern.isPresent() ) {
+            this.regexPattern.set( Optional.of( Pattern.compile( regexPattern.get() ) ) );
+        }
+        else {
+            this.regexPattern.set( Optional.empty() );
+        }
+    }
+
     /** The maximum length for values with this attribute type. */
     private final VInt maxLength;
 

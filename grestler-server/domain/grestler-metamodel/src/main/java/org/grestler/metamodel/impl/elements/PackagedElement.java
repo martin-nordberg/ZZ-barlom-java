@@ -28,6 +28,7 @@ public abstract class PackagedElement
         this.parentPackage = new V<>( parentPackage );
 
         // TODO: unique name per parent package
+        // TODO: track packaged elements in package
 
     }
 
@@ -41,8 +42,19 @@ public abstract class PackagedElement
     }
 
     @Override
-    public IPackage getParentPackage() {
+    public final IPackage getParentPackage() {
         return this.parentPackage.get();
+    }
+
+    /**
+     * Changes the package containing this element.
+     *
+     * @param parentPackage the new parent package.
+     */
+    public void setParentPackage( IPackage parentPackage ) {
+        // TODO: untrack from old parent
+        this.parentPackage.set( parentPackage );
+        // TODO: track in new parent
     }
 
     /** The parent package containing this packaged element. */

@@ -53,6 +53,7 @@ public final class DirectedEdgeType
         IPackage parentPackage,
         String name,
         IEdgeType superType,
+        // TODO: should be IDirectedEdgeType
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
@@ -134,6 +135,78 @@ public final class DirectedEdgeType
     @Override
     public IVertexType getTailVertexType() {
         return this.tailVertexType.get();
+    }
+
+    /**
+     * Updates the head role name for this edge type.
+     *
+     * @param headRoleName the new name for the role of the vertex at the head of edges of this type.
+     */
+    public void setHeadRoleName( Optional<String> headRoleName ) {
+        this.headRoleName.set( headRoleName );
+    }
+
+    /**
+     * Changes the vertex type for the head of this edge type.
+     *
+     * @param headVertexType the new head vertex type.
+     */
+    public void setHeadVertexType( IVertexType headVertexType ) {
+        this.headVertexType.set( headVertexType );
+    }
+
+    /**
+     * Changes the maximum head in-degree for edges of this type.
+     *
+     * @param maxHeadInDegree the new head in-degree limit.
+     */
+    public void setMaxHeadInDegree( OptionalInt maxHeadInDegree ) {
+        this.maxHeadInDegree.set( maxHeadInDegree );
+    }
+
+    /**
+     * Changes the maximum tail out-degree for edges of this type.
+     *
+     * @param maxTailOutDegree the new tail out-degree limit.
+     */
+    public void setMaxTailOutDegree( OptionalInt maxTailOutDegree ) {
+        this.maxTailOutDegree.set( maxTailOutDegree );
+    }
+
+    /**
+     * Changes the minimum head in-degree for edges of this type.
+     *
+     * @param minHeadInDegree the new head in-degree minimum.
+     */
+    public void setMinHeadInDegree( OptionalInt minHeadInDegree ) {
+        this.minHeadInDegree.set( minHeadInDegree );
+    }
+
+    /**
+     * Changes the minimum tail out-degree for edges of this type.
+     *
+     * @param minTailOutDegree the new tail out-degree minimum.
+     */
+    public void setMinTailOutDegree( OptionalInt minTailOutDegree ) {
+        this.minTailOutDegree.set( minTailOutDegree );
+    }
+
+    /**
+     * Updates the tail role name for this edge type.
+     *
+     * @param tailRoleName the new name for the role of the vertex at the tail of edges of this type.
+     */
+    public void setTailRoleName( Optional<String> tailRoleName ) {
+        this.tailRoleName.set( tailRoleName );
+    }
+
+    /**
+     * Changes the vertex type for the tail of this edge type.
+     *
+     * @param tailVertexType the new tail vertex type.
+     */
+    public void setTailVertexType( IVertexType tailVertexType ) {
+        this.tailVertexType.set( tailVertexType );
     }
 
     /** The name of the role for the vertex at the head of edges of this type. */

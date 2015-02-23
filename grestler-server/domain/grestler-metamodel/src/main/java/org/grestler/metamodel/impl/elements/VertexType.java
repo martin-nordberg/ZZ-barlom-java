@@ -45,6 +45,8 @@ public final class VertexType
 
         ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
 
+        // TODO: track subtypes
+
     }
 
     @Override
@@ -81,6 +83,31 @@ public final class VertexType
     @Override
     public boolean isSubTypeOf( IVertexType vertexType ) {
         return this == vertexType || this.getSuperType().get().isSubTypeOf( vertexType );
+    }
+
+    @Override
+    public void removeAttribute( IVertexAttributeDecl attribute ) {
+        this.attributes.remove( attribute );
+    }
+
+    /**
+     * Changes whether this is an abstract vertex type.
+     *
+     * @param abstractness the new abstractness.
+     */
+    public void setAbstractness( EAbstractness abstractness ) {
+        this.abstractness.set( abstractness );
+    }
+
+    /**
+     * Changes the super type of this vertex type.
+     *
+     * @param superType the new super type.
+     */
+    public void setSuperType( IVertexType superType ) {
+        // TODO: track old subtypes
+        this.superType.set( superType );
+        // TODO: track new subtypes
     }
 
     /** Whether this vertex type is abstract. */

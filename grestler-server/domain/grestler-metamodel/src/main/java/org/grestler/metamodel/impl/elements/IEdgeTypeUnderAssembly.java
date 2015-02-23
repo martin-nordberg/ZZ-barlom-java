@@ -20,4 +20,11 @@ interface IEdgeTypeUnderAssembly {
      */
     void addAttribute( IEdgeAttributeDecl attribute );
 
+    /**
+     * Removes an attribute from this vertex type while modifying the metamodel.
+     *
+     * @param attribute the child attribute to add.
+     */
+    void removeAttribute( IEdgeAttributeDecl attribute );
+
 }

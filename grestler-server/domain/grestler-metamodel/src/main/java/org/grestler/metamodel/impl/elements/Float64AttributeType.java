@@ -71,6 +71,33 @@ public final class Float64AttributeType
         return this.minValue.get();
     }
 
+    /**
+     * Changes the default value for attributes of this type.
+     *
+     * @param defaultValue the new default value.
+     */
+    public void setDefaultValue( OptionalDouble defaultValue ) {
+        this.defaultValue.set( defaultValue );
+    }
+
+    /**
+     * Changes the maximum value for attributes of this type.
+     *
+     * @param maxValue the new maximum value.
+     */
+    public void setMaxValue( OptionalDouble maxValue ) {
+        this.maxValue.set( maxValue );
+    }
+
+    /**
+     * Changes the minimum value for attributes of this type.
+     *
+     * @param minValue the new minimum value.
+     */
+    public void setMinValue( OptionalDouble minValue ) {
+        this.minValue.set( minValue );
+    }
+
     /** The default value for attributes of this type. */
     private final V<OptionalDouble> defaultValue;
 

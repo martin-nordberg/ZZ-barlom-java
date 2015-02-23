@@ -64,6 +64,39 @@ public final class EdgeAttributeDecl
         return this.type.get();
     }
 
+    /**
+     * Changes the optionality of this edge attribute.
+     *
+     * @param optionality the new value.
+     */
+    public void setOptionality( EAttributeOptionality optionality ) {
+        this.optionality.set( optionality );
+    }
+
+    /**
+     * Moves this attribute to a different edge type.
+     *
+     * @param parentEdgeType the new parent edge type.
+     */
+    public void setParentEdgeType( IEdgeType parentEdgeType ) {
+
+        ( (IEdgeTypeUnderAssembly) this.parentEdgeType.get() ).removeAttribute( this );
+
+        this.parentEdgeType.set( parentEdgeType );
+
+        ( (IEdgeTypeUnderAssembly) parentEdgeType ).addAttribute( this );
+
+    }
+
+    /**
+     * Changes the attribute type of this attribute.
+     *
+     * @param type the new attribute type.
+     */
+    public void setType( IAttributeType type ) {
+        this.type.set( type );
+    }
+
     /** Whether this attribute is required for instances of the parent edge type. */
     private final V<EAttributeOptionality> optionality;
 

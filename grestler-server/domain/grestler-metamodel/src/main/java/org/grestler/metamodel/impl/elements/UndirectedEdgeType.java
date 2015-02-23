@@ -89,6 +89,33 @@ public final class UndirectedEdgeType
         return this.vertexType.get();
     }
 
+    /**
+     * Changes the maximum degree for edges of this type.
+     *
+     * @param maxDegree the new maximum.
+     */
+    public void setMaxDegree( OptionalInt maxDegree ) {
+        this.maxDegree.set( maxDegree );
+    }
+
+    /**
+     * Changes the minimum degree for edges of this type.
+     *
+     * @param minDegree the new minimum.
+     */
+    public void setMinDegree( OptionalInt minDegree ) {
+        this.minDegree.set( minDegree );
+    }
+
+    /**
+     * Changes the type of vertex connected by edges of this type.
+     *
+     * @param vertexType the new vertex type.
+     */
+    public void setVertexType( IVertexType vertexType ) {
+        this.vertexType.set( vertexType );
+    }
+
     /** The maximum in-degree for the head vertex of edges of this type. */
     private final V<OptionalInt> maxDegree;
 

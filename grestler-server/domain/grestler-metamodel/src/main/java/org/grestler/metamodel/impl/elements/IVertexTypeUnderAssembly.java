@@ -20,4 +20,11 @@ interface IVertexTypeUnderAssembly {
      */
     void addAttribute( IVertexAttributeDecl attribute );
 
+    /**
+     * Removes an attribute from this vertex type.
+     *
+     * @param attribute the attribute declaration to remove.
+     */
+    void removeAttribute( IVertexAttributeDecl attribute );
+
 }
