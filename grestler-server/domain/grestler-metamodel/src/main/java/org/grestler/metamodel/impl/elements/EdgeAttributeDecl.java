@@ -5,8 +5,8 @@
 
 package org.grestler.metamodel.impl.elements;
 
-import org.grestler.metamodel.api.attributes.EAttributeOptionality;
-import org.grestler.metamodel.api.attributes.IAttributeType;
+import org.grestler.metamodel.api.elements.EAttributeOptionality;
+import org.grestler.metamodel.api.elements.IAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.utilities.revisions.V;

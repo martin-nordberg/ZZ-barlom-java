@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.api.DatabaseException;
 import org.grestler.dbutilities.impl.AbstractConnection;
 import org.grestler.dbutilities.spi.IResultSetSpi;
-import org.grestler.h2database.H2DatabaseException;
+import org.grestler.h2database.api.exceptions.H2DatabaseException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

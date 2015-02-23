@@ -100,7 +100,7 @@ public abstract class AbstractConnection
 
         assert sqlQuery.startsWith( "SELECT" );
 
-        AbstractConnection.LOG.info( "Executing query: {}.", sqlQuery );
+        AbstractConnection.LOG.debug( "Executing query: {}.", sqlQuery );
 
         try {
             try ( Statement stmt = this.connection.createStatement() ) {

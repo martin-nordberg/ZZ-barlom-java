@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.api.DatabaseException;
 import org.grestler.dbutilities.impl.AbstractResultSet;
-import org.grestler.h2database.H2DatabaseException;
+import org.grestler.h2database.api.exceptions.H2DatabaseException;
 
 import java.sql.ResultSet;
 

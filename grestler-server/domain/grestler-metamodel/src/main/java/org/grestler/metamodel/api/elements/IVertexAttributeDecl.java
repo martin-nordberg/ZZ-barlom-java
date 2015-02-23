@@ -5,9 +5,6 @@
 
 package org.grestler.metamodel.api.elements;
 
-import org.grestler.metamodel.api.attributes.EAttributeOptionality;
-import org.grestler.metamodel.api.attributes.IAttributeType;
-
 /**
  * Interface to a vertex attribute declaration.
  */

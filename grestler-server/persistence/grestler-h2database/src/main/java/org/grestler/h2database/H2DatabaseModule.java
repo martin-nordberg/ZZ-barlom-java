@@ -8,21 +8,21 @@ package org.grestler.h2database;
 import dagger.Module;
 import dagger.Provides;
 import org.grestler.dbutilities.api.IDataSource;
-import org.grestler.h2database.commands.MetamodelCommandFactory;
+import org.grestler.h2database.api.commands.MetamodelCommandFactory;
+import org.grestler.h2database.api.queries.AttributeDeclLoader;
+import org.grestler.h2database.api.queries.AttributeTypeLoader;
+import org.grestler.h2database.api.queries.EdgeTypeLoader;
+import org.grestler.h2database.api.queries.PackageDependencyLoader;
+import org.grestler.h2database.api.queries.PackageLoader;
+import org.grestler.h2database.api.queries.VertexTypeLoader;
 import org.grestler.h2database.impl.H2DataSource;
-import org.grestler.h2database.queries.attributes.AttributeTypeLoader;
-import org.grestler.h2database.queries.elements.AttributeDeclLoader;
-import org.grestler.h2database.queries.elements.EdgeTypeLoader;
-import org.grestler.h2database.queries.elements.PackageDependencyLoader;
-import org.grestler.h2database.queries.elements.PackageLoader;
-import org.grestler.h2database.queries.elements.VertexTypeLoader;
-import org.grestler.metamodel.api.cmdquery.IMetamodelCommandFactory;
-import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
-import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
-import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
-import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
-import org.grestler.metamodel.spi.elements.IPackageLoader;
-import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
+import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
+import org.grestler.metamodel.spi.queries.IAttributeDeclLoader;
+import org.grestler.metamodel.spi.queries.IAttributeTypeLoader;
+import org.grestler.metamodel.spi.queries.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.queries.IPackageDependencyLoader;
+import org.grestler.metamodel.spi.queries.IPackageLoader;
+import org.grestler.metamodel.spi.queries.IVertexTypeLoader;
 
 /**
  * Dagger module providing H2 data sources..

@@ -4,7 +4,7 @@
 //
 
 /**
- * Package defining Grestler package, vertex type, and edge type implementations.
+ * Package defining Grestler package, vertex type, edge type, and attribute implementations.
  */
 
 package org.grestler.metamodel.impl.elements;

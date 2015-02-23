@@ -7,14 +7,14 @@ package org.grestler.metamodel;
 
 import dagger.Module;
 import dagger.Provides;
-import org.grestler.metamodel.api.cmdquery.IMetamodelRepository;
-import org.grestler.metamodel.impl.cmdquery.MetamodelRepository;
-import org.grestler.metamodel.spi.attributes.IAttributeTypeLoader;
-import org.grestler.metamodel.spi.elements.IAttributeDeclLoader;
-import org.grestler.metamodel.spi.elements.IEdgeTypeLoader;
-import org.grestler.metamodel.spi.elements.IPackageDependencyLoader;
-import org.grestler.metamodel.spi.elements.IPackageLoader;
-import org.grestler.metamodel.spi.elements.IVertexTypeLoader;
+import org.grestler.metamodel.api.queries.IMetamodelRepository;
+import org.grestler.metamodel.impl.queries.MetamodelRepository;
+import org.grestler.metamodel.spi.queries.IAttributeDeclLoader;
+import org.grestler.metamodel.spi.queries.IAttributeTypeLoader;
+import org.grestler.metamodel.spi.queries.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.queries.IPackageDependencyLoader;
+import org.grestler.metamodel.spi.queries.IPackageLoader;
+import org.grestler.metamodel.spi.queries.IVertexTypeLoader;
 
 import javax.inject.Singleton;
 

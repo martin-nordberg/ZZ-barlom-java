@@ -8,8 +8,7 @@ package org.grestler.h2database.impl;
 import org.apache.logging.log4j.LogManager;
 import org.grestler.dbutilities.api.IConnection;
 import org.grestler.dbutilities.api.IDataSource;
-import org.grestler.h2database.H2DatabaseException;
-import org.grestler.h2database.migration.DatabaseMigration;
+import org.grestler.h2database.api.exceptions.H2DatabaseException;
 import org.grestler.utilities.configuration.Configuration;
 import org.h2.jdbcx.JdbcConnectionPool;
 
