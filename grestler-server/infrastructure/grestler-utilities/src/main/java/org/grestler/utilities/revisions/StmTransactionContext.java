@@ -36,6 +36,14 @@ public final class StmTransactionContext {
     }
 
     /**
+     * Creates a new read-nested write transaction. The lifecycle of the transaction must be managed by the client,
+     * which is responsible for calling either commitTransaction or abortTransaction.
+     */
+    public static void beginReadNestedWriteTransaction() {
+        StmTransactionContext.beginTransaction( ETransactionWriteability.READ_WITH_NESTED_WRITES );
+    }
+
+    /**
      * Creates a new read-only transaction. The lifecycle of the transaction must be managed by the client, which is
      * responsible for calling either commitTransaction or abortTransaction.
      */
@@ -71,6 +79,21 @@ public final class StmTransactionContext {
             // Clear the thread's transaction.
             StmTransactionContext.transactionOfCurrentThread.set( transaction.getEnclosingTransaction() );
         }
+
+    }
+
+    /**
+     * Performs the work of the given read-nested write callback inside a newly created transaction.
+     *
+     * @param task       the work to be done inside a transaction.
+     * @param maxRetries the maximum number of times to retry the transaction if write conflicts are encountered (must
+     *                   be zero or more, zero meaning try but don't retry); ignored for nested transactions.
+     *
+     * @throws MaximumRetriesExceededException if the transaction fails even after the specified number of retries.
+     */
+    public static void doInReadNestedWriteTransaction( int maxRetries, Runnable task ) {
+
+        StmTransactionContext.doInTransaction( ETransactionWriteability.READ_WITH_NESTED_WRITES, maxRetries, task );
 
     }
 

@@ -24,8 +24,8 @@ final class NestedStmTransaction
      */
     NestedStmTransaction( ETransactionWriteability writeability, IStmTransaction enclosingTransaction ) {
 
-        if ( writeability == ETransactionWriteability.READ_WRITE ) {
-            enclosingTransaction.ensureWriteable();
+        if ( !writeability.isReadOnly() && enclosingTransaction.getWriteability().isReadOnly() ) {
+            throw new IllegalStateException( "Cannot nest a read-write transaction inside a read-only transaction." );
         }
 
         this.enclosingTransaction = enclosingTransaction;
@@ -51,6 +51,8 @@ final class NestedStmTransaction
     @Override
     public void commit() {
         // do nothing
+
+        // TODO: Committing a nested read-write transaction should ensure no write conflicts
     }
 
     @Override

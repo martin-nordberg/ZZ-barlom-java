@@ -72,12 +72,55 @@ class StmTransactionContextSpec
         StmTransactionContext.getStatus() == ETransactionStatus.NO_TRANSACTION;
     }
 
+    def "A read-only transaction can be nested in a read-nested write transaction"() {
+        given:
+        StmTransactionContext.beginReadNestedWriteTransaction();
+        StmTransactionContext.beginReadOnlyTransaction();
+        StmTransactionContext.commitTransaction();
+
+        expect:
+        StmTransactionContext.getStatus() == ETransactionStatus.IN_PROGRESS;
+
+        and:
+        StmTransactionContext.commitTransaction();
+        StmTransactionContext.getStatus() == ETransactionStatus.NO_TRANSACTION;
+    }
+
+    def "A read-write transaction can be nested in a read-nested write transaction"() {
+        given:
+        StmTransactionContext.beginReadNestedWriteTransaction();
+        StmTransactionContext.beginReadWriteTransaction();
+        StmTransactionContext.commitTransaction();
+
+        expect:
+        StmTransactionContext.getStatus() == ETransactionStatus.IN_PROGRESS;
+
+        and:
+        StmTransactionContext.commitTransaction();
+        StmTransactionContext.getStatus() == ETransactionStatus.NO_TRANSACTION;
+    }
+
     def "A read-write transaction cannot be nested in a read-only transaction"() {
         setup:
         StmTransactionContext.beginReadOnlyTransaction();
 
         when:
         StmTransactionContext.beginReadWriteTransaction();
+
+        then:
+        thrown IllegalStateException;
+        StmTransactionContext.getStatus() == ETransactionStatus.IN_PROGRESS;
+
+        cleanup:
+        StmTransactionContext.abortTransaction( Optional.empty() );
+    }
+
+    def "A read-nested write transaction cannot be nested in a read-only transaction"() {
+        setup:
+        StmTransactionContext.beginReadOnlyTransaction();
+
+        when:
+        StmTransactionContext.beginReadNestedWriteTransaction();
 
         then:
         thrown IllegalStateException;
