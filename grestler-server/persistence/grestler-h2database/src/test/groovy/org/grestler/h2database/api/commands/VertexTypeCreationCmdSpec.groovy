@@ -9,6 +9,7 @@ import org.grestler.dbutilities.api.DatabaseException
 import org.grestler.h2database.api.queries.*
 import org.grestler.h2database.impl.H2DataSource
 import org.grestler.metamodel.impl.queries.MetamodelRepository
+import org.grestler.metamodel.spi.commands.IMetamodelCommandSpi
 import org.grestler.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.utilities.exceptions.EValidationType
 import org.grestler.utilities.revisions.StmTransactionContext
@@ -27,11 +28,12 @@ class VertexTypeCreationCmdSpec
         given:
         StmTransactionContext.beginReadWriteTransaction();
 
+        def cmdId = "12341234-7a26-11e4-a545-08002741a702";
         def vtId = "12345678-7a26-11e4-a545-08002741a702";
-        def json = '{"id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample1","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
+        def json = '{"cmdId":"' + cmdId + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample1","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
-        def cmd = new VertexTypeCreationCmd( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject() );
+        def cmd = new VertexTypeCreationCmdWriter( dataSource );
+        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
         def pdloader = new PackageDependencyLoader( dataSource );
@@ -64,14 +66,15 @@ class VertexTypeCreationCmdSpec
     def "Duplicate vertex type creation is prevented"() {
 
         given:
+        def cmdId = "12341235-7a26-11e4-a545-08002741a702";
         def vtId = "12341234-7a26-11e4-a545-08002741a702";
-        def json = '{"id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample2","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
+        def json = '{"cmdId":"' + cmdId + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample2","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
-        def cmd = new VertexTypeCreationCmd( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject() );
+        def cmd = new VertexTypeCreationCmdWriter( dataSource );
+        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
         when:
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject() );
+        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
         then:
         DatabaseException e = thrown();
@@ -83,13 +86,14 @@ class VertexTypeCreationCmdSpec
     def "Vertex type creation requires a valid parent package"() {
 
         given:
+        def cmdId = "12341236-7a26-11e4-a545-08002741a702";
         def vtId = "23456789-7a26-11e4-a545-08002741a702";
-        def json = '{"id":"' + vtId + '","parentPackageId":"99999999-7a26-11e4-a545-08002741a702","name":"sample3","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
+        def json = '{"cmdId":"' + cmdId + '","id":"' + vtId + '","parentPackageId":"99999999-7a26-11e4-a545-08002741a702","name":"sample3","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
-        def cmd = new VertexTypeCreationCmd( dataSource );
+        def cmd = new VertexTypeCreationCmdWriter( dataSource );
 
         when:
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject() );
+        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
         then:
         DatabaseException e = thrown();

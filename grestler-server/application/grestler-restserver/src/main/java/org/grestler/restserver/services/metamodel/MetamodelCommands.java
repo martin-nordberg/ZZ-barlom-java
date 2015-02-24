@@ -76,12 +76,12 @@ public class MetamodelCommands {
         try {
 
             // Execute the command.
-            StmTransactionContext.doInReadWriteTransaction(
+            StmTransactionContext.doInReadNestedWriteTransaction(
                 1, () -> command.execute( jsonCmdArgs )
             );
 
             // Return JSON for success.
-            return "{ \"success\": true, \"cmdId\": \"" + command.getCmdId() + "\" }";
+            return "{ \"success\": true, \"cmdId\": \"" + jsonCmdArgs.getString( "cmdId" ) + "\" }";
 
         }
         catch ( Exception e ) {

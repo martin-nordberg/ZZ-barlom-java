@@ -7,8 +7,11 @@ package org.grestler.metamodel;
 
 import dagger.Module;
 import dagger.Provides;
+import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
 import org.grestler.metamodel.api.queries.IMetamodelRepository;
+import org.grestler.metamodel.impl.commands.MetamodelCommandFactory;
 import org.grestler.metamodel.impl.queries.MetamodelRepository;
+import org.grestler.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.queries.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.queries.IEdgeTypeLoader;
@@ -59,4 +62,19 @@ public class MetamodelModule {
         );
     }
 
+    /**
+     * Constructs a new metamodel command factory.
+     *
+     * @param metamodelRepository           the repository the commands will act upon.
+     * @param metamodelCommandWriterFactory factory for associated command writers.
+     *
+     * @return the newly constructed factory.
+     */
+    @Provides
+    public IMetamodelCommandFactory provideMetamodelCommandFactory(
+        IMetamodelRepository metamodelRepository,
+        IMetamodelCommandWriterFactory metamodelCommandWriterFactory
+    ) {
+        return new MetamodelCommandFactory( metamodelRepository, metamodelCommandWriterFactory );
+    }
 }

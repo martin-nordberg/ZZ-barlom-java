@@ -9,33 +9,33 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.h2database.api.exceptions.H2DatabaseException;
-import org.grestler.metamodel.api.commands.IMetamodelCommand;
-import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
+import org.grestler.metamodel.spi.commands.IMetamodelCommandWriter;
+import org.grestler.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 
 /**
  * Factory for metamodel commands supported by the H2 Database provider.
  */
-public class MetamodelCommandFactory
-    implements IMetamodelCommandFactory {
+public class MetamodelCommandWriterFactory
+    implements IMetamodelCommandWriterFactory {
 
     /**
      * Constructs a new factory for creating metamodel commands.
      *
      * @param dataSource the H2 data source to use.
      */
-    public MetamodelCommandFactory( IDataSource dataSource ) {
+    public MetamodelCommandWriterFactory( IDataSource dataSource ) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public IMetamodelCommand makeCommand( String commandTypeName ) {
+    public IMetamodelCommandWriter makeCommandWriter( String commandTypeName ) {
 
         switch ( commandTypeName.toLowerCase() ) {
             case "vertextypecreation":
-                return new VertexTypeCreationCmd( this.dataSource );
+                return new VertexTypeCreationCmdWriter( this.dataSource );
             default:
                 throw new H2DatabaseException(
-                    MetamodelCommandFactory.LOG, "Unknown command type: \"" + commandTypeName + "\"."
+                    MetamodelCommandWriterFactory.LOG, "Unknown command type: \"" + commandTypeName + "\"."
                 );
         }
 

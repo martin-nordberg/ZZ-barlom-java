@@ -8,7 +8,7 @@ package org.grestler.h2database;
 import dagger.Module;
 import dagger.Provides;
 import org.grestler.dbutilities.api.IDataSource;
-import org.grestler.h2database.api.commands.MetamodelCommandFactory;
+import org.grestler.h2database.api.commands.MetamodelCommandWriterFactory;
 import org.grestler.h2database.api.queries.AttributeDeclLoader;
 import org.grestler.h2database.api.queries.AttributeTypeLoader;
 import org.grestler.h2database.api.queries.EdgeTypeLoader;
@@ -16,7 +16,7 @@ import org.grestler.h2database.api.queries.PackageDependencyLoader;
 import org.grestler.h2database.api.queries.PackageLoader;
 import org.grestler.h2database.api.queries.VertexTypeLoader;
 import org.grestler.h2database.impl.H2DataSource;
-import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
+import org.grestler.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.queries.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.queries.IEdgeTypeLoader;
@@ -78,9 +78,16 @@ public class H2DatabaseModule {
         return new EdgeTypeLoader( dataSource );
     }
 
+    /**
+     * Provides a factory for command writers.
+     *
+     * @param dataSource the data source to write to.
+     *
+     * @return the constructed factory.
+     */
     @Provides
-    public IMetamodelCommandFactory provideMetamodelCommandFactory( IDataSource dataSource ) {
-        return new MetamodelCommandFactory( dataSource );
+    public IMetamodelCommandWriterFactory provideMetamodelCommandWriterFactory( IDataSource dataSource ) {
+        return new MetamodelCommandWriterFactory( dataSource );
     }
 
     /**

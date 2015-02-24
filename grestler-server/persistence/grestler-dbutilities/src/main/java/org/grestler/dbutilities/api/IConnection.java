@@ -41,6 +41,16 @@ public interface IConnection
     void executeInTransaction( ITransactionalCallback transactionalCallback );
 
     /**
+     * Executes a SQL command that is required to affect only one row.
+     *
+     * @param sqlQuery the SQL command (with named parameters).
+     * @param args     the arguments to substitute into the query.
+     *
+     * @throws DatabaseException if the command fails or the number of rows affected is not one.
+     */
+    void executeOneRowCommand( String sqlQuery, Map<String, Object> args );
+
+    /**
      * Executes a single SQL select query. Calls a callback for each record found.
      *
      * @param queryCallback the callback function called with each record of the result.

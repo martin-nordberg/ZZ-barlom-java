@@ -3,21 +3,21 @@
 // Apache 2.0 License
 //
 
-package org.grestler.metamodel.api.commands;
+package org.grestler.metamodel.spi.commands;
 
 import javax.json.JsonObject;
 
 /**
- * Interface to a command that changes some element of a metamodel.
+ * Interface defining the persistence layer for a command.
  */
 @FunctionalInterface
-public interface IMetamodelCommand {
+public interface IMetamodelCommandWriter {
 
     /**
      * Executes this command.
      *
      * @param jsonCmdArgs the arguments for the command as a JSON object.
      */
-    void execute( JsonObject jsonCmdArgs );
+    void execute( JsonObject jsonCmdArgs, IMetamodelCommandSpi cmdFinisher );
 
 }

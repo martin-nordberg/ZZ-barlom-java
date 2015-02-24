@@ -48,8 +48,8 @@ public abstract class AbstractConnection
 
         assert sqlQuery.startsWith( "INSERT" ) || sqlQuery.startsWith( "UPDATE" ) || sqlQuery.startsWith( "DELETE" );
 
-        AbstractConnection.LOG.info( "Executing command: {}.", sqlQuery );
-        AbstractConnection.LOG.info( "Command Arguments: {}.", args.toString() );
+        AbstractConnection.LOG.debug( "Executing command: {}.", sqlQuery );
+        AbstractConnection.LOG.debug( "Command Arguments: {}.", args.toString() );
 
         try {
 
@@ -96,6 +96,15 @@ public abstract class AbstractConnection
     }
 
     @Override
+    public void executeOneRowCommand( String sqlQuery, Map<String, Object> args ) {
+        int rows = this.executeCommand( sqlQuery, args );
+        if ( rows != 1 ) {
+            this.throwException( "Command expected to affect one record but affected " + rows + ": " + sqlQuery + " with parameters " + args + "." );
+        }
+
+    }
+
+    @Override
     public void executeQuery( IQueryCallback queryCallback, String sqlQuery ) {
 
         assert sqlQuery.startsWith( "SELECT" );
@@ -128,6 +137,15 @@ public abstract class AbstractConnection
      * @param resultSet the JDBC result set to be wrapped.
      */
     protected abstract IResultSetSpi makeResultSet( ResultSet resultSet );
+
+    /**
+     * Throws an exception with no underlying database exception.
+     *
+     * @param message the message for the exception.
+     *
+     * @throws DatabaseException always thrown by this method.
+     */
+    protected abstract void throwException( String message ) throws DatabaseException;
 
     /**
      * Throws an exception wrapping the underlying SQLException from JDBC.

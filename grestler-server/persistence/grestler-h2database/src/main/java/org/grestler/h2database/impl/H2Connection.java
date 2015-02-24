@@ -1,3 +1,8 @@
+//
+// (C) Copyright 2015 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
 package org.grestler.h2database.impl;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +33,11 @@ public class H2Connection
     @Override
     protected IResultSetSpi makeResultSet( ResultSet resultSet ) {
         return new H2ResultSet( resultSet );
+    }
+
+    @Override
+    protected void throwException( String message ) throws DatabaseException {
+        throw new H2DatabaseException( H2Connection.LOG, message );
     }
 
     @Override
