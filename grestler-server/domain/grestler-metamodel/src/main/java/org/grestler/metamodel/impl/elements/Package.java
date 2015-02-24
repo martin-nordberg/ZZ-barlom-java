@@ -6,12 +6,13 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.EDependencyDepth;
+import org.grestler.metamodel.api.elements.IAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackageDependency;
+import org.grestler.metamodel.api.elements.IPackagedElement;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.collections.ISizedIterable;
-import org.grestler.utilities.revisions.VArray;
 
 import java.util.UUID;
 
@@ -33,24 +34,14 @@ public final class Package
 
         super( id, parentPackage, name );
 
-        this.childPackages = new VArray<>();
-        this.edgeTypes = new VArray<>();
-        this.vertexTypes = new VArray<>();
-
         this.packageDependencies = new PackageDependencies( this );
-
-        ( (IPackageUnderAssembly) parentPackage ).addChildPackage( this );
+        this.packageContents = new PackageContents( this );
 
     }
 
     @Override
-    public void addChildPackage( IPackage pkg ) {
-        this.childPackages.add( pkg );
-    }
-
-    @Override
-    public void addEdgeType( IEdgeType edgeType ) {
-        this.edgeTypes.add( edgeType );
+    public void addChildElement( IPackagedElement packagedElement ) {
+        this.packageContents.addChildElement( packagedElement );
     }
 
     @Override
@@ -59,13 +50,13 @@ public final class Package
     }
 
     @Override
-    public void addVertexType( IVertexType vertexType ) {
-        this.vertexTypes.add( vertexType );
+    public ISizedIterable<IAttributeType> getAttributeTypes() {
+        return this.packageContents.getAttributeTypes();
     }
 
     @Override
     public ISizedIterable<IPackage> getChildPackages() {
-        return this.childPackages;
+        return this.packageContents.getChildPackages();
     }
 
     @Override
@@ -75,7 +66,7 @@ public final class Package
 
     @Override
     public ISizedIterable<IEdgeType> getEdgeTypes() {
-        return this.edgeTypes;
+        return this.packageContents.getEdgeTypes();
     }
 
     @Override
@@ -85,7 +76,7 @@ public final class Package
 
     @Override
     public ISizedIterable<IVertexType> getVertexTypes() {
-        return this.vertexTypes;
+        return this.packageContents.getVertexTypes();
     }
 
     @Override
@@ -93,16 +84,15 @@ public final class Package
         return this.packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
     }
 
-    /** The sub-packages of this package. */
-    private final VArray<IPackage> childPackages;
+    @Override
+    public void removeChildElement( IPackagedElement packagedElement ) {
+        this.packageContents.removeChildElement( packagedElement );
+    }
 
-    /** The edge types within this package. */
-    private final VArray<IEdgeType> edgeTypes;
+    /** Helper object that manages this package's contents. */
+    private final PackageContents packageContents;
 
-    /** Helper class that manages this package's dependencies. */
+    /** Helper object that manages this package's dependencies. */
     private final PackageDependencies packageDependencies;
-
-    /** The vertex types within this package. */
-    private final VArray<IVertexType> vertexTypes;
 
 }

@@ -37,4 +37,5 @@ public abstract class AttributeType
         json.write( "dataType", this.getDataType().name() );
 
     }
+
 }

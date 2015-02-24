@@ -28,7 +28,8 @@ public abstract class PackagedElement
         this.parentPackage = new V<>( parentPackage );
 
         // TODO: unique name per parent package
-        // TODO: track packaged elements in package
+
+        ( (IPackageUnderAssembly) parentPackage ).addChildElement( this );
 
     }
 
@@ -51,10 +52,14 @@ public abstract class PackagedElement
      *
      * @param parentPackage the new parent package.
      */
-    public void setParentPackage( IPackage parentPackage ) {
-        // TODO: untrack from old parent
+    public final void setParentPackage( IPackage parentPackage ) {
+
+        ( (IPackageUnderAssembly) this.parentPackage.get() ).removeChildElement( this );
+
         this.parentPackage.set( parentPackage );
-        // TODO: track in new parent
+
+        ( (IPackageUnderAssembly) parentPackage ).addChildElement( this );
+
     }
 
     /** The parent package containing this packaged element. */

@@ -36,7 +36,7 @@ public final class BaseVertexType
         this.parentPackage = parentPackage;
         this.attributes = new VArray<>();
 
-        ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
+        ( (IPackageUnderAssembly) parentPackage ).addChildElement( this );
 
     }
 

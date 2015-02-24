@@ -17,7 +17,6 @@ import org.grestler.utilities.revisions.V;
 import org.grestler.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -33,7 +32,6 @@ abstract class EdgeType
      * @param id             the unique ID of the edge type.
      * @param parentPackage  the package containing the edge type.
      * @param name           the name of the edge type.
-     * @param superType      the super type.
      * @param abstractness   whether the edge type is abstract or concrete.
      * @param cyclicity      whether the edge type is constrained to be acyclic.
      * @param multiEdgedness whether the edge type is constrained to disallow multiple edges between two given
@@ -44,7 +42,6 @@ abstract class EdgeType
         UUID id,
         IPackage parentPackage,
         String name,
-        IEdgeType superType,
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
@@ -52,7 +49,6 @@ abstract class EdgeType
     ) {
         super( id, parentPackage, name );
 
-        this.superType = new V<>( superType );
         this.abstractness = new V<>( abstractness );
         this.cyclicity = new V<>( cyclicity );
         this.multiEdgedness = new V<>( multiEdgedness );
@@ -60,10 +56,7 @@ abstract class EdgeType
 
         this.attributes = new VArray<>();
 
-        ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
-
         // TODO: track sub-types
-        // TODO: Move super type down a level in the inheritance directed/undirected
 
     }
 
@@ -77,7 +70,7 @@ abstract class EdgeType
 
         super.generateJsonAttributes( json );
 
-        json.write( "superTypeId", this.getSuperType().get().getId().toString() )
+        json.write( "superTypeId", this.getSuperEdgeType().get().getId().toString() )
             .write( "abstractness", this.getAbstractness().name() )
             .write( "cyclicity", this.getCyclicity().name() )
             .write( "multiEdgedness", this.getMultiEdgedness().name() )
@@ -110,16 +103,6 @@ abstract class EdgeType
     @Override
     public final ESelfLooping getSelfLooping() {
         return this.selfLooping.get();
-    }
-
-    @Override
-    public final Optional<IEdgeType> getSuperType() {
-        return Optional.of( this.superType.get() );
-    }
-
-    @Override
-    public final boolean isSubTypeOf( IEdgeType edgeType ) {
-        return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
     @Override
@@ -163,17 +146,6 @@ abstract class EdgeType
         this.selfLooping.set( selfLooping );
     }
 
-    /**
-     * Changes the super type of this edge type.
-     *
-     * @param superType the new super type.
-     */
-    public void setSuperType( IEdgeType superType ) {
-        // TODO: untrack sub-type
-        this.superType.set( superType );
-        // TODO: track new sub-type
-    }
-
     /** Whether this edge type is abstract. */
     private final V<EAbstractness> abstractness;
 
@@ -188,8 +160,5 @@ abstract class EdgeType
 
     /** Whether this edge type allows an edge from a vertex to itself. */
     private final V<ESelfLooping> selfLooping;
-
-    /** The super type for this edge type. */
-    private final V<IEdgeType> superType;
 
 }

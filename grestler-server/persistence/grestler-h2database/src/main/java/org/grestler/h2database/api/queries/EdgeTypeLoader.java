@@ -13,8 +13,9 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfLooping;
-import org.grestler.metamodel.api.elements.IEdgeType;
+import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
+import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.metamodel.spi.queries.IEdgeTypeLoader;
 import org.grestler.metamodel.spi.queries.IMetamodelRepositorySpi;
@@ -58,12 +59,12 @@ public class EdgeTypeLoader
      *
      * @return the found or newly created edge type.
      */
-    private IEdgeType findOrCreateDirectedEdgeType(
+    private IDirectedEdgeType findOrCreateDirectedEdgeType(
         DirectedEdgeTypeRecord record, List<DirectedEdgeTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the edge type already in the repository.
-        Optional<IEdgeType> result = repository.findEdgeTypeById( record.id );
+        Optional<IDirectedEdgeType> result = repository.findDirectedEdgeTypeById( record.id );
 
         // If already registered, use the registered value.
         if ( result.isPresent() ) {
@@ -83,7 +84,7 @@ public class EdgeTypeLoader
         IVertexType tailVertexType = repository.findVertexTypeById( record.tailVertexTypeId ).get();
 
         // Find an existing edge super type by UUID.
-        Optional<IEdgeType> superType = repository.findEdgeTypeById( record.superTypeId );
+        Optional<IDirectedEdgeType> superType = repository.findDirectedEdgeTypeById( record.superTypeId );
 
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
@@ -125,12 +126,12 @@ public class EdgeTypeLoader
      *
      * @return the found or newly created edge type.
      */
-    private IEdgeType findOrCreateUndirectedEdgeType(
+    private IUndirectedEdgeType findOrCreateUndirectedEdgeType(
         UndirectedEdgeTypeRecord record, List<UndirectedEdgeTypeRecord> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the edge type already in the repository.
-        Optional<IEdgeType> result = repository.findEdgeTypeById( record.id );
+        Optional<IUndirectedEdgeType> result = repository.findUndirectedEdgeTypeById( record.id );
 
         // If already registered, use the registered value.
         if ( result.isPresent() ) {
@@ -149,7 +150,7 @@ public class EdgeTypeLoader
         IVertexType vertexType = repository.findVertexTypeById( record.vertexTypeId ).get();
 
         // Find an existing edge super type by UUID.
-        Optional<IEdgeType> superType = repository.findEdgeTypeById( record.superTypeId );
+        Optional<IUndirectedEdgeType> superType = repository.findUndirectedEdgeTypeById( record.superTypeId );
 
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {

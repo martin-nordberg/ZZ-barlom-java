@@ -45,7 +45,7 @@ public class BaseDirectedEdgeType
 
         this.attributes = new VArray<>();
 
-        ( (IPackageUnderAssembly) parentPackage ).addEdgeType( this );
+        ( (IPackageUnderAssembly) parentPackage ).addChildElement( this );
 
     }
 
@@ -135,7 +135,12 @@ public class BaseDirectedEdgeType
     }
 
     @Override
-    public Optional<IEdgeType> getSuperType() {
+    public Optional<IEdgeType> getSuperEdgeType() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<IDirectedEdgeType> getSuperType() {
         return Optional.empty();
     }
 
@@ -150,7 +155,7 @@ public class BaseDirectedEdgeType
     }
 
     @Override
-    public boolean isSubTypeOf( IEdgeType edgeType ) {
+    public boolean isSubTypeOf( IDirectedEdgeType edgeType ) {
         return this == edgeType;
     }
 

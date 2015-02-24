@@ -47,6 +47,8 @@ final class PackageDependencies {
         }
     }
 
+    // TODO: removePackageDependency
+
     /**
      * Gets the packages that are clients of this package.
      *

@@ -43,6 +43,20 @@ public interface IMetamodelRepository {
     Optional<IDirectedEdgeType> findDirectedEdgeTypeBase();
 
     /**
+     * Finds the directed edge type with given ID.
+     *
+     * @param id the UUID of the edge type to find.
+     *
+     * @return the edge type found.
+     */
+    Optional<IDirectedEdgeType> findDirectedEdgeTypeById( UUID id );
+
+    /**
+     * @return a list of all directed edge types in the repository.
+     */
+    IIndexable<IDirectedEdgeType> findDirectedEdgeTypesAll();
+
+    /**
      * Finds the edge type with given ID.
      *
      * @param id the UUID of the edge type to find.
@@ -83,6 +97,20 @@ public interface IMetamodelRepository {
      * @return the base edge type or empty if not loaded yet.
      */
     Optional<IUndirectedEdgeType> findUndirectedEdgeTypeBase();
+
+    /**
+     * Finds the undirected edge type with given ID.
+     *
+     * @param id the UUID of the edge type to find.
+     *
+     * @return the edge type found.
+     */
+    Optional<IUndirectedEdgeType> findUndirectedEdgeTypeById( UUID id );
+
+    /**
+     * @return a list of all undirected edge types in the repository.
+     */
+    IIndexable<IUndirectedEdgeType> findUndirectedEdgeTypesAll();
 
     /**
      * Finds the base vertex type.

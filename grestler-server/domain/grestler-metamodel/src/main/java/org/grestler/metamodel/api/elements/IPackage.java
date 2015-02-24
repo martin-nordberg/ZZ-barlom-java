@@ -14,6 +14,11 @@ public interface IPackage
     extends IPackagedElement {
 
     /**
+     * @return the attribute types that are children of this package.
+     */
+    ISizedIterable<IAttributeType> getAttributeTypes();
+
+    /**
      * @return the packages that are children of this one.
      */
     ISizedIterable<IPackage> getChildPackages();
@@ -28,7 +33,7 @@ public interface IPackage
     ISizedIterable<IPackage> getClientPackages( EDependencyDepth dependencyDepth );
 
     /**
-     * @return the Edge types that are children of this package.
+     * @return the edge types that are children of this package.
      */
     ISizedIterable<IEdgeType> getEdgeTypes();
 

@@ -40,10 +40,11 @@ public interface IEdgeType
      */
     ESelfLooping getSelfLooping();
 
+
     /**
      * @return the super type of this edge type.
      */
-    Optional<IEdgeType> getSuperType();
+    Optional<IEdgeType> getSuperEdgeType();
 
     /**
      * @return whether this edge type is abstract, i.e has no concrete instances. Note that a super type must be
@@ -59,15 +60,5 @@ public interface IEdgeType
     default boolean isSimple() {
         return this.getMultiEdgedness() == EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED && this.getSelfLooping() == ESelfLooping.SELF_LOOPS_NOT_ALLOWED;
     }
-
-    /**
-     * Determines whether this edge type is a direct or indirect subtype of the given edge type.
-     *
-     * @param edgeType the potential super type
-     *
-     * @return true if this edge type is the given type or, recursively, if its super type is a subtype of the given
-     * type.
-     */
-    boolean isSubTypeOf( IEdgeType edgeType );
 
 }

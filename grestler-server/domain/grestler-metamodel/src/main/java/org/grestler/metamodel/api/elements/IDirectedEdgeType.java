@@ -53,6 +53,11 @@ public interface IDirectedEdgeType
     OptionalInt getMinTailOutDegree();
 
     /**
+     * @return the super type of this edge type.
+     */
+    Optional<IDirectedEdgeType> getSuperType();
+
+    /**
      * @return the name of the role for the vertex at the tail of edges of this type.
      */
     Optional<String> getTailRoleName();
@@ -61,5 +66,15 @@ public interface IDirectedEdgeType
      * @return the origin vertex type for edges of this type.
      */
     IVertexType getTailVertexType();
+
+    /**
+     * Determines whether this edge type is a direct or indirect subtype of the given edge type.
+     *
+     * @param edgeType the potential super type
+     *
+     * @return true if this edge type is the given type or, recursively, if its super type is a subtype of the given
+     * type.
+     */
+    boolean isSubTypeOf( IDirectedEdgeType edgeType );
 
 }

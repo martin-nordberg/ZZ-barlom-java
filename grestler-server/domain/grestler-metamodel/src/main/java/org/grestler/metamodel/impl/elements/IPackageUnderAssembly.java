@@ -5,10 +5,8 @@
 
 package org.grestler.metamodel.impl.elements;
 
-import org.grestler.metamodel.api.elements.IEdgeType;
-import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackageDependency;
-import org.grestler.metamodel.api.elements.IVertexType;
+import org.grestler.metamodel.api.elements.IPackagedElement;
 
 /**
  * Internal interface supported by packages.
@@ -16,18 +14,11 @@ import org.grestler.metamodel.api.elements.IVertexType;
 interface IPackageUnderAssembly {
 
     /**
-     * Adds a child package to this package.
+     * Adds a child element to this package.
      *
-     * @param pkg the child package to add.
+     * @param packagedElement the child element to add.
      */
-    void addChildPackage( IPackage pkg );
-
-    /**
-     * Adds a child edge type that is part of this package.
-     *
-     * @param edgeType the edge type to add.
-     */
-    void addEdgeType( IEdgeType edgeType );
+    void addChildElement( IPackagedElement packagedElement );
 
     /**
      * Registers a package dependency with this package.
@@ -37,10 +28,10 @@ interface IPackageUnderAssembly {
     void addPackageDependency( IPackageDependency packageDependency );
 
     /**
-     * Adds a child vertex type that is part of this package.
+     * Removes a child element from this package.
      *
-     * @param vertexType the vertex type to add.
+     * @param packagedElement the child element to remove.
      */
-    void addVertexType( IVertexType vertexType );
+    void removeChildElement( IPackagedElement packagedElement );
 
 }

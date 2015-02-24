@@ -43,8 +43,6 @@ public final class VertexType
         this.abstractness = new V<>( abstractness );
         this.attributes = new VArray<>();
 
-        ( (IPackageUnderAssembly) parentPackage ).addVertexType( this );
-
         // TODO: track subtypes
 
     }

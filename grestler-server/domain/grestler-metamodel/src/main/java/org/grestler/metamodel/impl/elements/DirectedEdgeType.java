@@ -52,8 +52,7 @@ public final class DirectedEdgeType
         UUID id,
         IPackage parentPackage,
         String name,
-        IEdgeType superType,
-        // TODO: should be IDirectedEdgeType
+        IDirectedEdgeType superType,
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
@@ -67,8 +66,9 @@ public final class DirectedEdgeType
         OptionalInt minHeadInDegree,
         OptionalInt maxHeadInDegree
     ) {
-        super( id, parentPackage, name, superType, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super( id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
 
+        this.superType = new V<>( superType );
         this.tailVertexType = new V<>( tailVertexType );
         this.headVertexType = new V<>( headVertexType );
         this.tailRoleName = new V<>( tailRoleName );
@@ -128,6 +128,16 @@ public final class DirectedEdgeType
     }
 
     @Override
+    public Optional<IEdgeType> getSuperEdgeType() {
+        return Optional.of( this.superType.get() );
+    }
+
+    @Override
+    public Optional<IDirectedEdgeType> getSuperType() {
+        return Optional.of( this.superType.get() );
+    }
+
+    @Override
     public Optional<String> getTailRoleName() {
         return this.tailRoleName.get();
     }
@@ -135,6 +145,11 @@ public final class DirectedEdgeType
     @Override
     public IVertexType getTailVertexType() {
         return this.tailVertexType.get();
+    }
+
+    @Override
+    public boolean isSubTypeOf( IDirectedEdgeType edgeType ) {
+        return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
     /**
@@ -191,6 +206,12 @@ public final class DirectedEdgeType
         this.minTailOutDegree.set( minTailOutDegree );
     }
 
+    public void setSuperType( IDirectedEdgeType superType ) {
+        // TODO: unwire old subtype
+        this.superType.set( superType );
+        // TODO: wire new subtype
+    }
+
     /**
      * Updates the tail role name for this edge type.
      *
@@ -226,6 +247,9 @@ public final class DirectedEdgeType
 
     /** The minimum out-degree for the tail vertex of edges of this type. */
     private final V<OptionalInt> minTailOutDegree;
+
+    /** The super type of this edge type. */
+    private final V<IDirectedEdgeType> superType;
 
     /** The name of the role for the vertex at the tail of edges of this type. */
     private final V<Optional<String>> tailRoleName;

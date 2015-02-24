@@ -63,11 +63,15 @@ public final class MetamodelRepository
             this.packages = new VArray<>();
             this.vertexTypes = new VArray<>();
             this.edgeTypes = new VArray<>();
+            this.directedEdgeTypes = new VArray<>();
+            this.undirectedEdgeTypes = new VArray<>();
             this.attributeTypes = new VArray<>();
 
             this.packagesById = new VHashMap<>( 500 );
             this.vertexTypesById = new VHashMap<>( 500 );
             this.edgeTypesById = new VHashMap<>( 500 );
+            this.directedEdgeTypesById = new VHashMap<>( 500 );
+            this.undirectedEdgeTypesById = new VHashMap<>( 500 );
             this.attributeTypesById = new VHashMap<>( 500 );
 
             try (
@@ -111,6 +115,16 @@ public final class MetamodelRepository
     }
 
     @Override
+    public Optional<IDirectedEdgeType> findDirectedEdgeTypeById( UUID id ) {
+        return this.directedEdgeTypesById.get( id );
+    }
+
+    @Override
+    public IIndexable<IDirectedEdgeType> findDirectedEdgeTypesAll() {
+        return this.directedEdgeTypes;
+    }
+
+    @Override
     public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
         return this.edgeTypesById.get( id );
     }
@@ -147,6 +161,16 @@ public final class MetamodelRepository
     }
 
     @Override
+    public Optional<IUndirectedEdgeType> findUndirectedEdgeTypeById( UUID id ) {
+        return this.undirectedEdgeTypesById.get( id );
+    }
+
+    @Override
+    public IIndexable<IUndirectedEdgeType> findUndirectedEdgeTypesAll() {
+        return this.undirectedEdgeTypes;
+    }
+
+    @Override
     public Optional<IVertexType> findVertexTypeBase() {
         if ( this.baseVertexType == null ) {
             return Optional.empty();
@@ -171,6 +195,8 @@ public final class MetamodelRepository
 
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
+        this.directedEdgeTypes.add( result );
+        this.directedEdgeTypesById.put( id, result );
         this.baseDirectedEdgeType = new V<>( result );
 
         return result;
@@ -186,6 +212,8 @@ public final class MetamodelRepository
 
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
+        this.undirectedEdgeTypes.add( result );
+        this.undirectedEdgeTypesById.put( id, result );
         this.baseUndirectedEdgeType = new V<>( result );
 
         return result;
@@ -238,7 +266,7 @@ public final class MetamodelRepository
         UUID id,
         IPackage parentPackage,
         String name,
-        IEdgeType superType,
+        IDirectedEdgeType superType,
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
@@ -274,6 +302,8 @@ public final class MetamodelRepository
 
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
+        this.directedEdgeTypes.add( result );
+        this.directedEdgeTypesById.put( id, result );
 
         return result;
 
@@ -380,7 +410,7 @@ public final class MetamodelRepository
         UUID id,
         IPackage parentPackage,
         String name,
-        IEdgeType superType,
+        IUndirectedEdgeType superType,
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
@@ -406,6 +436,8 @@ public final class MetamodelRepository
 
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
+        this.undirectedEdgeTypes.add( result );
+        this.undirectedEdgeTypesById.put( id, result );
 
         return result;
 
@@ -455,6 +487,10 @@ public final class MetamodelRepository
 
     private final VHashMap<UUID, IAttributeType> attributeTypesById;
 
+    private final VArray<IDirectedEdgeType> directedEdgeTypes;
+
+    private final VHashMap<UUID, IDirectedEdgeType> directedEdgeTypesById;
+
     private final VArray<IEdgeType> edgeTypes;
 
     private final VHashMap<UUID, IEdgeType> edgeTypesById;
@@ -462,6 +498,10 @@ public final class MetamodelRepository
     private final VArray<IPackage> packages;
 
     private final VHashMap<UUID, IPackage> packagesById;
+
+    private final VArray<IUndirectedEdgeType> undirectedEdgeTypes;
+
+    private final VHashMap<UUID, IUndirectedEdgeType> undirectedEdgeTypesById;
 
     private final VArray<IVertexType> vertexTypes;
 

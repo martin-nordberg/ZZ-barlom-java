@@ -6,12 +6,13 @@
 package org.grestler.metamodel.impl.elements;
 
 import org.grestler.metamodel.api.elements.EDependencyDepth;
+import org.grestler.metamodel.api.elements.IAttributeType;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.elements.IPackageDependency;
+import org.grestler.metamodel.api.elements.IPackagedElement;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.collections.ISizedIterable;
-import org.grestler.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
 import java.util.UUID;
@@ -31,22 +32,14 @@ public class RootPackage
 
         this.id = id;
 
-        this.childPackages = new VArray<>();
-        this.edgeTypes = new VArray<>();
-        this.vertexTypes = new VArray<>();
-
         this.packageDependencies = new PackageDependencies( this );
+        this.packageContents = new PackageContents( this );
 
     }
 
     @Override
-    public void addChildPackage( IPackage pkg ) {
-        this.childPackages.add( pkg );
-    }
-
-    @Override
-    public void addEdgeType( IEdgeType edgeType ) {
-        this.edgeTypes.add( edgeType );
+    public void addChildElement( IPackagedElement packagedElement ) {
+        this.packageContents.addChildElement( packagedElement );
     }
 
     @Override
@@ -55,18 +48,18 @@ public class RootPackage
     }
 
     @Override
-    public void addVertexType( IVertexType vertexType ) {
-        this.vertexTypes.add( vertexType );
-    }
-
-    @Override
     public void generateJsonAttributes( JsonGenerator json ) {
         json.write( "id", this.id.toString() ).writeNull( "parentPackageId" ).write( "name", "$" ).write( "path", "" );
     }
 
     @Override
+    public ISizedIterable<IAttributeType> getAttributeTypes() {
+        return this.packageContents.getAttributeTypes();
+    }
+
+    @Override
     public ISizedIterable<IPackage> getChildPackages() {
-        return this.childPackages;
+        return this.packageContents.getChildPackages();
     }
 
     @Override
@@ -76,7 +69,7 @@ public class RootPackage
 
     @Override
     public ISizedIterable<IEdgeType> getEdgeTypes() {
-        return this.edgeTypes;
+        return this.packageContents.getEdgeTypes();
     }
 
     @Override
@@ -106,7 +99,7 @@ public class RootPackage
 
     @Override
     public ISizedIterable<IVertexType> getVertexTypes() {
-        return this.vertexTypes;
+        return this.packageContents.getVertexTypes();
     }
 
     @Override
@@ -119,19 +112,18 @@ public class RootPackage
         return false;
     }
 
-    /** The sub-packages of this package. */
-    private final VArray<IPackage> childPackages;
-
-    /** The edge types within this package. */
-    private final VArray<IEdgeType> edgeTypes;
+    @Override
+    public void removeChildElement( IPackagedElement packagedElement ) {
+        this.packageContents.removeChildElement( packagedElement );
+    }
 
     /** The unique ID of this root package. */
     private final UUID id;
 
-    /** Helper class that manages this package's dependencies. */
-    private final PackageDependencies packageDependencies;
+    /** Helper object manages the contents of this package. */
+    private final PackageContents packageContents;
 
-    /** The vertex types within this package. */
-    private final VArray<IVertexType> vertexTypes;
+    /** Helper object that manages this package's dependencies. */
+    private final PackageDependencies packageDependencies;
 
 }

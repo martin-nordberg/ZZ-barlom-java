@@ -16,6 +16,7 @@ import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public final class UndirectedEdgeType
         UUID id,
         IPackage parentPackage,
         String name,
-        IEdgeType superType,
+        IUndirectedEdgeType superType,
         EAbstractness abstractness,
         ECyclicity cyclicity,
         EMultiEdgedness multiEdgedness,
@@ -55,8 +56,9 @@ public final class UndirectedEdgeType
         OptionalInt minDegree,
         OptionalInt maxDegree
     ) {
-        super( id, parentPackage, name, superType, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super( id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
 
+        this.superType = new V<>( superType );
         this.vertexType = new V<>( vertexType );
         this.minDegree = new V<>( minDegree );
         this.maxDegree = new V<>( maxDegree );
@@ -85,8 +87,23 @@ public final class UndirectedEdgeType
     }
 
     @Override
+    public Optional<IEdgeType> getSuperEdgeType() {
+        return Optional.of( this.superType.get() );
+    }
+
+    @Override
+    public Optional<IUndirectedEdgeType> getSuperType() {
+        return Optional.of( this.superType.get() );
+    }
+
+    @Override
     public IVertexType getVertexType() {
         return this.vertexType.get();
+    }
+
+    @Override
+    public boolean isSubTypeOf( IUndirectedEdgeType edgeType ) {
+        return this == edgeType || this.getSuperType().get().isSubTypeOf( edgeType );
     }
 
     /**
@@ -121,6 +138,9 @@ public final class UndirectedEdgeType
 
     /** The minimum in-degree for the head vertex of edges of this type. */
     private final V<OptionalInt> minDegree;
+
+    /** The super type of this type. */
+    private final V<IUndirectedEdgeType> superType;
 
     /** The vertex type for edges of this type. */
     private final V<IVertexType> vertexType;
