@@ -22,25 +22,52 @@ import java.util.UUID;
 public interface IMetamodelRepository {
 
     /**
+     * @return a list of all attribute types in the repository.
+     */
+    IIndexable<IAttributeType> findAllAttributeTypes();
+
+    /**
+     * @return a list of all directed edge types in the repository.
+     */
+    IIndexable<IDirectedEdgeType> findAllDirectedEdgeTypes();
+
+    /**
+     * @return a list of all edge types in the repository.
+     */
+    IIndexable<IEdgeType> findAllEdgeTypes();
+
+    /**
+     * @return a list of all packages in the repository.
+     */
+    IIndexable<IPackage> findAllPackages();
+
+    /**
+     * @return a list of all undirected edge types in the repository.
+     */
+    IIndexable<IUndirectedEdgeType> findAllUndirectedEdgeTypes();
+
+    /**
+     * @return a list of all vertex types in the repository.
+     */
+    IIndexable<IVertexType> findAllVertexTypes();
+
+    /**
      * Finds the attribute type with given ID.
      *
      * @param id the UUID of the attribute type to find.
      *
      * @return the attribute type found.
+     *
+     * @throws org.grestler.metamodel.api.exceptions.MetamodelException if the package is not found.
      */
-    Optional<IAttributeType> findAttributeTypeById( UUID id );
-
-    /**
-     * @return a list of all attribute types in the repository.
-     */
-    IIndexable<IAttributeType> findAttributeTypesAll();
+    IAttributeType findAttributeTypeById( UUID id );
 
     /**
      * Finds the base directed edge type.
      *
      * @return the base edge type or empty if not loaded yet.
      */
-    Optional<IDirectedEdgeType> findDirectedEdgeTypeBase();
+    IDirectedEdgeType findDirectedEdgeTypeBase();
 
     /**
      * Finds the directed edge type with given ID.
@@ -49,12 +76,7 @@ public interface IMetamodelRepository {
      *
      * @return the edge type found.
      */
-    Optional<IDirectedEdgeType> findDirectedEdgeTypeById( UUID id );
-
-    /**
-     * @return a list of all directed edge types in the repository.
-     */
-    IIndexable<IDirectedEdgeType> findDirectedEdgeTypesAll();
+    IDirectedEdgeType findDirectedEdgeTypeById( UUID id );
 
     /**
      * Finds the edge type with given ID.
@@ -63,12 +85,34 @@ public interface IMetamodelRepository {
      *
      * @return the edge type found.
      */
-    Optional<IEdgeType> findEdgeTypeById( UUID id );
+    IEdgeType findEdgeTypeById( UUID id );
 
     /**
-     * @return a list of all edge types in the repository.
+     * Finds the attribute type with given ID.
+     *
+     * @param id the UUID of the attribute type to find.
+     *
+     * @return the attribute type found.
      */
-    IIndexable<IEdgeType> findEdgeTypesAll();
+    Optional<IAttributeType> findOptionalAttributeTypeById( UUID id );
+
+    /**
+     * Finds the directed edge type with given ID.
+     *
+     * @param id the UUID of the edge type to find.
+     *
+     * @return the edge type found.
+     */
+    Optional<IDirectedEdgeType> findOptionalDirectedEdgeTypeById( UUID id );
+
+    /**
+     * Finds the edge type with given ID.
+     *
+     * @param id the UUID of the edge type to find.
+     *
+     * @return the edge type found.
+     */
+    Optional<IEdgeType> findOptionalEdgeTypeById( UUID id );
 
     /**
      * Finds the package with given ID.
@@ -77,26 +121,7 @@ public interface IMetamodelRepository {
      *
      * @return the package found.
      */
-    Optional<IPackage> findPackageById( UUID id );
-
-    /**
-     * Finds the root package.
-     *
-     * @return the root package or empty if not loaded yet.
-     */
-    Optional<IPackage> findPackageRoot();
-
-    /**
-     * @return a list of all packages in the repository.
-     */
-    IIndexable<IPackage> findPackagesAll();
-
-    /**
-     * Finds the base undirected edge type.
-     *
-     * @return the base edge type or empty if not loaded yet.
-     */
-    Optional<IUndirectedEdgeType> findUndirectedEdgeTypeBase();
+    Optional<IPackage> findOptionalPackageById( UUID id );
 
     /**
      * Finds the undirected edge type with given ID.
@@ -105,19 +130,7 @@ public interface IMetamodelRepository {
      *
      * @return the edge type found.
      */
-    Optional<IUndirectedEdgeType> findUndirectedEdgeTypeById( UUID id );
-
-    /**
-     * @return a list of all undirected edge types in the repository.
-     */
-    IIndexable<IUndirectedEdgeType> findUndirectedEdgeTypesAll();
-
-    /**
-     * Finds the base vertex type.
-     *
-     * @return the base vertex type or empty if not loaded yet.
-     */
-    Optional<IVertexType> findVertexTypeBase();
+    Optional<IUndirectedEdgeType> findOptionalUndirectedEdgeTypeById( UUID id );
 
     /**
      * Finds the vertex type with given ID.
@@ -126,11 +139,56 @@ public interface IMetamodelRepository {
      *
      * @return the vertex type found.
      */
-    Optional<IVertexType> findVertexTypeById( UUID id );
+    Optional<IVertexType> findOptionalVertexTypeById( UUID id );
 
     /**
-     * @return a list of all vertex types in the repository.
+     * Finds the package with given ID.
+     *
+     * @param id the UUID of the package to find.
+     *
+     * @return the package found.
+     *
+     * @throws org.grestler.metamodel.api.exceptions.MetamodelException if the package is not found.
      */
-    IIndexable<IVertexType> findVertexTypesAll();
+    IPackage findPackageById( UUID id );
+
+    /**
+     * Finds the root package.
+     *
+     * @return the root package or empty if not loaded yet.
+     */
+    IPackage findRootPackage();
+
+    /**
+     * Finds the base undirected edge type.
+     *
+     * @return the base edge type or empty if not loaded yet.
+     */
+    IUndirectedEdgeType findUndirectedEdgeTypeBase();
+
+    /**
+     * Finds the undirected edge type with given ID.
+     *
+     * @param id the UUID of the edge type to find.
+     *
+     * @return the edge type found.
+     */
+    IUndirectedEdgeType findUndirectedEdgeTypeById( UUID id );
+
+    /**
+     * Finds the base vertex type.
+     *
+     * @return the base vertex type or empty if not loaded yet.
+     */
+    IVertexType findVertexTypeBase();
+
+    /**
+     * Finds the vertex type with given ID.
+     *
+     * @param id the UUID of the vertex type to find.
+     *
+     * @return the vertex type found.
+     */
+    IVertexType findVertexTypeById( UUID id );
 
 }

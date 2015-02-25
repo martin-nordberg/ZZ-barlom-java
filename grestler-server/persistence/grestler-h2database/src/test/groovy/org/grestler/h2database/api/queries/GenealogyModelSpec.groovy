@@ -46,18 +46,18 @@ class GenealogyModelSpec
         expect:
 
         // packages
-        m.findPackagesAll().size() == 2;
+        m.findAllPackages().size() == 2;
 
-        def rootPkg = m.findPackageRoot().get();
-        def genealogyPkg = m.findPackageById( UUID.fromString( "e4c4a700-a294-11e4-b20d-08002751500b" ) ).get();
+        def rootPkg = m.findRootPackage();
+        def genealogyPkg = m.findPackageById( UUID.fromString( "e4c4a700-a294-11e4-b20d-08002751500b" ) );
         genealogyPkg.name == "test1";
         genealogyPkg.parentPackage == rootPkg;
 
         // vertex types
-        m.findVertexTypesAll().size() == 2;
+        m.findAllVertexTypes().size() == 2;
 
-        def rootVertexType = m.findVertexTypeBase().get();
-        def vtPerson = m.findVertexTypeById( UUID.fromString( "e4c4a701-a294-11e4-b20d-08002751500b" ) ).get();
+        def rootVertexType = m.findVertexTypeBase();
+        def vtPerson = m.findVertexTypeById( UUID.fromString( "e4c4a701-a294-11e4-b20d-08002751500b" ) );
         vtPerson.parentPackage == genealogyPkg;
         vtPerson.name == "Person";
         vtPerson.superType.get() == rootVertexType;
@@ -82,9 +82,10 @@ class GenealogyModelSpec
         vtPerson.attributes[4].type.dataType == EDataType.UUID;
 
         // edge types
-        def rootEdgeType = m.findDirectedEdgeTypeBase().get();
-        IDirectedEdgeType etHasFather = m.findEdgeTypeById( UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" ) ).
-                get() as IDirectedEdgeType;
+        def rootEdgeType = m.findDirectedEdgeTypeBase();
+        IDirectedEdgeType etHasFather = m.findEdgeTypeById(
+                UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" )
+        ) as IDirectedEdgeType;
         etHasFather.parentPackage == genealogyPkg;
         etHasFather.name == "Has Father";
         etHasFather.superType.get() == rootEdgeType;
@@ -92,8 +93,9 @@ class GenealogyModelSpec
         etHasFather.headVertexType == vtPerson;
         etHasFather.attributes.size() == 0;
 
-        IDirectedEdgeType etHasMother = m.findEdgeTypeById( UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" ) ).
-                get() as IDirectedEdgeType;
+        IDirectedEdgeType etHasMother = m.findEdgeTypeById(
+                UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" )
+        ) as IDirectedEdgeType;
         etHasMother.parentPackage == genealogyPkg;
         etHasMother.name == "Has Mother";
         etHasMother.superType.get() == rootEdgeType;

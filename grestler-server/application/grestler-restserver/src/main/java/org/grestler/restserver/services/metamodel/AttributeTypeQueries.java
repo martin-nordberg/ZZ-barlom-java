@@ -61,7 +61,7 @@ public class AttributeTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Optional<IAttributeType> attributeType = this.metamodelRepository.findAttributeTypeById(
+                Optional<IAttributeType> attributeType = this.metamodelRepository.findOptionalAttributeTypeById(
                     UUID.fromString(
                         idOrPath
                     )
@@ -101,7 +101,7 @@ public class AttributeTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Iterable<IAttributeType> attributeTypes = this.metamodelRepository.findAttributeTypesAll();
+                Iterable<IAttributeType> attributeTypes = this.metamodelRepository.findAllAttributeTypes();
                 attributeTypes.forEach( attributeType -> attributeType.generateJson( json ) );
             }
         );

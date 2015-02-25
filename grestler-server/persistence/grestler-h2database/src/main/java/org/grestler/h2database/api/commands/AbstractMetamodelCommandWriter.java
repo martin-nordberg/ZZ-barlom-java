@@ -15,7 +15,7 @@ import javax.json.JsonObject;
 /**
  * Abstract H2 database command writer.
  */
-public abstract class AbstractMetamodelCommandWriter
+abstract class AbstractMetamodelCommandWriter
     implements IMetamodelCommandWriter {
 
     /**

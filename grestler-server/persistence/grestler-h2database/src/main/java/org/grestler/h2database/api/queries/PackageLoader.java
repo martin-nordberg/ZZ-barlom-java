@@ -69,7 +69,7 @@ public class PackageLoader
     ) {
 
         // Look for the package already in the repository.
-        Optional<IPackage> result = repository.findPackageById( record.id );
+        Optional<IPackage> result = repository.findOptionalPackageById( record.id );
 
         // If already registered, use the registered value.
         if ( result.isPresent() ) {
@@ -82,7 +82,7 @@ public class PackageLoader
         }
 
         // Find an existing parent package by UUID.
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        Optional<IPackage> parentPackage = repository.findOptionalPackageById( record.parentPackageId );
 
         // If parent package not already registered, ...
         if ( !parentPackage.isPresent() ) {

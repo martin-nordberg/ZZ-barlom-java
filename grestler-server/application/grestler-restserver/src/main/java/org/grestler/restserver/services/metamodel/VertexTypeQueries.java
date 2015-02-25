@@ -61,7 +61,7 @@ public class VertexTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Optional<IVertexType> vertexType = this.metamodelRepository.findVertexTypeById(
+                Optional<IVertexType> vertexType = this.metamodelRepository.findOptionalVertexTypeById(
                     UUID.fromString(
                         idOrPath
                     )
@@ -101,7 +101,7 @@ public class VertexTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Iterable<IVertexType> vertexTypes = this.metamodelRepository.findVertexTypesAll();
+                Iterable<IVertexType> vertexTypes = this.metamodelRepository.findAllVertexTypes();
                 vertexTypes.forEach( vertexType -> vertexType.generateJson( json ) );
             }
         );

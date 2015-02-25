@@ -8,7 +8,6 @@ package org.grestler.h2database.api.commands;
 import org.grestler.dbutilities.api.IConnection;
 import org.grestler.dbutilities.api.IDataSource;
 import org.grestler.h2database.H2DatabaseModule;
-import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.utilities.configuration.Configuration;
 
 import javax.json.JsonObject;
@@ -20,15 +19,15 @@ import java.util.UUID;
 /**
  * Command to create a vertex type.
  */
-final class VertexTypeCreationCmdWriter
+final class PackageCreationCmdWriter
     extends AbstractMetamodelCommandWriter {
 
     /**
-     * Constructs a new vertex type creation command.
+     * Constructs a new package creation command.
      *
-     * @param dataSource the data source in which to save the new vertex type.
+     * @param dataSource the data source in which to save the new package.
      */
-    VertexTypeCreationCmdWriter( IDataSource dataSource ) {
+    PackageCreationCmdWriter( IDataSource dataSource ) {
         super( dataSource );
     }
 
@@ -41,23 +40,19 @@ final class VertexTypeCreationCmdWriter
         UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
         UUID parentPackageId = UUID.fromString( jsonCmdArgs.getString( "parentPackageId" ) );
         String name = jsonCmdArgs.getString( "name" );
-        UUID superTypeId = UUID.fromString( jsonCmdArgs.getString( "superTypeId" ) );
-        EAbstractness abstractness = EAbstractness.valueOf( jsonCmdArgs.getString( "abstractness" ) );
 
         // Build a map of the arguments.
         Map<String, Object> args = new HashMap<>();
         args.put( "id", id );
         args.put( "parentPackageId", parentPackageId );
         args.put( "name", name );
-        args.put( "superTypeId", superTypeId );
-        args.put( "isAbstract", abstractness.isAbstract() );
 
         args.put( "cmdId", cmdId );
         args.put( "jsonCmdArgs", jsonCmdArgs.toString() );
 
         // Read the SQL commands.
         Configuration config = new Configuration( H2DatabaseModule.class );
-        List<String> sqlInserts = config.readStrings( "VertexType.Insert" );
+        List<String> sqlInserts = config.readStrings( "Package.Insert" );
 
         // Perform the inserts.
         for ( String sqlInsert : sqlInserts ) {

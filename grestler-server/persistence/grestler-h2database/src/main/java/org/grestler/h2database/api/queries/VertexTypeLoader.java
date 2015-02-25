@@ -71,7 +71,7 @@ public class VertexTypeLoader
     ) {
 
         // Look for the vertex type already in the repository.
-        Optional<IVertexType> result = repository.findVertexTypeById( record.id );
+        Optional<IVertexType> result = repository.findOptionalVertexTypeById( record.id );
 
         // If already registered, use the registered value.
         if ( result.isPresent() ) {
@@ -79,7 +79,7 @@ public class VertexTypeLoader
         }
 
         // Find the parent package
-        IPackage parentPackage = repository.findPackageById( record.parentPackageId ).get();
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
@@ -87,7 +87,7 @@ public class VertexTypeLoader
         }
 
         // Find an existing vertex super type by UUID.
-        Optional<IVertexType> superType = repository.findVertexTypeById( record.superTypeId );
+        Optional<IVertexType> superType = repository.findOptionalVertexTypeById( record.superTypeId );
 
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {

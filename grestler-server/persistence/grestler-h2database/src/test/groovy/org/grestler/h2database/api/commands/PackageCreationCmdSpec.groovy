@@ -3,27 +3,35 @@
 // Apache 2.0 License
 //
 
-package org.grestler.h2database.api.queries
+package org.grestler.h2database.api.commands
 
+import org.grestler.h2database.api.queries.*
 import org.grestler.h2database.impl.H2DataSource
 import org.grestler.metamodel.impl.queries.MetamodelRepository
+import org.grestler.metamodel.spi.commands.IMetamodelCommandSpi
 import org.grestler.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.utilities.revisions.StmTransactionContext
-import org.grestler.utilities.uuids.Uuids
 import spock.lang.Specification
 
+import javax.json.Json
+
 /**
- * Specification for attribute type loading.
+ * Specification for package creation.
  */
-class AttributeTypeLoaderSpec
+class PackageCreationCmdSpec
         extends Specification {
 
-    def "An attribute type loader retrieves nothing (for starters)"() {
+    def "A package creation command creates a package"() {
 
         given:
         StmTransactionContext.beginReadWriteTransaction();
 
-        def dataSource = new H2DataSource( "test0" );
+        def cmdId = "12341111-7a26-11e4-a545-08002741a702";
+        def pkgId = "12341112-7a26-11e4-a545-08002741a702";
+        def json = '{"cmdId":"' + cmdId + '","id":"' + pkgId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"pkg1"}';
+        def dataSource = new H2DataSource( "test2" );
+        def cmd = new PackageCreationCmdWriter( dataSource );
+        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
         def pdloader = new PackageDependencyLoader( dataSource );
@@ -41,9 +49,11 @@ class AttributeTypeLoaderSpec
                 adloader
         );
 
+        def pkg = m.findOptionalPackageById( UUID.fromString( pkgId ) );
+
         expect:
-        !m.findOptionalAttributeTypeById( Uuids.makeUuid() ).isPresent();
-        m.findAllAttributeTypes().size() == 0;
+        pkg.isPresent();
+        pkg.get().name == "pkg1";
 
         cleanup:
         StmTransactionContext.commitTransaction();

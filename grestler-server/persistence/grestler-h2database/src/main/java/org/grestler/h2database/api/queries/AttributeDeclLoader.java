@@ -65,8 +65,8 @@ public class AttributeDeclLoader
     ) {
 
         // Find the edge type and the attribute type
-        Optional<IEdgeType> parentEdgeType = repository.findEdgeTypeById( record.parentEdgeTypeId );
-        Optional<IAttributeType> attributeType = repository.findAttributeTypeById( record.attributeTypeId );
+        Optional<IEdgeType> parentEdgeType = repository.findOptionalEdgeTypeById( record.parentEdgeTypeId );
+        Optional<IAttributeType> attributeType = repository.findOptionalAttributeTypeById( record.attributeTypeId );
 
         return repository.loadEdgeAttributeDecl(
             record.id, parentEdgeType.get(), record.name, attributeType.get(), record.optionality
@@ -87,8 +87,8 @@ public class AttributeDeclLoader
     ) {
 
         // Find the parent vertex type and the attribute type
-        Optional<IVertexType> parentVertexType = repository.findVertexTypeById( record.parentVertexTypeId );
-        Optional<IAttributeType> attributeType = repository.findAttributeTypeById( record.attributeTypeId );
+        Optional<IVertexType> parentVertexType = repository.findOptionalVertexTypeById( record.parentVertexTypeId );
+        Optional<IAttributeType> attributeType = repository.findOptionalAttributeTypeById( record.attributeTypeId );
 
         return repository.loadVertexAttributeDecl(
             record.id,

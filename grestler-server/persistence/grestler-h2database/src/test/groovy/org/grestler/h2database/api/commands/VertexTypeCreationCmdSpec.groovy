@@ -18,7 +18,7 @@ import spock.lang.Specification
 import javax.json.Json
 
 /**
- * Specification for edge type loading.
+ * Specification for vertex type creation.
  */
 class VertexTypeCreationCmdSpec
         extends Specification {
@@ -51,7 +51,7 @@ class VertexTypeCreationCmdSpec
                 adloader
         );
 
-        def vertexType = m.findVertexTypeById( UUID.fromString( vtId ) );
+        def vertexType = m.findOptionalVertexTypeById( UUID.fromString( vtId ) );
 
         expect:
         vertexType.isPresent();

@@ -15,6 +15,7 @@ import org.grestler.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.metamodel.spi.queries.IAttributeTypeLoader;
 import org.grestler.metamodel.spi.queries.IEdgeTypeLoader;
+import org.grestler.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.metamodel.spi.queries.IPackageLoader;
 import org.grestler.metamodel.spi.queries.IVertexTypeLoader;
@@ -72,9 +73,10 @@ public class MetamodelModule {
      */
     @Provides
     public IMetamodelCommandFactory provideMetamodelCommandFactory(
-        IMetamodelRepository metamodelRepository,
-        IMetamodelCommandWriterFactory metamodelCommandWriterFactory
+        IMetamodelRepository metamodelRepository, IMetamodelCommandWriterFactory metamodelCommandWriterFactory
     ) {
-        return new MetamodelCommandFactory( metamodelRepository, metamodelCommandWriterFactory );
+        return new MetamodelCommandFactory(
+            (IMetamodelRepositorySpi) metamodelRepository, metamodelCommandWriterFactory
+        );
     }
 }

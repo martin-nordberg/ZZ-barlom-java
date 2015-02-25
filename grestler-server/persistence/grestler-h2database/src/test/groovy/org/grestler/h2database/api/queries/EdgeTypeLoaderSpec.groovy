@@ -43,11 +43,11 @@ class EdgeTypeLoaderSpec
         def rootEdgeType = m.findDirectedEdgeTypeBase();
 
         expect:
-        rootEdgeType.isPresent();
-        rootEdgeType.get().name == "Edge";
-        !rootEdgeType.get().superType.isPresent();
-        m.findEdgeTypesAll().size() == 2;
-        m.findEdgeTypeById( rootEdgeType.get().id ).equals( rootEdgeType );
+        rootEdgeType != null;
+        rootEdgeType.name == "Edge";
+        !rootEdgeType.superType.isPresent();
+        m.findAllEdgeTypes().size() == 2;
+        m.findEdgeTypeById( rootEdgeType.id ).equals( rootEdgeType );
 
         cleanup:
         StmTransactionContext.commitTransaction();

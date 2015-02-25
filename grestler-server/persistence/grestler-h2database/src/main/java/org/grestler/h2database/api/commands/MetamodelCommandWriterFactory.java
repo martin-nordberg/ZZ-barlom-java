@@ -31,6 +31,8 @@ public class MetamodelCommandWriterFactory
     public IMetamodelCommandWriter makeCommandWriter( String commandTypeName ) {
 
         switch ( commandTypeName.toLowerCase() ) {
+            case "packagecreation":
+                return new PackageCreationCmdWriter( this.dataSource );
             case "vertextypecreation":
                 return new VertexTypeCreationCmdWriter( this.dataSource );
             default:

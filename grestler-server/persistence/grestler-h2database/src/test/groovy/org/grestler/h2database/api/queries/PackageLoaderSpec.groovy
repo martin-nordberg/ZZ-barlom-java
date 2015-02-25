@@ -40,14 +40,14 @@ class PackageLoaderSpec
                 adloader
         );
 
-        def rootPkg = m.findPackageRoot();
+        def rootPkg = m.findRootPackage();
 
         expect:
-        rootPkg.isPresent();
-        rootPkg.get().name == "\$";
-        rootPkg.get().parentPackage == rootPkg.get();
-        m.findPackagesAll().size() == 1;
-        m.findPackageById( rootPkg.get().id ).equals( rootPkg );
+        rootPkg != null;
+        rootPkg.name == "\$";
+        rootPkg.parentPackage == rootPkg;
+        m.findAllPackages().size() == 1;
+        m.findPackageById( rootPkg.id ).equals( rootPkg );
 
         cleanup:
         StmTransactionContext.commitTransaction();

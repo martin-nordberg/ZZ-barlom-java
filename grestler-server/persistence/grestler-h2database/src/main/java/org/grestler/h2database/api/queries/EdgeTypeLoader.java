@@ -64,7 +64,7 @@ public class EdgeTypeLoader
     ) {
 
         // Look for the edge type already in the repository.
-        Optional<IDirectedEdgeType> result = repository.findDirectedEdgeTypeById( record.id );
+        Optional<IDirectedEdgeType> result = repository.findOptionalDirectedEdgeTypeById( record.id );
 
         // If already registered, use the registered value.
         if ( result.isPresent() ) {
@@ -72,7 +72,7 @@ public class EdgeTypeLoader
         }
 
         // Find the parent package.
-        IPackage parentPackage = repository.findPackageById( record.parentPackageId ).get();
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
@@ -80,11 +80,11 @@ public class EdgeTypeLoader
         }
 
         // Find the vertex types.
-        IVertexType headVertexType = repository.findVertexTypeById( record.headVertexTypeId ).get();
-        IVertexType tailVertexType = repository.findVertexTypeById( record.tailVertexTypeId ).get();
+        IVertexType headVertexType = repository.findOptionalVertexTypeById( record.headVertexTypeId ).get();
+        IVertexType tailVertexType = repository.findOptionalVertexTypeById( record.tailVertexTypeId ).get();
 
         // Find an existing edge super type by UUID.
-        Optional<IDirectedEdgeType> superType = repository.findDirectedEdgeTypeById( record.superTypeId );
+        Optional<IDirectedEdgeType> superType = repository.findOptionalDirectedEdgeTypeById( record.superTypeId );
 
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
@@ -131,7 +131,7 @@ public class EdgeTypeLoader
     ) {
 
         // Look for the edge type already in the repository.
-        Optional<IUndirectedEdgeType> result = repository.findUndirectedEdgeTypeById( record.id );
+        Optional<IUndirectedEdgeType> result = repository.findOptionalUndirectedEdgeTypeById( record.id );
 
         // If already registered, use the registered value.
         if ( result.isPresent() ) {
@@ -139,7 +139,7 @@ public class EdgeTypeLoader
         }
 
         // Find the parent package.
-        IPackage parentPackage = repository.findPackageById( record.parentPackageId ).get();
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
@@ -147,10 +147,10 @@ public class EdgeTypeLoader
         }
 
         // Find the vertex types.
-        IVertexType vertexType = repository.findVertexTypeById( record.vertexTypeId ).get();
+        IVertexType vertexType = repository.findOptionalVertexTypeById( record.vertexTypeId ).get();
 
         // Find an existing edge super type by UUID.
-        Optional<IUndirectedEdgeType> superType = repository.findUndirectedEdgeTypeById( record.superTypeId );
+        Optional<IUndirectedEdgeType> superType = repository.findOptionalUndirectedEdgeTypeById( record.superTypeId );
 
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {

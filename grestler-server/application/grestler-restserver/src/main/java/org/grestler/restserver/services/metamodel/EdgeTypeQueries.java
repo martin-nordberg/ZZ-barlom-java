@@ -63,7 +63,7 @@ public class EdgeTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Optional<IEdgeType> edgeType = this.metamodelRepository.findEdgeTypeById(
+                Optional<IEdgeType> edgeType = this.metamodelRepository.findOptionalEdgeTypeById(
                     UUID.fromString(
                         idOrPath
                     )
@@ -103,7 +103,7 @@ public class EdgeTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Iterable<IEdgeType> edgeTypes = this.metamodelRepository.findEdgeTypesAll();
+                Iterable<IEdgeType> edgeTypes = this.metamodelRepository.findAllEdgeTypes();
                 edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
             }
         );

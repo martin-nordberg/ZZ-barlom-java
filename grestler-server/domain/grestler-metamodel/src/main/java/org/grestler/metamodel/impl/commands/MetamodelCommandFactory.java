@@ -10,9 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.commands.IMetamodelCommand;
 import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
 import org.grestler.metamodel.api.exceptions.MetamodelException;
-import org.grestler.metamodel.api.queries.IMetamodelRepository;
 import org.grestler.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.metamodel.spi.commands.IMetamodelCommandWriterFactory;
+import org.grestler.metamodel.spi.queries.IMetamodelRepositorySpi;
 
 /**
  * Factory for metamodel commands.
@@ -23,10 +23,12 @@ public class MetamodelCommandFactory
     /**
      * Constructs a new factory for creating metamodel commands.
      *
-     * @param repository the metamodel repository the commands will act upon.
+     * @param metamodelRepository the metamodel repository the commands will act upon.
      */
-    public MetamodelCommandFactory( IMetamodelRepository repository, IMetamodelCommandWriterFactory cmdWriterFactory ) {
-        this.repository = repository;
+    public MetamodelCommandFactory(
+        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriterFactory cmdWriterFactory
+    ) {
+        this.metamodelRepository = metamodelRepository;
         this.cmdWriterFactory = cmdWriterFactory;
     }
 
@@ -38,8 +40,10 @@ public class MetamodelCommandFactory
         );
 
         switch ( commandTypeName.toLowerCase() ) {
+            case "packagecreation":
+                return new PackageCreationCmd( this.metamodelRepository, cmdWriter );
             case "vertextypecreation":
-                return new VertexTypeCreationCmd( this.repository, cmdWriter );
+                return new VertexTypeCreationCmd( this.metamodelRepository, cmdWriter );
             default:
                 throw new MetamodelException(
                     MetamodelCommandFactory.LOG, "Unknown command type: \"" + commandTypeName + "\"."
@@ -55,6 +59,6 @@ public class MetamodelCommandFactory
     private final IMetamodelCommandWriterFactory cmdWriterFactory;
 
     /** The data source the commands made by this factory will make use of. */
-    private final IMetamodelRepository repository;
+    private final IMetamodelRepositorySpi metamodelRepository;
 
 }

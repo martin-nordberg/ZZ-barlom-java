@@ -66,7 +66,7 @@ public class AttributeTypeLoader
         BooleanAttributeTypeRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+        Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
 
         // If already registered, used the registered value.
         if ( result.isPresent() ) {
@@ -74,11 +74,9 @@ public class AttributeTypeLoader
         }
 
         // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadBooleanAttributeType(
-            record.id, parentPackage.get(), record.name, record.defaultValue
-        );
+        return repository.loadBooleanAttributeType( record.id, parentPackage, record.name, record.defaultValue );
 
     }
 
@@ -94,7 +92,7 @@ public class AttributeTypeLoader
         DateTimeAttributeTypeRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+        Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
 
         // If already registered, used the registered value.
         if ( result.isPresent() ) {
@@ -102,10 +100,10 @@ public class AttributeTypeLoader
         }
 
         // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadDateTimeAttributeType(
-            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue
+            record.id, parentPackage, record.name, record.minValue, record.maxValue
         );
 
     }
@@ -122,7 +120,7 @@ public class AttributeTypeLoader
         Float64AttributeTypeRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+        Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
 
         // If already registered, used the registered value.
         if ( result.isPresent() ) {
@@ -130,10 +128,10 @@ public class AttributeTypeLoader
         }
 
         // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadFloat64AttributeType(
-            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue, record.defaultValue
+            record.id, parentPackage, record.name, record.minValue, record.maxValue, record.defaultValue
         );
 
     }
@@ -150,7 +148,7 @@ public class AttributeTypeLoader
         Integer32AttributeTypeRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+        Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
 
         // If already registered, used the registered value.
         if ( result.isPresent() ) {
@@ -158,10 +156,10 @@ public class AttributeTypeLoader
         }
 
         // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadInteger32AttributeType(
-            record.id, parentPackage.get(), record.name, record.minValue, record.maxValue, record.defaultValue
+            record.id, parentPackage, record.name, record.minValue, record.maxValue, record.defaultValue
         );
 
     }
@@ -178,7 +176,7 @@ public class AttributeTypeLoader
         StringAttributeTypeRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+        Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
 
         // If already registered, used the registered value.
         if ( result.isPresent() ) {
@@ -186,10 +184,10 @@ public class AttributeTypeLoader
         }
 
         // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
         return repository.loadStringAttributeType(
-            record.id, parentPackage.get(), record.name, record.minLength, record.maxLength, record.regexPattern
+            record.id, parentPackage, record.name, record.minLength, record.maxLength, record.regexPattern
         );
 
     }
@@ -206,7 +204,7 @@ public class AttributeTypeLoader
         UuidAttributeTypeRecord record, IMetamodelRepositorySpi repository
     ) {
 
-        Optional<IAttributeType> result = repository.findAttributeTypeById( record.id );
+        Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
 
         // If already registered, used the registered value.
         if ( result.isPresent() ) {
@@ -214,11 +212,9 @@ public class AttributeTypeLoader
         }
 
         // Find the parent package
-        Optional<IPackage> parentPackage = repository.findPackageById( record.parentPackageId );
+        IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadUuidAttributeType(
-            record.id, parentPackage.get(), record.name
-        );
+        return repository.loadUuidAttributeType( record.id, parentPackage, record.name );
 
     }
 

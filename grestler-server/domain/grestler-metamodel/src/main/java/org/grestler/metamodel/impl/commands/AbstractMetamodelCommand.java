@@ -6,9 +6,9 @@
 package org.grestler.metamodel.impl.commands;
 
 import org.grestler.metamodel.api.commands.IMetamodelCommand;
-import org.grestler.metamodel.api.queries.IMetamodelRepository;
 import org.grestler.metamodel.spi.commands.IMetamodelCommandSpi;
 import org.grestler.metamodel.spi.commands.IMetamodelCommandWriter;
+import org.grestler.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.utilities.revisions.StmTransactionContext;
 
 import javax.json.JsonObject;
@@ -16,15 +16,17 @@ import javax.json.JsonObject;
 /**
  * Partial implementation of IMetamodelCommand.
  */
-public abstract class AbstractMetamodelCommand
+abstract class AbstractMetamodelCommand
     implements IMetamodelCommand, IMetamodelCommandSpi {
 
     /**
      * Constructs a new command.
      */
-    protected AbstractMetamodelCommand( IMetamodelRepository repository, IMetamodelCommandWriter cmdWriter ) {
+    protected AbstractMetamodelCommand(
+        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter cmdWriter
+    ) {
         this.cmdWriter = cmdWriter;
-        this.repository = repository;
+        this.metamodelRepository = metamodelRepository;
     }
 
     @Override
@@ -40,8 +42,8 @@ public abstract class AbstractMetamodelCommand
     /**
      * @return The metamodel repository to be acted upon by this command.
      */
-    protected IMetamodelRepository getRepository() {
-        return this.repository;
+    protected IMetamodelRepositorySpi getMetamodelRepository() {
+        return this.metamodelRepository;
     }
 
     /**
@@ -55,6 +57,6 @@ public abstract class AbstractMetamodelCommand
     private final IMetamodelCommandWriter cmdWriter;
 
     /** The metamodel repository to be acted upon by this command. */
-    private final IMetamodelRepository repository;
+    private final IMetamodelRepositorySpi metamodelRepository;
 
 }

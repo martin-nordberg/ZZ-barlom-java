@@ -43,11 +43,11 @@ class VertexTypeLoaderSpec
         def rootVertexType = m.findVertexTypeBase();
 
         expect:
-        rootVertexType.isPresent();
-        rootVertexType.get().name == "Vertex";
-        !rootVertexType.get().superType.isPresent();
-        m.findVertexTypesAll().size() == 1;
-        m.findVertexTypeById( rootVertexType.get().id ).equals( rootVertexType );
+        rootVertexType != null;
+        rootVertexType.name == "Vertex";
+        !rootVertexType.superType.isPresent();
+        m.findAllVertexTypes().size() == 1;
+        m.findVertexTypeById( rootVertexType.id ).equals( rootVertexType );
 
         cleanup:
         StmTransactionContext.commitTransaction();

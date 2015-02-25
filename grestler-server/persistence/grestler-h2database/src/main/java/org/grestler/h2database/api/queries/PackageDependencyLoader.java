@@ -17,7 +17,6 @@ import org.grestler.utilities.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -69,12 +68,10 @@ public class PackageDependencyLoader
     ) {
 
         // Find the edge type and the attribute type
-        Optional<IPackage> clientPackage = repository.findPackageById( record.clientPackageId );
-        Optional<IPackage> supplierPackage = repository.findPackageById( record.supplierPackageId );
+        IPackage clientPackage = repository.findPackageById( record.clientPackageId );
+        IPackage supplierPackage = repository.findPackageById( record.supplierPackageId );
 
-        return repository.loadPackageDependency(
-            record.id, clientPackage.get(), supplierPackage.get()
-        );
+        return repository.loadPackageDependency( record.id, clientPackage, supplierPackage );
 
     }
 

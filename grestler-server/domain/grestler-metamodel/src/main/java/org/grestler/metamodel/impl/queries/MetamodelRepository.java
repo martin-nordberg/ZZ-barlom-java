@@ -8,6 +8,7 @@ package org.grestler.metamodel.impl.queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.metamodel.api.elements.*;
+import org.grestler.metamodel.api.exceptions.MetamodelException;
 import org.grestler.metamodel.impl.elements.*;
 import org.grestler.metamodel.impl.elements.Package;
 import org.grestler.metamodel.spi.queries.IAttributeDeclLoader;
@@ -97,95 +98,149 @@ public final class MetamodelRepository
     }
 
     @Override
-    public Optional<IAttributeType> findAttributeTypeById( UUID id ) {
-        return this.attributeTypesById.get( id );
-    }
-
-    @Override
-    public IIndexable<IAttributeType> findAttributeTypesAll() {
+    public IIndexable<IAttributeType> findAllAttributeTypes() {
         return this.attributeTypes;
     }
 
     @Override
-    public Optional<IDirectedEdgeType> findDirectedEdgeTypeBase() {
-        if ( this.baseDirectedEdgeType == null ) {
-            return Optional.empty();
-        }
-        return Optional.of( this.baseDirectedEdgeType.get() );
-    }
-
-    @Override
-    public Optional<IDirectedEdgeType> findDirectedEdgeTypeById( UUID id ) {
-        return this.directedEdgeTypesById.get( id );
-    }
-
-    @Override
-    public IIndexable<IDirectedEdgeType> findDirectedEdgeTypesAll() {
+    public IIndexable<IDirectedEdgeType> findAllDirectedEdgeTypes() {
         return this.directedEdgeTypes;
     }
 
     @Override
-    public Optional<IEdgeType> findEdgeTypeById( UUID id ) {
-        return this.edgeTypesById.get( id );
-    }
-
-    @Override
-    public IIndexable<IEdgeType> findEdgeTypesAll() {
+    public IIndexable<IEdgeType> findAllEdgeTypes() {
         return this.edgeTypes;
     }
 
     @Override
-    public Optional<IPackage> findPackageById( UUID id ) {
-        return this.packagesById.get( id );
-    }
-
-    @Override
-    public Optional<IPackage> findPackageRoot() {
-        if ( this.rootPackage == null ) {
-            return Optional.empty();
-        }
-        return Optional.of( this.rootPackage.get() );
-    }
-
-    @Override
-    public IIndexable<IPackage> findPackagesAll() {
+    public IIndexable<IPackage> findAllPackages() {
         return this.packages;
     }
 
     @Override
-    public Optional<IUndirectedEdgeType> findUndirectedEdgeTypeBase() {
-        if ( this.baseUndirectedEdgeType == null ) {
-            return Optional.empty();
-        }
-        return Optional.of( this.baseUndirectedEdgeType.get() );
-    }
-
-    @Override
-    public Optional<IUndirectedEdgeType> findUndirectedEdgeTypeById( UUID id ) {
-        return this.undirectedEdgeTypesById.get( id );
-    }
-
-    @Override
-    public IIndexable<IUndirectedEdgeType> findUndirectedEdgeTypesAll() {
+    public IIndexable<IUndirectedEdgeType> findAllUndirectedEdgeTypes() {
         return this.undirectedEdgeTypes;
     }
 
     @Override
-    public Optional<IVertexType> findVertexTypeBase() {
-        if ( this.baseVertexType == null ) {
-            return Optional.empty();
-        }
-        return Optional.of( this.baseVertexType.get() );
+    public IIndexable<IVertexType> findAllVertexTypes() {
+        return this.vertexTypes;
     }
 
     @Override
-    public Optional<IVertexType> findVertexTypeById( UUID id ) {
+    public IAttributeType findAttributeTypeById( UUID id ) {
+        return this.attributeTypesById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Attribute type not found: " + id + "."
+            )
+        );
+    }
+
+    @Override
+    public IDirectedEdgeType findDirectedEdgeTypeBase() {
+        if ( this.baseDirectedEdgeType == null ) {
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root directed edge type." );
+        }
+        return this.baseDirectedEdgeType.get();
+    }
+
+    @Override
+    public IDirectedEdgeType findDirectedEdgeTypeById( UUID id ) {
+        return this.directedEdgeTypesById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Directed edge type not found: " + id + "."
+            )
+        );
+    }
+
+    @Override
+    public IEdgeType findEdgeTypeById( UUID id ) {
+        return this.edgeTypesById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Edge type not found: " + id + "."
+            )
+        );
+    }
+
+    @Override
+    public Optional<IAttributeType> findOptionalAttributeTypeById( UUID id ) {
+        return this.attributeTypesById.get( id );
+    }
+
+    @Override
+    public Optional<IDirectedEdgeType> findOptionalDirectedEdgeTypeById( UUID id ) {
+        return this.directedEdgeTypesById.get( id );
+    }
+
+    @Override
+    public Optional<IEdgeType> findOptionalEdgeTypeById( UUID id ) {
+        return this.edgeTypesById.get( id );
+    }
+
+    @Override
+    public Optional<IPackage> findOptionalPackageById( UUID id ) {
+        return this.packagesById.get( id );
+    }
+
+    @Override
+    public Optional<IUndirectedEdgeType> findOptionalUndirectedEdgeTypeById( UUID id ) {
+        return this.undirectedEdgeTypesById.get( id );
+    }
+
+    @Override
+    public Optional<IVertexType> findOptionalVertexTypeById( UUID id ) {
         return this.vertexTypesById.get( id );
     }
 
     @Override
-    public IIndexable<IVertexType> findVertexTypesAll() {
-        return this.vertexTypes;
+    public IPackage findPackageById( UUID id ) {
+        return this.packagesById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Package not found: " + id + "."
+            )
+        );
+    }
+
+    @Override
+    public IPackage findRootPackage() {
+        if ( this.rootPackage == null ) {
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root package." );
+        }
+        return this.rootPackage.get();
+    }
+
+    @Override
+    public IUndirectedEdgeType findUndirectedEdgeTypeBase() {
+        if ( this.baseUndirectedEdgeType == null ) {
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root undirected egde type." );
+        }
+        return this.baseUndirectedEdgeType.get();
+    }
+
+    @Override
+    public IUndirectedEdgeType findUndirectedEdgeTypeById( UUID id ) {
+        return this.undirectedEdgeTypesById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Undirected edge type not found: " + id + "."
+            )
+        );
+    }
+
+    @Override
+    public IVertexType findVertexTypeBase() {
+        if ( this.baseVertexType == null ) {
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root vertex type." );
+        }
+        return this.baseVertexType.get();
+    }
+
+    @Override
+    public IVertexType findVertexTypeById( UUID id ) {
+        return this.vertexTypesById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Vertex type not found: " + id + "."
+            )
+        );
     }
 
     @Override

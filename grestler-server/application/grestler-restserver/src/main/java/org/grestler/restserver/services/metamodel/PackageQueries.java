@@ -63,7 +63,7 @@ public class PackageQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Optional<IPackage> pkg = this.metamodelRepository.findPackageById( UUID.fromString( idOrPath ) );
+                Optional<IPackage> pkg = this.metamodelRepository.findOptionalPackageById( UUID.fromString( idOrPath ) );
 
                 if ( pkg.isPresent() ) {
                     pkg.get().generateJson( json );
@@ -99,7 +99,7 @@ public class PackageQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Iterable<IPackage> packages = this.metamodelRepository.findPackagesAll();
+                Iterable<IPackage> packages = this.metamodelRepository.findAllPackages();
                 packages.forEach( pkg -> pkg.generateJson( json ) );
             }
         );
