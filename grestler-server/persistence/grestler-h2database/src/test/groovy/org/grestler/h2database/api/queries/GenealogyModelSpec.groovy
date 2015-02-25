@@ -56,7 +56,7 @@ class GenealogyModelSpec
         // vertex types
         m.findAllVertexTypes().size() == 2;
 
-        def rootVertexType = m.findVertexTypeBase();
+        def rootVertexType = m.findRootVertexType();
         def vtPerson = m.findVertexTypeById( UUID.fromString( "e4c4a701-a294-11e4-b20d-08002751500b" ) );
         vtPerson.parentPackage == genealogyPkg;
         vtPerson.name == "Person";
@@ -82,7 +82,7 @@ class GenealogyModelSpec
         vtPerson.attributes[4].type.dataType == EDataType.UUID;
 
         // edge types
-        def rootEdgeType = m.findDirectedEdgeTypeBase();
+        def rootEdgeType = m.findRootDirectedEdgeType();
         IDirectedEdgeType etHasFather = m.findEdgeTypeById(
                 UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" )
         ) as IDirectedEdgeType;

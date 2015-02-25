@@ -63,13 +63,6 @@ public interface IMetamodelRepository {
     IAttributeType findAttributeTypeById( UUID id );
 
     /**
-     * Finds the base directed edge type.
-     *
-     * @return the base edge type or empty if not loaded yet.
-     */
-    IDirectedEdgeType findDirectedEdgeTypeBase();
-
-    /**
      * Finds the directed edge type with given ID.
      *
      * @param id the UUID of the edge type to find.
@@ -153,6 +146,13 @@ public interface IMetamodelRepository {
     IPackage findPackageById( UUID id );
 
     /**
+     * Finds the root directed edge type.
+     *
+     * @return the root edge type or empty if not loaded yet.
+     */
+    IDirectedEdgeType findRootDirectedEdgeType();
+
+    /**
      * Finds the root package.
      *
      * @return the root package or empty if not loaded yet.
@@ -160,11 +160,18 @@ public interface IMetamodelRepository {
     IPackage findRootPackage();
 
     /**
-     * Finds the base undirected edge type.
+     * Finds the root undirected edge type.
      *
-     * @return the base edge type or empty if not loaded yet.
+     * @return the root edge type or empty if not loaded yet.
      */
-    IUndirectedEdgeType findUndirectedEdgeTypeBase();
+    IUndirectedEdgeType findRootUndirectedEdgeType();
+
+    /**
+     * Finds the root vertex type.
+     *
+     * @return the root vertex type or empty if not loaded yet.
+     */
+    IVertexType findRootVertexType();
 
     /**
      * Finds the undirected edge type with given ID.
@@ -174,13 +181,6 @@ public interface IMetamodelRepository {
      * @return the edge type found.
      */
     IUndirectedEdgeType findUndirectedEdgeTypeById( UUID id );
-
-    /**
-     * Finds the base vertex type.
-     *
-     * @return the base vertex type or empty if not loaded yet.
-     */
-    IVertexType findVertexTypeBase();
 
     /**
      * Finds the vertex type with given ID.

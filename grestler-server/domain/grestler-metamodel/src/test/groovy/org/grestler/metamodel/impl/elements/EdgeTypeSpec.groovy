@@ -32,8 +32,8 @@ class EdgeTypeSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IVertexType baseVertexType = new BaseVertexType( id, root );
-        IEdgeType e = new BaseDirectedEdgeType( id, root, baseVertexType );
+        IVertexType baseVertexType = new RootVertexType( id, root );
+        IEdgeType e = new RootDirectedEdgeType( id, root, baseVertexType );
 
         expect:
         e.name == "Edge";
@@ -48,9 +48,9 @@ class EdgeTypeSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IVertexType v0 = new BaseVertexType( id, root );
+        IVertexType v0 = new RootVertexType( id, root );
         IVertexType v1 = new VertexType( id, root, "v1", v0, EAbstractness.ABSTRACT );
-        IEdgeType e0 = new BaseDirectedEdgeType( id, root, v0 );
+        IEdgeType e0 = new RootDirectedEdgeType( id, root, v0 );
         IEdgeType e1 = new DirectedEdgeType(
                 id,
                 root,

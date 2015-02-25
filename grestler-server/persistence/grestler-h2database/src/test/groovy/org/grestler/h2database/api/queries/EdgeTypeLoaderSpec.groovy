@@ -40,7 +40,7 @@ class EdgeTypeLoaderSpec
                 adloader
         );
 
-        def rootEdgeType = m.findDirectedEdgeTypeBase();
+        def rootEdgeType = m.findRootDirectedEdgeType();
 
         expect:
         rootEdgeType != null;

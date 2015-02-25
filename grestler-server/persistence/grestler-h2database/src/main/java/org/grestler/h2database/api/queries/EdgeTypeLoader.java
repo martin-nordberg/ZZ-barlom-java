@@ -76,7 +76,7 @@ public class EdgeTypeLoader
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return repository.loadBaseDirectedEdgeType( record.id, parentPackage );
+            return repository.loadRootDirectedEdgeType( record.id, parentPackage );
         }
 
         // Find the vertex types.
@@ -143,7 +143,7 @@ public class EdgeTypeLoader
 
         // If top of inheritance hierarchy, create w/o super type.
         if ( record.id.equals( record.superTypeId ) ) {
-            return repository.loadBaseUndirectedEdgeType( record.id, parentPackage );
+            return repository.loadRootUndirectedEdgeType( record.id, parentPackage );
         }
 
         // Find the vertex types.

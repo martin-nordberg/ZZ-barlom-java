@@ -9,10 +9,10 @@ import org.grestler.metamodel.api.elements.EAbstractness;
 import org.grestler.metamodel.api.elements.ECyclicity;
 import org.grestler.metamodel.api.elements.EMultiEdgedness;
 import org.grestler.metamodel.api.elements.ESelfLooping;
+import org.grestler.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.metamodel.api.elements.IEdgeAttributeDecl;
 import org.grestler.metamodel.api.elements.IEdgeType;
 import org.grestler.metamodel.api.elements.IPackage;
-import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.metamodel.api.elements.IVertexType;
 import org.grestler.utilities.collections.ISizedIterable;
 import org.grestler.utilities.revisions.VArray;
@@ -23,25 +23,25 @@ import java.util.OptionalInt;
 import java.util.UUID;
 
 /**
- * Implementation of the top-level base directed edge type.
+ * Implementation of the top-level root directed edge type.
  */
-public class BaseUndirectedEdgeType
-    implements IUndirectedEdgeType, IEdgeTypeUnderAssembly {
+public class RootDirectedEdgeType
+    implements IDirectedEdgeType, IEdgeTypeUnderAssembly {
 
     /**
-     * Constructs a new base directed edge type.
+     * Constructs a new root directed edge type.
      *
      * @param id             the unique ID of the edge type.
      * @param parentPackage  the package containing the edge type.
-     * @param baseVertexType the base vertex type connected by the edge type.
+     * @param rootVertexType the root vertex type connected by the edge type.
      */
-    public BaseUndirectedEdgeType(
-        UUID id, IPackage parentPackage, IVertexType baseVertexType
+    public RootDirectedEdgeType(
+        UUID id, IPackage parentPackage, IVertexType rootVertexType
     ) {
 
         this.id = id;
         this.parentPackage = parentPackage;
-        this.baseVertexType = baseVertexType;
+        this.rootVertexType = rootVertexType;
 
         this.attributes = new VArray<>();
 
@@ -60,7 +60,8 @@ public class BaseUndirectedEdgeType
             .write( "parentPackageId", this.parentPackage.getId().toString() )
             .write( "name", "Vertex" )
             .write( "path", this.getPath() )
-            .write( "vertexTypeId", this.baseVertexType.getId().toString() );
+            .write( "tailVertexTypeId", this.rootVertexType.getId().toString() )
+            .write( "headVertexTypeId", this.rootVertexType.getId().toString() );
     }
 
     @Override
@@ -79,17 +80,37 @@ public class BaseUndirectedEdgeType
     }
 
     @Override
+    public Optional<String> getHeadRoleName() {
+        return Optional.empty();
+    }
+
+    @Override
+    public IVertexType getHeadVertexType() {
+        return this.rootVertexType;
+    }
+
+    @Override
     public UUID getId() {
         return this.id;
     }
 
     @Override
-    public OptionalInt getMaxDegree() {
+    public OptionalInt getMaxHeadInDegree() {
         return OptionalInt.empty();
     }
 
     @Override
-    public OptionalInt getMinDegree() {
+    public OptionalInt getMaxTailOutDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMinHeadInDegree() {
+        return OptionalInt.empty();
+    }
+
+    @Override
+    public OptionalInt getMinTailOutDegree() {
         return OptionalInt.empty();
     }
 
@@ -119,17 +140,22 @@ public class BaseUndirectedEdgeType
     }
 
     @Override
-    public Optional<IUndirectedEdgeType> getSuperType() {
+    public Optional<IDirectedEdgeType> getSuperType() {
         return Optional.empty();
     }
 
     @Override
-    public IVertexType getVertexType() {
-        return this.baseVertexType;
+    public Optional<String> getTailRoleName() {
+        return Optional.empty();
     }
 
     @Override
-    public boolean isSubTypeOf( IUndirectedEdgeType edgeType ) {
+    public IVertexType getTailVertexType() {
+        return this.rootVertexType;
+    }
+
+    @Override
+    public boolean isSubTypeOf( IDirectedEdgeType edgeType ) {
         return this == edgeType;
     }
 
@@ -140,9 +166,9 @@ public class BaseUndirectedEdgeType
 
     private final VArray<IEdgeAttributeDecl> attributes;
 
-    private final IVertexType baseVertexType;
-
     private final UUID id;
 
     private final IPackage parentPackage;
+
+    private final IVertexType rootVertexType;
 }

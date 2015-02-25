@@ -21,40 +21,6 @@ public interface IMetamodelRepositorySpi
     extends IMetamodelRepository {
 
     /**
-     * Loads the queried base directed edge type into the repository.
-     *
-     * @param id            the unique ID of the base edge type.
-     * @param parentPackage the parent package for the base edge type.
-     *
-     * @return the loaded edge type.
-     */
-    IDirectedEdgeType loadBaseDirectedEdgeType(
-        UUID id, IPackage parentPackage
-    );
-
-    /**
-     * Loads the queried base undirected edge type into the repository.
-     *
-     * @param id            the unique ID of the base edge type.
-     * @param parentPackage the parent package for the base edge type.
-     *
-     * @return the loaded edge type.
-     */
-    IUndirectedEdgeType loadBaseUndirectedEdgeType(
-        UUID id, IPackage parentPackage
-    );
-
-    /**
-     * Loads a queried vertex type into the repository.
-     *
-     * @param id            the unique ID of the vertex type.
-     * @param parentPackage the parent (root) package for the vertex type.
-     *
-     * @return the loaded vertex type.
-     */
-    IVertexType loadBaseVertexType( UUID id, IPackage parentPackage );
-
-    /**
      * Loads a queried boolean attribute type into the repository.
      *
      * @param id            the unique ID of the attribute type.
@@ -204,6 +170,18 @@ public interface IMetamodelRepositorySpi
     IPackageDependency loadPackageDependency( UUID id, IPackage clientPackage, IPackage supplierPackage );
 
     /**
+     * Loads the queried root directed edge type into the repository.
+     *
+     * @param id            the unique ID of the root edge type.
+     * @param parentPackage the parent package for the root edge type.
+     *
+     * @return the loaded edge type.
+     */
+    IDirectedEdgeType loadRootDirectedEdgeType(
+        UUID id, IPackage parentPackage
+    );
+
+    /**
      * Loads the queried root package into the repository.
      *
      * @param id the unique ID of the package.
@@ -211,6 +189,28 @@ public interface IMetamodelRepositorySpi
      * @return the loaded package.
      */
     IPackage loadRootPackage( UUID id );
+
+    /**
+     * Loads the queried root undirected edge type into the repository.
+     *
+     * @param id            the unique ID of the root edge type.
+     * @param parentPackage the parent package for the root edge type.
+     *
+     * @return the loaded edge type.
+     */
+    IUndirectedEdgeType loadRootUndirectedEdgeType(
+        UUID id, IPackage parentPackage
+    );
+
+    /**
+     * Loads a queried vertex type into the repository.
+     *
+     * @param id            the unique ID of the vertex type.
+     * @param parentPackage the parent (root) package for the vertex type.
+     *
+     * @return the loaded vertex type.
+     */
+    IVertexType loadRootVertexType( UUID id, IPackage parentPackage );
 
     /**
      * Loads a queried string attribute type into the repository.

@@ -40,7 +40,7 @@ class VertexTypeLoaderSpec
                 adloader
         );
 
-        def rootVertexType = m.findVertexTypeBase();
+        def rootVertexType = m.findRootVertexType();
 
         expect:
         rootVertexType != null;

@@ -137,14 +137,6 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IDirectedEdgeType findDirectedEdgeTypeBase() {
-        if ( this.baseDirectedEdgeType == null ) {
-            throw new MetamodelException( MetamodelRepository.LOG, "Missing root directed edge type." );
-        }
-        return this.baseDirectedEdgeType.get();
-    }
-
-    @Override
     public IDirectedEdgeType findDirectedEdgeTypeById( UUID id ) {
         return this.directedEdgeTypesById.get( id ).orElseThrow(
             () -> new MetamodelException(
@@ -202,6 +194,14 @@ public final class MetamodelRepository
     }
 
     @Override
+    public IDirectedEdgeType findRootDirectedEdgeType() {
+        if ( this.rootDirectedEdgeType == null ) {
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root directed edge type." );
+        }
+        return this.rootDirectedEdgeType.get();
+    }
+
+    @Override
     public IPackage findRootPackage() {
         if ( this.rootPackage == null ) {
             throw new MetamodelException( MetamodelRepository.LOG, "Missing root package." );
@@ -210,11 +210,19 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IUndirectedEdgeType findUndirectedEdgeTypeBase() {
-        if ( this.baseUndirectedEdgeType == null ) {
+    public IUndirectedEdgeType findRootUndirectedEdgeType() {
+        if ( this.rootUndirectedEdgeType == null ) {
             throw new MetamodelException( MetamodelRepository.LOG, "Missing root undirected egde type." );
         }
-        return this.baseUndirectedEdgeType.get();
+        return this.rootUndirectedEdgeType.get();
+    }
+
+    @Override
+    public IVertexType findRootVertexType() {
+        if ( this.rootVertexType == null ) {
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root vertex type." );
+        }
+        return this.rootVertexType.get();
     }
 
     @Override
@@ -227,65 +235,12 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IVertexType findVertexTypeBase() {
-        if ( this.baseVertexType == null ) {
-            throw new MetamodelException( MetamodelRepository.LOG, "Missing root vertex type." );
-        }
-        return this.baseVertexType.get();
-    }
-
-    @Override
     public IVertexType findVertexTypeById( UUID id ) {
         return this.vertexTypesById.get( id ).orElseThrow(
             () -> new MetamodelException(
                 MetamodelRepository.LOG, "Vertex type not found: " + id + "."
             )
         );
-    }
-
-    @Override
-    public IDirectedEdgeType loadBaseDirectedEdgeType( UUID id, IPackage parentPackage ) {
-
-        IDirectedEdgeType result = new BaseDirectedEdgeType( id, parentPackage, this.baseVertexType.get() );
-
-        this.edgeTypes.add( result );
-        this.edgeTypesById.put( id, result );
-        this.directedEdgeTypes.add( result );
-        this.directedEdgeTypesById.put( id, result );
-        this.baseDirectedEdgeType = new V<>( result );
-
-        return result;
-
-    }
-
-    @Override
-    public IUndirectedEdgeType loadBaseUndirectedEdgeType(
-        UUID id, IPackage parentPackage
-    ) {
-
-        IUndirectedEdgeType result = new BaseUndirectedEdgeType( id, parentPackage, this.baseVertexType.get() );
-
-        this.edgeTypes.add( result );
-        this.edgeTypesById.put( id, result );
-        this.undirectedEdgeTypes.add( result );
-        this.undirectedEdgeTypesById.put( id, result );
-        this.baseUndirectedEdgeType = new V<>( result );
-
-        return result;
-
-    }
-
-    @Override
-    public IVertexType loadBaseVertexType( UUID id, IPackage parentPackage ) {
-
-        IVertexType result = new BaseVertexType( id, parentPackage );
-
-        this.vertexTypes.add( result );
-        this.vertexTypesById.put( id, result );
-        this.baseVertexType = new V<>( result );
-
-        return result;
-
     }
 
     @Override
@@ -429,6 +384,21 @@ public final class MetamodelRepository
     }
 
     @Override
+    public IDirectedEdgeType loadRootDirectedEdgeType( UUID id, IPackage parentPackage ) {
+
+        IDirectedEdgeType result = new RootDirectedEdgeType( id, parentPackage, this.rootVertexType.get() );
+
+        this.edgeTypes.add( result );
+        this.edgeTypesById.put( id, result );
+        this.directedEdgeTypes.add( result );
+        this.directedEdgeTypesById.put( id, result );
+        this.rootDirectedEdgeType = new V<>( result );
+
+        return result;
+
+    }
+
+    @Override
     public IPackage loadRootPackage( UUID id ) {
 
         IPackage result = new RootPackage( id );
@@ -436,6 +406,36 @@ public final class MetamodelRepository
         this.packages.add( result );
         this.packagesById.put( id, result );
         this.rootPackage = new V<>( result );
+
+        return result;
+
+    }
+
+    @Override
+    public IUndirectedEdgeType loadRootUndirectedEdgeType(
+        UUID id, IPackage parentPackage
+    ) {
+
+        IUndirectedEdgeType result = new RootUndirectedEdgeType( id, parentPackage, this.rootVertexType.get() );
+
+        this.edgeTypes.add( result );
+        this.edgeTypesById.put( id, result );
+        this.undirectedEdgeTypes.add( result );
+        this.undirectedEdgeTypesById.put( id, result );
+        this.rootUndirectedEdgeType = new V<>( result );
+
+        return result;
+
+    }
+
+    @Override
+    public IVertexType loadRootVertexType( UUID id, IPackage parentPackage ) {
+
+        IVertexType result = new RootVertexType( id, parentPackage );
+
+        this.vertexTypes.add( result );
+        this.vertexTypesById.put( id, result );
+        this.rootVertexType = new V<>( result );
 
         return result;
 
@@ -562,12 +562,12 @@ public final class MetamodelRepository
 
     private final VHashMap<UUID, IVertexType> vertexTypesById;
 
-    private V<IDirectedEdgeType> baseDirectedEdgeType = null;
-
-    private V<IUndirectedEdgeType> baseUndirectedEdgeType = null;
-
-    private V<IVertexType> baseVertexType = null;
+    private V<IDirectedEdgeType> rootDirectedEdgeType = null;
 
     private V<IPackage> rootPackage = null;
+
+    private V<IUndirectedEdgeType> rootUndirectedEdgeType = null;
+
+    private V<IVertexType> rootVertexType = null;
 
 }

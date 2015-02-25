@@ -17,9 +17,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Implementation of the top-level base vertex type.
+ * Implementation of the top-level root vertex type.
  */
-public final class BaseVertexType
+public final class RootVertexType
     implements IVertexType, IVertexTypeUnderAssembly {
 
     /**
@@ -28,7 +28,7 @@ public final class BaseVertexType
      * @param id            the unique ID of the vertex type.
      * @param parentPackage the package containing the vertex type.
      */
-    public BaseVertexType(
+    public RootVertexType(
         UUID id, IPackage parentPackage
     ) {
 
