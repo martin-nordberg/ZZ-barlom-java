@@ -1,25 +1,28 @@
+require(['scripts/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
+    function (example, Ractive, $, helloWorldTemplate) {
 
-require( [ 'scripts/example', 'ractive', 'text!templates/helloworld.html.mustache' ],
-         function( example, Ractive, helloWorldTemplate ) {
+        var model = new example.Example();
 
-    var model = new example.Example();
+        var view = new Ractive({
 
-    var view = new Ractive({
+            computed: {
+                fullName: '${modifier} + " " + ${name}'
+            },
 
-        computed : {
-            fullName: '${modifier} + " " + ${name}'
-        },
+            data: model,
 
-        data: model,
+            el: 'container',
 
-        el: 'container',
+            magic: true,
 
-        magic: true,
+            template: helloWorldTemplate
 
-        template: helloWorldTemplate
+        });
 
-    });
+        model.modifier = "big";
 
-    model.modifier = "big";
+        $('h1.grestler').html("Grestler!")
 
-});
+    }
+);
+
