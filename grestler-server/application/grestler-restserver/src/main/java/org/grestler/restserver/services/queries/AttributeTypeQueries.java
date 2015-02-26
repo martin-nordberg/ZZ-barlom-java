@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,6 +41,39 @@ public class AttributeTypeQueries {
     }
 
     /**
+     * Queries for all attribute types.
+     *
+     * @return JSON for the attribute types found.
+     */
+    @GET
+    @Path( "" )
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.attributetype+json" } )
+    public String getAllAttributeTypes() {
+
+        AttributeTypeQueries.LOG.info( "Querying for all attribute types." );
+
+        StringWriter result = new StringWriter();
+        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
+
+        json.writeStartObject();
+        json.writeStartArray( "attributeTypes" );
+
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Iterable<IAttributeType> attributeTypes = this.metamodelRepository.findAllAttributeTypes();
+                attributeTypes.forEach( attributeType -> attributeType.generateJson( json ) );
+            }
+        );
+
+        json.writeEnd();
+        json.writeEnd();
+
+        json.close();
+        return result.toString();
+
+    }
+
+    /**
      * Queries for one attribute type by ID or by path.
      *
      * @param idOrPath the UUID or the full path of the attribute type.
@@ -75,39 +108,6 @@ public class AttributeTypeQueries {
                 }
             }
         );
-
-        json.close();
-        return result.toString();
-
-    }
-
-    /**
-     * Queries for all attribute types.
-     *
-     * @return JSON for the attribute types found.
-     */
-    @GET
-    @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.attributetype+json" } )
-    public String getAttributeTypesAll() {
-
-        AttributeTypeQueries.LOG.info( "Querying for all attribute types." );
-
-        StringWriter result = new StringWriter();
-        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
-
-        json.writeStartObject();
-        json.writeStartArray( "attributeTypes" );
-
-        StmTransactionContext.doInReadOnlyTransaction(
-            () -> {
-                Iterable<IAttributeType> attributeTypes = this.metamodelRepository.findAllAttributeTypes();
-                attributeTypes.forEach( attributeType -> attributeType.generateJson( json ) );
-            }
-        );
-
-        json.writeEnd();
-        json.writeEnd();
 
         json.close();
         return result.toString();

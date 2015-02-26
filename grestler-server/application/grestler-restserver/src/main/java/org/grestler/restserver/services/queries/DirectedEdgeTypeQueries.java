@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +45,39 @@ public class DirectedEdgeTypeQueries {
     }
 
     /**
+     * Queries for all directed edge types.
+     *
+     * @return JSON for the directed edge types found.
+     */
+    @GET
+    @Path( "" )
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.directededgetype+json" } )
+    public String getAllDirectedEdgeTypes() {
+
+        DirectedEdgeTypeQueries.LOG.info( "Querying for all directed edge types." );
+
+        StringWriter result = new StringWriter();
+        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
+
+        json.writeStartObject();
+        json.writeStartArray( "edgeTypes" );
+
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Iterable<IDirectedEdgeType> edgeTypes = this.metamodelRepository.findAllDirectedEdgeTypes();
+                edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
+            }
+        );
+
+        json.writeEnd();
+        json.writeEnd();
+
+        json.close();
+        return result.toString();
+
+    }
+
+    /**
      * Queries for one directed edge type by ID or by path.
      *
      * @param idOrPath the UUID or the full path of the directed edge type.
@@ -79,39 +112,6 @@ public class DirectedEdgeTypeQueries {
                 }
             }
         );
-
-        json.close();
-        return result.toString();
-
-    }
-
-    /**
-     * Queries for all directed edge types.
-     *
-     * @return JSON for the directed edge types found.
-     */
-    @GET
-    @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.directededgetype+json" } )
-    public String getEdgeTypesAll() {
-
-        DirectedEdgeTypeQueries.LOG.info( "Querying for all directed edge types." );
-
-        StringWriter result = new StringWriter();
-        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
-
-        json.writeStartObject();
-        json.writeStartArray( "edgeTypes" );
-
-        StmTransactionContext.doInReadOnlyTransaction(
-            () -> {
-                Iterable<IDirectedEdgeType> edgeTypes = this.metamodelRepository.findAllDirectedEdgeTypes();
-                edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
-            }
-        );
-
-        json.writeEnd();
-        json.writeEnd();
 
         json.close();
         return result.toString();

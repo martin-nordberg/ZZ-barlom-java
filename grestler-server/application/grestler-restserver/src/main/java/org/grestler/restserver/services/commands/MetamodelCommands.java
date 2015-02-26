@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.commands;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

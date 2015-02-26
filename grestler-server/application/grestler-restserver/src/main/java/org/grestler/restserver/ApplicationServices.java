@@ -6,13 +6,13 @@
 package org.grestler.restserver;
 
 import org.grestler.restserver.filters.CacheControlFilter;
-import org.grestler.restserver.services.metamodel.AttributeTypeQueries;
-import org.grestler.restserver.services.metamodel.DirectedEdgeTypeQueries;
-import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
-import org.grestler.restserver.services.metamodel.MetamodelCommands;
-import org.grestler.restserver.services.metamodel.PackageQueries;
-import org.grestler.restserver.services.metamodel.UndirectedEdgeTypeQueries;
-import org.grestler.restserver.services.metamodel.VertexTypeQueries;
+import org.grestler.restserver.services.commands.MetamodelCommands;
+import org.grestler.restserver.services.queries.AttributeTypeQueries;
+import org.grestler.restserver.services.queries.DirectedEdgeTypeQueries;
+import org.grestler.restserver.services.queries.EdgeTypeQueries;
+import org.grestler.restserver.services.queries.PackageQueries;
+import org.grestler.restserver.services.queries.UndirectedEdgeTypeQueries;
+import org.grestler.restserver.services.queries.VertexTypeQueries;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Application;

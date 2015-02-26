@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,6 +43,39 @@ public class EdgeTypeQueries {
     }
 
     /**
+     * Queries for all edge types.
+     *
+     * @return JSON for the edge types found.
+     */
+    @GET
+    @Path( "" )
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.edgetype+json" } )
+    public String getAllEdgeTypes() {
+
+        EdgeTypeQueries.LOG.info( "Querying for all edge types." );
+
+        StringWriter result = new StringWriter();
+        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
+
+        json.writeStartObject();
+        json.writeStartArray( "edgeTypes" );
+
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Iterable<IEdgeType> edgeTypes = this.metamodelRepository.findAllEdgeTypes();
+                edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
+            }
+        );
+
+        json.writeEnd();
+        json.writeEnd();
+
+        json.close();
+        return result.toString();
+
+    }
+
+    /**
      * Queries for one edge type by ID or by path.
      *
      * @param idOrPath the UUID or the full path of the edge type.
@@ -77,39 +110,6 @@ public class EdgeTypeQueries {
                 }
             }
         );
-
-        json.close();
-        return result.toString();
-
-    }
-
-    /**
-     * Queries for all edge types.
-     *
-     * @return JSON for the edge types found.
-     */
-    @GET
-    @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.edgetype+json" } )
-    public String getEdgeTypesAll() {
-
-        EdgeTypeQueries.LOG.info( "Querying for all edge types." );
-
-        StringWriter result = new StringWriter();
-        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
-
-        json.writeStartObject();
-        json.writeStartArray( "edgeTypes" );
-
-        StmTransactionContext.doInReadOnlyTransaction(
-            () -> {
-                Iterable<IEdgeType> edgeTypes = this.metamodelRepository.findAllEdgeTypes();
-                edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
-            }
-        );
-
-        json.writeEnd();
-        json.writeEnd();
 
         json.close();
         return result.toString();

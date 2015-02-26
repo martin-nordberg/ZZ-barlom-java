@@ -7,4 +7,4 @@
  * Package containing JAX-RS query controllers.
  */
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.queries;

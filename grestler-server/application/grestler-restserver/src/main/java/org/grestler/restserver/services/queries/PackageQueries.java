@@ -3,11 +3,11 @@
 // Apache 2.0 License
 //
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.grestler.metamodel.api.elements.IUndirectedEdgeType;
+import org.grestler.metamodel.api.elements.IPackage;
 import org.grestler.metamodel.api.queries.IMetamodelRepository;
 import org.grestler.utilities.revisions.StmTransactionContext;
 
@@ -23,21 +23,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service for querying Grestler undirected edge types.
+ * Service for querying Grestler packages.
  */
-@Path( "/metadata/undirectededgetypes" )
-public class UndirectedEdgeTypeQueries {
+@Path( "/metadata/packages" )
+public class PackageQueries {
 
     /**
-     * Constructs a new undirected edge type query service backed by given metamodel repository.
+     * Constructs a new package query service backed by given metamodel repository.
      *
      * @param metamodelRepository  the metamodel repository to query from.
-     * @param jsonGeneratorFactory the factory for generating JSON.
+     * @param jsonGeneratorFactory the factory for generating JSON output.
      */
     @Inject
-    public UndirectedEdgeTypeQueries(
-        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
-    ) {
+    public PackageQueries( IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory ) {
 
         this.metamodelRepository = metamodelRepository;
         this.jsonGeneratorFactory = jsonGeneratorFactory;
@@ -45,27 +43,27 @@ public class UndirectedEdgeTypeQueries {
     }
 
     /**
-     * Queries for all undirected edge types.
+     * Queries for all packages.
      *
-     * @return JSON for the undirected edge types found.
+     * @return JSON for the packages found.
      */
     @GET
     @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.undirectededgetype+json" } )
-    public String getEdgeTypesAll() {
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
+    public String getAllPackages() {
 
-        UndirectedEdgeTypeQueries.LOG.info( "Querying for all undirected edge types." );
+        PackageQueries.LOG.info( "Querying for all packages." );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
 
         json.writeStartObject();
-        json.writeStartArray( "edgeTypes" );
+        json.writeStartArray( "packages" );
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Iterable<IUndirectedEdgeType> edgeTypes = this.metamodelRepository.findAllUndirectedEdgeTypes();
-                edgeTypes.forEach( edgeType -> edgeType.generateJson( json ) );
+                Iterable<IPackage> packages = this.metamodelRepository.findAllPackages();
+                packages.forEach( pkg -> pkg.generateJson( json ) );
             }
         );
 
@@ -78,18 +76,18 @@ public class UndirectedEdgeTypeQueries {
     }
 
     /**
-     * Queries for one undirected edge type by ID or by path.
+     * Queries for one package by ID or by path.
      *
-     * @param idOrPath the UUID or the full path of the undirected edge type.
+     * @param idOrPath the UUID or the full path of the package.
      *
-     * @return JSON for the undirected edge type found or null.
+     * @return JSON for the package found or null
      */
     @GET
     @Path( "/{idOrPath}" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.undirectededgetype+json" } )
-    public String getUndirectedEdgeTypeByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.package+json" } )
+    public String getPackageByIdOrPath( @PathParam( "idOrPath" ) String idOrPath ) {
 
-        UndirectedEdgeTypeQueries.LOG.info( "Querying for undirected edge type {}.", idOrPath );
+        PackageQueries.LOG.info( "Querying for package {}.", idOrPath );
 
         StringWriter result = new StringWriter();
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
@@ -98,14 +96,10 @@ public class UndirectedEdgeTypeQueries {
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {
-                Optional<IUndirectedEdgeType> edgeType = this.metamodelRepository.findOptionalUndirectedEdgeTypeById(
-                    UUID.fromString(
-                        idOrPath
-                    )
-                );
+                Optional<IPackage> pkg = this.metamodelRepository.findOptionalPackageById( UUID.fromString( idOrPath ) );
 
-                if ( edgeType.isPresent() ) {
-                    edgeType.get().generateJson( json );
+                if ( pkg.isPresent() ) {
+                    pkg.get().generateJson( json );
                 }
                 else {
                     json.writeNull();

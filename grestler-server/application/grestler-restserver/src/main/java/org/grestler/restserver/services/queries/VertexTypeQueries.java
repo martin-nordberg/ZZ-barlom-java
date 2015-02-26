@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.grestler.restserver.services.metamodel;
+package org.grestler.restserver.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,6 +41,39 @@ public class VertexTypeQueries {
     }
 
     /**
+     * Queries for all vertex types.
+     *
+     * @return JSON for the vertex types found.
+     */
+    @GET
+    @Path( "" )
+    @Produces( { "application/json", "application/vnd.grestler.org.v1.vertextype+json" } )
+    public String getAllVertexTypes() {
+
+        VertexTypeQueries.LOG.info( "Querying for all vertex types." );
+
+        StringWriter result = new StringWriter();
+        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
+
+        json.writeStartObject();
+        json.writeStartArray( "vertexTypes" );
+
+        StmTransactionContext.doInReadOnlyTransaction(
+            () -> {
+                Iterable<IVertexType> vertexTypes = this.metamodelRepository.findAllVertexTypes();
+                vertexTypes.forEach( vertexType -> vertexType.generateJson( json ) );
+            }
+        );
+
+        json.writeEnd();
+        json.writeEnd();
+
+        json.close();
+        return result.toString();
+
+    }
+
+    /**
      * Queries for one vertex type by ID or by path.
      *
      * @param idOrPath the UUID or the full path of the vertex type.
@@ -75,39 +108,6 @@ public class VertexTypeQueries {
                 }
             }
         );
-
-        json.close();
-        return result.toString();
-
-    }
-
-    /**
-     * Queries for all vertex types.
-     *
-     * @return JSON for the vertex types found.
-     */
-    @GET
-    @Path( "" )
-    @Produces( { "application/json", "application/vnd.grestler.org.v1.vertextype+json" } )
-    public String getVertexTypesAll() {
-
-        VertexTypeQueries.LOG.info( "Querying for all vertex types." );
-
-        StringWriter result = new StringWriter();
-        JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
-
-        json.writeStartObject();
-        json.writeStartArray( "vertexTypes" );
-
-        StmTransactionContext.doInReadOnlyTransaction(
-            () -> {
-                Iterable<IVertexType> vertexTypes = this.metamodelRepository.findAllVertexTypes();
-                vertexTypes.forEach( vertexType -> vertexType.generateJson( json ) );
-            }
-        );
-
-        json.writeEnd();
-        json.writeEnd();
 
         json.close();
         return result.toString();
