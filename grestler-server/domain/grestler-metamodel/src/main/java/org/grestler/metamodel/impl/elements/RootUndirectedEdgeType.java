@@ -58,7 +58,7 @@ public class RootUndirectedEdgeType
     public void generateJsonAttributes( JsonGenerator json ) {
         json.write( "id", this.id.toString() )
             .write( "parentPackageId", this.parentPackage.getId().toString() )
-            .write( "name", "Vertex" )
+            .write( "name", this.getName() )
             .write( "path", this.getPath() )
             .write( "vertexTypeId", this.rootVertexType.getId().toString() );
     }
@@ -100,7 +100,7 @@ public class RootUndirectedEdgeType
 
     @Override
     public String getName() {
-        return "Edge";
+        return "Undirected Edge";
     }
 
     @Override

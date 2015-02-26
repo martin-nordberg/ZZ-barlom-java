@@ -19,6 +19,7 @@ import java.util.UUID;
 /**
  * Central store of metamodel elements.
  */
+@SuppressWarnings( "ClassWithTooManyMethods" )
 public interface IMetamodelRepository {
 
     /**

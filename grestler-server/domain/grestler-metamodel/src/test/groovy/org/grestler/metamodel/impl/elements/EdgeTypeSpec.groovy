@@ -36,7 +36,7 @@ class EdgeTypeSpec
         IEdgeType e = new RootDirectedEdgeType( id, root, baseVertexType );
 
         expect:
-        e.name == "Edge";
+        e.name == "Directed Edge";
         !e.superType.isPresent();
         e.isSubTypeOf( e );
         e.tailVertexType == baseVertexType;

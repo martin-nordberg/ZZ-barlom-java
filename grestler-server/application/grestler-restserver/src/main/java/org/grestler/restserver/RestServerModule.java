@@ -11,9 +11,11 @@ import org.grestler.metamodel.MetamodelModule;
 import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
 import org.grestler.metamodel.api.queries.IMetamodelRepository;
 import org.grestler.restserver.services.metamodel.AttributeTypeQueries;
+import org.grestler.restserver.services.metamodel.DirectedEdgeTypeQueries;
 import org.grestler.restserver.services.metamodel.EdgeTypeQueries;
 import org.grestler.restserver.services.metamodel.MetamodelCommands;
 import org.grestler.restserver.services.metamodel.PackageQueries;
+import org.grestler.restserver.services.metamodel.UndirectedEdgeTypeQueries;
 import org.grestler.restserver.services.metamodel.VertexTypeQueries;
 
 import javax.json.Json;
@@ -38,6 +40,13 @@ public class RestServerModule {
         IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
     ) {
         return new AttributeTypeQueries( metamodelRepository, jsonGeneratorFactory );
+    }
+
+    @Provides
+    public DirectedEdgeTypeQueries provideDirectedEdgeTypeQueries(
+        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
+    ) {
+        return new DirectedEdgeTypeQueries( metamodelRepository, jsonGeneratorFactory );
     }
 
     @Provides
@@ -81,6 +90,13 @@ public class RestServerModule {
         IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
     ) {
         return new PackageQueries( metamodelRepository, jsonGeneratorFactory );
+    }
+
+    @Provides
+    public UndirectedEdgeTypeQueries provideUndirectedEdgeTypeQueries(
+        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
+    ) {
+        return new UndirectedEdgeTypeQueries( metamodelRepository, jsonGeneratorFactory );
     }
 
     @Provides

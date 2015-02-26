@@ -58,7 +58,7 @@ public class RootDirectedEdgeType
     public void generateJsonAttributes( JsonGenerator json ) {
         json.write( "id", this.id.toString() )
             .write( "parentPackageId", this.parentPackage.getId().toString() )
-            .write( "name", "Vertex" )
+            .write( "name", this.getName() )
             .write( "path", this.getPath() )
             .write( "tailVertexTypeId", this.rootVertexType.getId().toString() )
             .write( "headVertexTypeId", this.rootVertexType.getId().toString() );
@@ -121,7 +121,7 @@ public class RootDirectedEdgeType
 
     @Override
     public String getName() {
-        return "Edge";
+        return "Directed Edge";
     }
 
     @Override

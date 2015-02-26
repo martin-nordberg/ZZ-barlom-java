@@ -44,7 +44,7 @@ class EdgeTypeLoaderSpec
 
         expect:
         rootEdgeType != null;
-        rootEdgeType.name == "Edge";
+        rootEdgeType.name == "Directed Edge";
         !rootEdgeType.superType.isPresent();
         m.findAllEdgeTypes().size() == 2;
         m.findEdgeTypeById( rootEdgeType.id ).equals( rootEdgeType );
