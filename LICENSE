@@ -197,17 +197,12 @@ Grestler
 
 -------------------------------------------------------------------------------
 
-Third Party Libraries
+Third Party Libraries - Java
 
    Dagger
    (C) Copyright 2013 Square, Inc.
    Apache 2.0 Licensed
    http://square.github.io/dagger/
-
-   Dalesbred
-   (C) Copyright 2012-2014 Evident Solution Oy
-   MIT Licensed
-   https://dalesbred.evident.fi/
 
    Flyway
    (C) Copyright 2010-2014 Axel Fontaine
@@ -241,7 +236,26 @@ Third Party Libraries
 
 -------------------------------------------------------------------------------
 
-Third Party Libraries - Test Code Only
+Third Party Libraries - JavaScript
+
+  jQuery
+  Copyright 2005-2014 jQuery Foundation, Inc. and other contributors
+  MIT license
+  http://jquery.com/
+
+  Ractive
+  (C) Copyright 2012-2014 Rich Harris and contributors
+  MIT License
+  http://ractivejs.org
+
+  RequireJS
+  Copyright (c) 2010-2015, The Dojo Foundation
+  MIT License
+  http://requirejs.org/
+
+-------------------------------------------------------------------------------
+
+Third Party Libraries - Java / Test Code Only
 
    JUnit
    (C) Copyright 2002-2014 JUnit
@@ -252,5 +266,14 @@ Third Party Libraries - Test Code Only
    (C) 2010-2014 Peter Niederwieser
    Apache 2.0 License
    https://code.google.com/p/spock/
+
+-------------------------------------------------------------------------------
+
+Third Party Libraries - Java / Test Code Only
+
+   Jasmine
+   (C) Copyright 2008-2014 Pivotal Labs
+   MIT License
+   http://jasmine.github.io/
 
 -------------------------------------------------------------------------------

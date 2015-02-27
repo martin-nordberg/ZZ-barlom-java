@@ -1,4 +1,4 @@
-require(['scripts/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
+require(['scripts/ts/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
     function (example, Ractive, $, helloWorldTemplate) {
 
         var model = new example.Example();

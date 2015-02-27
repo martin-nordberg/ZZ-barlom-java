@@ -8,7 +8,6 @@ package org.grestler.metamodel.api.elements;
 /**
  * Shared base interface for metadata elements with names.
  */
-
 public interface INamedElement
     extends IDocumentedElement {
 
