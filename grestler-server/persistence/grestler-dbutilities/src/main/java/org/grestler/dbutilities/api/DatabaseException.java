@@ -37,4 +37,7 @@ public abstract class DatabaseException
         super( log, message, cause );
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
 }

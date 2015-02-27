@@ -125,6 +125,9 @@ public class H2DatabaseException
         // TODO: more entries ...
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
     /** The underlying validation error represented by this exception. */
     private final ValidationError validationError;
 

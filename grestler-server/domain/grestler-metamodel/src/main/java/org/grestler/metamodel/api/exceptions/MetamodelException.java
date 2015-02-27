@@ -35,4 +35,7 @@ public class MetamodelException
         super( log, message, cause );
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
 }

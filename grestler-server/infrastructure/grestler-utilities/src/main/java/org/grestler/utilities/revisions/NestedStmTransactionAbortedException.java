@@ -20,4 +20,7 @@ public class NestedStmTransactionAbortedException
         super( "Nested transaction aborted. (Partial recovery not supported.)", e.orElse( null ) );
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
 }

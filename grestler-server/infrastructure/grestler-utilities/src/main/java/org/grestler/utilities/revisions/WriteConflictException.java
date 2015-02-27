@@ -18,4 +18,7 @@ class WriteConflictException
     WriteConflictException() {
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
 }

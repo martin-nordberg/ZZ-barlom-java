@@ -43,6 +43,9 @@ public class ShutdownServlet
 
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
     /** The web server to shutdown when this servlet executes. */
     private final AutoCloseable webServer;
 

@@ -18,6 +18,13 @@ subprojects {
     ext.resteasyVersion = '3.0.10.Final'
     ext.spockVersion = '0.7-groovy-2.0'
 
+    // Javac arguments
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << '-Xlint' << '-Xlint:-processing' << '-Werror'
+        }
+    }
+
     dependencies {
 
         // Java CDI

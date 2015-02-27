@@ -48,6 +48,12 @@ public class OperationTimeLogger
         this.log.info( this.message, elapsedTimeStr );
     }
 
+    /**
+     * No-op method to make the timer used inside a try-with-resources even though it does nothing until closed.
+     */
+    public void noop() {
+    }
+
     private final Logger log;
 
     private final String message;

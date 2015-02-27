@@ -18,4 +18,7 @@ public final class MaximumRetriesExceededException
         super( "Maximum retries exceeded." );
     }
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
 }

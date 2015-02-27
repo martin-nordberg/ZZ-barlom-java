@@ -76,7 +76,7 @@ public final class MetamodelRepository
             this.attributeTypesById = new VHashMap<>( 500 );
 
             try (
-                OperationTimeLogger ignored = new OperationTimeLogger(
+                OperationTimeLogger opTimeLogger = new OperationTimeLogger(
                     MetamodelRepository.LOG, "Metamodel repository loaded in {}."
                 )
             ) {
@@ -86,6 +86,8 @@ public final class MetamodelRepository
                 vertexTypeLoader.loadAllVertexTypes( this );
                 edgeTypeLoader.loadAllEdgeTypes( this );
                 attributeDeclLoader.loadAllAttributeDecls( this );
+
+                opTimeLogger.noop();
             }
 
             StmTransactionContext.commitTransaction();

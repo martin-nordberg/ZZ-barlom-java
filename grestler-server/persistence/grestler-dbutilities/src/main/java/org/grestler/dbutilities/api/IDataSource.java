@@ -13,6 +13,9 @@ import javax.sql.DataSource;
 public interface IDataSource
     extends AutoCloseable, DataSource {
 
+    @Override
+    void close();
+
     /**
      * Creates a new connection from this data source.
      *

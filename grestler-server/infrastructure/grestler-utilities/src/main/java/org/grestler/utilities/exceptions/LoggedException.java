@@ -36,4 +36,8 @@ public abstract class LoggedException
         super( message, cause );
         log.error( message, this );
     }
+
+    /** Serialization version. */
+    private static final long serialVersionUID = 1L;
+
 }
