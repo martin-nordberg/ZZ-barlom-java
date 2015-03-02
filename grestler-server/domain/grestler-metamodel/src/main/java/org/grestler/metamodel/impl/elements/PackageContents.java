@@ -11,7 +11,7 @@ import org.grestler.utilities.revisions.VArray;
 /**
  * Helper class for maintaining the contents of a package.
  */
-class PackageContents {
+final class PackageContents {
 
     /**
      * Constructs a new package elements helper instance.

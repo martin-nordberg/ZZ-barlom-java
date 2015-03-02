@@ -1,3 +1,8 @@
+//
+// (C) Copyright 2015 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
 /**
  * Module: org/grestler/metamodel/api/elements
  */
@@ -146,7 +151,7 @@ export interface INamedElement {
 export interface IDocumentedElement {
 
     /** The unique ID of this element */
-    id : string;
+    id : string;  // TODO: UUID
 
     /**
      * Returns the parent element of this element.
@@ -188,7 +193,7 @@ export interface IPackagedElement extends INamedElement {
     /**
      * @return the parent package of this packaged element.
      */
-    getParentPackage() : IPackage;
+    parentPackage : IPackage;
 
     /**
      * Determines whether this package is a direct or indirect child of the given package.
@@ -222,7 +227,7 @@ export interface IVertexType extends IPackagedElement {
     /**
      * @return the defined attributes of this vertex type.
      */
-    getAttributes() : IVertexAttributeDecl[];
+    attributes : IVertexAttributeDecl[];
 
     /**
      * @return the super type of this vertex type.
@@ -262,7 +267,7 @@ export interface IEdgeType extends IPackagedElement {
     /**
      * @return the defined attributes of this edge type.
      */
-    getAttributes() : IEdgeAttributeDecl[];
+    attributes : IEdgeAttributeDecl[];
 
     /**
      * @return whether edges of this type can form a cyclic graph.
@@ -308,6 +313,26 @@ export interface IAttributeType extends IPackagedElement {
      * @return the fundamental data type for attributes of this type.
      */
     dataType : EDataType;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface to a package dependency.
+ */
+export interface IPackageDependency extends IDocumentedElement {
+
+    /**
+     * @return the package that makes use of the supplier package.
+     */
+    clientPackage : IPackage;
+
+
+    /**
+     * @return the package that is depended upon.
+     */
+    supplierPackage : IPackage;
 
 }
 
