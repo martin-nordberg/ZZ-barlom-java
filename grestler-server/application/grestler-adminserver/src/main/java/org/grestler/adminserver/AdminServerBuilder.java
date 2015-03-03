@@ -90,6 +90,10 @@ public final class AdminServerBuilder {
         // Set the source for static content.
         ResourceHandler fileResourceHandler = new ResourceHandler();
         fileResourceHandler.setCacheControl( "max-age=3600,public" );
+
+        // TODO: only for development to avoid cache clearing:
+        fileResourceHandler.setCacheControl( "max-age=0, no-cache, no-store" );
+
         // TODO: Make internal resource
         fileResourceHandler.setBaseResource(
             Resource.newResource(

@@ -4,6 +4,7 @@ require(['scripts/ts/example', 'ractive', 'jquery', 'text!templates/helloworld.h
         // Model (external TypeScript)
         var model = new example.Example();
 
+        // Modelview
         var modelview = new example.ExampleVM( model );
 
         // View
@@ -24,7 +25,7 @@ require(['scripts/ts/example', 'ractive', 'jquery', 'text!templates/helloworld.h
         });
 
         // Change the model
-        model.modifier = "wide viewmodel";
+        model.modifier = "big wide";
         model.name = "globe";
 
         // Make sure jQuery works

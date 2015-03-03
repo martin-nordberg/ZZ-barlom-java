@@ -71,9 +71,40 @@ public class Integer32AttributeType
         return this.minValue.get();
     }
 
+    /**
+     * Changes the default value for attributes of this type.
+     *
+     * @param defaultValue the new default value.
+     */
+    public void setDefaultValue( OptionalInt defaultValue ) {
+        this.defaultValue.set( defaultValue );
+    }
+
+    /**
+     * Changes the maximum value for attributes of this type.
+     *
+     * @param maxValue the new maximum value.
+     */
+    public void setMaxValue( OptionalInt maxValue ) {
+        this.maxValue.set( maxValue );
+    }
+
+    /**
+     * Changes the minimum value for attributes of this type.
+     *
+     * @param minValue the new minimum value.
+     */
+    public void setMinValue( OptionalInt minValue ) {
+        this.minValue.set( minValue );
+    }
+
+    /** The default value for attributes of this type. */
     private final V<OptionalInt> defaultValue;
 
+    /** The minimum allowed value for attributes with this type. */
     private final V<OptionalInt> maxValue;
 
+    /** The maximum allowed value for attributes with this type. */
     private final V<OptionalInt> minValue;
+
 }

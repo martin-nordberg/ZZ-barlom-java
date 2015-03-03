@@ -156,7 +156,7 @@ export interface IDocumentedElement {
     /**
      * Returns the parent element of this element.
      */
-    getParent() : INamedElement;
+    parent : INamedElement;
 
 }
 
@@ -173,7 +173,7 @@ export interface INamedElement extends IDocumentedElement {
     /**
      * Returns the fully qualified path to this element.
      */
-    getPath() : string;
+    path : string;
 
 }
 
@@ -275,6 +275,17 @@ export interface IEdgeType extends IPackagedElement {
     cyclicity : ECyclicity;
 
     /**
+     * @return whether this edge type is abstract, i.e has no concrete instances. Note that a super type must be
+     * abstract.
+     */
+    isAbstract : boolean;
+
+    /**
+     * @return whether graphs formed by this edge type are simple, i.e. have neither self-loops not multi-edges.
+     */
+    isSimple : boolean;
+
+    /**
      * @return whether edges of this type must be unique between any two given vertexes.
      */
     multiEdgedness : EMultiEdgedness ;
@@ -287,18 +298,7 @@ export interface IEdgeType extends IPackagedElement {
     /**
      * @return the super type of this edge type.
      */
-    getSuperEdgeType() : IEdgeType;
-
-    /**
-     * @return whether this edge type is abstract, i.e has no concrete instances. Note that a super type must be
-     * abstract.
-     */
-    isAbstract() : boolean;
-
-    /**
-     * @return whether graphs formed by this edge type are simple, i.e. have neither self-loops not multi-edges.
-     */
-    isSimple() : boolean;
+    superEdgeType : IEdgeType;
 
 }
 
@@ -343,12 +343,22 @@ export interface IPackage extends IPackagedElement {
     /**
      * @return the attribute types that are children of this package.
      */
-    getAttributeTypes() : IAttributeType[];
+    attributeTypes : IAttributeType[];
 
     /**
      * @return the packages that are children of this one.
      */
-    getChildPackages() : IPackage[];
+    childPackages : IPackage[];
+
+    /**
+     * @return the edge types that are children of this package.
+     */
+    edgeTypes : IEdgeType[];
+
+    /**
+     * @return the vertex types that are children of this package.
+     */
+    vertexTypes : IVertexType[];
 
     /**
      * Determines the packages that depend upon this one.
@@ -360,11 +370,6 @@ export interface IPackage extends IPackagedElement {
     getClientPackages( dependencyDepth : EDependencyDepth ) : IPackage[];
 
     /**
-     * @return the edge types that are children of this package.
-     */
-    getEdgeTypes() : IEdgeType[];
-
-    /**
      * Determines the packages that this package depends upon.
      *
      * @param dependencyDepth whether to include indirect dependencies.
@@ -372,11 +377,6 @@ export interface IPackage extends IPackagedElement {
      * @return the packages that this package depends upon.
      */
     getSupplierPackages( dependencyDepth : EDependencyDepth ) : IPackage[];
-
-    /**
-     * @return the vertex types that are children of this package.
-     */
-    getVertexTypes() : IVertexType[];
 
     /**
      * Whether this package depends upon the given one (directly or indirectly).
@@ -634,7 +634,6 @@ export interface IEdgeAttributeDecl extends INamedElement {
      */
     optionality : EAttributeOptionality;
 
-
     /**
      * @return the parent of this attribute.
      */
@@ -663,7 +662,6 @@ export interface IVertexAttributeDecl extends INamedElement {
      * @return whether this is a required attribute.
      */
     optionality : EAttributeOptionality;
-
 
     /**
      * @return the parent of this attribute.
