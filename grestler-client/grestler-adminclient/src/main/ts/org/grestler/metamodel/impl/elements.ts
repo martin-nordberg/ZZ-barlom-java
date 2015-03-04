@@ -1876,3 +1876,99 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Implementation of the top level root package.
+ */
+export class RootPackage implements api.IPackage, IPackageUnderAssembly {
+
+    /**
+     * Constructs a new root package.
+     *
+     * @param id the unique ID of the root package.
+     */
+    constructor( id : string ) {
+
+        this._id = id;
+
+        this._packageDependencies = new PackageDependencies( this );
+        this._packageContents = new PackageContents( this );
+
+    }
+
+    public addChildElement( packagedElement : api.IPackagedElement ) : void {
+        this._packageContents.addChildElement( packagedElement );
+    }
+
+    public addPackageDependency( packageDependency : api.IPackageDependency ) : void {
+        this._packageDependencies.addPackageDependency( packageDependency );
+    }
+
+    public get attributeTypes() : api.IAttributeType[] {
+        return this._packageContents.attributeTypes;
+    }
+
+    public get childPackages() : api.IPackage[] {
+        return this._packageContents.childPackages;
+    }
+
+    public getClientPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+        return this._packageDependencies.getClientPackages( dependencyDepth );
+    }
+
+    public get edgeTypes() : api.IEdgeType[] {
+        return this._packageContents.edgeTypes;
+    }
+
+    public get id() : string {
+        return this._id;
+    }
+
+    public get name() : string {
+        return "$";
+    }
+
+    public get parent() : api.INamedElement {
+        return this;
+    }
+
+    public get parentPackage() : api.IPackage {
+        return this;
+    }
+
+    public get path() : string {
+        return "";
+    }
+
+    public getSupplierPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+        return this._packageDependencies.getSupplierPackages( dependencyDepth );
+    }
+
+    public get vertexTypes() : api.IVertexType[] {
+        return this._packageContents.vertexTypes;
+    }
+
+    public hasSupplierPackage( pkg : api.IPackage, dependencyDepth : api.EDependencyDepth ) : boolean {
+        return this._packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
+    }
+
+    public isChildOf( parentPackage : api.IPackage ) : boolean {
+        return false;
+    }
+
+    public removeChildElement( packagedElement : api.IPackagedElement ) : void {
+        this._packageContents.removeChildElement( packagedElement );
+    }
+
+    /** The unique ID of this root package. */
+    private _id : string;
+
+    /** Helper object manages the contents of this package. */
+    private _packageContents : PackageContents;
+
+    /** Helper object that manages this package's dependencies. */
+    private _packageDependencies : PackageDependencies;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
