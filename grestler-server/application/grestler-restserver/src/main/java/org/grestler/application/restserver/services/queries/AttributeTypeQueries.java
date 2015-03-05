@@ -7,9 +7,9 @@ package org.grestler.application.restserver.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.grestler.metamodel.api.elements.IAttributeType;
-import org.grestler.metamodel.api.queries.IMetamodelRepository;
-import org.grestler.utilities.revisions.StmTransactionContext;
+import org.grestler.domain.metamodel.api.elements.IAttributeType;
+import org.grestler.domain.metamodel.api.queries.IMetamodelRepository;
+import org.grestler.infrastructure.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.stream.JsonGenerator;

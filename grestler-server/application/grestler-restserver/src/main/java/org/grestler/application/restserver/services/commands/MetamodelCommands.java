@@ -7,10 +7,10 @@ package org.grestler.application.restserver.services.commands;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.grestler.metamodel.api.commands.IMetamodelCommand;
-import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
-import org.grestler.utilities.exceptions.IValidationError;
-import org.grestler.utilities.revisions.StmTransactionContext;
+import org.grestler.domain.metamodel.api.commands.IMetamodelCommand;
+import org.grestler.domain.metamodel.api.commands.IMetamodelCommandFactory;
+import org.grestler.infrastructure.utilities.exceptions.IValidationError;
+import org.grestler.infrastructure.utilities.revisions.StmTransactionContext;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;

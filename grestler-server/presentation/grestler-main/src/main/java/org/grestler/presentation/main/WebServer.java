@@ -13,9 +13,9 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.grestler.presentation.adminserver.AdminServerBuilder;
 import org.grestler.application.restserver.RestServerBuilder;
-import org.grestler.utilities.configuration.Configuration;
+import org.grestler.infrastructure.utilities.configuration.Configuration;
+import org.grestler.presentation.adminserver.AdminServerBuilder;
 import org.h2.server.web.WebServlet;
 
 import javax.inject.Inject;

@@ -9,7 +9,7 @@ import dagger.ObjectGraph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.application.restserver.ApplicationServicesWrapper;
-import org.grestler.utilities.uuids.Uuids;
+import org.grestler.infrastructure.utilities.uuids.Uuids;
 import org.grestler.presentation.webutilities.logging.Log4j2JettyLogger;
 
 import javax.inject.Inject;

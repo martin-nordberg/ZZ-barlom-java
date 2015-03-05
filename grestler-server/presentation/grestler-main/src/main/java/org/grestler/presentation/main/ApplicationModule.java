@@ -7,8 +7,8 @@ package org.grestler.presentation.main;
 
 import dagger.Module;
 import dagger.Provides;
-import org.grestler.h2database.H2DatabaseModule;
 import org.grestler.application.restserver.RestServerModule;
+import org.grestler.persistence.h2database.H2DatabaseModule;
 
 /**
  * Dagger dependency injection module for top level application configuration.

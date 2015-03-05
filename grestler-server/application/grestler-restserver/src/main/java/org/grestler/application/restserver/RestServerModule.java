@@ -7,9 +7,6 @@ package org.grestler.application.restserver;
 
 import dagger.Module;
 import dagger.Provides;
-import org.grestler.metamodel.MetamodelModule;
-import org.grestler.metamodel.api.commands.IMetamodelCommandFactory;
-import org.grestler.metamodel.api.queries.IMetamodelRepository;
 import org.grestler.application.restserver.services.commands.MetamodelCommands;
 import org.grestler.application.restserver.services.queries.AttributeTypeQueries;
 import org.grestler.application.restserver.services.queries.DirectedEdgeTypeQueries;
@@ -17,6 +14,9 @@ import org.grestler.application.restserver.services.queries.EdgeTypeQueries;
 import org.grestler.application.restserver.services.queries.PackageQueries;
 import org.grestler.application.restserver.services.queries.UndirectedEdgeTypeQueries;
 import org.grestler.application.restserver.services.queries.VertexTypeQueries;
+import org.grestler.domain.metamodel.MetamodelModule;
+import org.grestler.domain.metamodel.api.commands.IMetamodelCommandFactory;
+import org.grestler.domain.metamodel.api.queries.IMetamodelRepository;
 
 import javax.json.Json;
 import javax.json.JsonReaderFactory;

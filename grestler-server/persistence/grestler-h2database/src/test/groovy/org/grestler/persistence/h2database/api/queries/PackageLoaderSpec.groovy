@@ -1,0 +1,56 @@
+//
+// (C) Copyright 2014-2015 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+package org.grestler.persistence.h2database.api.queries
+
+import org.grestler.domain.metamodel.impl.queries.MetamodelRepository
+import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
+import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
+import org.grestler.persistence.h2database.impl.H2DataSource
+import spock.lang.Specification
+
+/**
+ * Specification for package loading.
+ */
+class PackageLoaderSpec
+        extends Specification {
+
+    def "A package loader retrieves the top level root package"() {
+
+        given:
+        StmTransactionContext.beginReadWriteTransaction();
+
+        def dataSource = new H2DataSource( "test0" );
+
+        def ploader = new PackageLoader( dataSource );
+        def pdloader = new PackageDependencyLoader( dataSource );
+        def atloader = new AttributeTypeLoader( dataSource );
+        def vtloader = new VertexTypeLoader( dataSource );
+        def etloader = new EdgeTypeLoader( dataSource )
+        def adloader = new AttributeDeclLoader( dataSource );
+
+        IMetamodelRepositorySpi m = new MetamodelRepository(
+                ploader,
+                pdloader,
+                atloader,
+                vtloader,
+                etloader,
+                adloader
+        );
+
+        def rootPkg = m.findRootPackage();
+
+        expect:
+        rootPkg != null;
+        rootPkg.name == "\$";
+        rootPkg.parentPackage == rootPkg;
+        m.findAllPackages().size() == 1;
+        m.findPackageById( rootPkg.id ).equals( rootPkg );
+
+        cleanup:
+        StmTransactionContext.commitTransaction();
+    }
+
+}
