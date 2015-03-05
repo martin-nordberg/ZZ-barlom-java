@@ -153,10 +153,11 @@ export interface IDocumentedElement {
     /** The unique ID of this element */
     id : string;  // TODO: UUID
 
-    /**
-     * Returns the parent element of this element.
-     */
+    /** The parent element of this element. */
     parent : INamedElement;
+
+    /** The concrete type name of this element. */
+    typeName : string;
 
 }
 

@@ -16,7 +16,14 @@ import api = require( '../api/elements' );
  */
 export class DocumentedElement implements api.IDocumentedElement {
 
-    constructor( id : string ) {
+    /**
+     * Constructs a new model element.
+     *
+     * @param typeName the concrete type name of this element.
+     * @param id   the unique ID for the element.
+     */
+    constructor( typeName: string, id : string ) {
+        this._typeName = typeName;
         this._id = id;
     }
 
@@ -31,7 +38,18 @@ export class DocumentedElement implements api.IDocumentedElement {
         throw new Error( "Abstract method" );
     }
 
+    public get typeName() : string {
+        return this._typeName;
+    }
+    public set typeName( value : string ) {
+        throw new Error( "Attempted to change read only attribute - typeName." );
+    }
+
     private _id : string;
+
+    private _typeName : string;
+
+    // TODO: typeName attribute
 
 }
 
@@ -45,11 +63,12 @@ export class NamedElement extends DocumentedElement implements api.INamedElement
     /**
      * Constructs a new named model element.
      *
+     * @param typeName the concrete type name of this element.
      * @param id   the unique ID for the element.
      * @param name the name of the element.
      */
-    constructor( id : string, name : string ) {
-        super( id );
+    constructor( typeName: string, id : string, name : string ) {
+        super( typeName, id );
         this._name = name;
     }
 
@@ -128,13 +147,14 @@ export class PackagedElement extends NamedElement implements api.IPackagedElemen
     /**
      * Constructs a new element.
      *
+     * @param typeName the concrete type name of this element.
      * @param id            the unique ID of the element.
      * @param parentPackage the parent package.
      * @param name          the name of the element.
      */
-    constructor( id : string, parentPackage : api.IPackage, name : string ) {
+    constructor( typeName : string, id : string, parentPackage : api.IPackage, name : string ) {
 
-        super( id, name );
+        super( typeName, id, name );
 
         this._parentPackage = parentPackage;
 
@@ -216,7 +236,7 @@ export class VertexType extends PackagedElement implements api.IVertexType, IVer
         abstractness : api.EAbstractness
     ) {
 
-        super( id, parentPackage, name );
+        super( 'VertexType', id, parentPackage, name );
 
         this._superType = superType;
         this._abstractness = abstractness;
@@ -321,6 +341,7 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
     /**
      * Constructs a new edge type.
      *
+     * @param typeName the concrete type name of this element.
      * @param id             the unique ID of the edge type.
      * @param parentPackage  the package containing the edge type.
      * @param name           the name of the edge type.
@@ -331,6 +352,7 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
      * @param selfLooping    whether the edge type disallows edges from a vertex to itself.
      */
     constructor(
+        typeName: string,
         id : string,
         parentPackage : api.IPackage,
         name : string,
@@ -339,7 +361,7 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
         multiEdgedness : api.EMultiEdgedness,
         selfLooping : api.ESelfLooping
     ) {
-        super( id, parentPackage, name );
+        super( typeName, id, parentPackage, name );
 
         this._abstractness = abstractness;
         this._cyclicity = cyclicity;
@@ -491,12 +513,13 @@ export class AttributeType extends PackagedElement implements api.IAttributeType
     /**
      * Constructs a new attribute type.
      *
+     * @param typeName the concrete type name of this element.
      * @param id            the unique ID of the attribute type.
      * @param parentPackage the parent attribute type.
      * @param name          the name of the attribute type.
      */
-    constructor( id : string, parentPackage : api.IPackage, name : string ) {
-        super( id, parentPackage, name );
+    constructor( typeName : string, id : string, parentPackage : api.IPackage, name : string ) {
+        super( typeName, id, parentPackage, name );
     }
 
     get dataType() : api.EDataType {
@@ -527,7 +550,7 @@ export class PackageDependency extends DocumentedElement implements api.IPackage
         id : string, clientPackage : api.IPackage, supplierPackage : api.IPackage
     ) {
 
-        super( id );
+        super( 'PackageDependency', id );
 
         this._clientPackage = clientPackage;
         this._supplierPackage = supplierPackage;
@@ -579,20 +602,20 @@ class PackageContents {
 
     addChildElement( packagedElement : api.IPackagedElement ) : void {
 
-        if ( (typeof packagedElement).match( /AttributeType$/ ) ) {
+        if ( packagedElement.typeName.match( /AttributeType$/ ) ) {
             this._attributeTypes.push( <api.IAttributeType> packagedElement );
         }
-        else if ( typeof packagedElement == "Package" ) {
+        else if ( packagedElement.typeName == "Package" ) {
             this._childPackages.push( <api.IPackage> packagedElement );
         }
-        else if ( typeof packagedElement == "VertexType" ) {
+        else if ( packagedElement.typeName == "VertexType" ) {
             this._vertexTypes.push( <api.IVertexType> packagedElement );
         }
-        else if ( (typeof packagedElement).match( /EdgeType$/ ) ) {
+        else if ( packagedElement.typeName.match( /EdgeType$/ ) ) {
             this._edgeTypes.push( <api.IEdgeType> packagedElement );
         }
         else {
-            throw new Error( "Unknown package element: " + typeof packagedElement );
+            throw new Error( "Unknown package element: " + packagedElement.typeName );
         }
 
     }
@@ -613,32 +636,32 @@ class PackageContents {
 
         var index : number;
 
-        if ( (typeof packagedElement).match( /AttributeType$/ ) ) {
+        if ( packagedElement.typeName.match( /AttributeType$/ ) ) {
             index = this._attributeTypes.indexOf( <api.IAttributeType> packagedElement );
             if ( index > -1 ) {
                 this._attributeTypes.splice( index, 1 );
             }
         }
-        else if ( typeof packagedElement == "Package" ) {
+        else if ( packagedElement.typeName == "Package" ) {
             index = this._childPackages.indexOf( <api.IPackage> packagedElement );
             if ( index > -1 ) {
                 this._childPackages.splice( index, 1 );
             }
         }
-        else if ( typeof packagedElement == "VertexType" ) {
+        else if ( packagedElement.typeName == "VertexType" ) {
             index = this._vertexTypes.indexOf( <api.IVertexType> packagedElement );
             if ( index > -1 ) {
                 this._vertexTypes.splice( index, 1 );
             }
         }
-        else if ( (typeof packagedElement).match( /EdgeType$/ ) ) {
+        else if ( packagedElement.typeName.match( /EdgeType$/ ) ) {
             index = this._edgeTypes.indexOf( <api.IEdgeType> packagedElement );
             if ( index > -1 ) {
                 this._edgeTypes.splice( index, 1 );
             }
         }
         else {
-            throw new Error( "Unknown package element: " + typeof packagedElement );
+            throw new Error( "Unknown package element: " + packagedElement.typeName );
         }
 
     }
@@ -815,7 +838,7 @@ export class Package extends PackagedElement implements api.IPackage, IPackageUn
      */
     constructor( id : string, parentPackage : api.IPackage, name : string ) {
 
-        super( id, parentPackage, name );
+        super( 'Package', id, parentPackage, name );
 
         this._packageDependencies = new PackageDependencies( this );
         this._packageContents = new PackageContents( this );
@@ -916,7 +939,7 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
         minHeadInDegree : number,
         maxHeadInDegree : number
     ) {
-        super( id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super( 'DirectedEdgeType', id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
 
         this._superType = superType;
         this._tailVertexType = tailVertexType;
@@ -1149,7 +1172,7 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
         minDegree : number,
         maxDegree : number
     ) {
-        super( id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super( 'UndirectedEdgeType', id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
 
         this._superType = superType;
         this._vertexType = vertexType;
@@ -1265,7 +1288,7 @@ export class BooleanAttributeType extends AttributeType implements api.IBooleanA
     constructor(
         id : string, parentPackage : api.IPackage, name : string, defaultValue : boolean
     ) {
-        super( id, parentPackage, name );
+        super( 'BooleanAttributeType', id, parentPackage, name );
         this._defaultValue = defaultValue;
     }
 
@@ -1310,7 +1333,7 @@ export class DateTimeAttributeType extends AttributeType implements api.IDateTim
         id : string, parentPackage : api.IPackage, name : string, minValue : Date, maxValue : Date
     ) {
 
-        super( id, parentPackage, name );
+        super( 'DateTimeAttributeType', id, parentPackage, name );
 
         this._maxValue = maxValue;
         this._minValue = minValue;
@@ -1382,7 +1405,7 @@ export class Float64AttributeType extends AttributeType implements api.IFloat64A
         maxValue : number,
         defaultValue : number
     ) {
-        super( id, parentPackage, name );
+        super( 'Float64AttributeType', id, parentPackage, name );
 
         this._minValue = minValue;
         this._maxValue = maxValue;
@@ -1453,7 +1476,7 @@ export class Float64AttributeType extends AttributeType implements api.IFloat64A
 /**
  * Implementation for 32-bit integer attribute types.
  */
-export class Integer64AttributeType extends AttributeType implements api.IInteger32AttributeType {
+export class Integer32AttributeType extends AttributeType implements api.IInteger32AttributeType {
 
     /**
      * Constructs a new floating point attribute type.
@@ -1473,7 +1496,7 @@ export class Integer64AttributeType extends AttributeType implements api.IIntege
         maxValue : number,
         defaultValue : number
     ) {
-        super( id, parentPackage, name );
+        super( 'Integer32AttributeType', id, parentPackage, name );
 
         this._minValue = minValue;
         this._maxValue = maxValue;
@@ -1564,7 +1587,7 @@ export class StringAttributeType extends AttributeType implements api.IStringAtt
         maxLength : number,
         regexPattern : string
     ) {
-        super( id, parentPackage, name );
+        super( 'StringAttributeType', id, parentPackage, name );
 
         this._minLength = minLength;
         this._maxLength = maxLength;
@@ -1648,7 +1671,7 @@ export class UuidAttributeType extends AttributeType implements api.IUuidAttribu
     constructor(
         id : string, parentPackage : api.IPackage, name : string
     ) {
-        super( id, parentPackage, name );
+        super( 'UuidAttributeType', id, parentPackage, name );
     }
 
 }
@@ -1677,7 +1700,7 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
         optionality : api.EAttributeOptionality
     ) {
 
-        super( id, name );
+        super( 'EdgeAttributeDecl', id, name );
 
         this._parentEdgeType = parentEdgeType;
         this._type = type;
@@ -1778,7 +1801,7 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
         labelDefaulting : api.ELabelDefaulting
     ) {
 
-        super( id, name );
+        super( 'VertexAttributeDecl', id, name );
 
         this._parentVertexType = parentVertexType;
         this._type = type;
@@ -1937,6 +1960,10 @@ export class RootPackage implements api.IPackage, IPackageUnderAssembly {
 
     public get path() : string {
         return "";
+    }
+
+    public get typeName() : string {
+        return 'RootPackage';
     }
 
     public getSupplierPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
