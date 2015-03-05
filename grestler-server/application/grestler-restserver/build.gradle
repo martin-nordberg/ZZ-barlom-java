@@ -16,7 +16,7 @@ dependencies {
     // Other Modules
     compile project( ':grestler-dbutilities' )
     compile project( ':grestler-metamodel' )
-    compile project( ':grestler-webutilities' )
+    compile project( ':grestler-apputilities' )
 
     // Dagger
     compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
