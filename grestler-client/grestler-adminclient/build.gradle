@@ -16,6 +16,7 @@ apply plugin: "typescript"
 compileTypeScript {
     module = 'AMD'
     outputDir = file( 'src/main/webapp/scripts/ts' )
-    sourcemap = false
+    source = file( 'src/main/webapp/source/ts' )
+    sourcemap = true
     target = 'ES5'
 }
