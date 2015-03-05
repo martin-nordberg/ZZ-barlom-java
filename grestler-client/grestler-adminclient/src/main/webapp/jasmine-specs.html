@@ -9,18 +9,26 @@
     <link rel="stylesheet" href="lib/jasmine-2.2.0/jasmine.css">
 
     <!-- Jasmine -->
-    <script src="lib/jasmine-2.2.0/jasmine.js" defer></script>
-    <script src="lib/jasmine-2.2.0/jasmine-html.js"defer></script>
-    <script src="lib/jasmine-2.2.0/boot.js" defer></script>
+    <script src="lib/jasmine-2.2.0/jasmine.js"></script>
+    <script src="lib/jasmine-2.2.0/jasmine-html.js"></script>
+    <script src="lib/jasmine-2.2.0/boot.js"></script>
 
     <!-- RequireJS Configuration -->
-    <script src="lib/requirejs-config.js" defer></script>
+    <script src="lib/requirejs-config.js"></script>
 
     <!-- RequireJS -->
-    <script src="lib/requirejs-2.1.16/require.js" defer></script>
+    <script src="lib/requirejs-2.1.16/require.js"></script>
 
     <!-- Specs -->
-    <script src="specs/org/grestler/metamodel/impl/elementsSpec.js" defer></script>
+    <script>
+        var specs = [
+            'cs!specs/org/grestler/metamodel/impl/elementsSpec'
+        ];
+
+        require( specs, function () {
+            window.runJasmineSpecs();
+        } );
+    </script>
 
 </head>
 

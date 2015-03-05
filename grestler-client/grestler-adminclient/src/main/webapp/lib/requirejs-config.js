@@ -3,6 +3,8 @@
 var require = {
 
     paths: {
+        cs: 'lib/requirejs-2.1.16/cs',
+        'coffee-script': 'lib/coffee-script-1.9.1/coffee-script',
         jquery: 'lib/jquery-2.1.3/jquery-2.1.3',
         'jquery-private': 'lib/jquery-private',
         ractive: 'lib/ractive-0.6.1/ractive',
