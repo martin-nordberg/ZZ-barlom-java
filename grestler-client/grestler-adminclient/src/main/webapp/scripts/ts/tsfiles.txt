@@ -1,0 +1,3 @@
+example.ts
+org/grestler/domain/metamodel/api/elements.ts
+org/grestler/domain/metamodel/impl/elements.ts

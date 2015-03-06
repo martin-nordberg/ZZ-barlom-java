@@ -151,7 +151,7 @@ export interface INamedElement {
 export interface IDocumentedElement {
 
     /** The unique ID of this element */
-    id : string;  // TODO: UUID
+    id : string;
 
     /** The parent element of this element. */
     parent : INamedElement;
@@ -533,7 +533,7 @@ export interface IDateTimeAttributeType extends IAttributeType {
     /**
      * @return the minimum possible value (inclusive) for attributes of this type.
      */
-    maxValue : Date;  // TODO: Instant equivalent
+    maxValue : Date;
 
     /**
      * @return the maximum possible value (inclusive) for attributes of this type.
@@ -677,4 +677,3 @@ export interface IVertexAttributeDecl extends INamedElement {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-

@@ -1,4 +1,4 @@
-require(['scripts/ts/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
+require(['scripts/js-gen/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
     function (example, Ractive, $, helloWorldTemplate) {
 
         // Model (external TypeScript)

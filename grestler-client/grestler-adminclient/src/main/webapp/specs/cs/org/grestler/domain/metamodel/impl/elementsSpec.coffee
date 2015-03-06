@@ -9,7 +9,7 @@ define( [], ()->
 
       me = this
 
-      require( ['scripts/ts/org/grestler/domain/metamodel/impl/elements'], (elements) ->
+      require( ['scripts/js-gen/org/grestler/domain/metamodel/impl/elements'], (elements) ->
         me.elements = elements
         done()
       )

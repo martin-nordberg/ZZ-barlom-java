@@ -79,3 +79,5 @@ export class ExampleVM {
     public name : string;
 
 }
+
+export class Junk {}
