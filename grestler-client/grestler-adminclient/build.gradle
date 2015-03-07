@@ -1,0 +1,44 @@
+
+// TYPESCRIPT
+// ----------
+buildscript {
+    repositories {
+        maven {
+            url 'https://github.com/sothmann/typescript-gradle-plugin/raw/mavenrepo/'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:typescript-gradle-plugin:1.0.6'
+    }
+}
+
+apply plugin: "typescript"
+
+compileTypeScript {
+    module = 'AMD'
+    outputDir = file( 'src/main/webapp/scripts/js-gen' )
+    source = file( 'src/main/webapp/scripts/ts' )
+    sourcemap = true
+    target = 'ES5'
+}
+
+
+// SASS
+// ----
+task compileSass( type:Exec ) {
+    workingDir = file( 'src/main/webapp/styles/scss' )
+
+    commandLine 'sass', '--update', '.:../css-gen/'
+
+    // TODO: Figure out how to make up-to-date
+
+    // store the output instead of printing to the console
+    standardOutput = new ByteArrayOutputStream()
+
+    // return the console output
+    ext.output = {
+        return standardOutput.toString()
+    }
+}
+
