@@ -3,18 +3,9 @@
 @import '../lib/base/base';
 @import '../lib/neat/neat';
 
-//ul {
-//  margin: 0;
-//  padding: 0;
-//
-//  li {
-//
-//    a {
-//      font-family: courier,monospace;
-//      color: #007069;
-//    }
-//  }
-//}
+$fa-font-path: "../lib/font-awesome/fonts/font-awesome/";
+@import '../lib/font-awesome/stylesheets/font-awesome';
+
 
 a.btnLink {
   @include border-top-radius(5px);
