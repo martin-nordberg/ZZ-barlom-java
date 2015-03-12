@@ -1,11 +1,18 @@
 
-@import '../lib/bourbon/bourbon';
-@import '../lib/base/base';
-@import '../lib/neat/neat';
+//
+// Styling for top navigation bar of Grestler Admin Concole
+//
 
+@import '../../../../../lib/bourbon/bourbon';
+@import '../../../../../lib/base/base';
+@import '../../../../../lib/neat/neat';
+
+// TODO: taken from Thoughbot Refills; needs understanding and customizing to Grestler
 
 header.navigation {
+
   ///////////////////////////////////////////////////////////////////////////////////
+
   $base-border-color: gainsboro !default;
   $base-border-radius: 3px !default;
   $base-accent-color: #477DCA !default;
@@ -15,6 +22,7 @@ header.navigation {
   a {
     text-decoration: none;
   }
+
   //////////////////////////////////////////////////////////////////////////////////
 
   $navigation-padding: 1em;

@@ -8,10 +8,11 @@
 
     <title>Grestler Admin Console</title>
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles/css-gen/navigation.css">
+    <!-- Main style sheet for page -->
     <link rel="stylesheet" href="styles/css-gen/sample.css">
 
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="styles/css-gen/org/grestler/presentation/adminclient/navigation.css">
 
     <!-- RequireJS Configuration -->
     <script src="lib/requirejs-config.js" defer></script>
@@ -22,37 +23,14 @@
     <!-- Main script for the page -->
     <script src="scripts/js/sample.js" defer></script>
 
-    <!-- Navigation -->
-    <script src="scripts/js/sample.js" defer></script>
+    <!-- Scripts -->
+    <script src="scripts/js/org/grestler/presentation/adminclient/navigation.js" defer></script>
 
 </head>
 <body>
 
     <!-- Navigation -->
-    <header class="navigation" role="banner">
-        <div class="navigation-wrapper">
-            <a href="javascript:void(0)" class="logo">Grestler</a>
-            <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
-            <nav role="navigation">
-                <ul id="js-navigation-menu" class="navigation-menu show">
-                    <li class="nav-link"><a href="javascript:void(0)">Edit</a></li>
-                    <li class="nav-link"><a href="javascript:void(0)">Review</a></li>
-                    <li class="nav-link"><a href="javascript:void(0)">Generate</a></li>
-                </ul>
-            </nav>
-            <div class="navigation-tools">
-                <div class="search-bar">
-                    <form role="search">
-                        <input type="search" placeholder="Enter Search" />
-                        <button type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-                <a href="javascript:void(0)" class="sign-up">To Do</a>
-            </div>
-        </div>
-    </header>
+    <header class="navigation" id="navigation-id" role="banner"></header>
 
     <!-- Main panels of content -->
     <section class="panels">
@@ -81,7 +59,7 @@
             <h1>Ractive Sample</h1>
 
             <!-- Ractive content target -->
-            <div id='container'></div>
+            <div id="container"></div>
         </div>
     </section>
 
