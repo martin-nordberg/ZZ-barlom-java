@@ -1,5 +1,10 @@
 require(
-    ['ractive', 'jquery', 'text!templates/org/grestler/presentation/adminclient/navigation.html.mustache'],
+    [
+        'ractive',
+        'jquery',
+        'text!templates/org/grestler/presentation/adminclient/navigation.html.mustache',
+        'css!styles/css-gen/org/grestler/presentation/adminclient/navigation.css'
+    ],
     function ( Ractive, $, navigationTemplate ) {
 
         // Modelview -- TODO probably will eventually have some state to it
@@ -21,21 +26,29 @@ require(
         );
 
         // Behavior
-        view.on( 'editClicked', function ( event ) {
-            alert( 'TODO: Edit Clicked!' );
-        });
+        view.on(
+            'editClicked', function ( event ) {
+                alert( 'TODO: Edit Clicked!' );
+            }
+        );
 
-        view.on( 'reviewClicked', function ( event ) {
-            alert( 'TODO: Review Clicked!' );
-        });
+        view.on(
+            'reviewClicked', function ( event ) {
+                alert( 'TODO: Review Clicked!' );
+            }
+        );
 
-        view.on( 'generateClicked', function ( event ) {
-            alert( 'TODO: Generate Clicked!' );
-        });
+        view.on(
+            'generateClicked', function ( event ) {
+                alert( 'TODO: Generate Clicked!' );
+            }
+        );
 
-        view.on( 'searchClicked', function ( event ) {
-            alert( 'TODO: Search Clicked!' );
-        });
+        view.on(
+            'searchClicked', function ( event ) {
+                alert( 'TODO: Search Clicked!' );
+            }
+        );
 
         $( document ).ready(
             function () {

@@ -3,6 +3,9 @@
 var require = {
 
     paths: {
+        // CSS dynamic loader
+        css: 'scripts/lib/requirejs-2.1.16/css',
+
         // JQuery, with a wrapper to keep it from the global namespace
         jquery: 'scripts/lib/jquery-2.1.3/jquery-2.1.3',
         'jquery-private': 'scripts/lib/jquery-private',
