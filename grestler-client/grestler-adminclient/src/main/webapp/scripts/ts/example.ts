@@ -80,4 +80,6 @@ export class ExampleVM {
 
 }
 
-export class Junk {}
+export var theExample = new Example();
+
+export var theExampleVM = new ExampleVM( theExample );

@@ -1,35 +1,32 @@
-require(['scripts/js-gen/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
-    function (example, Ractive, $, helloWorldTemplate) {
-
-        // Model (external TypeScript)
-        var model = new example.Example();
-
-        // Modelview
-        var modelview = new example.ExampleVM( model );
+require(
+    ['scripts/js-gen/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
+    function ( example, Ractive, $, helloWorldTemplate ) {
 
         // View
-        var view = new Ractive({
+        var view = new Ractive(
+            {
 
-            computed: {
-                fullName: '${modifier} + " " + ${name}'
-            },
+                computed: {
+                    fullName: '${modifier} + " " + ${name}'
+                },
 
-            data: modelview,
+                data: example.theExampleVM,
 
-            el: 'container',
+                el: 'container',
 
-            magic: true,
+                magic: true,
 
-            template: helloWorldTemplate
+                template: helloWorldTemplate
 
-        });
+            }
+        );
 
         // Change the model
-        model.modifier = "big wide";
-        model.name = "globe";
+        example.theExample.modifier = "big wide";
+        example.theExample.name = "globe";
 
         // Make sure jQuery works
-        $('h1.grestler').html("Grestler!");
+        $( 'h1.grestler' ).html( "Grestler!" );
 
     }
 );
