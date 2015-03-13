@@ -1,6 +1,6 @@
 require(
-    ['scripts/js-gen/example', 'ractive', 'jquery', 'text!templates/helloworld.html.mustache'],
-    function ( example, Ractive, $, helloWorldTemplate ) {
+    ['scripts/js-gen/example', 'ractive', 'jquery', 'bootstrap', 'text!templates/helloworld.html.mustache'],
+    function ( example, Ractive, $, bootstrap, helloWorldTemplate ) {
 
         // View
         var view = new Ractive(

@@ -3,6 +3,9 @@
 var require = {
 
     paths: {
+        // Bootstrap plug ins for jQuery
+        bootstrap :  'scripts/lib/bootstrap-3.3.3/bootstrap',
+
         // CSS dynamic loader
         css: 'scripts/lib/requirejs-2.1.16/css',
 
