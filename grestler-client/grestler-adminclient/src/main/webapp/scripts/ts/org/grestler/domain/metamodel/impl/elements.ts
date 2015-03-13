@@ -4,17 +4,17 @@
 //
 
 /**
- * Module: org/grestler/metamodel/impl/elements
+ * Module: org/grestler/domain/metamodel/impl/elements
  */
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import api_elements = require( '../api/elements' );
 
-import api = require( '../api/elements' );
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Top-level class for Grestler model elements.
  */
-export class DocumentedElement implements api.IDocumentedElement {
+export class DocumentedElement implements api_elements.IDocumentedElement {
 
     /**
      * Constructs a new model element.
@@ -34,7 +34,7 @@ export class DocumentedElement implements api.IDocumentedElement {
     /**
      * Returns the parent element of this element.
      */
-    public get parent() : api.INamedElement {
+    public get parent() : api_elements.INamedElement {
         throw new Error( "Abstract method" );
     }
 
@@ -58,7 +58,7 @@ export class DocumentedElement implements api.IDocumentedElement {
 /**
  * Implementation of abstract named element.
  */
-export class NamedElement extends DocumentedElement implements api.INamedElement {
+export class NamedElement extends DocumentedElement implements api_elements.INamedElement {
 
     /**
      * Constructs a new named model element.
@@ -112,28 +112,28 @@ export class NamedElement extends DocumentedElement implements api.INamedElement
 /**
  * Internal interface supported by packages.
  */
-interface IPackageUnderAssembly extends api.IPackage {
+interface IPackageUnderAssembly extends api_elements.IPackage {
 
     /**
      * Adds a child element to this package.
      *
      * @param packagedElement the child element to add.
      */
-    addChildElement( packagedElement : api.IPackagedElement ) : void;
+    addChildElement( packagedElement : api_elements.IPackagedElement ) : void;
 
     /**
      * Registers a package dependency with this package.
      *
      * @param packageDependency the added package dependency.
      */
-    addPackageDependency( packageDependency : api.IPackageDependency ) : void;
+    addPackageDependency( packageDependency : api_elements.IPackageDependency ) : void;
 
     /**
      * Removes a child element from this package.
      *
      * @param packagedElement the child element to remove.
      */
-    removeChildElement( packagedElement : api.IPackagedElement ) : void;
+    removeChildElement( packagedElement : api_elements.IPackagedElement ) : void;
 
 }
 
@@ -142,7 +142,7 @@ interface IPackageUnderAssembly extends api.IPackage {
 /**
  * Implementation of abstract element.
  */
-export class PackagedElement extends NamedElement implements api.IPackagedElement {
+export class PackagedElement extends NamedElement implements api_elements.IPackagedElement {
 
     /**
      * Constructs a new element.
@@ -152,7 +152,7 @@ export class PackagedElement extends NamedElement implements api.IPackagedElemen
      * @param parentPackage the parent package.
      * @param name          the name of the element.
      */
-    constructor( typeName : string, id : string, parentPackage : api.IPackage, name : string ) {
+    constructor( typeName : string, id : string, parentPackage : api_elements.IPackage, name : string ) {
 
         super( typeName, id, name );
 
@@ -169,23 +169,23 @@ export class PackagedElement extends NamedElement implements api.IPackagedElemen
      *
      * @return true if this package is a child or grandchild of the given parent package.
      */
-    public isChildOf( parentPackage : api.IPackage ) : boolean {
-        var parentPkg : api.IPackage;
+    public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
+        var parentPkg : api_elements.IPackage;
 
         parentPkg = this._parentPackage;
 
         return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
     }
 
-    public get parent() : api.INamedElement {
+    public get parent() : api_elements.INamedElement {
         return this._parentPackage;
     }
 
-    public get parentPackage() : api.IPackage {
+    public get parentPackage() : api_elements.IPackage {
         return this._parentPackage;
     }
 
-    private _parentPackage : api.IPackage;
+    private _parentPackage : api_elements.IPackage;
 
 }
 
@@ -194,21 +194,21 @@ export class PackagedElement extends NamedElement implements api.IPackagedElemen
 /**
  * Internal interface for vertex types.
  */
-interface IVertexTypeUnderAssembly extends api.IVertexType {
+interface IVertexTypeUnderAssembly extends api_elements.IVertexType {
 
     /**
      * Adds an attribute to this vertex type while constructing the metamodel.
      *
      * @param attribute the child attribute to add.
      */
-    addAttribute( attribute : api.IVertexAttributeDecl ) : void;
+    addAttribute( attribute : api_elements.IVertexAttributeDecl ) : void;
 
     /**
      * Removes an attribute from this vertex type.
      *
      * @param attribute the attribute declaration to remove.
      */
-    removeAttribute( attribute : api.IVertexAttributeDecl ) : void;
+    removeAttribute( attribute : api_elements.IVertexAttributeDecl ) : void;
 
 }
 
@@ -217,7 +217,7 @@ interface IVertexTypeUnderAssembly extends api.IVertexType {
 /**
  * Implementation class for vertex types.
  */
-export class VertexType extends PackagedElement implements api.IVertexType, IVertexTypeUnderAssembly {
+export class VertexType extends PackagedElement implements api_elements.IVertexType, IVertexTypeUnderAssembly {
 
     /**
      * Constructs a new vertex type.
@@ -230,10 +230,10 @@ export class VertexType extends PackagedElement implements api.IVertexType, IVer
      */
     constructor(
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
-        superType : api.IVertexType,
-        abstractness : api.EAbstractness
+        superType : api_elements.IVertexType,
+        abstractness : api_elements.EAbstractness
     ) {
 
         super( 'VertexType', id, parentPackage, name );
@@ -246,11 +246,11 @@ export class VertexType extends PackagedElement implements api.IVertexType, IVer
 
     }
 
-    public get abstractness() : api.EAbstractness {
+    public get abstractness() : api_elements.EAbstractness {
         return this._abstractness;
     }
 
-    public set abstractness( value : api.EAbstractness ) {
+    public set abstractness( value : api_elements.EAbstractness ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.abstractness',
@@ -262,30 +262,30 @@ export class VertexType extends PackagedElement implements api.IVertexType, IVer
         this._abstractness = value;
     }
 
-    public addAttribute( attribute : api.IVertexAttributeDecl ) : void {
+    public addAttribute( attribute : api_elements.IVertexAttributeDecl ) : void {
         this._attributes.push( attribute );
     }
 
-    public get attributes() : api.IVertexAttributeDecl[] {
+    public get attributes() : api_elements.IVertexAttributeDecl[] {
         return this._attributes;
     }
 
-    public isSubTypeOf( vertexType : api.IVertexType ) : boolean {
+    public isSubTypeOf( vertexType : api_elements.IVertexType ) : boolean {
         return this == vertexType || this._superType.isSubTypeOf( vertexType );
     }
 
-    public removeAttribute( attribute : api.IVertexAttributeDecl ) : void {
+    public removeAttribute( attribute : api_elements.IVertexAttributeDecl ) : void {
         var index = this._attributes.indexOf( attribute );
         if ( index > -1 ) {
             this._attributes.splice( index, 1 );
         }
     }
 
-    public get superType() : api.IVertexType {
+    public get superType() : api_elements.IVertexType {
         return this._superType;
     }
 
-    public set superType( value : api.IVertexType ) {
+    public set superType( value : api_elements.IVertexType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.superType',
@@ -298,13 +298,13 @@ export class VertexType extends PackagedElement implements api.IVertexType, IVer
     }
 
     /** Whether this vertex type is abstract. */
-    private _abstractness : api.EAbstractness;
+    private _abstractness : api_elements.EAbstractness;
 
     /** The attributes of this vertex type. */
-    private _attributes : api.IVertexAttributeDecl[];
+    private _attributes : api_elements.IVertexAttributeDecl[];
 
     /** The super type of this vertex type. */
-    private _superType : api.IVertexType;
+    private _superType : api_elements.IVertexType;
 
 }
 
@@ -313,21 +313,21 @@ export class VertexType extends PackagedElement implements api.IVertexType, IVer
 /**
  * Internal interface for edge types.
  */
-interface IEdgeTypeUnderAssembly extends api.IEdgeType {
+interface IEdgeTypeUnderAssembly extends api_elements.IEdgeType {
 
     /**
      * Adds an attribute to this vertex type while constructing the metamodel.
      *
      * @param attribute the child attribute to add.
      */
-    addAttribute( attribute : api.IEdgeAttributeDecl ) : void;
+    addAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void;
 
     /**
      * Removes an attribute from this vertex type while modifying the metamodel.
      *
      * @param attribute the child attribute to add.
      */
-    removeAttribute( attribute : api.IEdgeAttributeDecl ) : void;
+    removeAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void;
 
 }
 
@@ -336,7 +336,7 @@ interface IEdgeTypeUnderAssembly extends api.IEdgeType {
 /**
  * Implementation class for edge types.
  */
-export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTypeUnderAssembly {
+export class EdgeType extends PackagedElement implements api_elements.IEdgeType, IEdgeTypeUnderAssembly {
 
     /**
      * Constructs a new edge type.
@@ -354,12 +354,12 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
     constructor(
         typeName: string,
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
-        abstractness : api.EAbstractness,
-        cyclicity : api.ECyclicity,
-        multiEdgedness : api.EMultiEdgedness,
-        selfLooping : api.ESelfLooping
+        abstractness : api_elements.EAbstractness,
+        cyclicity : api_elements.ECyclicity,
+        multiEdgedness : api_elements.EMultiEdgedness,
+        selfLooping : api_elements.ESelfLooping
     ) {
         super( typeName, id, parentPackage, name );
 
@@ -374,11 +374,11 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
 
     }
 
-    public get abstractness() : api.EAbstractness {
+    public get abstractness() : api_elements.EAbstractness {
         return this._abstractness;
     }
 
-    public set abstractness( value : api.EAbstractness ) {
+    public set abstractness( value : api_elements.EAbstractness ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.abstractness',
@@ -395,19 +395,19 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
      *
      * @param attribute the child attribute to add.
      */
-    public addAttribute( attribute : api.IEdgeAttributeDecl ) : void {
+    public addAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void {
         this._attributes.push( attribute );
     }
 
-    public get attributes() : api.IEdgeAttributeDecl[] {
+    public get attributes() : api_elements.IEdgeAttributeDecl[] {
         return this._attributes;
     }
 
-    public get cyclicity() : api.ECyclicity {
+    public get cyclicity() : api_elements.ECyclicity {
         return this._cyclicity;
     }
 
-    public set cyclicity( value : api.ECyclicity ) {
+    public set cyclicity( value : api_elements.ECyclicity ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.cyclicity',
@@ -424,22 +424,22 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
      * abstract.
      */
     public get isAbstract() : boolean {
-        return this._abstractness === api.EAbstractness.ABSTRACT;
+        return this._abstractness === api_elements.EAbstractness.ABSTRACT;
     }
 
     /**
      * @return whether graphs formed by this edge type are simple, i.e. have neither self-loops not multi-edges.
      */
     public get isSimple() : boolean {
-        return this._multiEdgedness == api.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED &&
-            this._selfLooping == api.ESelfLooping.SELF_LOOPS_NOT_ALLOWED;
+        return this._multiEdgedness == api_elements.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED &&
+            this._selfLooping == api_elements.ESelfLooping.SELF_LOOPS_NOT_ALLOWED;
     }
 
-    public get multiEdgedness() : api.EMultiEdgedness {
+    public get multiEdgedness() : api_elements.EMultiEdgedness {
         return this._multiEdgedness;
     }
 
-    public set multiEdgedness( value : api.EMultiEdgedness ) {
+    public set multiEdgedness( value : api_elements.EMultiEdgedness ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.multiEdgedness',
@@ -456,18 +456,18 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
      *
      * @param attribute the child attribute to add.
      */
-    public removeAttribute( attribute : api.IEdgeAttributeDecl ) : void {
+    public removeAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void {
         var index = this._attributes.indexOf( attribute );
         if ( index > -1 ) {
             this._attributes.splice( index, 1 );
         }
     }
 
-    public get selfLooping() : api.ESelfLooping {
+    public get selfLooping() : api_elements.ESelfLooping {
         return this._selfLooping;
     }
 
-    public set selfLooping( value : api.ESelfLooping ) {
+    public set selfLooping( value : api_elements.ESelfLooping ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.selfLooping',
@@ -482,24 +482,24 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
     /**
      * @return the super type of this edge type.
      */
-    public get superEdgeType() : api.IEdgeType {
+    public get superEdgeType() : api_elements.IEdgeType {
         throw new Error( "Abstract method." );
     }
 
     /** Whether this edge type is abstract. */
-    private _abstractness : api.EAbstractness;
+    private _abstractness : api_elements.EAbstractness;
 
     /** The attribute declarations within this edge type. */
-    private _attributes : api.IEdgeAttributeDecl[];
+    private _attributes : api_elements.IEdgeAttributeDecl[];
 
     /** Whether this edge type is acyclic. */
-    private _cyclicity : api.ECyclicity;
+    private _cyclicity : api_elements.ECyclicity;
 
     /** Whether this edge type allows multiple edges between two given vertexes. */
-    private _multiEdgedness : api.EMultiEdgedness;
+    private _multiEdgedness : api_elements.EMultiEdgedness;
 
     /** Whether this edge type allows an edge from a vertex to itself. */
-    private _selfLooping : api.ESelfLooping;
+    private _selfLooping : api_elements.ESelfLooping;
 
 }
 
@@ -508,7 +508,7 @@ export class EdgeType extends PackagedElement implements api.IEdgeType, IEdgeTyp
 /**
  * Attribute type implementation.
  */
-export class AttributeType extends PackagedElement implements api.IAttributeType {
+export class AttributeType extends PackagedElement implements api_elements.IAttributeType {
 
     /**
      * Constructs a new attribute type.
@@ -518,15 +518,15 @@ export class AttributeType extends PackagedElement implements api.IAttributeType
      * @param parentPackage the parent attribute type.
      * @param name          the name of the attribute type.
      */
-    constructor( typeName : string, id : string, parentPackage : api.IPackage, name : string ) {
+    constructor( typeName : string, id : string, parentPackage : api_elements.IPackage, name : string ) {
         super( typeName, id, parentPackage, name );
     }
 
-    get dataType() : api.EDataType {
+    get dataType() : api_elements.EDataType {
         throw new Error( "Abstract method get dataType called on " + this.path + "." );
     }
 
-    set dataType( ignored : api.EDataType ) {
+    set dataType( ignored : api_elements.EDataType ) {
         throw new Error( "Abstract method set dataType called on " + this.path + "." );
     }
 
@@ -537,7 +537,7 @@ export class AttributeType extends PackagedElement implements api.IAttributeType
 /**
  * Implementation class for package dependencies.
  */
-export class PackageDependency extends DocumentedElement implements api.IPackageDependency {
+export class PackageDependency extends DocumentedElement implements api_elements.IPackageDependency {
 
     /**
      * Constructs a package dependency.
@@ -547,7 +547,7 @@ export class PackageDependency extends DocumentedElement implements api.IPackage
      * @param supplierPackage the package that is depended upon.
      */
     constructor(
-        id : string, clientPackage : api.IPackage, supplierPackage : api.IPackage
+        id : string, clientPackage : api_elements.IPackage, supplierPackage : api_elements.IPackage
     ) {
 
         super( 'PackageDependency', id );
@@ -561,19 +561,19 @@ export class PackageDependency extends DocumentedElement implements api.IPackage
 
     }
 
-    public get clientPackage() : api.IPackage {
+    public get clientPackage() : api_elements.IPackage {
         return this._clientPackage;
     }
 
-    public get supplierPackage() : api.IPackage {
+    public get supplierPackage() : api_elements.IPackage {
         return this._supplierPackage;
     }
 
     /** The package that makes use of the supplier. */
-    private _clientPackage : api.IPackage;
+    private _clientPackage : api_elements.IPackage;
 
     /** The package depended upon. */
-    private _supplierPackage : api.IPackage;
+    private _supplierPackage : api_elements.IPackage;
 
 }
 
@@ -589,7 +589,7 @@ class PackageContents {
      *
      * @param ownerPkg the package delegating to this helper class.
      */
-    constructor( ownerPkg : api.IPackage ) {
+    constructor( ownerPkg : api_elements.IPackage ) {
 
         this._ownerPkg = ownerPkg;
 
@@ -600,19 +600,19 @@ class PackageContents {
 
     }
 
-    addChildElement( packagedElement : api.IPackagedElement ) : void {
+    addChildElement( packagedElement : api_elements.IPackagedElement ) : void {
 
         if ( packagedElement.typeName.match( /AttributeType$/ ) ) {
-            this._attributeTypes.push( <api.IAttributeType> packagedElement );
+            this._attributeTypes.push( <api_elements.IAttributeType> packagedElement );
         }
         else if ( packagedElement.typeName == "Package" ) {
-            this._childPackages.push( <api.IPackage> packagedElement );
+            this._childPackages.push( <api_elements.IPackage> packagedElement );
         }
         else if ( packagedElement.typeName == "VertexType" ) {
-            this._vertexTypes.push( <api.IVertexType> packagedElement );
+            this._vertexTypes.push( <api_elements.IVertexType> packagedElement );
         }
         else if ( packagedElement.typeName.match( /EdgeType$/ ) ) {
-            this._edgeTypes.push( <api.IEdgeType> packagedElement );
+            this._edgeTypes.push( <api_elements.IEdgeType> packagedElement );
         }
         else {
             throw new Error( "Unknown package element: " + packagedElement.typeName );
@@ -620,42 +620,42 @@ class PackageContents {
 
     }
 
-    get attributeTypes() : api.IAttributeType[] {
+    get attributeTypes() : api_elements.IAttributeType[] {
         return this._attributeTypes;
     }
 
-    get childPackages() : api.IPackage[] {
+    get childPackages() : api_elements.IPackage[] {
         return this._childPackages;
     }
 
-    get edgeTypes() : api.IEdgeType[] {
+    get edgeTypes() : api_elements.IEdgeType[] {
         return this._edgeTypes;
     }
 
-    removeChildElement( packagedElement : api.IPackagedElement ) : void {
+    removeChildElement( packagedElement : api_elements.IPackagedElement ) : void {
 
         var index : number;
 
         if ( packagedElement.typeName.match( /AttributeType$/ ) ) {
-            index = this._attributeTypes.indexOf( <api.IAttributeType> packagedElement );
+            index = this._attributeTypes.indexOf( <api_elements.IAttributeType> packagedElement );
             if ( index > -1 ) {
                 this._attributeTypes.splice( index, 1 );
             }
         }
         else if ( packagedElement.typeName == "Package" ) {
-            index = this._childPackages.indexOf( <api.IPackage> packagedElement );
+            index = this._childPackages.indexOf( <api_elements.IPackage> packagedElement );
             if ( index > -1 ) {
                 this._childPackages.splice( index, 1 );
             }
         }
         else if ( packagedElement.typeName == "VertexType" ) {
-            index = this._vertexTypes.indexOf( <api.IVertexType> packagedElement );
+            index = this._vertexTypes.indexOf( <api_elements.IVertexType> packagedElement );
             if ( index > -1 ) {
                 this._vertexTypes.splice( index, 1 );
             }
         }
         else if ( packagedElement.typeName.match( /EdgeType$/ ) ) {
-            index = this._edgeTypes.indexOf( <api.IEdgeType> packagedElement );
+            index = this._edgeTypes.indexOf( <api_elements.IEdgeType> packagedElement );
             if ( index > -1 ) {
                 this._edgeTypes.splice( index, 1 );
             }
@@ -666,24 +666,24 @@ class PackageContents {
 
     }
 
-    get vertexTypes() : api.IVertexType[] {
+    get vertexTypes() : api_elements.IVertexType[] {
         return this._vertexTypes;
     }
 
     /** The attribute types within this package. */
-    private _attributeTypes : api.IAttributeType[];
+    private _attributeTypes : api_elements.IAttributeType[];
 
     /** The sub-packages of this package. */
-    private _childPackages : api.IPackage[];
+    private _childPackages : api_elements.IPackage[];
 
     /** The edge types within this package. */
-    private _edgeTypes : api.IEdgeType[];
+    private _edgeTypes : api_elements.IEdgeType[];
 
     /** The package using this helper object. */
-    private _ownerPkg : api.IPackage;
+    private _ownerPkg : api_elements.IPackage;
 
     /** The vertex types within this package. */
-    private _vertexTypes : api.IVertexType[];
+    private _vertexTypes : api_elements.IVertexType[];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -696,7 +696,7 @@ class PackageDependencies {
     /**
      * Constructs a new package dependencies helper.
      */
-    constructor( ownerPkg : api.IPackage ) {
+    constructor( ownerPkg : api_elements.IPackage ) {
 
         this._ownerPkg = ownerPkg;
 
@@ -710,7 +710,7 @@ class PackageDependencies {
      *
      * @param packageDependency the added dependency.
      */
-    addPackageDependency( packageDependency : api.IPackageDependency ) : void {
+    addPackageDependency( packageDependency : api_elements.IPackageDependency ) : void {
         if ( this._ownerPkg == packageDependency.clientPackage ) {
             this._supplierPackages.push( packageDependency.supplierPackage );
         }
@@ -728,7 +728,7 @@ class PackageDependencies {
      *
      * @return the collection of packages from the dependency graph.
      */
-    getClientPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+    getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
 
         // TODO: transitive dependencies
         //if ( dependencyDepth.isTransitive() ) {
@@ -754,7 +754,7 @@ class PackageDependencies {
      *
      * @return the collection of packages found.
      */
-    getSupplierPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+    getSupplierPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
 
         // TODO: transitive dependencies
         //if ( dependencyDepth.isTransitive() ) {
@@ -781,13 +781,13 @@ class PackageDependencies {
      *
      * @return true if the given package is a supplier.
      */
-    hasSupplierPackage( pkg : api.IPackage, dependencyDepth : api.EDependencyDepth ) : boolean {
+    hasSupplierPackage( pkg : api_elements.IPackage, dependencyDepth : api_elements.EDependencyDepth ) : boolean {
 
         var me = this;
 
-        if ( dependencyDepth == api.EDependencyDepth.TRANSITIVE ) {
+        if ( dependencyDepth == api_elements.EDependencyDepth.TRANSITIVE ) {
             this._supplierPackages.forEach(
-                function ( pkg2 : api.IPackage ) {
+                function ( pkg2 : api_elements.IPackage ) {
                     if ( pkg == pkg2 ) {
                         return true;
                     }
@@ -799,7 +799,7 @@ class PackageDependencies {
         }
         else {
             this._supplierPackages.forEach(
-                function ( pkg2 : api.IPackage ) {
+                function ( pkg2 : api_elements.IPackage ) {
                     if ( pkg == pkg2 ) {
                         return true;
                     }
@@ -812,13 +812,13 @@ class PackageDependencies {
     }
 
     /** The packages that depend upon this one. */
-    private _clientPackages : api.IPackage[];
+    private _clientPackages : api_elements.IPackage[];
 
     /** The package that delegates to this helper class. */
-    private  _ownerPkg : api.IPackage;
+    private  _ownerPkg : api_elements.IPackage;
 
     /** The packages that this one depends upon. */
-    private _supplierPackages : api.IPackage[];
+    private _supplierPackages : api_elements.IPackage[];
 
 }
 
@@ -827,7 +827,7 @@ class PackageDependencies {
 /**
  * Implementation class for Grestler packages.
  */
-export class Package extends PackagedElement implements api.IPackage, IPackageUnderAssembly {
+export class Package extends PackagedElement implements api_elements.IPackage, IPackageUnderAssembly {
 
     /**
      * Constructs a new package.
@@ -836,7 +836,7 @@ export class Package extends PackagedElement implements api.IPackage, IPackageUn
      * @param parentPackage the parent package.
      * @param name          the name of the package.
      */
-    constructor( id : string, parentPackage : api.IPackage, name : string ) {
+    constructor( id : string, parentPackage : api_elements.IPackage, name : string ) {
 
         super( 'Package', id, parentPackage, name );
 
@@ -845,43 +845,43 @@ export class Package extends PackagedElement implements api.IPackage, IPackageUn
 
     }
 
-    public  addChildElement( packagedElement : api.IPackagedElement ) : void {
+    public  addChildElement( packagedElement : api_elements.IPackagedElement ) : void {
         this._packageContents.addChildElement( packagedElement );
     }
 
-    public  addPackageDependency( packageDependency : api.IPackageDependency ) : void {
+    public  addPackageDependency( packageDependency : api_elements.IPackageDependency ) : void {
         this._packageDependencies.addPackageDependency( packageDependency );
     }
 
-    public get attributeTypes() : api.IAttributeType[] {
+    public get attributeTypes() : api_elements.IAttributeType[] {
         return this._packageContents.attributeTypes;
     }
 
-    public get childPackages() : api.IPackage[] {
+    public get childPackages() : api_elements.IPackage[] {
         return this._packageContents.childPackages;
     }
 
-    public getClientPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+    public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
         return this._packageDependencies.getClientPackages( dependencyDepth );
     }
 
-    public get edgeTypes() : api.IEdgeType[] {
+    public get edgeTypes() : api_elements.IEdgeType[] {
         return this._packageContents.edgeTypes;
     }
 
-    public getSupplierPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+    public getSupplierPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
         return this._packageDependencies.getSupplierPackages( dependencyDepth );
     }
 
-    public get vertexTypes() : api.IVertexType[] {
+    public get vertexTypes() : api_elements.IVertexType[] {
         return this._packageContents.vertexTypes;
     }
 
-    public hasSupplierPackage( pkg : api.IPackage, dependencyDepth : api.EDependencyDepth ) : boolean {
+    public hasSupplierPackage( pkg : api_elements.IPackage, dependencyDepth : api_elements.EDependencyDepth ) : boolean {
         return this._packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
     }
 
-    public removeChildElement( packagedElement : api.IPackagedElement ) : void {
+    public removeChildElement( packagedElement : api_elements.IPackagedElement ) : void {
         this._packageContents.removeChildElement( packagedElement );
     }
 
@@ -898,7 +898,7 @@ export class Package extends PackagedElement implements api.IPackage, IPackageUn
 /**
  * Implementation class for edge types.
  */
-export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType {
+export class DirectedEdgeType extends EdgeType implements api_elements.IDirectedEdgeType {
 
     /**
      * Constructs a new edge type.
@@ -923,15 +923,15 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
      */
     constructor(
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
-        superType : api.IDirectedEdgeType,
-        abstractness : api.EAbstractness,
-        cyclicity : api.ECyclicity,
-        multiEdgedness : api.EMultiEdgedness,
-        selfLooping : api.ESelfLooping,
-        tailVertexType : api.IVertexType,
-        headVertexType : api.IVertexType,
+        superType : api_elements.IDirectedEdgeType,
+        abstractness : api_elements.EAbstractness,
+        cyclicity : api_elements.ECyclicity,
+        multiEdgedness : api_elements.EMultiEdgedness,
+        selfLooping : api_elements.ESelfLooping,
+        tailVertexType : api_elements.IVertexType,
+        headVertexType : api_elements.IVertexType,
         tailRoleName : string,
         headRoleName : string,
         minTailOutDegree : number,
@@ -969,11 +969,11 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
         this._headRoleName = value;
     }
 
-    public  get headVertexType() : api.IVertexType {
+    public  get headVertexType() : api_elements.IVertexType {
         return this._headVertexType;
     }
 
-    public set headVertexType( value : api.IVertexType ) {
+    public set headVertexType( value : api_elements.IVertexType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.headVertexType',
@@ -1049,15 +1049,15 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
         this._minTailOutDegree = value;
     }
 
-    public get superEdgeType() : api.IEdgeType {
+    public get superEdgeType() : api_elements.IEdgeType {
         return this._superType;
     }
 
-    public get superType() : api.IDirectedEdgeType {
+    public get superType() : api_elements.IDirectedEdgeType {
         return this._superType;
     }
 
-    public set superType( value : api.IDirectedEdgeType ) {
+    public set superType( value : api_elements.IDirectedEdgeType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.superType',
@@ -1087,11 +1087,11 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
         this._tailRoleName = value;
     }
 
-    public get tailVertexType() : api.IVertexType {
+    public get tailVertexType() : api_elements.IVertexType {
         return this._tailVertexType;
     }
 
-    public set tailVertexType( value : api.IVertexType ) {
+    public set tailVertexType( value : api_elements.IVertexType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.tailVertexType',
@@ -1103,7 +1103,7 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
         this._tailVertexType = value;
     }
 
-    public isSubTypeOf( edgeType : api.IDirectedEdgeType ) : boolean {
+    public isSubTypeOf( edgeType : api_elements.IDirectedEdgeType ) : boolean {
         return this == edgeType || this.superType.isSubTypeOf( edgeType );
     }
 
@@ -1111,7 +1111,7 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
     private _headRoleName : string;
 
     /** The vertex type at the head of edges of this type. */
-    private _headVertexType : api.IVertexType;
+    private _headVertexType : api_elements.IVertexType;
 
     /** The maximum in-degree for the head vertex of edges of this type. */
     private _maxHeadInDegree : number;
@@ -1126,13 +1126,13 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
     private _minTailOutDegree : number;
 
     /** The super type of this edge type. */
-    private _superType : api.IDirectedEdgeType;
+    private _superType : api_elements.IDirectedEdgeType;
 
     /** The name of the role for the vertex at the tail of edges of this type. */
     private _tailRoleName : string;
 
     /** The vertex type at the tail of edges of this type. */
-    private _tailVertexType : api.IVertexType;
+    private _tailVertexType : api_elements.IVertexType;
 
 }
 
@@ -1141,7 +1141,7 @@ export class DirectedEdgeType extends EdgeType implements api.IDirectedEdgeType 
 /**
  * Implementation class for edge types.
  */
-export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeType {
+export class UndirectedEdgeType extends EdgeType implements api_elements.IUndirectedEdgeType {
 
     /**
      * Constructs a new edge type.
@@ -1161,14 +1161,14 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
      */
     constructor(
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
-        superType : api.IUndirectedEdgeType,
-        abstractness : api.EAbstractness,
-        cyclicity : api.ECyclicity,
-        multiEdgedness : api.EMultiEdgedness,
-        selfLooping : api.ESelfLooping,
-        vertexType : api.IVertexType,
+        superType : api_elements.IUndirectedEdgeType,
+        abstractness : api_elements.EAbstractness,
+        cyclicity : api_elements.ECyclicity,
+        multiEdgedness : api_elements.EMultiEdgedness,
+        selfLooping : api_elements.ESelfLooping,
+        vertexType : api_elements.IVertexType,
         minDegree : number,
         maxDegree : number
     ) {
@@ -1213,15 +1213,15 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
         this._minDegree = value;
     }
 
-    public get superEdgeType() : api.IEdgeType {
+    public get superEdgeType() : api_elements.IEdgeType {
         return this._superType;
     }
 
-    public get superType() : api.IUndirectedEdgeType {
+    public get superType() : api_elements.IUndirectedEdgeType {
         return this._superType;
     }
 
-    public set superType( value : api.IUndirectedEdgeType ) {
+    public set superType( value : api_elements.IUndirectedEdgeType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.superType',
@@ -1236,11 +1236,11 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
     }
 
 
-    public get vertexType() : api.IVertexType {
+    public get vertexType() : api_elements.IVertexType {
         return this._vertexType;
     }
 
-    public set vertexType( value : api.IVertexType ) {
+    public set vertexType( value : api_elements.IVertexType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.vertexType',
@@ -1252,7 +1252,7 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
         this._vertexType = value;
     }
 
-    public isSubTypeOf( edgeType : api.IUndirectedEdgeType ) : boolean {
+    public isSubTypeOf( edgeType : api_elements.IUndirectedEdgeType ) : boolean {
         return this == edgeType || this.superType.isSubTypeOf( edgeType );
     }
 
@@ -1263,10 +1263,10 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
     private _minDegree : number;
 
     /** The super type of this type. */
-    private _superType : api.IUndirectedEdgeType;
+    private _superType : api_elements.IUndirectedEdgeType;
 
     /** The vertex type for edges of this type. */
-    private _vertexType : api.IVertexType;
+    private _vertexType : api_elements.IVertexType;
 
 }
 
@@ -1275,7 +1275,7 @@ export class UndirectedEdgeType extends EdgeType implements api.IUndirectedEdgeT
 /**
  * Implementation of a boolean attribute type.
  */
-export class BooleanAttributeType extends AttributeType implements api.IBooleanAttributeType {
+export class BooleanAttributeType extends AttributeType implements api_elements.IBooleanAttributeType {
 
     /**
      * Constructs a new boolean attribute type.
@@ -1286,7 +1286,7 @@ export class BooleanAttributeType extends AttributeType implements api.IBooleanA
      * @param defaultValue  the default value for attributes of this type.
      */
     constructor(
-        id : string, parentPackage : api.IPackage, name : string, defaultValue : boolean
+        id : string, parentPackage : api_elements.IPackage, name : string, defaultValue : boolean
     ) {
         super( 'BooleanAttributeType', id, parentPackage, name );
         this._defaultValue = defaultValue;
@@ -1318,7 +1318,7 @@ export class BooleanAttributeType extends AttributeType implements api.IBooleanA
 /**
  * Date/time attribute type implementation.
  */
-export class DateTimeAttributeType extends AttributeType implements api.IDateTimeAttributeType {
+export class DateTimeAttributeType extends AttributeType implements api_elements.IDateTimeAttributeType {
 
     /**
      * Constructs a new date/time attribute type.
@@ -1330,7 +1330,7 @@ export class DateTimeAttributeType extends AttributeType implements api.IDateTim
      * @param maxValue      the minimum value for attributes of this type.
      */
     constructor(
-        id : string, parentPackage : api.IPackage, name : string, minValue : Date, maxValue : Date
+        id : string, parentPackage : api_elements.IPackage, name : string, minValue : Date, maxValue : Date
     ) {
 
         super( 'DateTimeAttributeType', id, parentPackage, name );
@@ -1385,7 +1385,7 @@ export class DateTimeAttributeType extends AttributeType implements api.IDateTim
 /**
  * Implementation for 64-bit floating point attribute types.
  */
-export class Float64AttributeType extends AttributeType implements api.IFloat64AttributeType {
+export class Float64AttributeType extends AttributeType implements api_elements.IFloat64AttributeType {
 
     /**
      * Constructs a new floating point attribute type.
@@ -1399,7 +1399,7 @@ export class Float64AttributeType extends AttributeType implements api.IFloat64A
      */
     constructor(
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
         minValue : number,
         maxValue : number,
@@ -1476,7 +1476,7 @@ export class Float64AttributeType extends AttributeType implements api.IFloat64A
 /**
  * Implementation for 32-bit integer attribute types.
  */
-export class Integer32AttributeType extends AttributeType implements api.IInteger32AttributeType {
+export class Integer32AttributeType extends AttributeType implements api_elements.IInteger32AttributeType {
 
     /**
      * Constructs a new floating point attribute type.
@@ -1490,7 +1490,7 @@ export class Integer32AttributeType extends AttributeType implements api.IIntege
      */
     constructor(
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
         minValue : number,
         maxValue : number,
@@ -1567,7 +1567,7 @@ export class Integer32AttributeType extends AttributeType implements api.IIntege
 /**
  * Implementation for string attribute types.
  */
-export class StringAttributeType extends AttributeType implements api.IStringAttributeType {
+export class StringAttributeType extends AttributeType implements api_elements.IStringAttributeType {
 
     /**
      * Constructs a new integer attribute type.
@@ -1581,7 +1581,7 @@ export class StringAttributeType extends AttributeType implements api.IStringAtt
      */
     constructor(
         id : string,
-        parentPackage : api.IPackage,
+        parentPackage : api_elements.IPackage,
         name : string,
         minLength : number,
         maxLength : number,
@@ -1659,7 +1659,7 @@ export class StringAttributeType extends AttributeType implements api.IStringAtt
 /**
  * Implementation of a UUID attribute type.
  */
-export class UuidAttributeType extends AttributeType implements api.IUuidAttributeType {
+export class UuidAttributeType extends AttributeType implements api_elements.IUuidAttributeType {
 
     /**
      * Constructs a new UUID attribute type.
@@ -1669,7 +1669,7 @@ export class UuidAttributeType extends AttributeType implements api.IUuidAttribu
      * @param name          the name of the attribute type.
      */
     constructor(
-        id : string, parentPackage : api.IPackage, name : string
+        id : string, parentPackage : api_elements.IPackage, name : string
     ) {
         super( 'UuidAttributeType', id, parentPackage, name );
     }
@@ -1681,7 +1681,7 @@ export class UuidAttributeType extends AttributeType implements api.IUuidAttribu
 /**
  * Implementation class for edge attribute declarations.
  */
-export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttributeDecl {
+export class EdgeAttributeDecl extends NamedElement implements api_elements.IEdgeAttributeDecl {
 
     /**
      * Constructs a new edge attribute declaration.
@@ -1694,10 +1694,10 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
      */
     constructor(
         id : string,
-        parentEdgeType : api.IEdgeType,
+        parentEdgeType : api_elements.IEdgeType,
         name : string,
-        type : api.IAttributeType,
-        optionality : api.EAttributeOptionality
+        type : api_elements.IAttributeType,
+        optionality : api_elements.EAttributeOptionality
     ) {
 
         super( 'EdgeAttributeDecl', id, name );
@@ -1710,19 +1710,19 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
 
     }
 
-    public get optionality() : api.EAttributeOptionality {
+    public get optionality() : api_elements.EAttributeOptionality {
         return this._optionality;
     }
 
-    public get parentEdgeType() : api.IEdgeType {
+    public get parentEdgeType() : api_elements.IEdgeType {
         return this._parentEdgeType;
     }
 
-    public get type() : api.IAttributeType {
+    public get type() : api_elements.IAttributeType {
         return this._type;
     }
 
-    public set optionality( value : api.EAttributeOptionality ) {
+    public set optionality( value : api_elements.EAttributeOptionality ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.optionality',
@@ -1734,7 +1734,7 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
         this._optionality = value;
     }
 
-    public set parentEdgeType( value : api.IEdgeType ) {
+    public set parentEdgeType( value : api_elements.IEdgeType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.parentEdgeType',
@@ -1752,7 +1752,7 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
 
     }
 
-    public set type( value : api.IAttributeType ) {
+    public set type( value : api_elements.IAttributeType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.type',
@@ -1765,13 +1765,13 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
     }
 
     /** Whether this attribute is required for instances of the parent edge type. */
-    private _optionality : api.EAttributeOptionality;
+    private _optionality : api_elements.EAttributeOptionality;
 
     /** The parent edge type with this attribute. */
-    private _parentEdgeType : api.IEdgeType;
+    private _parentEdgeType : api_elements.IEdgeType;
 
     /** The type of this attribute declaration. */
-    private _type : api.IAttributeType;
+    private _type : api_elements.IAttributeType;
 
 }
 
@@ -1780,7 +1780,7 @@ export class EdgeAttributeDecl extends NamedElement implements api.IEdgeAttribut
 /**
  * Implementation class for vertex attribute declarations.
  */
-export class VertexAttributeDecl extends NamedElement implements api.IVertexAttributeDecl {
+export class VertexAttributeDecl extends NamedElement implements api_elements.IVertexAttributeDecl {
 
     /**
      * Constructs a new vertex attribute declaration.
@@ -1794,11 +1794,11 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
      */
     constructor(
         id : string,
-        parentVertexType : api.IVertexType,
+        parentVertexType : api_elements.IVertexType,
         name : string,
-        type : api.IAttributeType,
-        optionality : api.EAttributeOptionality,
-        labelDefaulting : api.ELabelDefaulting
+        type : api_elements.IAttributeType,
+        optionality : api_elements.EAttributeOptionality,
+        labelDefaulting : api_elements.ELabelDefaulting
     ) {
 
         super( 'VertexAttributeDecl', id, name );
@@ -1812,23 +1812,23 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
 
     }
 
-    public get labelDefaulting() : api.ELabelDefaulting {
+    public get labelDefaulting() : api_elements.ELabelDefaulting {
         return this._labelDefaulting;
     }
 
-    public get optionality() : api.EAttributeOptionality {
+    public get optionality() : api_elements.EAttributeOptionality {
         return this._optionality;
     }
 
-    public get parentVertexType() : api.IVertexType {
+    public get parentVertexType() : api_elements.IVertexType {
         return this._parentVertexType;
     }
 
-    public get type() : api.IAttributeType {
+    public get type() : api_elements.IAttributeType {
         return this._type;
     }
 
-    public set labelDefaulting( value : api.ELabelDefaulting ) {
+    public set labelDefaulting( value : api_elements.ELabelDefaulting ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.labelDefaulting',
@@ -1840,7 +1840,7 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
         this._labelDefaulting = value;
     }
 
-    public set optionality( value : api.EAttributeOptionality ) {
+    public set optionality( value : api_elements.EAttributeOptionality ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.optionality',
@@ -1852,7 +1852,7 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
         this._optionality = value;
     }
 
-    public set parentVertexType( value : api.IVertexType ) {
+    public set parentVertexType( value : api_elements.IVertexType ) {
 
         Object['getNotifier']( this ).notify(
             {
@@ -1871,7 +1871,7 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
 
     }
 
-    public set type( value : api.IAttributeType ) {
+    public set type( value : api_elements.IAttributeType ) {
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.type',
@@ -1884,16 +1884,16 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
     }
 
     /** Whether this attribute serves as the default label for vertexes of the parent type. */
-    private _labelDefaulting : api.ELabelDefaulting;
+    private _labelDefaulting : api_elements.ELabelDefaulting;
 
     /** Whether this attribute is required for instances of the parent vertex type. */
-    private _optionality : api.EAttributeOptionality;
+    private _optionality : api_elements.EAttributeOptionality;
 
     /** The parent vertex type with this attribute. */
-    private _parentVertexType : api.IVertexType;
+    private _parentVertexType : api_elements.IVertexType;
 
     /** The type of this attribute declaration. */
-    private _type : api.IAttributeType;
+    private _type : api_elements.IAttributeType;
 
 }
 
@@ -1902,7 +1902,7 @@ export class VertexAttributeDecl extends NamedElement implements api.IVertexAttr
 /**
  * Implementation of the top level root package.
  */
-export class RootPackage implements api.IPackage, IPackageUnderAssembly {
+export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly {
 
     /**
      * Constructs a new root package.
@@ -1918,27 +1918,27 @@ export class RootPackage implements api.IPackage, IPackageUnderAssembly {
 
     }
 
-    public addChildElement( packagedElement : api.IPackagedElement ) : void {
+    public addChildElement( packagedElement : api_elements.IPackagedElement ) : void {
         this._packageContents.addChildElement( packagedElement );
     }
 
-    public addPackageDependency( packageDependency : api.IPackageDependency ) : void {
+    public addPackageDependency( packageDependency : api_elements.IPackageDependency ) : void {
         this._packageDependencies.addPackageDependency( packageDependency );
     }
 
-    public get attributeTypes() : api.IAttributeType[] {
+    public get attributeTypes() : api_elements.IAttributeType[] {
         return this._packageContents.attributeTypes;
     }
 
-    public get childPackages() : api.IPackage[] {
+    public get childPackages() : api_elements.IPackage[] {
         return this._packageContents.childPackages;
     }
 
-    public getClientPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+    public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
         return this._packageDependencies.getClientPackages( dependencyDepth );
     }
 
-    public get edgeTypes() : api.IEdgeType[] {
+    public get edgeTypes() : api_elements.IEdgeType[] {
         return this._packageContents.edgeTypes;
     }
 
@@ -1950,11 +1950,11 @@ export class RootPackage implements api.IPackage, IPackageUnderAssembly {
         return "$";
     }
 
-    public get parent() : api.INamedElement {
+    public get parent() : api_elements.INamedElement {
         return this;
     }
 
-    public get parentPackage() : api.IPackage {
+    public get parentPackage() : api_elements.IPackage {
         return this;
     }
 
@@ -1966,23 +1966,23 @@ export class RootPackage implements api.IPackage, IPackageUnderAssembly {
         return 'RootPackage';
     }
 
-    public getSupplierPackages( dependencyDepth : api.EDependencyDepth ) : api.IPackage[] {
+    public getSupplierPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
         return this._packageDependencies.getSupplierPackages( dependencyDepth );
     }
 
-    public get vertexTypes() : api.IVertexType[] {
+    public get vertexTypes() : api_elements.IVertexType[] {
         return this._packageContents.vertexTypes;
     }
 
-    public hasSupplierPackage( pkg : api.IPackage, dependencyDepth : api.EDependencyDepth ) : boolean {
+    public hasSupplierPackage( pkg : api_elements.IPackage, dependencyDepth : api_elements.EDependencyDepth ) : boolean {
         return this._packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
     }
 
-    public isChildOf( parentPackage : api.IPackage ) : boolean {
+    public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
         return false;
     }
 
-    public removeChildElement( packagedElement : api.IPackagedElement ) : void {
+    public removeChildElement( packagedElement : api_elements.IPackagedElement ) : void {
         this._packageContents.removeChildElement( packagedElement );
     }
 
