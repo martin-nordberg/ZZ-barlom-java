@@ -19,6 +19,8 @@ import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
 import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
 import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ISizedIterable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import org.grestler.infrastructure.utilities.instrumentation.OperationTimeLogger;
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext;
 import org.grestler.infrastructure.utilities.revisions.V;
@@ -27,6 +29,9 @@ import org.grestler.infrastructure.utilities.revisions.VHashMap;
 
 import javax.inject.Inject;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -100,33 +105,201 @@ public final class MetamodelRepository
     }
 
     @Override
-    public IIndexable<IAttributeType> findAllAttributeTypes() {
+    public ISizedIterable<IAttributeType> findAllAttributeTypes() {
         return this.attributeTypes;
     }
 
     @Override
-    public IIndexable<IDirectedEdgeType> findAllDirectedEdgeTypes() {
+    public IIndexable<IAttributeType> findAllAttributeTypesSorted( EElementSortOrder sortOrder ) {
+
+        // Make a copy of the attribute types list.
+        List<IAttributeType> result = new ArrayList<>();
+        this.attributeTypes.forEach( result::add );
+
+        // Sort them as needed.
+        switch ( sortOrder ) {
+            case NAME:
+                Collections.sort( result, Comparators.NAME );
+                break;
+            case PARENT_BEFORE_CHILDREN:
+                assert false : "Attribute types do not have super types";
+                break;
+            case PATH:
+                Collections.sort( result, Comparators.PATH );
+                break;
+            case SUPER_TYPE_BEFORE_SUB_TYPES:
+                assert false : "Packages do not have super types";
+                break;
+        }
+
+        // Wrap up the result.
+        return new ReadOnlyListAdapter<>( result );
+
+    }
+
+    @Override
+    public ISizedIterable<IDirectedEdgeType> findAllDirectedEdgeTypes() {
         return this.directedEdgeTypes;
     }
 
     @Override
-    public IIndexable<IEdgeType> findAllEdgeTypes() {
+    public IIndexable<IDirectedEdgeType> findAllDirectedEdgeTypesSorted( EElementSortOrder sortOrder ) {
+
+        // Make a copy of the directed edge types list.
+        List<IDirectedEdgeType> result = new ArrayList<>();
+        this.directedEdgeTypes.forEach( result::add );
+
+        // Sort them as needed.
+        switch ( sortOrder ) {
+            case NAME:
+                Collections.sort( result, Comparators.NAME );
+                break;
+            case PARENT_BEFORE_CHILDREN:
+                assert false : "Directed edge types do not have super types";
+                break;
+            case PATH:
+                Collections.sort( result, Comparators.PATH );
+                break;
+            case SUPER_TYPE_BEFORE_SUB_TYPES:
+                Collections.sort( result, Comparators.DIRECTED_EDGE_SUPER_SUBTYPE );
+                break;
+        }
+
+        // Wrap up the result.
+        return new ReadOnlyListAdapter<>( result );
+
+    }
+
+    @Override
+    public ISizedIterable<IEdgeType> findAllEdgeTypes() {
         return this.edgeTypes;
     }
 
     @Override
-    public IIndexable<IPackage> findAllPackages() {
+    public IIndexable<IEdgeType> findAllEdgeTypesSorted( EElementSortOrder sortOrder ) {
+
+        // Make a copy of the edge types list.
+        List<IEdgeType> result = new ArrayList<>();
+        this.edgeTypes.forEach( result::add );
+
+        // Sort them as needed.
+        switch ( sortOrder ) {
+            case NAME:
+                Collections.sort( result, Comparators.NAME );
+                break;
+            case PARENT_BEFORE_CHILDREN:
+                assert false : "Edge types do not have super types";
+                break;
+            case PATH:
+                Collections.sort( result, Comparators.PATH );
+                break;
+            case SUPER_TYPE_BEFORE_SUB_TYPES:
+                assert false : "Edge types do not have super types";
+                break;
+        }
+
+        // Wrap up the result.
+        return new ReadOnlyListAdapter<>( result );
+
+    }
+
+    @Override
+    public ISizedIterable<IPackage> findAllPackages() {
         return this.packages;
     }
 
     @Override
-    public IIndexable<IUndirectedEdgeType> findAllUndirectedEdgeTypes() {
+    public IIndexable<IPackage> findAllPackagesSorted( EElementSortOrder sortOrder ) {
+
+        // Make a copy of the packages list.
+        List<IPackage> result = new ArrayList<>();
+        this.packages.forEach( result::add );
+
+        // Sort them as needed.
+        switch ( sortOrder ) {
+            case NAME:
+                Collections.sort( result, Comparators.NAME );
+                break;
+            case PARENT_BEFORE_CHILDREN:
+                Collections.sort( result, Comparators.PACKAGE_PARENT_CHILD );
+                break;
+            case PATH:
+                Collections.sort( result, Comparators.PATH );
+                break;
+            case SUPER_TYPE_BEFORE_SUB_TYPES:
+                assert false : "Packages do not have super types";
+                break;
+        }
+
+        // Wrap up the result.
+        return new ReadOnlyListAdapter<>( result );
+
+    }
+
+    @Override
+    public ISizedIterable<IUndirectedEdgeType> findAllUndirectedEdgeTypes() {
         return this.undirectedEdgeTypes;
     }
 
     @Override
-    public IIndexable<IVertexType> findAllVertexTypes() {
+    public IIndexable<IUndirectedEdgeType> findAllUndirectedEdgeTypesSorted( EElementSortOrder sortOrder ) {
+
+        // Make a copy of the directed edge types list.
+        List<IUndirectedEdgeType> result = new ArrayList<>();
+        this.undirectedEdgeTypes.forEach( result::add );
+
+        // Sort them as needed.
+        switch ( sortOrder ) {
+            case NAME:
+                Collections.sort( result, Comparators.NAME );
+                break;
+            case PARENT_BEFORE_CHILDREN:
+                assert false : "Undirected edge types do not have super types";
+                break;
+            case PATH:
+                Collections.sort( result, Comparators.PATH );
+                break;
+            case SUPER_TYPE_BEFORE_SUB_TYPES:
+                Collections.sort( result, Comparators.UNDIRECTED_EDGE_SUPER_SUBTYPE );
+                break;
+        }
+
+        // Wrap up the result.
+        return new ReadOnlyListAdapter<>( result );
+
+    }
+
+    @Override
+    public ISizedIterable<IVertexType> findAllVertexTypes() {
         return this.vertexTypes;
+    }
+
+    @Override
+    public IIndexable<IVertexType> findAllVertexTypesSorted( EElementSortOrder sortOrder ) {
+
+        // Make a copy of the vertex types list.
+        List<IVertexType> result = new ArrayList<>();
+        this.vertexTypes.forEach( result::add );
+
+        // Sort them as needed.
+        switch ( sortOrder ) {
+            case NAME:
+                Collections.sort( result, Comparators.NAME );
+                break;
+            case PARENT_BEFORE_CHILDREN:
+                assert false : "Vertex types do not have super types";
+                break;
+            case PATH:
+                Collections.sort( result, Comparators.PATH );
+                break;
+            case SUPER_TYPE_BEFORE_SUB_TYPES:
+                Collections.sort( result, Comparators.VERTEX_SUPER_SUBTYPE );
+                break;
+        }
+
+        // Wrap up the result.
+        return new ReadOnlyListAdapter<>( result );
+
     }
 
     @Override

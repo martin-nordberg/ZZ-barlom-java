@@ -86,14 +86,23 @@ export class PackageLoader implements spi_queries.IPackageLoader {
     loadAllPackages( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
 
         // TODO: externally configured host & port
-        var url = "http://localhost:8080/grestlerdata/metadata/packages";
+        const url = "http://localhost:8080/grestlerdata/metadata/packages";
 
         /**
-         * Loads one package from its JSON representation.   -- TODO: find or load parent package before child
-         * @param pkg parsed JSON for the package.           -- TODO: load root package
+         * Loads one package from its JSON representation.
+         * @param pkg parsed JSON for the package.
          */
         var loadPackage = function ( pkg : any ) : void {
-            repository.loadPackage( pkg.id, null, pkg.name );
+            var parentPackageId = pkg.parentPackageId;
+
+            if ( parentPackageId ) {
+                var parentPackage = repository.findOptionalPackageById( parentPackageId );
+                repository.loadPackage( pkg.id, parentPackage, pkg.name );
+            }
+            else {
+                repository.loadRootPackage( pkg.id );
+            }
+
         };
 
         /**

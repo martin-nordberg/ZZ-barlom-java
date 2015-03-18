@@ -5,6 +5,7 @@
 
 package org.grestler.domain.metamodel.api.queries;
 
+import org.grestler.domain.metamodel.api.elements.EElementSortOrder;
 import org.grestler.domain.metamodel.api.elements.IAttributeType;
 import org.grestler.domain.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.domain.metamodel.api.elements.IEdgeType;
@@ -12,6 +13,7 @@ import org.grestler.domain.metamodel.api.elements.IPackage;
 import org.grestler.domain.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ISizedIterable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -23,34 +25,100 @@ import java.util.UUID;
 public interface IMetamodelRepository {
 
     /**
+     * Finds all attribute types in unspecified order.
+     *
      * @return a list of all attribute types in the repository.
      */
-    IIndexable<IAttributeType> findAllAttributeTypes();
+    ISizedIterable<IAttributeType> findAllAttributeTypes();
 
     /**
+     * Finds all attribute types in specified order.
+     *
+     * @param sortOrder the order in which to sort the results.
+     *
+     * @return a list of all attribute types in the repository.
+     */
+    IIndexable<IAttributeType> findAllAttributeTypesSorted( EElementSortOrder sortOrder );
+
+    /**
+     * Finds all directed edge types in unspecified order.
+     *
      * @return a list of all directed edge types in the repository.
      */
-    IIndexable<IDirectedEdgeType> findAllDirectedEdgeTypes();
+    ISizedIterable<IDirectedEdgeType> findAllDirectedEdgeTypes();
 
     /**
+     * Finds all directed edge types in specified order.
+     *
+     * @param sortOrder the order in which to sort the results.
+     *
+     * @return a list of all directed edge types in the repository.
+     */
+    IIndexable<IDirectedEdgeType> findAllDirectedEdgeTypesSorted( EElementSortOrder sortOrder );
+
+    /**
+     * Finds all edge types in unspecified order.
+     *
      * @return a list of all edge types in the repository.
      */
-    IIndexable<IEdgeType> findAllEdgeTypes();
+    ISizedIterable<IEdgeType> findAllEdgeTypes();
 
     /**
+     * Finds all edge types in specified order.
+     *
+     * @param sortOrder the order in which to sort the results.
+     *
+     * @return a list of all edge types in the repository.
+     */
+    IIndexable<IEdgeType> findAllEdgeTypesSorted( EElementSortOrder sortOrder );
+
+    /**
+     * Finds all packages sorted in unspecified order.
+     *
      * @return a list of all packages in the repository.
      */
-    IIndexable<IPackage> findAllPackages();
+    ISizedIterable<IPackage> findAllPackages();
 
     /**
+     * Finds all packages sorted in specified order.
+     *
+     * @param sortOrder the order in which to sort the results.
+     *
+     * @return a list of all packages in the repository.
+     */
+    IIndexable<IPackage> findAllPackagesSorted( EElementSortOrder sortOrder );
+
+    /**
+     * Finds all undirected edge types in unspecified order.
+     *
      * @return a list of all undirected edge types in the repository.
      */
-    IIndexable<IUndirectedEdgeType> findAllUndirectedEdgeTypes();
+    ISizedIterable<IUndirectedEdgeType> findAllUndirectedEdgeTypes();
 
     /**
+     * Finds all undirected edge types in specified order.
+     *
+     * @param sortOrder the order in which to sort the results.
+     *
+     * @return a list of all undirected edge types in the repository.
+     */
+    IIndexable<IUndirectedEdgeType> findAllUndirectedEdgeTypesSorted( EElementSortOrder sortOrder );
+
+    /**
+     * Finds all vertex types in unspecified order.
+     *
      * @return a list of all vertex types in the repository.
      */
-    IIndexable<IVertexType> findAllVertexTypes();
+    ISizedIterable<IVertexType> findAllVertexTypes();
+
+    /**
+     * Finds all vertex types in specified order.
+     *
+     * @param sortOrder the order in which to sort the results.
+     *
+     * @return a list of all vertex types in the repository.
+     */
+    IIndexable<IVertexType> findAllVertexTypesSorted( EElementSortOrder sortOrder );
 
     /**
      * Finds the attribute type with given ID.

@@ -30,6 +30,9 @@ define( [], ()->
         loader = new this.restserver_api_queries.PackageLoader()
 
         repository = {
+          findOptionalPackageById: ( id ) ->
+            null
+
           loadPackage: ( id, parentPackage, name ) ->
             loadCount += 1
 
