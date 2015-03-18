@@ -14,52 +14,10 @@
  import $ = require( 'jquery' );
  */
 
+import ajax = require( '../../../infrastructure/utilities/ajax' );
 import api_elements = require( '../../../domain/metamodel/api/elements' );
 import api_queries = require( '../../../domain/metamodel/api/queries' );
 import spi_queries = require( '../../../domain/metamodel/spi/queries' );
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Make an AJAX GET call returning a promise.  TODO: Move to utility class
- * @param url the URL to get.
- * @returns {Promise}
- */
-function httpGet( url : string ) : Promise<string> {
-
-    // Return a new promise.
-    return new Promise<string>(
-        function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
-
-            // Do the usual XHR stuff
-            var req = new XMLHttpRequest();
-            req.open( 'GET', url );
-
-            req.onload = function () {
-                // Check the status
-                if ( req.status == 200 ) {
-                    // Resolve the promise with the response text
-                    resolve( req.response );
-                }
-                else {
-                    // Otherwise reject with the status text
-                    // which will hopefully be a meaningful error
-                    reject( Error( req.statusText ) );
-                }
-            };
-
-            // Handle network errors
-            req.onerror = function () {
-                reject( Error( "Network Error" ) );
-            };
-
-            // Make the request
-            req.send();
-
-        }
-    );
-
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -140,23 +98,14 @@ export class PackageLoader implements spi_queries.IPackageLoader {
 
         /**
          * Loads all packages from their representation as a JSON object.
-         * @param pkgsJson
+         * @param pkgsJson parsed JSON for an array of packages.
          */
         var loadPackages = function ( pkgsJson : any ) : void {
             pkgsJson.packages.forEach( loadPackage );
         };
 
-        /**
-         * Parses a JSON string to an object.  -- TODO: centralize this simple utility
-         * @param jsonStr the string to parse.
-         * @returns {any} the parsed object.
-         */
-        var parseJson = function ( jsonStr : string ) : any {
-            return JSON.parse( jsonStr );
-        };
-
         // Perform the AJAX call and handle the response.
-        return httpGet( url ).then( parseJson ).then( loadPackages );
+        return ajax.httpGet( url ).then( JSON.parse ).then( loadPackages );
 
     }
 

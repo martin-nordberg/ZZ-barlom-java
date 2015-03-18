@@ -1,4 +1,5 @@
 example.ts
+org/grestler/infrastructure/utilities/ajax.ts
 org/grestler/domain/metamodel/api/elements.ts
 org/grestler/domain/metamodel/api/queries.ts
 org/grestler/domain/metamodel/spi/queries.ts
