@@ -214,7 +214,7 @@ public final class MetamodelRepository
     @Override
     public IUndirectedEdgeType findRootUndirectedEdgeType() {
         if ( this.rootUndirectedEdgeType == null ) {
-            throw new MetamodelException( MetamodelRepository.LOG, "Missing root undirected egde type." );
+            throw new MetamodelException( MetamodelRepository.LOG, "Missing root undirected edge type." );
         }
         return this.rootUndirectedEdgeType.get();
     }

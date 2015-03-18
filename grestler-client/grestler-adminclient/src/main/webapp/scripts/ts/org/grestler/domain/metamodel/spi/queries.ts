@@ -326,3 +326,102 @@ export interface IMetamodelRepositorySpi extends api_queries.IMetamodelRepositor
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Interface for a back end attribute declaration loader.
+ */
+export interface IAttributeDeclLoader {
+
+    /**
+     * Loads all attribute declarations into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllAttributeDecls( repository : IMetamodelRepositorySpi ) : Promise<any>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface defining attribute type queries.
+ */
+export interface IAttributeTypeLoader {
+
+    /**
+     * Loads all attribute types into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllAttributeTypes( repository : IMetamodelRepositorySpi ) : Promise<any>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface defining edge type queries.
+ */
+export interface IEdgeTypeLoader {
+
+    /**
+     * Loads all edge types into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllEdgeTypes( repository : IMetamodelRepositorySpi ) : Promise<any>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface defining package dependency queries.
+ */
+export interface IPackageDependencyLoader {
+
+    /**
+     * Loads all package dependencies into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllPackageDependencies( repository : IMetamodelRepositorySpi ) : Promise<any>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface defining package queries.
+ */
+export interface IPackageLoader {
+
+    /**
+     * Loads all packages into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllPackages( repository : IMetamodelRepositorySpi ) : Promise<any>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface defining vertex type queries.
+ */
+export interface IVertexTypeLoader {
+
+    /**
+     * Loads all vertex types into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllVertexTypes( repository : IMetamodelRepositorySpi ) : Promise<any>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

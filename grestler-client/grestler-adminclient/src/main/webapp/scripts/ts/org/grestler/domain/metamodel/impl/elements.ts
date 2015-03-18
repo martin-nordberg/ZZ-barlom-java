@@ -22,7 +22,7 @@ export class DocumentedElement implements api_elements.IDocumentedElement {
      * @param typeName the concrete type name of this element.
      * @param id   the unique ID for the element.
      */
-    constructor( typeName: string, id : string ) {
+    constructor( typeName : string, id : string ) {
         this._typeName = typeName;
         this._id = id;
     }
@@ -41,6 +41,7 @@ export class DocumentedElement implements api_elements.IDocumentedElement {
     public get typeName() : string {
         return this._typeName;
     }
+
     public set typeName( value : string ) {
         throw new Error( "Attempted to change read only attribute - typeName." );
     }
@@ -67,7 +68,7 @@ export class NamedElement extends DocumentedElement implements api_elements.INam
      * @param id   the unique ID for the element.
      * @param name the name of the element.
      */
-    constructor( typeName: string, id : string, name : string ) {
+    constructor( typeName : string, id : string, name : string ) {
         super( typeName, id );
         this._name = name;
     }
@@ -170,11 +171,7 @@ export class PackagedElement extends NamedElement implements api_elements.IPacka
      * @return true if this package is a child or grandchild of the given parent package.
      */
     public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
-        var parentPkg : api_elements.IPackage;
-
-        parentPkg = this._parentPackage;
-
-        return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
+        return this._parentPackage === parentPackage || this._parentPackage.isChildOf( parentPackage );
     }
 
     public get parent() : api_elements.INamedElement {
@@ -352,7 +349,7 @@ export class EdgeType extends PackagedElement implements api_elements.IEdgeType,
      * @param selfLooping    whether the edge type disallows edges from a vertex to itself.
      */
     constructor(
-        typeName: string,
+        typeName : string,
         id : string,
         parentPackage : api_elements.IPackage,
         name : string,
@@ -877,7 +874,10 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
         return this._packageContents.vertexTypes;
     }
 
-    public hasSupplierPackage( pkg : api_elements.IPackage, dependencyDepth : api_elements.EDependencyDepth ) : boolean {
+    public hasSupplierPackage(
+        pkg : api_elements.IPackage,
+        dependencyDepth : api_elements.EDependencyDepth
+    ) : boolean {
         return this._packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
     }
 
@@ -1974,7 +1974,10 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
         return this._packageContents.vertexTypes;
     }
 
-    public hasSupplierPackage( pkg : api_elements.IPackage, dependencyDepth : api_elements.EDependencyDepth ) : boolean {
+    public hasSupplierPackage(
+        pkg : api_elements.IPackage,
+        dependencyDepth : api_elements.EDependencyDepth
+    ) : boolean {
         return this._packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
     }
 
@@ -1994,6 +1997,375 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
 
     /** Helper object that manages this package's dependencies. */
     private _packageDependencies : PackageDependencies;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implementation of the top-level root vertex type.
+ */
+export class RootVertexType implements api_elements.IVertexType, IVertexTypeUnderAssembly {
+
+    /**
+     * Constructs a new root vertex type.
+     *
+     * @param id            the unique ID of the vertex type.
+     * @param parentPackage the package containing the vertex type.
+     */
+    constructor(
+        id : string, parentPackage : api_elements.IPackage
+    ) {
+
+        this._id = id;
+        this._parentPackage = parentPackage;
+        this._attributes = [];
+
+        ( <IPackageUnderAssembly> parentPackage ).addChildElement( this );
+
+    }
+
+    public addAttribute( attribute : api_elements.IVertexAttributeDecl ) : void {
+        this._attributes.push( attribute );
+    }
+
+    public get abstractness() : api_elements.EAbstractness {
+        return api_elements.EAbstractness.ABSTRACT;
+    }
+
+    public get attributes() : api_elements.IVertexAttributeDecl[] {
+        return this._attributes;
+    }
+
+    public get id() : string {
+        return this._id;
+    }
+
+    public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
+        return this._parentPackage === parentPackage || this._parentPackage.isChildOf( parentPackage );
+    }
+
+    public get name() : string {
+        return "Vertex";
+    }
+
+    public get parent() : api_elements.INamedElement {
+        return this._parentPackage;
+    }
+
+    public get parentPackage() : api_elements.IPackage {
+        return this._parentPackage;
+    }
+
+    public get path() : string {
+        return this._parentPackage.path + "." + this.name;
+    }
+
+    public get superType() : api_elements.IVertexType {
+        return null;
+    }
+
+    public isSubTypeOf( vertexType : api_elements.IVertexType ) : boolean {
+        return this == vertexType;
+    }
+
+    public removeAttribute( attribute : api_elements.IVertexAttributeDecl ) : void {
+        var index = this._attributes.indexOf( attribute );
+        if ( index > -1 ) {
+            this._attributes.splice( index, 1 );
+        }
+    }
+
+    public get typeName() : string {
+        return "RootVertexType";
+    }
+
+    /** The attributes of this vertex type. */
+    private _attributes : api_elements.IVertexAttributeDecl[];
+
+    /** The unique ID of this vertex type. */
+    private _id : string;
+
+    /** The parent (root) package for this vertex type. */
+    private _parentPackage : api_elements.IPackage;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implementation of the top-level root directed edge type.
+ */
+export class RootDirectedEdgeType implements api_elements.IDirectedEdgeType, IEdgeTypeUnderAssembly {
+
+    /**
+     * Constructs a new root directed edge type.
+     *
+     * @param id             the unique ID of the edge type.
+     * @param parentPackage  the package containing the edge type.
+     * @param rootVertexType the root vertex type connected by the edge type.
+     */
+    constructor(
+        id : string, parentPackage : api_elements.IPackage, rootVertexType : api_elements.IVertexType
+    ) {
+
+        this._id = id;
+        this._parentPackage = parentPackage;
+        this._rootVertexType = rootVertexType;
+
+        this._attributes = [];
+
+        ( <IPackageUnderAssembly> parentPackage ).addChildElement( this );
+
+    }
+
+    public addAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void {
+        this._attributes.push( attribute );
+    }
+
+    public get abstractness() : api_elements.EAbstractness {
+        return api_elements.EAbstractness.ABSTRACT;
+    }
+
+    public get attributes() : api_elements.IEdgeAttributeDecl[] {
+        return this._attributes;
+    }
+
+    public get cyclicity() : api_elements.ECyclicity {
+        return api_elements.ECyclicity.UNCONSTRAINED;
+    }
+
+    public get headRoleName() : string {
+        return null;
+    }
+
+    public get headVertexType() : api_elements.IVertexType {
+        return this._rootVertexType;
+    }
+
+    public get id() : string {
+        return this._id;
+    }
+
+    public get isAbstract() : boolean {
+        return true;
+    }
+
+    public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
+        return this._parentPackage === parentPackage || this._parentPackage.isChildOf( parentPackage );
+    }
+
+    public get isSimple() : boolean {
+        return true;
+    }
+
+    public isSubTypeOf( edgeType : api_elements.IDirectedEdgeType ) : boolean {
+        return this === edgeType;
+    }
+
+    public get maxHeadInDegree() : number {
+        return null;
+    }
+
+    public get maxTailOutDegree() : number {
+        return null;
+    }
+
+    public get minHeadInDegree() : number {
+        return null;
+    }
+
+    public get minTailOutDegree() : number {
+        return null;
+    }
+
+    public get multiEdgedness() : api_elements.EMultiEdgedness {
+        return api_elements.EMultiEdgedness.UNCONSTRAINED;
+    }
+
+    public get name() : string {
+        return "Directed Edge";
+    }
+
+    public get parent() : api_elements.INamedElement {
+        return this._parentPackage;
+    }
+
+    public get parentPackage() : api_elements.IPackage {
+        return this._parentPackage;
+    }
+
+    public get path() : string {
+        return this._parentPackage.path + "." + this.name;
+    }
+
+    public get selfLooping() : api_elements.ESelfLooping {
+        return api_elements.ESelfLooping.UNCONSTRAINED;
+    }
+
+    public get superEdgeType() : api_elements.IEdgeType {
+        return null;
+    }
+
+    public get superType() : api_elements.IDirectedEdgeType {
+        return null;
+    }
+
+    public get tailRoleName() : string {
+        return null;
+    }
+
+    public get tailVertexType() : api_elements.IVertexType {
+        return this._rootVertexType;
+    }
+
+    public get typeName() : string {
+        return "RootDirectedEdgeType";
+    }
+
+
+    public removeAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void {
+        var index = this._attributes.indexOf( attribute );
+        if ( index > -1 ) {
+            this._attributes.splice( index, 1 );
+        }
+    }
+
+    private _attributes : api_elements.IEdgeAttributeDecl[];
+
+    private _id : string;
+
+    private _parentPackage : api_elements.IPackage;
+
+    private _rootVertexType : api_elements.IVertexType;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implementation of the top-level root directed edge type.
+ */
+export class RootUndirectedEdgeType implements api_elements.IUndirectedEdgeType, IEdgeTypeUnderAssembly {
+
+    /**
+     * Constructs a new root directed edge type.
+     *
+     * @param id             the unique ID of the edge type.
+     * @param parentPackage  the package containing the edge type.
+     * @param rootVertexType the root vertex type connected by the edge type.
+     */
+    constructor(
+        id : string, parentPackage : api_elements.IPackage, rootVertexType : api_elements.IVertexType
+    ) {
+
+        this._id = id;
+        this._parentPackage = parentPackage;
+        this._rootVertexType = rootVertexType;
+
+        this._attributes = [];
+
+        ( <IPackageUnderAssembly> parentPackage ).addChildElement( this );
+
+    }
+
+    public addAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void {
+        this._attributes.push( attribute );
+    }
+
+    public get abstractness() : api_elements.EAbstractness {
+        return api_elements.EAbstractness.ABSTRACT;
+    }
+
+    public get attributes() : api_elements.IEdgeAttributeDecl[] {
+        return this._attributes;
+    }
+
+    public get cyclicity() : api_elements.ECyclicity {
+        return api_elements.ECyclicity.UNCONSTRAINED;
+    }
+
+    public get id() : string {
+        return this._id;
+    }
+
+    public get isAbstract() : boolean {
+        return true;
+    }
+
+    public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
+        return this._parentPackage === parentPackage || this._parentPackage.isChildOf( parentPackage );
+    }
+
+    public get isSimple() : boolean {
+        return false;
+    }
+
+    public get maxDegree() : number {
+        return null;
+    }
+
+    public get minDegree() : number {
+        return null;
+    }
+
+    public get multiEdgedness() : api_elements.EMultiEdgedness {
+        return api_elements.EMultiEdgedness.UNCONSTRAINED;
+    }
+
+    public get name() : string {
+        return "Undirected Edge";
+    }
+
+    public get parent() : api_elements.INamedElement {
+        return this._parentPackage;
+    }
+
+    public get parentPackage() : api_elements.IPackage {
+        return this._parentPackage;
+    }
+
+    public get path() : string {
+        return this._parentPackage.path + "." + this.name;
+    }
+
+    public get selfLooping() : api_elements.ESelfLooping {
+        return api_elements.ESelfLooping.UNCONSTRAINED;
+    }
+
+    public get superEdgeType() : api_elements.IEdgeType {
+        return null;
+    }
+
+    public get superType() : api_elements.IUndirectedEdgeType {
+        return null;
+    }
+
+    public get typeName() : string {
+        return "RootUndirectedEdgeType";
+    }
+
+    public get vertexType() : api_elements.IVertexType {
+        return this._rootVertexType;
+    }
+
+    public isSubTypeOf( edgeType : api_elements.IUndirectedEdgeType ) : boolean {
+        return this === edgeType;
+    }
+
+    public removeAttribute( attribute : api_elements.IEdgeAttributeDecl ) : void {
+        var index = this._attributes.indexOf( attribute );
+        if ( index > -1 ) {
+            this._attributes.splice( index, 1 );
+        }
+    }
+
+    private _attributes : api_elements.IEdgeAttributeDecl[];
+
+    private _id : string;
+
+    private _parentPackage : api_elements.IPackage;
+
+    private _rootVertexType : api_elements.IVertexType;
 
 }
 
