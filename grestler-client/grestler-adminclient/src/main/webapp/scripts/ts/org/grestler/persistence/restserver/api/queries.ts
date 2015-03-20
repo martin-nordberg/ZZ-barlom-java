@@ -27,7 +27,11 @@ import spi_queries = require( '../../../domain/metamodel/spi/queries' );
 export class AttributeDeclLoader implements spi_queries.IAttributeDeclLoader {
 
     loadAllAttributeDecls( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        // TODO
+        return new Promise<string>(
+            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
+                resolve( "TODO" );
+            }
+        );
     }
 
 }
@@ -40,7 +44,11 @@ export class AttributeDeclLoader implements spi_queries.IAttributeDeclLoader {
 export class AttributeTypeLoader implements spi_queries.IAttributeTypeLoader {
 
     loadAllAttributeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        // TODO
+        return new Promise<string>(
+            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
+                resolve( "TODO" );
+            }
+        );
     }
 
 }
@@ -53,7 +61,11 @@ export class AttributeTypeLoader implements spi_queries.IAttributeTypeLoader {
 export class EdgeTypeLoader implements spi_queries.IEdgeTypeLoader {
 
     loadAllEdgeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        // TODO
+        return new Promise<string>(
+            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
+                resolve( "TODO" );
+            }
+        );
     }
 
 }
@@ -66,7 +78,11 @@ export class EdgeTypeLoader implements spi_queries.IEdgeTypeLoader {
 export class PackageDependencyLoader implements spi_queries.IPackageDependencyLoader {
 
     loadAllPackageDependencies( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        // TODO
+        return new Promise<string>(
+            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
+                resolve( "TODO" );
+            }
+        );
     }
 
 }
@@ -96,7 +112,7 @@ export class PackageLoader implements spi_queries.IPackageLoader {
             var parentPackageId = pkg.parentPackageId;
 
             if ( parentPackageId ) {
-                var parentPackage = repository.findOptionalPackageById( parentPackageId );
+                var parentPackage = repository.findPackageById( parentPackageId );
                 repository.loadPackage( pkg.id, parentPackage, pkg.name );
             }
             else {
@@ -128,7 +144,11 @@ export class PackageLoader implements spi_queries.IPackageLoader {
 export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
 
     loadAllVertexTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        // TODO
+        return new Promise<string>(
+            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
+                resolve( "TODO" );
+            }
+        );
     }
 
 }

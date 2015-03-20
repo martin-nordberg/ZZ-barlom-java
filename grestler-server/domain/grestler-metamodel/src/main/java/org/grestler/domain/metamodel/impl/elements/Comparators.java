@@ -25,10 +25,10 @@ public final class Comparators {
             return 0;
         }
         if ( e1.isSubTypeOf( e2 ) ) {
-            return -1;
+            return 1;
         }
         if ( e2.isSubTypeOf( e1 ) ) {
-            return 1;
+            return -1;
         }
         return e1.getName().compareTo( e2.getName() );
     };
@@ -45,10 +45,10 @@ public final class Comparators {
      */
     public static final Comparator<IPackage> PACKAGE_PARENT_CHILD = ( p1, p2 ) -> {
         if ( p1.isChildOf( p2 ) ) {
-            return -1;
+            return 1;
         }
         if ( p2.isChildOf( p1 ) ) {
-            return 1;
+            return -1;
         }
         return p1.getName().compareTo( p2.getName() );
     };
@@ -68,10 +68,10 @@ public final class Comparators {
             return 0;
         }
         if ( e1.isSubTypeOf( e2 ) ) {
-            return -1;
+            return 1;
         }
         if ( e2.isSubTypeOf( e1 ) ) {
-            return 1;
+            return -1;
         }
         return e1.getName().compareTo( e2.getName() );
     };
@@ -84,10 +84,10 @@ public final class Comparators {
             return 0;
         }
         if ( v1.isSubTypeOf( v2 ) ) {
-            return -1;
+            return 1;
         }
         if ( v2.isSubTypeOf( v1 ) ) {
-            return 1;
+            return -1;
         }
         return v1.getName().compareTo( v2.getName() );
     };

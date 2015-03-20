@@ -1,5 +1,5 @@
 #
-# Specification tests for org/grestler/metamodel/impl/elements.
+# Specification tests for org/grestler/persistence/restserver/api/queries.
 #
 define( [], ()->
   describe( "Grestler REST Server Queries Specs", () ->
@@ -20,17 +20,16 @@ define( [], ()->
     #####################################################################################
 
     describe( "A package loader:", () ->
-
       beforeEach( () ->
       )
 
-      it( "should load packages", (done) ->
+      it( "should load packages", ( done ) ->
         loadCount = 0
 
         loader = new this.restserver_api_queries.PackageLoader()
 
         repository = {
-          findOptionalPackageById: ( id ) ->
+          findPackageById: ( id ) ->
             null
 
           loadPackage: ( id, parentPackage, name ) ->
@@ -46,6 +45,5 @@ define( [], ()->
         )
       )
     )
-
   )
 )

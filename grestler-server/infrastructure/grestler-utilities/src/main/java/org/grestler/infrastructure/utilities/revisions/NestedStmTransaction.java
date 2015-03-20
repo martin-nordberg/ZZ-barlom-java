@@ -57,7 +57,9 @@ final class NestedStmTransaction
 
     @Override
     public void ensureWriteable() {
-        this.enclosingTransaction.ensureWriteable();
+        if ( this.writeability != ETransactionWriteability.READ_WRITE ) {
+            throw new IllegalStateException( "Attempted to write a value during a read-only transaction." );
+        }
     }
 
     @Override
