@@ -7,6 +7,8 @@
  * Module: org/grestler/domain/metamodel/spi/commands
  */
 
+import values = require( '../../../infrastructure/utilities/values' );
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -35,7 +37,7 @@ export interface IMetamodelCommandWriter {
      *
      * @param jsonCmdArgs the arguments for the command as a JSON object.
      */
-    execute( jsonCmdArgs : any, cmdFinisher : IMetamodelCommandSpi ) : Promise<any>;
+    execute( jsonCmdArgs : any, cmdFinisher : IMetamodelCommandSpi ) : Promise<values.ENothing>;
 
 }
 

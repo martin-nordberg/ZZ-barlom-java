@@ -8,6 +8,7 @@
  */
 
 import ajax = require( '../../../infrastructure/utilities/ajax' );
+import values = require( '../../../infrastructure/utilities/values' );
 import api_elements = require( '../../../domain/metamodel/api/elements' );
 import api_queries = require( '../../../domain/metamodel/api/queries' );
 import spi_commands = require( '../../../domain/metamodel/spi/commands' );
@@ -28,12 +29,12 @@ class AbstractMetamodelCommandWriter implements spi_commands.IMetamodelCommandWr
 
     public execute(
         jsonCmdArgs : any, cmdFinisher : spi_commands.IMetamodelCommandSpi
-    ) : Promise<any> {
+    ) : Promise<values.ENothing> {
 
         return this.writeCommand( jsonCmdArgs ).then(
             function () {
                 cmdFinisher.finish( jsonCmdArgs );
-                return {};
+                return values.nothing;
             }
         );
 
@@ -44,7 +45,7 @@ class AbstractMetamodelCommandWriter implements spi_commands.IMetamodelCommandWr
      *
      * @param jsonCmdArgs the JSON for the command.
      */
-    public writeCommand( jsonCmdArgs : any ) : Promise<any> {
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
         throw new Error( "Abstract method must be overridden in a derived class." );
     }
 
@@ -64,7 +65,7 @@ class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
         super();
     }
 
-    public writeCommand( jsonCmdArgs : any ) : Promise<any> {
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
 
         // Parse the JSON arguments.
         // TODO: handle input validation problems
@@ -86,6 +87,10 @@ class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
             "http://localhost:8080/grestlerdata/metadata/commands/packagecreation",
             "application/json",
             content
+        ).then(
+            function () {
+                return values.nothing;
+            }
         );
 
     }

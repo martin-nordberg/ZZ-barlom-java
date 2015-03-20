@@ -7,10 +7,11 @@
  * Module: org/grestler/domain/metamodel/spi/queries
  */
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 import api_elements = require( '../api/elements' );
 import api_queries = require( '../api/queries' );
+import values = require( '../../../infrastructure/utilities/values' );
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Interface to a metamodel repository including SPI methods..
@@ -336,7 +337,7 @@ export interface IAttributeDeclLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllAttributeDecls( repository : IMetamodelRepositorySpi ) : Promise<any>;
+    loadAllAttributeDecls( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 
@@ -352,7 +353,7 @@ export interface IAttributeTypeLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllAttributeTypes( repository : IMetamodelRepositorySpi ) : Promise<any>;
+    loadAllAttributeTypes( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 
@@ -368,7 +369,7 @@ export interface IEdgeTypeLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllEdgeTypes( repository : IMetamodelRepositorySpi ) : Promise<any>;
+    loadAllEdgeTypes( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 
@@ -384,7 +385,7 @@ export interface IPackageDependencyLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllPackageDependencies( repository : IMetamodelRepositorySpi ) : Promise<any>;
+    loadAllPackageDependencies( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 
@@ -400,7 +401,7 @@ export interface IPackageLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllPackages( repository : IMetamodelRepositorySpi ) : Promise<any>;
+    loadAllPackages( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 
@@ -416,7 +417,7 @@ export interface IVertexTypeLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllVertexTypes( repository : IMetamodelRepositorySpi ) : Promise<any>;
+    loadAllVertexTypes( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 

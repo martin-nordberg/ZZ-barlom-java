@@ -18,6 +18,7 @@ import ajax = require( '../../../infrastructure/utilities/ajax' );
 import api_elements = require( '../../../domain/metamodel/api/elements' );
 import api_queries = require( '../../../domain/metamodel/api/queries' );
 import spi_queries = require( '../../../domain/metamodel/spi/queries' );
+import values = require( '../../../infrastructure/utilities/values' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,10 +27,10 @@ import spi_queries = require( '../../../domain/metamodel/spi/queries' );
  */
 export class AttributeDeclLoader implements spi_queries.IAttributeDeclLoader {
 
-    loadAllAttributeDecls( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        return new Promise<string>(
-            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
-                resolve( "TODO" );
+    loadAllAttributeDecls( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+        return new Promise<values.ENothing>(
+            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
+                resolve( values.nothing );  // TODO
             }
         );
     }
@@ -43,10 +44,10 @@ export class AttributeDeclLoader implements spi_queries.IAttributeDeclLoader {
  */
 export class AttributeTypeLoader implements spi_queries.IAttributeTypeLoader {
 
-    loadAllAttributeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        return new Promise<string>(
-            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
-                resolve( "TODO" );
+    loadAllAttributeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+        return new Promise<values.ENothing>(
+            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
+                resolve( values.nothing );  // TODO
             }
         );
     }
@@ -60,10 +61,10 @@ export class AttributeTypeLoader implements spi_queries.IAttributeTypeLoader {
  */
 export class EdgeTypeLoader implements spi_queries.IEdgeTypeLoader {
 
-    loadAllEdgeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        return new Promise<string>(
-            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
-                resolve( "TODO" );
+    loadAllEdgeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+        return new Promise<values.ENothing>(
+            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
+                resolve( values.nothing );  // TODO
             }
         );
     }
@@ -77,10 +78,10 @@ export class EdgeTypeLoader implements spi_queries.IEdgeTypeLoader {
  */
 export class PackageDependencyLoader implements spi_queries.IPackageDependencyLoader {
 
-    loadAllPackageDependencies( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        return new Promise<string>(
-            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
-                resolve( "TODO" );
+    loadAllPackageDependencies( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+        return new Promise<values.ENothing>(
+            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
+                resolve( values.nothing );  // TODO
             }
         );
     }
@@ -99,7 +100,7 @@ export class PackageLoader implements spi_queries.IPackageLoader {
      *
      * @param repository the repository to be loaded.
      */
-    loadAllPackages( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
+    loadAllPackages( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
 
         // TODO: externally configured host & port
         const url = "http://localhost:8080/grestlerdata/metadata/packages";
@@ -125,8 +126,9 @@ export class PackageLoader implements spi_queries.IPackageLoader {
          * Loads all packages from their representation as a JSON object.
          * @param pkgsJson parsed JSON for an array of packages.
          */
-        var loadPackages = function ( pkgsJson : any ) : void {
+        var loadPackages = function ( pkgsJson : any ) : values.ENothing {
             pkgsJson.packages.forEach( loadPackage );
+            return values.nothing;
         };
 
         // Perform the AJAX call and handle the response.
@@ -143,10 +145,10 @@ export class PackageLoader implements spi_queries.IPackageLoader {
  */
 export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
 
-    loadAllVertexTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<any> {
-        return new Promise<string>(
-            function ( resolve : ( value? : string ) => void, reject : ( error? : any ) => void ) {
-                resolve( "TODO" );
+    loadAllVertexTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+        return new Promise<values.ENothing>(
+            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
+                resolve( values.nothing );  // TODO
             }
         );
     }

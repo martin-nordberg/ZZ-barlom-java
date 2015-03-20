@@ -11,6 +11,7 @@ import api_commands = require( '../api/commands' );
 import api_elements = require( '../api/elements' );
 import spi_commands = require( '../spi/commands' );
 import spi_queries = require( '../spi/queries' );
+import values = require( '../../../infrastructure/utilities/values' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +31,7 @@ class AbstractMetamodelCommand implements api_commands.IMetamodelCommand, spi_co
         this._metamodelRepository = metamodelRepository;
     }
 
-    public execute( jsonCmdArgs : any ) : Promise<any> {
+    public execute( jsonCmdArgs : any ) : Promise<values.ENothing> {
         return this._cmdWriter.execute( jsonCmdArgs, this );
     }
 

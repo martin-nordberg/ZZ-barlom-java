@@ -7,6 +7,8 @@
  * Module: org/grestler/domain/metamodel/api/commands
  */
 
+import values = require( '../../../infrastructure/utilities/values' );
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -19,7 +21,7 @@ export interface IMetamodelCommand {
      *
      * @param jsonCmdArgs the arguments for the command as a JSON object.
      */
-    execute( jsonCmdArgs : any ) : Promise<any>;
+    execute( jsonCmdArgs : any ) : Promise<values.ENothing>;
 
 }
 
