@@ -11,6 +11,7 @@ import api_elements = require( '../api/elements' );
 import api_queries = require( '../api/queries' );
 import impl_elements = require( '../impl/elements' );
 import spi_queries = require( '../spi/queries' );
+import values = require( '../../../infrastructure/utilities/values' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,12 +59,33 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
         this._rootUndirectedEdgeType = null;
         this._rootVertexType = null;
 
-        packageLoader.loadAllPackages( this );
-        packageDependencyLoader.loadAllPackageDependencies( this );
-        attributeTypeLoader.loadAllAttributeTypes( this );
-        vertexTypeLoader.loadAllVertexTypes( this );
-        edgeTypeLoader.loadAllEdgeTypes( this );
-        attributeDeclLoader.loadAllAttributeDecls( this );
+        // TODO: initiate the AJAX in parallel, join, then do the loading in sequence
+        this._loaded = packageLoader.loadAllPackages( this );
+        this._loaded = this._loaded.then(
+            function ( _ : values.ENothing ) {
+                return packageDependencyLoader.loadAllPackageDependencies( this );
+            }
+        );
+        this._loaded = this._loaded.then(
+            function ( _ : values.ENothing ) {
+                return attributeTypeLoader.loadAllAttributeTypes( this );
+            }
+        );
+        this._loaded = this._loaded.then(
+            function ( _ : values.ENothing ) {
+                return vertexTypeLoader.loadAllVertexTypes( this );
+            }
+        );
+        this._loaded = this._loaded.then(
+            function ( _ : values.ENothing ) {
+                return edgeTypeLoader.loadAllEdgeTypes( this );
+            }
+        );
+        this._loaded = this._loaded.then(
+            function ( _ : values.ENothing ) {
+                return attributeDeclLoader.loadAllAttributeDecls( this );
+            }
+        );
 
     }
 
@@ -514,6 +536,8 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
     private _edgeTypes : api_elements.IEdgeType[];
 
     private _edgeTypesById : {};
+
+    private _loaded : Promise<values.ENothing>;
 
     private _packages : api_elements.IPackage[];
 

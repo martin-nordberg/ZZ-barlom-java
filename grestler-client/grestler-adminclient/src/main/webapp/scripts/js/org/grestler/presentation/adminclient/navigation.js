@@ -1,11 +1,12 @@
 require(
     [
+        'scripts/js-gen/org/grestler/application/model/repository',
         'ractive',
         'jquery',
         'text!templates/org/grestler/presentation/adminclient/navigation.html.mustache',
         'css!styles/css-gen/org/grestler/presentation/adminclient/navigation.css'
     ],
-    function ( Ractive, $, navigationTemplate ) {
+    function ( application_model_repository, Ractive, $, navigationTemplate ) {
 
         // Modelview -- TODO probably will eventually have some state to it
         var modelview = {};
@@ -27,20 +28,28 @@ require(
 
         // Behavior
         view.on(
-            'editClicked', function ( event ) {
-                alert( 'TODO: Edit Clicked!' );
+            'serverClicked', function ( event ) {
+                alert( 'TODO: Server Clicked!' );
             }
         );
 
         view.on(
-            'reviewClicked', function ( event ) {
-                alert( 'TODO: Review Clicked!' );
+            'schemaClicked', function ( event ) {
+
+                // TODO: experimentation
+                var pkgs = application_model_repository.metamodelRepository.findAllPackages();
+                pkgs.forEach( function( pkg ) {
+                    console.log( pkg );
+                });
+
+
+                alert( 'TODO: Schema Clicked!' );
             }
         );
 
         view.on(
-            'generateClicked', function ( event ) {
-                alert( 'TODO: Generate Clicked!' );
+            'queriesClicked', function ( event ) {
+                alert( 'TODO: Queries Clicked!' );
             }
         );
 
@@ -50,26 +59,9 @@ require(
             }
         );
 
+        // Initialization
         $( document ).ready(
-            function () {
-                var menuToggle = $( '#js-mobile-menu' ).unbind();
-                $( '#js-navigation-menu' ).removeClass( "show" );
-
-                menuToggle.on(
-                    'click', function ( e ) {
-                        var menu = $( '#js-navigation-menu' );
-
-                        e.preventDefault();
-                        menu.slideToggle(
-                            function () {
-                                if ( menu.is( ':hidden' ) ) {
-                                    menu.removeAttr( 'style' );
-                                }
-                            }
-                        );
-                    }
-                );
-            }
+            // TODO
         );
 
     }

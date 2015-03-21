@@ -11,3 +11,5 @@ org/grestler/domain/metamodel/impl/queries.ts
 org/grestler/domain/metamodel/impl/commands.ts
 org/grestler/persistence/restserver/api/queries.ts
 org/grestler/persistence/restserver/api/commands.ts
+org/grestler/application/model/repository.ts
+org/grestler/presentation/main.ts

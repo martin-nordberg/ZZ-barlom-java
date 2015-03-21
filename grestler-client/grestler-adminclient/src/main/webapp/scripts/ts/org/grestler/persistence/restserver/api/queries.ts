@@ -7,13 +7,6 @@
  * Module: org/grestler/persistence/restserver/api/queries
  */
 
-/*
- // TODO: not used after all, but useful to know:
- /// <reference path="../../../../../../lib/jquery-2.1.3/jquery.d.ts"/>
- /// <amd-dependency path="jquery"/>
- import $ = require( 'jquery' );
- */
-
 import ajax = require( '../../../infrastructure/utilities/ajax' );
 import api_elements = require( '../../../domain/metamodel/api/elements' );
 import api_queries = require( '../../../domain/metamodel/api/queries' );

@@ -1,6 +1,13 @@
 require(
-    ['scripts/js-gen/example', 'ractive', 'jquery', 'bootstrap', 'text!templates/helloworld.html.mustache'],
-    function ( example, Ractive, $, bootstrap, helloWorldTemplate ) {
+    [
+        'scripts/js-gen/example',
+        'scripts/js-gen/org/grestler/presentation/main',
+        'ractive',
+        'jquery',
+        'bootstrap',
+        'text!templates/helloworld.html.mustache'
+    ],
+    function ( example, presentation_main, Ractive, $, bootstrap, helloWorldTemplate ) {
 
         // View
         var view = new Ractive(
@@ -27,6 +34,13 @@ require(
 
         // Make sure jQuery works
         $( 'h1.grestler' ).html( "Grestler!" );
+
+        // load the application metamodel and surrounding apparatus
+        $( document ).ready(
+            function () {
+                presentation_main.initializeApplication();
+            }
+        );
 
     }
 );
