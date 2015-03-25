@@ -1,13 +1,12 @@
 require(
     [
         'scripts/js-gen/example',
-        'scripts/js-gen/org/grestler/presentation/main',
+        'scripts/js-gen/org/grestler/presentation/adminclient/main/adminclientmain',
         'ractive',
         'jquery',
-        'bootstrap',
         'text!templates/helloworld.html.mustache'
     ],
-    function ( example, presentation_main, Ractive, $, bootstrap, helloWorldTemplate ) {
+    function ( example, adminclientmain, Ractive, $, helloWorldTemplate ) {
 
         // View
         var view = new Ractive(
@@ -38,7 +37,7 @@ require(
         // load the application metamodel and surrounding apparatus
         $( document ).ready(
             function () {
-                presentation_main.initializeApplication();
+                adminclientmain.initializeApplication();
             }
         );
 

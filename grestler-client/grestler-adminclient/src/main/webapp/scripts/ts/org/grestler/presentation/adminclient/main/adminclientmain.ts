@@ -14,7 +14,7 @@
  import $ = require( 'jquery' );
  */
 
-import application_model_repository = require( '../application/model/repository' );
+import application_model_repository = require( '../../../application/model/repository' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
