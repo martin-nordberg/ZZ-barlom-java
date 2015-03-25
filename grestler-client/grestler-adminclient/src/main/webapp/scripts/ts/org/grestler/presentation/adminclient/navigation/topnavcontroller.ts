@@ -4,7 +4,7 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/navigation/topnavviewmodel
+ * Module: org/grestler/presentation/adminclient/navigation/topnavcontroller
  */
 
 import topnavmodel = require( '../navigation/topnavmodel' )
@@ -12,58 +12,53 @@ import topnavmodel = require( '../navigation/topnavmodel' )
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Responds to clicking the "Queries" top nav button.
- * @param event
+ * Controller for the top navigation bar.
  */
-export function onQueriesClicked( event : any ) : void {
+export class TopNavController {
 
-    topnavmodel.loadPanelSelections().then( function( panelSelections : topnavmodel.IPanelSelections ) : void {
-        panelSelections.topNavSelection = topnavmodel.ETopNavSelection.QUERIES;
-    } );
+    /**
+     * Constructs a new top navigation controller.
+     * @param panelSelections the panel selections controlled by the top nav buttons.
+     */
+    constructor( panelSelections : topnavmodel.IPanelSelections ) {
+        this._panelSelections = panelSelections;
+    }
 
-    alert( 'TODO: Queries Clicked!' );
-    // TODO: revise the panel selection model
-}
+    /**
+     * Responds to clicking the "Queries" top nav button.
+     * @param event
+     */
+    public onQueriesClicked( event : any ) : void {
+        this._panelSelections.topNavSelection = topnavmodel.ETopNavSelection.QUERIES;
+    }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Responds to clicking the "Schema" top nav button.
+     * @param event
+     */
+    public onSchemaClicked( event : any ) : void {
+        this._panelSelections.topNavSelection = topnavmodel.ETopNavSelection.SCHEMA;
+    }
 
-/**
- * Responds to clicking the "Schema" top nav button.
- * @param event
- */
-export function onSchemaClicked( event : any ) : void {
+    /**
+     * Responds to clicking the "Search" top nav button.
+     * @param event
+     */
+    public onSearchClicked( event : any ) : void {
+        alert( 'TODO: Search Clicked!' );
+    }
 
-    topnavmodel.loadPanelSelections().then( function( panelSelections : topnavmodel.IPanelSelections ) : void {
-        panelSelections.topNavSelection = topnavmodel.ETopNavSelection.SCHEMA;
-    } );
+    /**
+     * Responds to clicking the "Server" top nav button.
+     * @param event
+     */
+    public onServerClicked( event : any ) : void {
+        this._panelSelections.topNavSelection = topnavmodel.ETopNavSelection.SERVER;
+    }
 
-    alert( 'TODO: Schema Clicked!' );
-}
+    /** The panel selections model under control. */
+    private _panelSelections : topnavmodel.IPanelSelections;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Responds to clicking the "Search" top nav button.
- * @param event
- */
-export function onSearchClicked( event : any ) : void {
-
-    alert( 'TODO: Search Clicked!' );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Responds to clicking the "Server" top nav button.
- * @param event
- */
-export function onServerClicked( event : any ) : void {
-
-    topnavmodel.loadPanelSelections().then( function( panelSelections : topnavmodel.IPanelSelections ) : void {
-        panelSelections.topNavSelection = topnavmodel.ETopNavSelection.SERVER;
-    } );
-
-    alert( 'TODO: Server Clicked!' );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

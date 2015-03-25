@@ -13,7 +13,7 @@ require(
          * Defines the top navigation view after the panel visibilities view model is ready.
          * @param panelVisibilities the viewmodel for panel visibilities.
          */
-        var defineTopNavigationView = function( panelVisibilities ) {
+        var defineTopNavigationView = function ( panelVisibilities ) {
 
             // Define the view.
             var view = new Ractive(
@@ -26,10 +26,28 @@ require(
             );
 
             // Define the behavior (event handlers).
-            view.on( 'queriesClicked', topnavcontroller.onQueriesClicked );
-            view.on( 'schemaClicked', topnavcontroller.onSchemaClicked );
-            view.on( 'searchClicked', topnavcontroller.onSearchClicked );
-            view.on( 'serverClicked', topnavcontroller.onServerClicked );
+            var controller = new topnavcontroller.TopNavController( panelVisibilities.panelSelections );
+
+            view.on(
+                'queriesClicked', function ( event ) {
+                    controller.onQueriesClicked( event );
+                }
+            );
+            view.on(
+                'schemaClicked', function ( event ) {
+                    controller.onSchemaClicked( event );
+                }
+            );
+            view.on(
+                'searchClicked', function ( event ) {
+                    controller.onSearchClicked( event );
+                }
+            );
+            view.on(
+                'serverClicked', function ( event ) {
+                    controller.onServerClicked( event );
+                }
+            );
 
             // Initialize the view.
             // TODO, if needed

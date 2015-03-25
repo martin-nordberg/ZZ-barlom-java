@@ -13,9 +13,37 @@
  * Enumeration of top navigation items.
  */
 export enum ETopNavSelection {
-    SERVER,
+    QUERIES,
     SCHEMA,
-    QUERIES
+    SERVER
+}
+
+export function topNavSelectionToString( value : ETopNavSelection ) : string {
+    if ( value != null ) {
+        switch ( value ) {
+            case ETopNavSelection.QUERIES:
+                return 'QUERIES';
+            case ETopNavSelection.SCHEMA:
+                return 'SCHEMA';
+            case ETopNavSelection.SERVER:
+                return 'SERVER';
+        }
+    }
+    return null;
+}
+
+export function topNavSelectionFromString( value : string ) : ETopNavSelection {
+    if ( value != null ) {
+        switch ( value ) {
+            case 'QUERIES' :
+                return ETopNavSelection.QUERIES;
+            case 'SCHEMA' :
+                return ETopNavSelection.SCHEMA;
+            case 'SERVER' :
+                return ETopNavSelection.SERVER;
+        }
+    }
+    return null;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,10 +66,12 @@ class PanelSelections implements IPanelSelections {
 
     /**
      * Constructs a new panel selections object.
-     * TODO: persistence in the browser
      */
     constructor() {
-        this._topNavSelection = ETopNavSelection.SCHEMA;
+        this._topNavSelection = topNavSelectionFromString( window.localStorage[PanelSelections.PREFIX + 'topNavSelection'] );
+        if ( this._topNavSelection == null ) {
+            this._topNavSelection = ETopNavSelection.SCHEMA;
+        }
     }
 
     get topNavSelection() : ETopNavSelection {
@@ -49,6 +79,7 @@ class PanelSelections implements IPanelSelections {
     }
 
     set topNavSelection( value : ETopNavSelection ) {
+        // Notify observers of the change (happens asynchronously).
         Object['getNotifier']( this ).notify(
             {
                 type: 'change.topNavSelection',
@@ -57,11 +88,17 @@ class PanelSelections implements IPanelSelections {
                 newValue: value
             }
         );
+
+        // Make the change.
         this._topNavSelection = value;
+
+        // Save to local storage.
+        window.localStorage[PanelSelections.PREFIX + 'topNavSelection'] = topNavSelectionToString( value );
     }
 
     private _topNavSelection : ETopNavSelection;
 
+    private static PREFIX = 'org.grestler.presentation.adminclient.navigation.topnavmodel.PanelSelections.';
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

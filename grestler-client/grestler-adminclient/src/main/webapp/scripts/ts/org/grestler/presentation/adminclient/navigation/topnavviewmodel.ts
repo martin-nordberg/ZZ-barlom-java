@@ -24,6 +24,14 @@ class PanelVisibilities {
 
         this._panelSelections = panelSelections;
 
+        var setTopNavActivePage = function ( topNavSelection : topnavmodel.ETopNavSelection ) : void {
+            me.isTopNavQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
+            me.isTopNavSchemaPageActive = topNavSelection == topnavmodel.ETopNavSelection.SCHEMA;
+            me.isTopNavServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
+        };
+
+        setTopNavActivePage( panelSelections.topNavSelection );
+
         Object['observe'](
             this._panelSelections,
             function ( changes ) {
@@ -31,9 +39,7 @@ class PanelVisibilities {
                     function ( change ) {
                         console.log( change );
                         if ( change.name == 'topNavSelection' ) {
-                            me.isTopNavQueriesPageActive = change.newValue == topnavmodel.ETopNavSelection.QUERIES;
-                            me.isTopNavSchemaPageActive = change.newValue == topnavmodel.ETopNavSelection.SCHEMA;
-                            me.isTopNavServerPageActive = change.newValue == topnavmodel.ETopNavSelection.SERVER;
+                            setTopNavActivePage( change.newValue );
                         }
                     }
                 )
@@ -41,27 +47,44 @@ class PanelVisibilities {
         );
     }
 
+    /**
+     * @returns the model behind this viewmodel.
+     */
+    public get panelSelections() : topnavmodel.IPanelSelections {
+        return this._panelSelections;
+    }
+
+    /** Whether the Queries page is active. */
     public isTopNavQueriesPageActive = false;
 
-    public isTopNavSchemaPageActive = true;
+    /** Whether the Schemas page is active. */
+    public isTopNavSchemaPageActive = false;
 
+    /** Whether the Server page is active. */
     public isTopNavServerPageActive = false;
 
+    /** The panel selections model that feeds into this view model. */
     private _panelSelections : topnavmodel.IPanelSelections;
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** The singleton panel visibilities viewmodel instance. */
 var thePanelVisibilities : Promise<PanelVisibilities>;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Loads the panel visibilities viewmodel asynchronously.
+ * @returns a promise for the viewmodel instance.
+ */
 export function loadPanelVisibilities() : Promise<PanelVisibilities> {
 
+    // Create the singeton on the first time through.
     if ( thePanelVisibilities == null ) {
         thePanelVisibilities = topnavmodel.loadPanelSelections().then(
-            function( panelSelections : topnavmodel.IPanelSelections ) : PanelVisibilities {
+            function ( panelSelections : topnavmodel.IPanelSelections ) : PanelVisibilities {
                 return new PanelVisibilities( panelSelections );
             }
         );
