@@ -18,10 +18,10 @@ export class TopNavController {
 
     /**
      * Constructs a new top navigation controller.
-     * @param panelSelections the panel selections controlled by the top nav buttons.
+     * @param pageSelection the page selections controlled by the top nav buttons.
      */
-    constructor( panelSelections : topnavmodel.IPanelSelections ) {
-        this._panelSelections = panelSelections;
+    constructor( pageSelection : topnavmodel.IPageSelection ) {
+        this._pageSelection = pageSelection;
     }
 
     /**
@@ -29,7 +29,7 @@ export class TopNavController {
      * @param event
      */
     public onQueriesClicked( event : any ) : void {
-        this._panelSelections.topNavSelection = topnavmodel.ETopNavSelection.QUERIES;
+        this._pageSelection.topNavSelection = topnavmodel.ETopNavSelection.QUERIES;
     }
 
     /**
@@ -37,7 +37,7 @@ export class TopNavController {
      * @param event
      */
     public onSchemaClicked( event : any ) : void {
-        this._panelSelections.topNavSelection = topnavmodel.ETopNavSelection.SCHEMA;
+        this._pageSelection.topNavSelection = topnavmodel.ETopNavSelection.SCHEMA;
     }
 
     /**
@@ -53,11 +53,11 @@ export class TopNavController {
      * @param event
      */
     public onServerClicked( event : any ) : void {
-        this._panelSelections.topNavSelection = topnavmodel.ETopNavSelection.SERVER;
+        this._pageSelection.topNavSelection = topnavmodel.ETopNavSelection.SERVER;
     }
 
-    /** The panel selections model under control. */
-    private _panelSelections : topnavmodel.IPanelSelections;
+    /** The page selections model under control. */
+    private _pageSelection : topnavmodel.IPageSelection;
 
 }
 

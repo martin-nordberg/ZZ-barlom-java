@@ -12,28 +12,28 @@ import topnavmodel = require( '../navigation/topnavmodel' )
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Panel visibilities as a number of boolean attributes.
+ * Page visibilities as a number of boolean attributes.
  */
-class PanelVisibilities {
+class PageVisibilities {
 
     /**
-     * Constructs a new panel visibilities object.
+     * Constructs a new page visibilities object.
      */
-    constructor( panelSelections : topnavmodel.IPanelSelections ) {
+    constructor( pageSelection : topnavmodel.IPageSelection ) {
         var me = this;
 
-        this._panelSelections = panelSelections;
+        this._pageSelection = pageSelection;
 
         var setTopNavActivePage = function ( topNavSelection : topnavmodel.ETopNavSelection ) : void {
-            me.isTopNavQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
-            me.isTopNavSchemaPageActive = topNavSelection == topnavmodel.ETopNavSelection.SCHEMA;
-            me.isTopNavServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
+            me.isQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
+            me.isSchemaPageActive = topNavSelection == topnavmodel.ETopNavSelection.SCHEMA;
+            me.isServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
         };
 
-        setTopNavActivePage( panelSelections.topNavSelection );
+        setTopNavActivePage( pageSelection.topNavSelection );
 
         Object['observe'](
-            this._panelSelections,
+            this._pageSelection,
             function ( changes ) {
                 changes.forEach(
                     function ( change ) {
@@ -50,47 +50,47 @@ class PanelVisibilities {
     /**
      * @returns the model behind this viewmodel.
      */
-    public get panelSelections() : topnavmodel.IPanelSelections {
-        return this._panelSelections;
+    public get pageSelection() : topnavmodel.IPageSelection {
+        return this._pageSelection;
     }
 
     /** Whether the Queries page is active. */
-    public isTopNavQueriesPageActive = false;
+    public isQueriesPageActive = false;
 
     /** Whether the Schemas page is active. */
-    public isTopNavSchemaPageActive = false;
+    public isSchemaPageActive = false;
 
     /** Whether the Server page is active. */
-    public isTopNavServerPageActive = false;
+    public isServerPageActive = false;
 
-    /** The panel selections model that feeds into this view model. */
-    private _panelSelections : topnavmodel.IPanelSelections;
+    /** The page selection model that feeds into this view model. */
+    private _pageSelection : topnavmodel.IPageSelection;
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** The singleton panel visibilities viewmodel instance. */
-var thePanelVisibilities : Promise<PanelVisibilities>;
+/** The singleton page visibilities viewmodel instance. */
+var thePageVisibilities : Promise<PageVisibilities>;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Loads the panel visibilities viewmodel asynchronously.
+ * Loads the page visibilities viewmodel asynchronously.
  * @returns a promise for the viewmodel instance.
  */
-export function loadPanelVisibilities() : Promise<PanelVisibilities> {
+export function loadPageVisibilities() : Promise<PageVisibilities> {
 
-    // Create the singeton on the first time through.
-    if ( thePanelVisibilities == null ) {
-        thePanelVisibilities = topnavmodel.loadPanelSelections().then(
-            function ( panelSelections : topnavmodel.IPanelSelections ) : PanelVisibilities {
-                return new PanelVisibilities( panelSelections );
+    // Create the singleton on the first time through.
+    if ( thePageVisibilities == null ) {
+        thePageVisibilities = topnavmodel.loadPageSelection().then(
+            function ( pageSelection : topnavmodel.IPageSelection ) : PageVisibilities {
+                return new PageVisibilities( pageSelection );
             }
         );
     }
 
-    return thePanelVisibilities;
+    return thePageVisibilities;
 
 }
 

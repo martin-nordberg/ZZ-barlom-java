@@ -7,55 +7,59 @@ require(
         'text!templates/org/grestler/presentation/adminclient/navigation/topnav.html.mustache',
         'css!styles/css-gen/org/grestler/presentation/adminclient/navigation/topnav.css'
     ],
-    function ( topnavviewmodel, topnavcontroller, Ractive, $, navigationTemplate ) {
+    function ( topnavviewmodel, topnavcontroller, Ractive, $, topNavTemplate ) {
 
         /**
-         * Defines the top navigation view after the panel visibilities view model is ready.
-         * @param panelVisibilities the viewmodel for panel visibilities.
+         * Defines the top navigation view after the page visibilities view model is ready.
+         * @param pageVisibilities the viewmodel for page visibilities.
          */
-        var defineTopNavigationView = function ( panelVisibilities ) {
+        var defineTopNavView = function ( pageVisibilities ) {
 
             // Define the view.
             var view = new Ractive(
                 {
-                    data: panelVisibilities,
-                    el: 'navigation-id',
+                    data: pageVisibilities,
+                    el: 'top-nav-id',
                     magic: true,
-                    template: navigationTemplate
+                    template: topNavTemplate
                 }
             );
 
             // Define the behavior (event handlers).
-            var controller = new topnavcontroller.TopNavController( panelVisibilities.panelSelections );
+            var controller = new topnavcontroller.TopNavController( pageVisibilities.schemaPageSelections );
 
             view.on(
                 'queriesClicked', function ( event ) {
                     controller.onQueriesClicked( event );
+                    return false;
                 }
             );
             view.on(
                 'schemaClicked', function ( event ) {
                     controller.onSchemaClicked( event );
+                    return false;
                 }
             );
             view.on(
                 'searchClicked', function ( event ) {
                     controller.onSearchClicked( event );
+                    return false;
                 }
             );
             view.on(
                 'serverClicked', function ( event ) {
                     controller.onServerClicked( event );
+                    return false;
                 }
             );
 
-            // Initialize the view.
-            // TODO, if needed
+            // Initialize the view contents.
+            require( [ 'scripts/js/org/grestler/presentation/adminclient/navigation/schemapagenavview' ] );
 
         };
 
-        // Load the viewmodel (panel visibilities) then initialize the view.
-        topnavviewmodel.loadPanelVisibilities().then( defineTopNavigationView );
+        // Load the viewmodel (page visibilities) then initialize the view.
+        topnavviewmodel.loadPageVisibilities().then( defineTopNavView );
 
     }
 );

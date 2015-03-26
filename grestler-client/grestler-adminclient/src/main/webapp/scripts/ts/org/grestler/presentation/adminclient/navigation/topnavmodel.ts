@@ -20,14 +20,7 @@ export enum ETopNavSelection {
 
 export function topNavSelectionToString( value : ETopNavSelection ) : string {
     if ( value != null ) {
-        switch ( value ) {
-            case ETopNavSelection.QUERIES:
-                return 'QUERIES';
-            case ETopNavSelection.SCHEMA:
-                return 'SCHEMA';
-            case ETopNavSelection.SERVER:
-                return 'SERVER';
-        }
+        return ETopNavSelection[value];
     }
     return null;
 }
@@ -51,7 +44,7 @@ export function topNavSelectionFromString( value : string ) : ETopNavSelection {
 /**
  * Interface defining what items of the application are selected.
  */
-export interface IPanelSelections {
+export interface IPageSelection {
 
     topNavSelection : ETopNavSelection;
 
@@ -60,15 +53,15 @@ export interface IPanelSelections {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Implementation of IPanelSelections.
+ * Implementation of IPageSelection.
  */
-class PanelSelections implements IPanelSelections {
+class PageSelection implements IPageSelection {
 
     /**
-     * Constructs a new panel selections object.
+     * Constructs a new page selections object.
      */
     constructor() {
-        this._topNavSelection = topNavSelectionFromString( window.localStorage[PanelSelections.PREFIX + 'topNavSelection'] );
+        this._topNavSelection = topNavSelectionFromString( window.localStorage[PageSelection.PREFIX + 'topNavSelection'] );
         if ( this._topNavSelection == null ) {
             this._topNavSelection = ETopNavSelection.SCHEMA;
         }
@@ -93,38 +86,38 @@ class PanelSelections implements IPanelSelections {
         this._topNavSelection = value;
 
         // Save to local storage.
-        window.localStorage[PanelSelections.PREFIX + 'topNavSelection'] = topNavSelectionToString( value );
+        window.localStorage[PageSelection.PREFIX + 'topNavSelection'] = topNavSelectionToString( value );
     }
 
     private _topNavSelection : ETopNavSelection;
 
-    private static PREFIX = 'org.grestler.presentation.adminclient.navigation.topnavmodel.PanelSelections.';
+    private static PREFIX = 'org.grestler.presentation.adminclient.navigation.topnavmodel.PageSelection.';
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** The one and only panel selections instance available asynchronously. */
-var thePanelSelections : Promise<IPanelSelections> = null;
+/** The one and only page selections instance available asynchronously. */
+var thePageSelection : Promise<IPageSelection> = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Creates or returns the one and only panel selections, loading it when first requested.
- * @returns {Promise<IPanelSelections>} the panel selections, available asynchronously.
+ * Creates or returns the one and only page selection, loading it when first requested.
+ * @returns {Promise<IPageSelection>} the page selection, available asynchronously.
  */
-export function loadPanelSelections() : Promise<IPanelSelections> {
+export function loadPageSelection() : Promise<IPageSelection> {
 
-    // Create the panel selections first time through.
-    if ( thePanelSelections == null ) {
-        thePanelSelections = new Promise<IPanelSelections>(
-            function ( resolve : ( value? : IPanelSelections ) => void, reject : ( error? : any ) => void ) {
+    // Create the page selection first time through.
+    if ( thePageSelection == null ) {
+        thePageSelection = new Promise<IPageSelection>(
+            function ( resolve : ( value? : IPageSelection ) => void, reject : ( error? : any ) => void ) {
                 // TODO: truly asynchronous if add persistence
-                resolve( new PanelSelections() );
+                resolve( new PageSelection() );
             }
         );
     }
 
-    return thePanelSelections;
+    return thePageSelection;
 
 }
 

@@ -13,6 +13,9 @@ org/grestler/persistence/restserver/api/queries.ts
 org/grestler/persistence/restserver/api/commands.ts
 org/grestler/application/model/repository.ts
 org/grestler/presentation/adminclient/main/adminclientmain.ts
+org/grestler/presentation/adminclient/navigation/schemapagenavcontroller.ts
+org/grestler/presentation/adminclient/navigation/schemapagenavmodel.ts
+org/grestler/presentation/adminclient/navigation/schemapagenavviewmodel.ts
 org/grestler/presentation/adminclient/navigation/topnavcontroller.ts
 org/grestler/presentation/adminclient/navigation/topnavmodel.ts
 org/grestler/presentation/adminclient/navigation/topnavviewmodel.ts
