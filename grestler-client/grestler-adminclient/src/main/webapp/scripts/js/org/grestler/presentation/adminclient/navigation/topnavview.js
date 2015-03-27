@@ -26,7 +26,7 @@ require(
             );
 
             // Define the behavior (event handlers).
-            var controller = new topnavcontroller.TopNavController( pageVisibilities.schemaPageSelections );
+            var controller = new topnavcontroller.TopNavController( pageVisibilities.pageSelection );
 
             view.on(
                 'queriesClicked', function ( event ) {

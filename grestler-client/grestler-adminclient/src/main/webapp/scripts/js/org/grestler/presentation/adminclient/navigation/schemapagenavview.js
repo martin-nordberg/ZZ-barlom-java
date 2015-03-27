@@ -29,8 +29,50 @@ require(
             var controller = new schemapagenavcontroller.SchemaPageNavController( schemaPageVisibilities.schemaPageSelections );
 
             view.on(
+                'bookmarksTabClicked', function ( event ) {
+                    controller.onBookmarksTabClicked( event );
+                    return false;
+                }
+            );
+
+            view.on(
                 'browseTabClicked', function ( event ) {
                     controller.onBrowseTabClicked( event );
+                    return false;
+                }
+            );
+
+            view.on(
+                'diagramsTabClicked', function ( event ) {
+                    controller.onDiagramsTabClicked( event );
+                    return false;
+                }
+            );
+
+            view.on(
+                'documentationTabClicked', function ( event ) {
+                    controller.onDocumentationTabClicked( event );
+                    return false;
+                }
+            );
+
+            view.on(
+                'propertiesTabClicked', function ( event ) {
+                    controller.onPropertiesTabClicked( event );
+                    return false;
+                }
+            );
+
+            view.on(
+                'recentTabClicked', function ( event ) {
+                    controller.onRecentTabClicked( event );
+                    return false;
+                }
+            );
+
+            view.on(
+                'searchTabClicked', function ( event ) {
+                    controller.onSearchTabClicked( event );
                     return false;
                 }
             );
