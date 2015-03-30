@@ -4,10 +4,10 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/navigation/topnavcontroller
+ * Module: org/grestler/presentation/adminclient/main/topnavcontroller
  */
 
-import topnavmodel = require( '../navigation/topnavmodel' )
+import topnavmodel = require( './topnavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

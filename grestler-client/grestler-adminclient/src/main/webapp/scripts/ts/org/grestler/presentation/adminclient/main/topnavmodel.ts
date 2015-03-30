@@ -4,7 +4,7 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/navigation/topnavmodel
+ * Module: org/grestler/presentation/adminclient/main/topnavmodel
  */
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ class PageSelection implements IPageSelection {
 
     private _topNavSelection : ETopNavSelection;
 
-    private static PREFIX = 'org.grestler.presentation.adminclient.navigation.topnavmodel.PageSelection.';
+    private static PREFIX = 'org.grestler.presentation.adminclient.main.topnavmodel.PageSelection.';
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

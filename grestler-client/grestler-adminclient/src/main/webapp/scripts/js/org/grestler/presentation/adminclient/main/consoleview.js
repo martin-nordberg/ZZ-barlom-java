@@ -1,27 +1,36 @@
+//
+// (C) Copyright 2015 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+/**
+ * Module: org/grestler/presentation/adminclient/main/console
+ */
+
 require(
     [
-        'scripts/js-gen/org/grestler/presentation/adminclient/navigation/topnavviewmodel',
-        'scripts/js-gen/org/grestler/presentation/adminclient/navigation/topnavcontroller',
+        'scripts/js-gen/org/grestler/presentation/adminclient/main/topnavviewmodel',
+        'scripts/js-gen/org/grestler/presentation/adminclient/main/topnavcontroller',
         'ractive',
         'jquery',
-        'text!templates/org/grestler/presentation/adminclient/navigation/topnav.html.mustache',
-        'css!styles/css-gen/org/grestler/presentation/adminclient/navigation/topnav.css'
+        'text!templates/org/grestler/presentation/adminclient/main/console.html.mustache',
+        'css!styles/css-gen/org/grestler/presentation/adminclient/main/console.css'
     ],
-    function ( topnavviewmodel, topnavcontroller, Ractive, $, topNavTemplate ) {
+    function ( topnavviewmodel, topnavcontroller, Ractive, $, consoleTemplate ) {
 
         /**
-         * Defines the top navigation view after the page visibilities view model is ready.
+         * Defines the main view after the page visibilities view model is ready.
          * @param pageVisibilities the viewmodel for page visibilities.
          */
-        var defineTopNavView = function ( pageVisibilities ) {
+        var defineAdminClientMainView = function ( pageVisibilities ) {
 
             // Define the view.
             var view = new Ractive(
                 {
                     data: pageVisibilities,
-                    el: 'top-nav-id',
+                    el: 'console-id',
                     magic: true,
-                    template: topNavTemplate
+                    template: consoleTemplate
                 }
             );
 
@@ -59,7 +68,7 @@ require(
         };
 
         // Load the viewmodel (page visibilities) then initialize the view.
-        topnavviewmodel.loadPageVisibilities().then( defineTopNavView );
+        topnavviewmodel.loadPageVisibilities().then( defineAdminClientMainView );
 
     }
 );

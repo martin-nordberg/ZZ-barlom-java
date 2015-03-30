@@ -8,7 +8,7 @@
 
     <title>Grestler Admin Console</title>
 
-    <!-- Main style sheet for page -->
+    <!-- Main style sheet for page - TODO:rename/move -->
     <link rel="stylesheet" href="styles/css-gen/sample.css">
 
     <!-- RequireJS Configuration -->
@@ -17,53 +17,13 @@
     <!-- RequireJS -->
     <script src="scripts/lib/requirejs-2.1.16/require.js" defer></script>
 
-    <!-- Main script for the page -->
-    <script src="scripts/js/sample.js" defer></script>
-
     <!-- Scripts -->
-    <script src="scripts/js/org/grestler/presentation/adminclient/navigation/topnavview.js" defer></script>
+    <script src="scripts/js/org/grestler/presentation/adminclient/main/consoleview.js" defer></script>
 
 </head>
-<body>
+<body id="console-id">
 
-    <!-- Navigation -->
-    <header class="navigation" id="top-nav-id" role="banner"></header>
-
-    <!-- Schema page -->
-    <section class="schema-page" id="schema-page-id"></section>
-
-
-    <!-- Main panels of content -->
-    <section class="panels">
-
-        <div class="left-panel col-xs-12">
-
-            <!-- TODO: vertical left side tabs: Selected, Bookmarked, Found, Problems -->
-
-            <h1 class="grestler">Grestler</h1>
-
-            <ul>
-                <li><a href="/grestlerdata/metadata/packages">Packages</a></li>
-                <li><a href="/grestlerdata/metadata/vertextypes">Vertex Types</a></li>
-                <li><a href="/grestlerdata/metadata/edgetypes">Edge Types</a></li>
-                <li><a href="/grestlerdata/metadata/directededgetypes">Directed Edge Types</a></li>
-                <li><a href="/grestlerdata/metadata/undirectededgetypes">Undirected Edge Types</a></li>
-                <li><a href="/grestlerdata/metadata/attributetypes">Attribute Types</a></li>
-            </ul>
-
-            <a class="btnLink" href="/grestleradmin/exit">Shut Down</a>
-        </div>
-        <div class="right-panel col-xs-12">
-
-            <!-- TODO: tabs across top: Properties, Documentation, Restructure, History -->
-
-            <h1>Ractive Sample</h1>
-
-            <!-- Ractive content target -->
-            <div id="container"></div>
-        </div>
-    </section>
-
+    <!-- Dynamically filled by Ractive components -->
 
 </body>
 </html>
