@@ -20,9 +20,15 @@ class PageVisibilities {
      * Constructs a new page visibilities object.
      */
     constructor( pageSelection : topnavmodel.IPageSelection ) {
-        var me = this;
-
         this._pageSelection = pageSelection;
+    }
+
+    /**
+     * Starts observing the associated model for changes.
+     */
+    public observeModelChanges() {
+
+        var me = this;
 
         var setTopNavActivePage = function ( topNavSelection : topnavmodel.ETopNavSelection ) : void {
             me.isQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
@@ -30,7 +36,7 @@ class PageVisibilities {
             me.isServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
         };
 
-        setTopNavActivePage( pageSelection.topNavSelection );
+        setTopNavActivePage( this._pageSelection.topNavSelection );
 
         Object['observe'](
             this._pageSelection,
@@ -45,6 +51,7 @@ class PageVisibilities {
                 )
             }, ['change.topNavSelection']
         );
+
     }
 
     /**
