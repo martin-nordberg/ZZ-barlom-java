@@ -162,24 +162,19 @@ class SchemaPageSelections implements ISchemaPageSelections {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The one and only schema page selections instance available asynchronously. */
-var theSchemaPageSelections : Promise<ISchemaPageSelections> = null;
+var theSchemaPageSelections : ISchemaPageSelections = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Creates or returns the one and only schema page selections model, loading it when first requested.
- * @returns {Promise<ISchemaPageSelections>} the page selection, available asynchronously.
+ * @returns {ISchemaPageSelections} the page selection, available asynchronously.
  */
-export function loadSchemaPageSelections() : Promise<ISchemaPageSelections> {
+export function loadSchemaPageSelections() : ISchemaPageSelections {
 
     // Create the page selection first time through.
     if ( theSchemaPageSelections == null ) {
-        theSchemaPageSelections = new Promise<ISchemaPageSelections>(
-            function ( resolve : ( value? : ISchemaPageSelections ) => void, reject : ( error? : any ) => void ) {
-                // TODO: truly asynchronous if add persistence
-                resolve( new SchemaPageSelections() );
-            }
-        );
+        theSchemaPageSelections = new SchemaPageSelections();
     }
 
     return theSchemaPageSelections;

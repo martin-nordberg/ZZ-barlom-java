@@ -97,24 +97,19 @@ class PageSelection implements IPageSelection {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The one and only page selections instance available asynchronously. */
-var thePageSelection : Promise<IPageSelection> = null;
+var thePageSelection : IPageSelection = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Creates or returns the one and only page selection, loading it when first requested.
- * @returns {Promise<IPageSelection>} the page selection, available asynchronously.
+ * @returns {IPageSelection} the page selection.
  */
-export function loadPageSelection() : Promise<IPageSelection> {
+export function loadPageSelection() : IPageSelection {
 
     // Create the page selection first time through.
     if ( thePageSelection == null ) {
-        thePageSelection = new Promise<IPageSelection>(
-            function ( resolve : ( value? : IPageSelection ) => void, reject : ( error? : any ) => void ) {
-                // TODO: truly asynchronous if add persistence
-                resolve( new PageSelection() );
-            }
-        );
+        thePageSelection = new PageSelection();
     }
 
     return thePageSelection;

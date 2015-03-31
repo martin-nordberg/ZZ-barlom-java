@@ -71,7 +71,7 @@ class PageVisibilities {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The singleton page visibilities viewmodel instance. */
-var thePageVisibilities : Promise<PageVisibilities>;
+var thePageVisibilities : PageVisibilities;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,15 +79,11 @@ var thePageVisibilities : Promise<PageVisibilities>;
  * Loads the page visibilities viewmodel asynchronously.
  * @returns a promise for the viewmodel instance.
  */
-export function loadPageVisibilities() : Promise<PageVisibilities> {
+export function loadPageVisibilities() : PageVisibilities {
 
     // Create the singleton on the first time through.
     if ( thePageVisibilities == null ) {
-        thePageVisibilities = topnavmodel.loadPageSelection().then(
-            function ( pageSelection : topnavmodel.IPageSelection ) : PageVisibilities {
-                return new PageVisibilities( pageSelection );
-            }
-        );
+        return new PageVisibilities( topnavmodel.loadPageSelection() );
     }
 
     return thePageVisibilities;

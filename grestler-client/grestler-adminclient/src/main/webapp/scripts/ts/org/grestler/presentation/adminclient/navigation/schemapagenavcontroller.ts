@@ -7,7 +7,7 @@
  * Module: org/grestler/presentation/adminclient/navigation/schemapagenavcontroller
  */
 
-import schemapagenavmodel = require( '../navigation/schemapagenavmodel' )
+import schemapagenavmodel = require( './schemapagenavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

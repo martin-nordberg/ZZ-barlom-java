@@ -7,7 +7,7 @@
  * Module: org/grestler/presentation/adminclient/navigation/schemapageviewmodel
  */
 
-import schemapagenavmodel = require( '../navigation/schemapagenavmodel' )
+import schemapagenavmodel = require( './schemapagenavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,9 +20,15 @@ class SchemaPageVisibilities {
      * Constructs a new schema page visibilities object.
      */
     constructor( schemaPageSelections : schemapagenavmodel.ISchemaPageSelections ) {
-        var me = this;
-
         this._schemaPageSelections = schemaPageSelections;
+    }
+
+    /**
+     * Starts observing the associated model for changes.
+     */
+    public observeModelChanges() {
+
+        var me = this;
 
         var setActiveLeftTab = function ( leftTabSelection : schemapagenavmodel.ESchemaPageLeftTabSelection ) : void {
             me.isBookmarksTabActive = leftTabSelection == schemapagenavmodel.ESchemaPageLeftTabSelection.BOOKMARKS;
@@ -37,8 +43,8 @@ class SchemaPageVisibilities {
             me.isPropertiesTabActive = rightTabSelection == schemapagenavmodel.ESchemaPageRightTabSelection.PROPERTIES;
         };
 
-        setActiveLeftTab( schemaPageSelections.leftTabSelection );
-        setActiveRightTab( schemaPageSelections.rightTabSelection );
+        setActiveLeftTab( this._schemaPageSelections.leftTabSelection );
+        setActiveRightTab( this._schemaPageSelections.rightTabSelection );
 
         Object['observe'](
             this._schemaPageSelections,
@@ -56,6 +62,7 @@ class SchemaPageVisibilities {
                 )
             }, ['change.leftTabSelection','change.rightTabSelection']
         );
+
     }
 
     /**
@@ -94,7 +101,7 @@ class SchemaPageVisibilities {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The singleton page visibilities viewmodel instance. */
-var theSchemaPageVisibilities : Promise<SchemaPageVisibilities>;
+var theSchemaPageVisibilities : SchemaPageVisibilities;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,15 +109,11 @@ var theSchemaPageVisibilities : Promise<SchemaPageVisibilities>;
  * Loads the page visibilities viewmodel asynchronously.
  * @returns a promise for the viewmodel instance.
  */
-export function loadPageVisibilities() : Promise<SchemaPageVisibilities> {
+export function loadPageVisibilities() : SchemaPageVisibilities {
 
     // Create the singleton on the first time through.
     if ( theSchemaPageVisibilities == null ) {
-        theSchemaPageVisibilities = schemapagenavmodel.loadSchemaPageSelections().then(
-            function ( schemaPageSelections : schemapagenavmodel.ISchemaPageSelections ) : SchemaPageVisibilities {
-                return new SchemaPageVisibilities( schemaPageSelections );
-            }
-        );
+        theSchemaPageVisibilities = new SchemaPageVisibilities( schemapagenavmodel.loadSchemaPageSelections() );
     }
 
     return theSchemaPageVisibilities;
