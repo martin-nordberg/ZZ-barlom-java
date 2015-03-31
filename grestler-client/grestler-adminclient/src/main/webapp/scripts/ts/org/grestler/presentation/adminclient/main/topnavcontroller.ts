@@ -12,12 +12,12 @@ import topnavmodel = require( './topnavmodel' )
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Controller for the top navigation bar.
+ * Controller for the top schemapage bar.
  */
 export class TopNavController {
 
     /**
-     * Constructs a new top navigation controller.
+     * Constructs a new top schemapage controller.
      * @param pageSelection the page selections controlled by the top nav buttons.
      */
     constructor( pageSelection : topnavmodel.IPageSelection ) {

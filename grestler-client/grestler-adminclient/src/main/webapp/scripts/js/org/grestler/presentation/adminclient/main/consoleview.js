@@ -9,7 +9,7 @@
 
 require(
     [
-        'scripts/js/org/grestler/presentation/adminclient/navigation/schemapagenavview',
+        'scripts/js/org/grestler/presentation/adminclient/schemapage/schemapageview',
         'scripts/js-gen/org/grestler/presentation/adminclient/main/topnavviewmodel',
         'scripts/js-gen/org/grestler/presentation/adminclient/main/topnavcontroller',
         'ractive',
@@ -17,7 +17,7 @@ require(
         'text!templates/org/grestler/presentation/adminclient/main/console.html.mustache',
         'css!styles/css-gen/org/grestler/presentation/adminclient/main/console.css'
     ],
-    function ( schemapagenavview, topnavviewmodel, topnavcontroller, Ractive, $, consoleTemplate ) {
+    function ( schemapageview, topnavviewmodel, topnavcontroller, Ractive, $, consoleTemplate ) {
 
         // Load the viewmodel (page visibilities).
         var pageVisibilities = topnavviewmodel.loadPageVisibilities();
@@ -26,7 +26,7 @@ require(
         var view = new Ractive(
             {
                 components: {
-                    "schema-page" : schemapagenavview.SchemaPageView
+                    "schema-page" : schemapageview.SchemaPageView
                 },
                 data: pageVisibilities,
                 el: 'console-id',
