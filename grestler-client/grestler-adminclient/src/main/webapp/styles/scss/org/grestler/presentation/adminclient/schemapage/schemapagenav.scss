@@ -1,5 +1,34 @@
-
 //
 // Extra styling for schema page tabs of Grestler Admin Concole
 //
 
+div.left-panels-container {
+  float: left;
+  width: calc(100% - 50px);
+
+  div.tab-content {
+    margin-left: -1px;
+    min-height: 600px;
+  }
+}
+
+div.left-tabs-container {
+  float: left;
+
+  ul.nav-tabs li.first {
+    margin-top: 15px;
+  }
+}
+
+div.right-panels-container {
+  div.tab-content {
+    min-height: 560px;
+  }
+}
+
+div.right-tabs-container {
+  margin-left: 15px;
+  ul.nav-tabs {
+    border-bottom: none;
+  }
+}

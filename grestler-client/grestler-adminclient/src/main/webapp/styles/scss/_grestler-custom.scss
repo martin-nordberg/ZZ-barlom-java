@@ -1,11 +1,20 @@
 
 // Reference: http://getbootstrap.com/customize/#less-variables
 
+// Color definitions
+$pale_background: #fefbf3;
+
 // Color Overrides
-$body-bg: #fefbf3;
+$nav-tabs-active-link-hover-bg: $pale_background;
 
 // Bootswatch Sandstone variations
 .sandstone {
   font-size: 14px;
   text-transform: none;
+}
+
+// Tab panes
+div.tab-content {
+  background-color: $pale_background;
+  padding: 2px;
 }
