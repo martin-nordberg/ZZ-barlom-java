@@ -8,7 +8,7 @@ define( [], ()->
     beforeEach( ( done ) ->
       me = this
 
-      # Bring in the elements module before testing
+      # Bring in the queries module before testing
       require( [
           'scripts/js-gen/org/grestler/persistence/restserver/api/queries'
         ], ( restserver_api_queries ) ->

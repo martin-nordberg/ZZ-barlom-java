@@ -1,6 +1,5 @@
 example.ts
-org/grestler/infrastructure/utilities/ajax.ts
-org/grestler/infrastructure/utilities/uuids.ts
+org/grestler/application/model/repository.ts
 org/grestler/domain/metamodel/api/elements.ts
 org/grestler/domain/metamodel/api/queries.ts
 org/grestler/domain/metamodel/api/commands.ts
@@ -9,9 +8,13 @@ org/grestler/domain/metamodel/spi/commands.ts
 org/grestler/domain/metamodel/impl/elements.ts
 org/grestler/domain/metamodel/impl/queries.ts
 org/grestler/domain/metamodel/impl/commands.ts
+org/grestler/infrastructure/dependencies/injection.ts
+org/grestler/infrastructure/reflection/functionintrospection.ts
+org/grestler/infrastructure/utilities/ajax.ts
+org/grestler/infrastructure/utilities/uuids.ts
+org/grestler/infrastructure/utilities/values.ts
 org/grestler/persistence/restserver/api/queries.ts
 org/grestler/persistence/restserver/api/commands.ts
-org/grestler/application/model/repository.ts
 org/grestler/presentation/adminclient/main/console.ts
 org/grestler/presentation/adminclient/main/topnavcontroller.ts
 org/grestler/presentation/adminclient/main/topnavmodel.ts

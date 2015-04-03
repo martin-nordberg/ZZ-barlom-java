@@ -8,7 +8,7 @@ define( [], ()->
     beforeEach( ( done ) ->
       me = this
 
-      # Bring in the elements module before testing
+      # Bring in the needed modules before testing
       require( [
           'scripts/js-gen/org/grestler/infrastructure/utilities/uuids',
           'scripts/js-gen/org/grestler/domain/metamodel/impl/commands',

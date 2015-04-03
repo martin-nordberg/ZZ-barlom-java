@@ -4,7 +4,9 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/main/console
+ * Module: org/grestler/presentation/adminclient/main/consoleview
+ *
+ * Main view class for the whole Grestler Admin Console.
  */
 
 require(
@@ -15,6 +17,7 @@ require(
         'ractive',
         'jquery',
         'text!templates/org/grestler/presentation/adminclient/main/console.html.mustache',
+
         'css!styles/css-gen/org/grestler/presentation/adminclient/main/console.css'
     ],
     function ( schemapageview, topnavviewmodel, topnavcontroller, Ractive, $, consoleTemplate ) {
