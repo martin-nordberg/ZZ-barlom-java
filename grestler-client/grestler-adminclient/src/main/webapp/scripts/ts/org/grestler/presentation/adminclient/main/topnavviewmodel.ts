@@ -83,14 +83,14 @@ var thePageVisibilities : PageVisibilities;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Loads the page visibilities viewmodel asynchronously.
- * @returns a promise for the viewmodel instance.
+ * Provides the page visibilities viewmodel for given model.
+ * @returns the viewmodel instance.
  */
-export function loadPageVisibilities() : PageVisibilities {
+export function provideTopNavViewModelPageVisibilities( topNavModelPageSelection : topnavmodel.IPageSelection ) : PageVisibilities {
 
     // Create the singleton on the first time through.
     if ( thePageVisibilities == null ) {
-        return new PageVisibilities( topnavmodel.loadPageSelection() );
+        return new PageVisibilities( topNavModelPageSelection );
     }
 
     return thePageVisibilities;

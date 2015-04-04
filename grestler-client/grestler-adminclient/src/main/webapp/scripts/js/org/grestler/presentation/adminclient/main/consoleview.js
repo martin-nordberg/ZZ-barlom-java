@@ -12,18 +12,17 @@
 require(
     [
         'scripts/js/org/grestler/presentation/adminclient/schemapage/schemapageview',
-        'scripts/js-gen/org/grestler/presentation/adminclient/main/topnavviewmodel',
-        'scripts/js-gen/org/grestler/presentation/adminclient/main/topnavcontroller',
+        'dependencies',
         'ractive',
         'jquery',
         'text!templates/org/grestler/presentation/adminclient/main/console.html.mustache',
 
         'css!styles/css-gen/org/grestler/presentation/adminclient/main/console.css'
     ],
-    function ( schemapageview, topnavviewmodel, topnavcontroller, Ractive, $, consoleTemplate ) {
+    function ( schemapageview, dependencies, Ractive, $, consoleTemplate ) {
 
         // Load the viewmodel (page visibilities).
-        var pageVisibilities = topnavviewmodel.loadPageVisibilities();
+        var pageVisibilities = dependencies.context.get( 'topNavViewModelPageVisibilities' );
 
         // Define the view.
         var view = new Ractive(
@@ -39,7 +38,7 @@ require(
         );
 
         // Define the behavior (event handlers).
-        var controller = new topnavcontroller.TopNavController( pageVisibilities.pageSelection );
+        var controller = dependencies.context.get( 'topNavController' );
 
         view.on(
             'queriesClicked', function ( event ) {

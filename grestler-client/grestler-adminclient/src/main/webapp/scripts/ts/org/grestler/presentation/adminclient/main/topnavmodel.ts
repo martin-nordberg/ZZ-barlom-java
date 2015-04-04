@@ -105,7 +105,7 @@ var thePageSelection : IPageSelection = null;
  * Creates or returns the one and only page selection, loading it when first requested.
  * @returns {IPageSelection} the page selection.
  */
-export function loadPageSelection() : IPageSelection {
+export function provideTopNavModelPageSelection() : IPageSelection {
 
     // Create the page selection first time through.
     if ( thePageSelection == null ) {
