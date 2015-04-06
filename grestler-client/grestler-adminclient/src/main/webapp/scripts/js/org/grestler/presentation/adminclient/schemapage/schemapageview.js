@@ -1,9 +1,6 @@
 define(
     [
-        'scripts/js-gen/org/grestler/presentation/adminclient/schemapage/leftnavviewmodel',
-        'scripts/js-gen/org/grestler/presentation/adminclient/schemapage/leftnavcontroller',
-        'scripts/js-gen/org/grestler/presentation/adminclient/schemapage/rightnavviewmodel',
-        'scripts/js-gen/org/grestler/presentation/adminclient/schemapage/rightnavcontroller',
+        'dependencies',
         'ractive',
         'jquery',
         'text!templates/org/grestler/presentation/adminclient/schemapage/schemapage.html.mustache',
@@ -12,10 +9,7 @@ define(
         'css!styles/css-gen/org/grestler/presentation/adminclient/schemapage/schemapagenav.css'
     ],
     function (
-        leftnavviewmodel,
-        leftnavcontroller,
-        rightnavviewmodel,
-        rightnavcontroller,
+        dependencies,
         Ractive,
         $,
         schemaPageTemplate,
@@ -23,8 +17,8 @@ define(
     ) {
 
         // Load the tab visibilities for the schema page.
-        var leftTabVisibilities = leftnavviewmodel.loadLeftTabVisibilities();
-        var rightTabVisibilities = rightnavviewmodel.loadRightTabVisibilities();
+        var leftTabVisibilities = dependencies.context.get( 'schemaPageLeftTabVisibilities' );
+        var rightTabVisibilities = dependencies.context.get( 'schemaPageRightTabVisibilities' );
 
         exports.SchemaPageView = Ractive.extend(
             {
@@ -40,8 +34,8 @@ define(
                 oninit: function () {
 
                     // Define the behavior (event handlers).
-                    var leftTabsController = new leftnavcontroller.LeftNavController( leftTabVisibilities.leftTabSelection );
-                    var rightTabsController = new rightnavcontroller.RightNavController( rightTabVisibilities.rightTabSelection );
+                    var leftTabsController = dependencies.context.get( 'schemaPageLeftNavController' );
+                    var rightTabsController = dependencies.context.get( 'schemaPageRightNavController' );
 
                     this.on(
                         'bookmarksTabClicked', function ( event ) {

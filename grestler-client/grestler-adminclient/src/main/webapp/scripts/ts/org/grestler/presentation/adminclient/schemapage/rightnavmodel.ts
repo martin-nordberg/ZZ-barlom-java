@@ -107,7 +107,7 @@ var theRightTabSelection : IRightTabSelection = null;
  * Creates or returns the one and only schema page right tab selection model, loading it when first requested.
  * @returns {IRightTabSelection} the right tab selection.
  */
-export function loadRightTabSelection() : IRightTabSelection {
+export function provideSchemaPageRightTabSelection() : IRightTabSelection {
 
     // Create the page selection first time through.
     if ( theRightTabSelection == null ) {

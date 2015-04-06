@@ -86,11 +86,11 @@ var theRightTabVisibilities : RightTabVisibilities;
  * Loads the page visibilities viewmodel asynchronously.
  * @returns a promise for the viewmodel instance.
  */
-export function loadRightTabVisibilities() : RightTabVisibilities {
+export function provideSchemaPageRightTabVisibilities( schemaPageRightTabSelection : schemapage_rightnavmodel.IRightTabSelection ) : RightTabVisibilities {
 
     // Create the singleton on the first time through.
     if ( theRightTabVisibilities == null ) {
-        theRightTabVisibilities = new RightTabVisibilities( schemapage_rightnavmodel.loadRightTabSelection() );
+        theRightTabVisibilities = new RightTabVisibilities( schemaPageRightTabSelection );
     }
 
     return theRightTabVisibilities;

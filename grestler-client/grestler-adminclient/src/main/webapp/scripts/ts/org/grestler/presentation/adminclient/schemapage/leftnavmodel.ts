@@ -110,7 +110,7 @@ var theLeftTabSelection : ILeftTabSelection = null;
  * Creates or returns the one and only schema page left tab selection model, loading it when first requested.
  * @returns {ILeftTabSelection} the left tab selection.
  */
-export function loadLeftTabSelection() : ILeftTabSelection {
+export function provideSchemaPageLeftTabSelection() : ILeftTabSelection {
 
     // Create the page selection first time through.
     if ( theLeftTabSelection == null ) {

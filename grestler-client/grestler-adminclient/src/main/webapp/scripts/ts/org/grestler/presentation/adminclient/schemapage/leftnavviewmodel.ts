@@ -90,11 +90,11 @@ var theLeftTabVisibilities : LeftTabVisibilities;
  * Loads the page visibilities viewmodel asynchronously.
  * @returns a promise for the viewmodel instance.
  */
-export function loadLeftTabVisibilities() : LeftTabVisibilities {
+export function provideSchemaPageLeftTabVisibilities( schemaPageLeftTabSelection : schemapage_leftnavmodel.ILeftTabSelection ) : LeftTabVisibilities {
 
     // Create the singleton on the first time through.
     if ( theLeftTabVisibilities == null ) {
-        theLeftTabVisibilities = new LeftTabVisibilities( schemapage_leftnavmodel.loadLeftTabSelection() );
+        theLeftTabVisibilities = new LeftTabVisibilities( schemaPageLeftTabSelection );
     }
 
     return theLeftTabVisibilities;
