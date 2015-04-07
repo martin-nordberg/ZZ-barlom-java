@@ -45,20 +45,9 @@ export function schemaPageLeftTabSelectionFromString( value : string ) : ESchema
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Interface defining what items of the Schema page are selected.
+ * The model for the left tab selection of the schema page.
  */
-export interface ILeftTabSelection {
-
-    leftTabSelection : ESchemaPageLeftTabSelection;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Implementation of ILeftTabSelection.
- */
-class LeftTabSelection implements ILeftTabSelection {
+export class LeftTabSelection {
 
     /**
      * Constructs a new Schema page selections object.
@@ -96,28 +85,6 @@ class LeftTabSelection implements ILeftTabSelection {
 
     /** Key prefix used for key/value local storage of this class's attributes. */
     private static PREFIX = 'org.grestler.presentation.adminclient.schemapage.leftnavmodel.LeftTabSelection.';
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** The one and only schema page selections instance. */
-var theLeftTabSelection : ILeftTabSelection = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Creates or returns the one and only schema page left tab selection model, loading it when first requested.
- * @returns {ILeftTabSelection} the left tab selection.
- */
-export function provideSchemaPageLeftTabSelection() : ILeftTabSelection {
-
-    // Create the page selection first time through.
-    if ( theLeftTabSelection == null ) {
-        theLeftTabSelection = new LeftTabSelection();
-    }
-
-    return theLeftTabSelection;
 
 }
 

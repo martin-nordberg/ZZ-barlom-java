@@ -42,20 +42,9 @@ export function schemaPageRightTabSelectionFromString( value : string ) : ESchem
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Interface defining what items of the Schema page are selected.
+ * Selection model for the schema page right tabs.
  */
-export interface IRightTabSelection {
-
-    rightTabSelection : ESchemaPageRightTabSelection;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Implementation of IRightTabSelection.
- */
-class RightTabSelection implements IRightTabSelection {
+export class RightTabSelection {
 
     /**
      * Constructs a new Schema page selections object.
@@ -93,28 +82,6 @@ class RightTabSelection implements IRightTabSelection {
 
     /** Key prefix used for key/value local storage of this class's attributes. */
     private static PREFIX = 'org.grestler.presentation.adminclient.schemapage.rightnavmodel.RightTabSelection.';
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** The one and only schema page selections instance. */
-var theRightTabSelection : IRightTabSelection = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Creates or returns the one and only schema page right tab selection model, loading it when first requested.
- * @returns {IRightTabSelection} the right tab selection.
- */
-export function provideSchemaPageRightTabSelection() : IRightTabSelection {
-
-    // Create the page selection first time through.
-    if ( theRightTabSelection == null ) {
-        theRightTabSelection = new RightTabSelection();
-    }
-
-    return theRightTabSelection;
 
 }
 

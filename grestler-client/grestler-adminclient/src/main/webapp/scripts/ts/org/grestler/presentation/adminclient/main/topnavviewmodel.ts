@@ -14,12 +14,12 @@ import topnavmodel = require( './topnavmodel' )
 /**
  * Page visibilities as a number of boolean attributes.
  */
-class PageVisibilities {
+export class PageVisibilities {
 
     /**
      * Constructs a new page visibilities object.
      */
-    constructor( pageSelection : topnavmodel.IPageSelection ) {
+    constructor( pageSelection : topnavmodel.PageSelection ) {
         this._pageSelection = pageSelection;
     }
 
@@ -57,7 +57,7 @@ class PageVisibilities {
     /**
      * @returns the model behind this viewmodel.
      */
-    public get pageSelection() : topnavmodel.IPageSelection {
+    public get pageSelection() : topnavmodel.PageSelection {
         return this._pageSelection;
     }
 
@@ -71,29 +71,7 @@ class PageVisibilities {
     public isServerPageActive = false;
 
     /** The page selection model that feeds into this view model. */
-    private _pageSelection : topnavmodel.IPageSelection;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** The singleton page visibilities viewmodel instance. */
-var thePageVisibilities : PageVisibilities;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Provides the page visibilities viewmodel for given model.
- * @returns the viewmodel instance.
- */
-export function provideTopNavViewModelPageVisibilities( topNavModelPageSelection : topnavmodel.IPageSelection ) : PageVisibilities {
-
-    // Create the singleton on the first time through.
-    if ( thePageVisibilities == null ) {
-        return new PageVisibilities( topNavModelPageSelection );
-    }
-
-    return thePageVisibilities;
+    private _pageSelection : topnavmodel.PageSelection;
 
 }
 

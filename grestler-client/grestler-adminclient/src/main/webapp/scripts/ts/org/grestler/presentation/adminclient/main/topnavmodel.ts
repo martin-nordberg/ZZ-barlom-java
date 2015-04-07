@@ -42,20 +42,9 @@ export function topNavSelectionFromString( value : string ) : ETopNavSelection {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Interface defining what items of the application are selected.
+ * The selection model for the top nav of the console.
  */
-export interface IPageSelection {
-
-    topNavSelection : ETopNavSelection;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Implementation of IPageSelection.
- */
-class PageSelection implements IPageSelection {
+export class PageSelection {
 
     /**
      * Constructs a new page selections object.
@@ -92,28 +81,6 @@ class PageSelection implements IPageSelection {
     private _topNavSelection : ETopNavSelection;
 
     private static PREFIX = 'org.grestler.presentation.adminclient.main.topnavmodel.PageSelection.';
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** The one and only page selections instance available asynchronously. */
-var thePageSelection : IPageSelection = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Creates or returns the one and only page selection, loading it when first requested.
- * @returns {IPageSelection} the page selection.
- */
-export function provideTopNavModelPageSelection() : IPageSelection {
-
-    // Create the page selection first time through.
-    if ( thePageSelection == null ) {
-        thePageSelection = new PageSelection();
-    }
-
-    return thePageSelection;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -14,12 +14,12 @@ import schemapage_leftnavmodel = require( './leftnavmodel' )
 /**
  * Schema page left tab visibilities as a number of boolean attributes.
  */
-class LeftTabVisibilities {
+export class LeftTabVisibilities {
 
     /**
      * Constructs a new schema page visibilities object.
      */
-    constructor( leftTabSelection : schemapage_leftnavmodel.ILeftTabSelection ) {
+    constructor( leftTabSelection : schemapage_leftnavmodel.LeftTabSelection ) {
         this._leftTabSelection = leftTabSelection;
     }
 
@@ -58,7 +58,7 @@ class LeftTabVisibilities {
     /**
      * @returns the model behind this viewmodel.
      */
-    public get leftTabSelection() : schemapage_leftnavmodel.ILeftTabSelection {
+    public get leftTabSelection() : schemapage_leftnavmodel.LeftTabSelection {
         return this._leftTabSelection;
     }
 
@@ -75,29 +75,7 @@ class LeftTabVisibilities {
     public isSearchTabActive = false;
 
     /** The schema page selections model that feeds into this view model. */
-    private _leftTabSelection : schemapage_leftnavmodel.ILeftTabSelection;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** The singleton page visibilities viewmodel instance. */
-var theLeftTabVisibilities : LeftTabVisibilities;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Loads the page visibilities viewmodel asynchronously.
- * @returns a promise for the viewmodel instance.
- */
-export function provideSchemaPageLeftTabVisibilities( schemaPageLeftTabSelection : schemapage_leftnavmodel.ILeftTabSelection ) : LeftTabVisibilities {
-
-    // Create the singleton on the first time through.
-    if ( theLeftTabVisibilities == null ) {
-        theLeftTabVisibilities = new LeftTabVisibilities( schemaPageLeftTabSelection );
-    }
-
-    return theLeftTabVisibilities;
+    private _leftTabSelection : schemapage_leftnavmodel.LeftTabSelection;
 
 }
 

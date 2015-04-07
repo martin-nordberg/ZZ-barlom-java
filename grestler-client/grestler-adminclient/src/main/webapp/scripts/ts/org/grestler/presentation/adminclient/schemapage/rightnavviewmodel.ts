@@ -14,12 +14,12 @@ import schemapage_rightnavmodel = require( './rightnavmodel' )
 /**
  * Schema page component visibilities as a number of boolean attributes.
  */
-class RightTabVisibilities {
+export class RightTabVisibilities {
 
     /**
      * Constructs a new schema page visibilities object.
      */
-    constructor( rightTabSelection : schemapage_rightnavmodel.IRightTabSelection ) {
+    constructor( rightTabSelection : schemapage_rightnavmodel.RightTabSelection ) {
         this._rightTabSelection = rightTabSelection;
     }
 
@@ -57,7 +57,7 @@ class RightTabVisibilities {
     /**
      * @returns the model behind this viewmodel.
      */
-    public get rightTabSelection() : schemapage_rightnavmodel.IRightTabSelection {
+    public get rightTabSelection() : schemapage_rightnavmodel.RightTabSelection {
         return this._rightTabSelection;
     }
 
@@ -71,29 +71,7 @@ class RightTabVisibilities {
     public isPropertiesTabActive = false;
 
     /** The schema page selections model that feeds into this view model. */
-    private _rightTabSelection : schemapage_rightnavmodel.IRightTabSelection;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** The singleton page visibilities viewmodel instance. */
-var theRightTabVisibilities : RightTabVisibilities;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Loads the page visibilities viewmodel asynchronously.
- * @returns a promise for the viewmodel instance.
- */
-export function provideSchemaPageRightTabVisibilities( schemaPageRightTabSelection : schemapage_rightnavmodel.IRightTabSelection ) : RightTabVisibilities {
-
-    // Create the singleton on the first time through.
-    if ( theRightTabVisibilities == null ) {
-        theRightTabVisibilities = new RightTabVisibilities( schemaPageRightTabSelection );
-    }
-
-    return theRightTabVisibilities;
+    private _rightTabSelection : schemapage_rightnavmodel.RightTabSelection;
 
 }
 

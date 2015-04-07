@@ -54,7 +54,7 @@ class Provider {
             throw new Error( "Provider function may not be anonymous." );
         }
         if ( objectName.length < 8 || objectName.indexOf( 'provide' ) != 0 ) {
-            throw new Error( "Provider function " + objectName + " expected to be named provide[objectName].")
+            throw new Error( "Provider function " + objectName + " expected to be named provide[objectName]." )
         }
 
         this._objectName = objectName.charAt( 7 ).toLowerCase() + objectName.substring( 8 );
@@ -82,9 +82,11 @@ class Provider {
     provide( context : IContext ) : any {
         var args = [];
 
-        this._providerArgObjectNames.forEach( function(objectName) {
-            args.push( context.get( objectName ) );
-        });
+        this._providerArgObjectNames.forEach(
+            function ( objectName ) {
+                args.push( context.get( objectName ) );
+            }
+        );
 
         return this._providerFunction.apply( context, args );
     }
@@ -113,11 +115,15 @@ class Context implements IContext {
         innerContext : Context,
         providerFunction : Function
     ) {
-        var provider = new Provider( providerFunction );
 
         this._innerContext = innerContext;
         this._providers = {};
-        this._providers[ provider.objectName ] = provider;
+
+        if ( providerFunction ) {
+            var provider = new Provider( providerFunction );
+            this._providers[provider.objectName] = provider;
+        }
+
     }
 
     /**
@@ -140,6 +146,23 @@ class Context implements IContext {
     }
 
     /**
+     * Constructs a new context that adds additional providers to this context from the given module.
+     * @param providerModule the provider module to add.
+     * @returns {IContext} the new context.
+     */
+    public plusModule( providerModule : Object ) : IContext {
+        var result : IContext = this;
+
+        Object.getOwnPropertyNames( providerModule ).forEach(
+            function ( providerFunction : string ) {
+                result = result.plus( <Function> providerModule[providerFunction] );
+            }
+        );
+
+        return result;
+    }
+
+    /**
      * Finds the provider for a given object name.
      * @param objectName the name of the kind of object needing provision.
      * @returns {Provider} the provider found (exception if not found).
@@ -147,7 +170,7 @@ class Context implements IContext {
     private findProvider( objectName : string ) : Provider {
 
         // Try this context itself.
-        var result : Provider = this._providers[ objectName ];
+        var result : Provider = this._providers[objectName];
 
         // Try the inner context if necessary.
         if ( !result && this._innerContext ) {
@@ -172,10 +195,9 @@ class Context implements IContext {
 
 /**
  * Constructs a new context that encompasses an inner context plus one additional provider.
- * @param providerFunction the first provider function available in the new context.
  */
-export function makeContext( providerFunction : Function ) {
-    return new Context( null, providerFunction );
+export function makeContext() {
+    return new Context( null, null );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

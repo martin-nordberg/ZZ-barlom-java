@@ -20,7 +20,7 @@ export class LeftNavController {
      * Constructs a new schema page left schemapage controller.
      * @param leftTabSelection the left tab selection maintained by this controller.
      */
-    constructor( leftTabSelection : schemapage_leftnavmodel.ILeftTabSelection ) {
+    constructor( leftTabSelection : schemapage_leftnavmodel.LeftTabSelection ) {
         this._leftTabSelection = leftTabSelection;
     }
 
@@ -57,14 +57,8 @@ export class LeftNavController {
     }
 
     /** The left tab selection model under control. */
-    private _leftTabSelection : schemapage_leftnavmodel.ILeftTabSelection;
+    private _leftTabSelection : schemapage_leftnavmodel.LeftTabSelection;
 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export function provideSchemaPageLeftNavController( schemaPageLeftTabSelection : schemapage_leftnavmodel.ILeftTabSelection ) : LeftNavController {
-    return new LeftNavController( schemaPageLeftTabSelection );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

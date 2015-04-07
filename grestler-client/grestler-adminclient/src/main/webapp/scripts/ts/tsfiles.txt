@@ -16,12 +16,14 @@ org/grestler/infrastructure/utilities/values.ts
 org/grestler/persistence/restserver/api/queries.ts
 org/grestler/persistence/restserver/api/commands.ts
 org/grestler/presentation/adminclient/main/console.ts
+org/grestler/presentation/adminclient/main/module.ts
 org/grestler/presentation/adminclient/main/topnavcontroller.ts
 org/grestler/presentation/adminclient/main/topnavmodel.ts
 org/grestler/presentation/adminclient/main/topnavviewmodel.ts
 org/grestler/presentation/adminclient/schemapage/leftnavcontroller.ts
 org/grestler/presentation/adminclient/schemapage/leftnavmodel.ts
 org/grestler/presentation/adminclient/schemapage/leftnavviewmodel.ts
+org/grestler/presentation/adminclient/schemapage/module.ts
 org/grestler/presentation/adminclient/schemapage/rightnavcontroller.ts
 org/grestler/presentation/adminclient/schemapage/rightnavmodel.ts
 org/grestler/presentation/adminclient/schemapage/rightnavviewmodel.ts

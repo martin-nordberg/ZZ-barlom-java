@@ -20,7 +20,7 @@ export class TopNavController {
      * Constructs a new top schemapage controller.
      * @param pageSelection the page selections controlled by the top nav buttons.
      */
-    constructor( pageSelection : topnavmodel.IPageSelection ) {
+    constructor( pageSelection : topnavmodel.PageSelection ) {
         this._pageSelection = pageSelection;
     }
 
@@ -57,14 +57,8 @@ export class TopNavController {
     }
 
     /** The page selections model under control. */
-    private _pageSelection : topnavmodel.IPageSelection;
+    private _pageSelection : topnavmodel.PageSelection;
 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export function provideTopNavController( topNavModelPageSelection : topnavmodel.IPageSelection ) : TopNavController {
-    return new TopNavController( topNavModelPageSelection );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

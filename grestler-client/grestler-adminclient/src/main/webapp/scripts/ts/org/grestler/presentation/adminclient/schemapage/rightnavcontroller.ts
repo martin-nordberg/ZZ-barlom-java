@@ -20,7 +20,7 @@ export class RightNavController {
      * Constructs a new schema page right schemapage controller.
      * @param rightTabSelection the right tab selection maintained by this controller.
      */
-    constructor( rightTabSelection : schemapage_rightnavmodel.IRightTabSelection ) {
+    constructor( rightTabSelection : schemapage_rightnavmodel.RightTabSelection ) {
         this._rightTabSelection = rightTabSelection;
     }
 
@@ -49,14 +49,8 @@ export class RightNavController {
     }
 
     /** The right tab selection model under control. */
-    private _rightTabSelection : schemapage_rightnavmodel.IRightTabSelection;
+    private _rightTabSelection : schemapage_rightnavmodel.RightTabSelection;
 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export function provideSchemaPageRightNavController( schemaPageRightTabSelection : schemapage_rightnavmodel.IRightTabSelection ) : RightNavController {
-    return new RightNavController( schemaPageRightTabSelection );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
