@@ -1,7 +1,7 @@
 require(
     [
         'scripts/js-gen/example',
-        'scripts/js-gen/org/grestler/presentation/adminclient/main/console',
+        'scripts/js-gen/org/grestler/presentation/adminclient/console/console',
         'ractive',
         'jquery',
         'text!templates/helloworld.html.mustache'

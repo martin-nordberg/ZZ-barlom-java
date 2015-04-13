@@ -15,9 +15,9 @@ require(
         'dependencies',
         'ractive',
         'jquery',
-        'text!templates/org/grestler/presentation/adminclient/main/console.html.mustache',
+        'text!templates/org/grestler/presentation/adminclient/console/console.html.mustache',
 
-        'css!styles/css-gen/org/grestler/presentation/adminclient/main/console.css'
+        'css!styles/css-gen/org/grestler/presentation/adminclient/console/console.css'
     ],
     function ( schemapageview, dependencies, Ractive, $, consoleTemplate ) {
 

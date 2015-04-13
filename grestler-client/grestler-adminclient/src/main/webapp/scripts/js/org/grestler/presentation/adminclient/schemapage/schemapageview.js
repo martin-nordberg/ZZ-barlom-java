@@ -6,7 +6,7 @@ define(
         'text!templates/org/grestler/presentation/adminclient/schemapage/schemapage.html.mustache',
         'exports',
 
-        'css!styles/css-gen/org/grestler/presentation/adminclient/schemapage/schemapagenav.css'
+        'css!styles/css-gen/org/grestler/presentation/adminclient/schemapage/schemapage.css'
     ],
     function (
         dependencies,

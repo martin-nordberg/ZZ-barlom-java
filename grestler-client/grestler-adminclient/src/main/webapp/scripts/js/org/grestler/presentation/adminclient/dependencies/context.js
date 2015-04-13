@@ -8,7 +8,7 @@ define(
         'require',
         'exports',
         'scripts/js-gen/org/grestler/infrastructure/dependencies/injection',
-        'scripts/js-gen/org/grestler/presentation/adminclient/main/module',
+        'scripts/js-gen/org/grestler/presentation/adminclient/console/module',
         'scripts/js-gen/org/grestler/presentation/adminclient/schemapage/module'
     ],
     function (

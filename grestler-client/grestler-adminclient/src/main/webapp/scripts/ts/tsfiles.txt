@@ -15,11 +15,10 @@ org/grestler/infrastructure/utilities/uuids.ts
 org/grestler/infrastructure/utilities/values.ts
 org/grestler/persistence/restserver/api/queries.ts
 org/grestler/persistence/restserver/api/commands.ts
-org/grestler/presentation/adminclient/main/console.ts
-org/grestler/presentation/adminclient/main/module.ts
-org/grestler/presentation/adminclient/main/topnavcontroller.ts
-org/grestler/presentation/adminclient/main/topnavmodel.ts
-org/grestler/presentation/adminclient/main/topnavviewmodel.ts
+org/grestler/presentation/adminclient/console/module.ts
+org/grestler/presentation/adminclient/console/topnavcontroller.ts
+org/grestler/presentation/adminclient/console/topnavmodel.ts
+org/grestler/presentation/adminclient/console/topnavviewmodel.ts
 org/grestler/presentation/adminclient/schemapage/browsedelementmodel.ts
 org/grestler/presentation/adminclient/schemapage/leftnavcontroller.ts
 org/grestler/presentation/adminclient/schemapage/leftnavmodel.ts

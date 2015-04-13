@@ -80,7 +80,7 @@ export class PageSelection {
 
     private _topNavSelection : ETopNavSelection;
 
-    private static PREFIX = 'org.grestler.presentation.adminclient.main.topnavmodel.PageSelection.';
+    private static PREFIX = 'org.grestler.presentation.adminclient.console.topnavmodel.PageSelection.';
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
