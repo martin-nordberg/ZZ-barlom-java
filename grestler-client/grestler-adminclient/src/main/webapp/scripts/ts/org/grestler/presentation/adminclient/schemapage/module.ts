@@ -7,12 +7,18 @@
  * Module: org/grestler/presentation/adminclient/schemapage/module
  */
 
-import leftnavcontroller = require( './leftnavcontroller' )
-import leftnavmodel = require( './leftnavmodel' )
-import leftnavviewmodel = require( './leftnavviewmodel' )
-import rightnavcontroller = require( './rightnavcontroller' )
-import rightnavmodel = require( './rightnavmodel' )
-import rightnavviewmodel = require( './rightnavviewmodel' )
+import browsedelementmodel = require( './browsedelementmodel' );
+import leftnavcontroller = require( './leftnavcontroller' );
+import leftnavmodel = require( './leftnavmodel' );
+import leftnavviewmodel = require( './leftnavviewmodel' );
+import rightnavcontroller = require( './rightnavcontroller' );
+import rightnavmodel = require( './rightnavmodel' );
+import rightnavviewmodel = require( './rightnavviewmodel' );
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** The one and only element currently being browsed. */
+var theBrowsedElement : browsedelementmodel.PackagedElementSelection = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
