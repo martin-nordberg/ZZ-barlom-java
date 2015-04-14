@@ -62,11 +62,11 @@ export class LeftTabVisibilities {
         return this._leftTabSelection;
     }
 
-    /** Whether the Browse page is active. */
-    public isBrowseTabActive = false;
-
     /** Whether the Bookmarks page is active. */
     public isBookmarksTabActive = false;
+
+    /** Whether the Browse page is active. */
+    public isBrowseTabActive = false;
 
     /** Whether the Recent page is active. */
     public isRecentTabActive = false;
