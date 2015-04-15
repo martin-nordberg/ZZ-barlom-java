@@ -25,7 +25,7 @@ var thePageVisibilities : topnavviewmodel.PageVisibilities;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export var mainModule = {
+export var consoleModule = {
 
     provideTopNavController: function provideTopNavController( topNavModelPageSelection : topnavmodel.PageSelection ) : topnavcontroller.TopNavController {
         return new topnavcontroller.TopNavController( topNavModelPageSelection );

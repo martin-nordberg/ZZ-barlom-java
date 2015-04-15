@@ -7,7 +7,8 @@
  * Module: org/grestler/presentation/adminclient/schemapage/module
  */
 
-import browsedelementmodel = require( './browsedelementmodel' );
+import api_queries = require( '../../../domain/metamodel/api/queries' )
+import elementmodel = require( './../../metamodel/elementmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
 import leftnavmodel = require( './leftnavmodel' );
 import leftnavviewmodel = require( './leftnavviewmodel' );
@@ -18,7 +19,7 @@ import rightnavviewmodel = require( './rightnavviewmodel' );
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The one and only element currently being browsed. */
-var theBrowsedElement : browsedelementmodel.ElementSelection = null;
+var theBrowsedElement : elementmodel.ElementSelection = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,6 +44,21 @@ var theRightTabVisibilities : rightnavviewmodel.RightTabVisibilities = null;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export var schemaPageModule = {
+
+    /**
+     * Creates or returns the one and only schema page browsed element selection model, creating it when first requested.
+     * @returns {ElementSelection} the browsed element selection.
+     */
+    provideSchemaPageBrowsedElement: function provideSchemaPageBrowsedElement( metamodelRepository : api_queries.IMetamodelRepository ) : elementmodel.ElementSelection {
+
+        // Create the page selection first time through.
+        if ( theBrowsedElement == null ) {
+            theBrowsedElement = new elementmodel.ElementSelection( metamodelRepository );
+        }
+
+        return theBrowsedElement;
+
+    },
 
     /**
      * Provides a schema page left nav controller for given tab selection model.
