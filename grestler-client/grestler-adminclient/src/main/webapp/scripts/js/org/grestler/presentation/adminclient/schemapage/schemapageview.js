@@ -20,6 +20,8 @@ define(
         var leftTabVisibilities = dependencies.context.get( 'schemaPageLeftTabVisibilities' );
         var rightTabVisibilities = dependencies.context.get( 'schemaPageRightTabVisibilities' );
 
+        var metamodelRepository = dependencies.context.get( 'metamodelRepository' );
+
         exports.SchemaPageView = Ractive.extend(
             {
 
@@ -87,8 +89,8 @@ define(
                     );
 
                     // Turn on the wiring between model and viewmodel.
-                    this.data.leftTabVisibilities.observeModelChanges();
-                    this.data.rightTabVisibilities.observeModelChanges();
+                    leftTabVisibilities.observeModelChanges();
+                    rightTabVisibilities.observeModelChanges();
 
                 }
             }

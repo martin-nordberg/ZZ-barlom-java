@@ -7,7 +7,8 @@
  * Module: org/grestler/domain/metamodel/impl/module
  */
 
-import restserver_api_queries = require( '../api/queries' )
+import restserver_api_commands = require( './commands' )
+import restserver_api_queries = require( './queries' )
 import spi_queries = require( '../../../domain/metamodel/spi/queries' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

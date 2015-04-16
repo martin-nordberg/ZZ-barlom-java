@@ -7,7 +7,7 @@
  * Module: org/grestler/presentation/adminclient/schemapage/schemapageviewmodel
  */
 
-import schemapage_rightnavmodel = require( './rightnavmodel' )
+import rightnavmodel = require( './rightnavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@ export class RightTabVisibilities {
     /**
      * Constructs a new schema page visibilities object.
      */
-    constructor( rightTabSelection : schemapage_rightnavmodel.RightTabSelection ) {
+    constructor( rightTabSelection : rightnavmodel.RightTabSelection ) {
         this._rightTabSelection = rightTabSelection;
     }
 
@@ -30,10 +30,10 @@ export class RightTabVisibilities {
 
         var me = this;
 
-        var setActiveRightTab = function ( rightTabSelection : schemapage_rightnavmodel.ESchemaPageRightTabSelection ) : void {
-            me.isDiagramsTabActive = rightTabSelection == schemapage_rightnavmodel.ESchemaPageRightTabSelection.DIAGRAMS;
-            me.isDocumentationTabActive = rightTabSelection == schemapage_rightnavmodel.ESchemaPageRightTabSelection.DOCUMENTATION;
-            me.isPropertiesTabActive = rightTabSelection == schemapage_rightnavmodel.ESchemaPageRightTabSelection.PROPERTIES;
+        var setActiveRightTab = function ( rightTabSelection : rightnavmodel.ESchemaPageRightTabSelection ) : void {
+            me.isDiagramsTabActive = rightTabSelection == rightnavmodel.ESchemaPageRightTabSelection.DIAGRAMS;
+            me.isDocumentationTabActive = rightTabSelection == rightnavmodel.ESchemaPageRightTabSelection.DOCUMENTATION;
+            me.isPropertiesTabActive = rightTabSelection == rightnavmodel.ESchemaPageRightTabSelection.PROPERTIES;
         };
 
         setActiveRightTab( this._rightTabSelection.rightTabSelection );
@@ -57,7 +57,7 @@ export class RightTabVisibilities {
     /**
      * @returns the model behind this viewmodel.
      */
-    public get rightTabSelection() : schemapage_rightnavmodel.RightTabSelection {
+    public get rightTabSelection() : rightnavmodel.RightTabSelection {
         return this._rightTabSelection;
     }
 
@@ -71,7 +71,7 @@ export class RightTabVisibilities {
     public isPropertiesTabActive = false;
 
     /** The schema page selections model that feeds into this view model. */
-    private _rightTabSelection : schemapage_rightnavmodel.RightTabSelection;
+    private _rightTabSelection : rightnavmodel.RightTabSelection;
 
 }
 

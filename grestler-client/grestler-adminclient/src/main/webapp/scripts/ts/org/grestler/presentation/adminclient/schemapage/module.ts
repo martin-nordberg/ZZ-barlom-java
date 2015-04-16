@@ -8,7 +8,7 @@
  */
 
 import api_queries = require( '../../../domain/metamodel/api/queries' )
-import elementmodel = require( './../../metamodel/elementmodel' );
+import elementmodel = require( '../../metamodel/elementmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
 import leftnavmodel = require( './leftnavmodel' );
 import leftnavviewmodel = require( './leftnavviewmodel' );

@@ -7,7 +7,7 @@
  * Module: org/grestler/presentation/adminclient/schemapage/schemapagenavcontroller
  */
 
-import schemapage_rightnavmodel = require( './rightnavmodel' )
+import rightnavmodel = require( './rightnavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@ export class RightNavController {
      * Constructs a new schema page right schemapage controller.
      * @param rightTabSelection the right tab selection maintained by this controller.
      */
-    constructor( rightTabSelection : schemapage_rightnavmodel.RightTabSelection ) {
+    constructor( rightTabSelection : rightnavmodel.RightTabSelection ) {
         this._rightTabSelection = rightTabSelection;
     }
 
@@ -29,7 +29,7 @@ export class RightNavController {
      * @param event
      */
     public onDiagramsTabClicked( event : any ) : void {
-        this._rightTabSelection.rightTabSelection = schemapage_rightnavmodel.ESchemaPageRightTabSelection.DIAGRAMS;
+        this._rightTabSelection.rightTabSelection = rightnavmodel.ESchemaPageRightTabSelection.DIAGRAMS;
     }
 
     /**
@@ -37,7 +37,7 @@ export class RightNavController {
      * @param event
      */
     public onDocumentationTabClicked( event : any ) : void {
-        this._rightTabSelection.rightTabSelection = schemapage_rightnavmodel.ESchemaPageRightTabSelection.DOCUMENTATION;
+        this._rightTabSelection.rightTabSelection = rightnavmodel.ESchemaPageRightTabSelection.DOCUMENTATION;
     }
 
     /**
@@ -45,11 +45,11 @@ export class RightNavController {
      * @param event
      */
     public onPropertiesTabClicked( event : any ) : void {
-        this._rightTabSelection.rightTabSelection = schemapage_rightnavmodel.ESchemaPageRightTabSelection.PROPERTIES;
+        this._rightTabSelection.rightTabSelection = rightnavmodel.ESchemaPageRightTabSelection.PROPERTIES;
     }
 
     /** The right tab selection model under control. */
-    private _rightTabSelection : schemapage_rightnavmodel.RightTabSelection;
+    private _rightTabSelection : rightnavmodel.RightTabSelection;
 
 }
 

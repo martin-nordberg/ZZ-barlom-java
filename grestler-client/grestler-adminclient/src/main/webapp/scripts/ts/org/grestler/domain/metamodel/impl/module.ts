@@ -8,7 +8,8 @@
  */
 
 import api_queries = require( '../api/queries' )
-import queries = require( './queries' )
+import impl_commands = require( './commands' )
+import impl_queries = require( './queries' )
 import spi_queries = require( '../spi/queries' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +36,7 @@ export var metamodelImplModule = {
 
         // Create the page selection first time through.
         if ( theMetamodelRepository == null ) {
-            theMetamodelRepository = new queries.MetamodelRepository(
+            theMetamodelRepository = new impl_queries.MetamodelRepository(
                 packageLoader,
                 packageDependencyLoader,
                 attributeTypeLoader,

@@ -28,7 +28,7 @@ require(
         var view = new Ractive(
             {
                 components: {
-                    "grestler-schema-page" : schemapageview.SchemaPageView
+                    "grestler-schema-page": schemapageview.SchemaPageView
                 },
                 data: pageVisibilities,
                 el: 'console-id',
@@ -66,7 +66,7 @@ require(
         );
 
         /** Wire the viewmodel to the model. */
-        view.data.observeModelChanges();
+        pageVisibilities.observeModelChanges();
 
     }
 );

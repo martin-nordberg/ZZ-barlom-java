@@ -7,7 +7,7 @@
  * Module: org/grestler/presentation/adminclient/schemapage/leftnavcontroller
  */
 
-import schemapage_leftnavmodel = require( './leftnavmodel' )
+import leftnavmodel = require( './leftnavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@ export class LeftNavController {
      * Constructs a new schema page left schemapage controller.
      * @param leftTabSelection the left tab selection maintained by this controller.
      */
-    constructor( leftTabSelection : schemapage_leftnavmodel.LeftTabSelection ) {
+    constructor( leftTabSelection : leftnavmodel.LeftTabSelection ) {
         this._leftTabSelection = leftTabSelection;
     }
 
@@ -29,7 +29,7 @@ export class LeftNavController {
      * @param event
      */
     public onBookmarksTabClicked( event : any ) : void {
-        this._leftTabSelection.leftTabSelection = schemapage_leftnavmodel.ESchemaPageLeftTabSelection.BOOKMARKS;
+        this._leftTabSelection.leftTabSelection = leftnavmodel.ESchemaPageLeftTabSelection.BOOKMARKS;
     }
 
     /**
@@ -37,7 +37,7 @@ export class LeftNavController {
      * @param event
      */
     public onBrowseTabClicked( event : any ) : void {
-        this._leftTabSelection.leftTabSelection = schemapage_leftnavmodel.ESchemaPageLeftTabSelection.BROWSE;
+        this._leftTabSelection.leftTabSelection = leftnavmodel.ESchemaPageLeftTabSelection.BROWSE;
     }
 
     /**
@@ -45,7 +45,7 @@ export class LeftNavController {
      * @param event
      */
     public onRecentTabClicked( event : any ) : void {
-        this._leftTabSelection.leftTabSelection = schemapage_leftnavmodel.ESchemaPageLeftTabSelection.RECENT;
+        this._leftTabSelection.leftTabSelection = leftnavmodel.ESchemaPageLeftTabSelection.RECENT;
     }
 
     /**
@@ -53,11 +53,11 @@ export class LeftNavController {
      * @param event
      */
     public onSearchTabClicked( event : any ) : void {
-        this._leftTabSelection.leftTabSelection = schemapage_leftnavmodel.ESchemaPageLeftTabSelection.SEARCH;
+        this._leftTabSelection.leftTabSelection = leftnavmodel.ESchemaPageLeftTabSelection.SEARCH;
     }
 
     /** The left tab selection model under control. */
-    private _leftTabSelection : schemapage_leftnavmodel.LeftTabSelection;
+    private _leftTabSelection : leftnavmodel.LeftTabSelection;
 
 }
 

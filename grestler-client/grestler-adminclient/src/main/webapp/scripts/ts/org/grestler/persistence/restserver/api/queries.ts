@@ -38,11 +38,88 @@ export class AttributeDeclLoader implements spi_queries.IAttributeDeclLoader {
 export class AttributeTypeLoader implements spi_queries.IAttributeTypeLoader {
 
     loadAllAttributeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
-        return new Promise<values.ENothing>(
-            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
-                resolve( values.nothing );  // TODO
+
+        // TODO: externally configured host & port
+        const url = "http://localhost:8080/grestlerdata/metadata/attributetypes";
+
+        /**
+         * Loads one attribute type from its JSON representation.
+         * @param attributeType parsed JSON for the attribute type.
+         */
+        var loadAttributeType = function ( attributeType : any ) : void {
+            var parentPackage = repository.findPackageById( attributeType.parentPackageId );
+            var dataType = attributeType.dataType;
+
+            switch ( dataType ) {
+                case 'BOOLEAN':
+                    repository.loadBooleanAttributeType(
+                        attributeType.id,
+                        parentPackage,
+                        attributeType.name,
+                        attributeType.defaultValue
+                    );
+                    break;
+                case 'DATETIME':
+                    repository.loadDateTimeAttributeType(
+                        attributeType.id,
+                        parentPackage,
+                        attributeType.name,
+                        attributeType.minValue ? new Date( attributeType.minValue ) : null,
+                        attributeType.maxValue ? new Date( attributeType.maxValue ) : null
+                    );
+                    break;
+                case 'FLOAT64':
+                    repository.loadFloat64AttributeType(
+                        attributeType.id,
+                        parentPackage,
+                        attributeType.name,
+                        attributeType.minValue ? parseFloat( attributeType.minValue ) : null,
+                        attributeType.maxValue ? parseFloat( attributeType.maxValue ) : null,
+                        attributeType.defaultValue ? parseFloat( attributeType.defaultValue ) : null
+                    );
+                    break;
+                case 'INTEGER32':
+                    repository.loadInteger32AttributeType(
+                        attributeType.id,
+                        parentPackage,
+                        attributeType.name,
+                        attributeType.minValue ? parseInt( attributeType.minValue ) : null,
+                        attributeType.maxValue ? parseInt( attributeType.maxValue ) : null,
+                        attributeType.defaultValue ? parseInt( attributeType.defaultValue ) : null
+                    );
+                    break;
+                case 'STRING':
+                    repository.loadStringAttributeType(
+                        attributeType.id,
+                        parentPackage,
+                        attributeType.name,
+                        attributeType.minLength ? parseInt( attributeType.minLength ) : null,
+                        attributeType.maxLength ? parseInt( attributeType.maxLength ) : null,
+                        attributeType.regexPattern
+                    );
+                    break;
+                case 'UUID':
+                    repository.loadUuidAttributeType(
+                        attributeType.id,
+                        parentPackage,
+                        attributeType.name
+                    );
+                    break;
             }
-        );
+        };
+
+        /**
+         * Loads all attribute types from their representation as a JSON object.
+         * @param attributeTypesJson parsed JSON for an array of attribute types.
+         */
+        var loadAttributeTypes = function ( attributeTypesJson : any ) : values.ENothing {
+            attributeTypesJson.attributeTypes.forEach( loadAttributeType );
+            return values.nothing;
+        };
+
+        // Perform the AJAX call and handle the response.
+        return ajax.httpGet( url ).then( JSON.parse ).then( loadAttributeTypes );
+
     }
 
 }
@@ -149,4 +226,3 @@ export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-tsc --module AMD --outDir ../js-gen --sourcemap --target ES6 --watch @tsfiles.txt
+tsc --module AMD --outDir ../js-gen --sourcemap --target ES6 --watch allmodules.ts

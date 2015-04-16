@@ -7,7 +7,7 @@
  * Module: org/grestler/presentation/adminclient/schemapage/leftnavviewmodel
  */
 
-import schemapage_leftnavmodel = require( './leftnavmodel' )
+import leftnavmodel = require( './leftnavmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@ export class LeftTabVisibilities {
     /**
      * Constructs a new schema page visibilities object.
      */
-    constructor( leftTabSelection : schemapage_leftnavmodel.LeftTabSelection ) {
+    constructor( leftTabSelection : leftnavmodel.LeftTabSelection ) {
         this._leftTabSelection = leftTabSelection;
     }
 
@@ -30,11 +30,11 @@ export class LeftTabVisibilities {
 
         var me = this;
 
-        var setActiveLeftTab = function ( leftTabSelection : schemapage_leftnavmodel.ESchemaPageLeftTabSelection ) : void {
-            me.isBookmarksTabActive = leftTabSelection == schemapage_leftnavmodel.ESchemaPageLeftTabSelection.BOOKMARKS;
-            me.isBrowseTabActive = leftTabSelection == schemapage_leftnavmodel.ESchemaPageLeftTabSelection.BROWSE;
-            me.isRecentTabActive = leftTabSelection == schemapage_leftnavmodel.ESchemaPageLeftTabSelection.RECENT;
-            me.isSearchTabActive = leftTabSelection == schemapage_leftnavmodel.ESchemaPageLeftTabSelection.SEARCH;
+        var setActiveLeftTab = function ( leftTabSelection : leftnavmodel.ESchemaPageLeftTabSelection ) : void {
+            me.isBookmarksTabActive = leftTabSelection == leftnavmodel.ESchemaPageLeftTabSelection.BOOKMARKS;
+            me.isBrowseTabActive = leftTabSelection == leftnavmodel.ESchemaPageLeftTabSelection.BROWSE;
+            me.isRecentTabActive = leftTabSelection == leftnavmodel.ESchemaPageLeftTabSelection.RECENT;
+            me.isSearchTabActive = leftTabSelection == leftnavmodel.ESchemaPageLeftTabSelection.SEARCH;
         };
 
         setActiveLeftTab( this._leftTabSelection.leftTabSelection );
@@ -58,7 +58,7 @@ export class LeftTabVisibilities {
     /**
      * @returns the model behind this viewmodel.
      */
-    public get leftTabSelection() : schemapage_leftnavmodel.LeftTabSelection {
+    public get leftTabSelection() : leftnavmodel.LeftTabSelection {
         return this._leftTabSelection;
     }
 
@@ -75,7 +75,7 @@ export class LeftTabVisibilities {
     public isSearchTabActive = false;
 
     /** The schema page selections model that feeds into this view model. */
-    private _leftTabSelection : schemapage_leftnavmodel.LeftTabSelection;
+    private _leftTabSelection : leftnavmodel.LeftTabSelection;
 
 }
 
