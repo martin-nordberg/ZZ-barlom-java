@@ -1,5 +1,5 @@
 //
-// Extra styling for schema page tabs of Grestler Admin Concole
+// Extra styling for the Schema page
 //
 
 div.left-panels-container {
@@ -31,4 +31,9 @@ div.right-tabs-container {
   ul.nav-tabs {
     border-bottom: none;
   }
+}
+
+ul.breadcrumb {
+  margin-left: 15px;
+  margin-right: 15px;
 }

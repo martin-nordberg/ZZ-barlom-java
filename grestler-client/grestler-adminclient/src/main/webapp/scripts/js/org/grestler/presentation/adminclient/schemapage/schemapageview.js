@@ -1,5 +1,17 @@
+//
+// (C) Copyright 2015 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+/**
+ * Module: org/grestler/presentation/adminclient/schemapage/schemapageview
+ *
+ * View class for the Schema page component.
+ */
+
 define(
     [
+        'scripts/js/org/grestler/presentation/adminclient/schemapage/browsetabview',
         'dependencies',
         'ractive',
         'jquery',
@@ -9,6 +21,7 @@ define(
         'css!styles/css-gen/org/grestler/presentation/adminclient/schemapage/schemapage.css'
     ],
     function (
+        browsetabview,
         dependencies,
         Ractive,
         $,
@@ -20,11 +33,12 @@ define(
         var leftTabVisibilities = dependencies.context.get( 'schemaPageLeftTabVisibilities' );
         var rightTabVisibilities = dependencies.context.get( 'schemaPageRightTabVisibilities' );
 
-        var metamodelRepository = dependencies.context.get( 'metamodelRepository' );
-
+        // Define the Ractive view
         exports.SchemaPageView = Ractive.extend(
             {
-
+                components: {
+                    "grestler-browse-tab": browsetabview.BrowseTabView
+                },
                 data: {
                     leftTabVisibilities: leftTabVisibilities,
                     rightTabVisibilities: rightTabVisibilities

@@ -2,6 +2,16 @@
 
 <section class="schema-page" id="schema-page-id">
 
+    <!-- Breadcrumbs for focused element -->
+    <ul class="breadcrumb">
+        <li><a href="javascript:void(0)">$</a></li>
+        <li><a href="javascript:void(0)">package1</a></li>
+        <li><a href="javascript:void(0)">package1a</a></li>
+        <li><a href="javascript:void(0)">edgeTypeA</a></li>
+        <li><a href="javascript:void(0)">attributeAx</a></li>
+    </ul>
+
+    <!-- Left Tabs -->
     {{#with leftTabVisibilities}}
         <div class="col-xs-6">
 
@@ -27,16 +37,7 @@
             <div class="left-panels-container">
                 <div class="tab-content">
                     {{#if isBrowseTabActive}}
-                        <div class="tab-pane active" id="focusedElementTab">
-                            <ul class="breadcrumb">
-                                <li><a href="javascript:void(0)">$</a></li>
-                                <li><a href="javascript:void(0)">package1</a></li>
-                                <li><a href="javascript:void(0)">package1a</a></li>
-                                <li><a href="javascript:void(0)">edgeTypeA</a></li>
-                                <li><a href="javascript:void(0)">attributeAx</a></li>
-                            </ul>
-                            Browse ...
-                        </div>
+                        <grestler-browse-tab></grestler-browse-tab>
                     {{/if}}
                     {{#if isSearchTabActive}}
                         <div class="tab-pane active" id="foundElementsTab">Search results ...</div>
@@ -52,6 +53,7 @@
         </div>
     {{/with}}
 
+    <!-- Right Tabs -->
     {{#with rightTabVisibilities}}
         <div class="col-xs-6">
 

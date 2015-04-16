@@ -4,7 +4,7 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/main/consoleview
+ * Module: org/grestler/presentation/adminclient/console/consoleview
  *
  * Main view class for the whole Grestler Admin Console.
  */
