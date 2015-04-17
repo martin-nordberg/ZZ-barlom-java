@@ -107,6 +107,9 @@ define(
                     rightTabVisibilities.observeModelChanges();
 
                 }
+
+                // TODO: onteardown
+
             }
         );
 

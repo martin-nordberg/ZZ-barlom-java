@@ -54,6 +54,8 @@ export class PageVisibilities {
 
     }
 
+    // TODO: unobserveModelChanges
+
     /**
      * @returns the model behind this viewmodel.
      */

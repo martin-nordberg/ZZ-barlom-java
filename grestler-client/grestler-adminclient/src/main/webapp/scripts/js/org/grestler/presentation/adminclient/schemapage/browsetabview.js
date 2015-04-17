@@ -27,14 +27,14 @@ define(
         exports
     ) {
 
-        // Load the focused element of the schema page.  -- TODO: not the whole metamodel
-        var metamodelRepository = dependencies.context.get( 'metamodelRepository' );
+        // Load the focused element of the schema page.
+        var browsedElementHolder = dependencies.context.get( 'schemaPageBrowsedElementHolder' );
 
         // Define the Ractive view
         exports.BrowseTabView = Ractive.extend(
             {
                 data: {
-                    metamodelRepository: metamodelRepository
+                    browsedElementHolder: browsedElementHolder
                 },
                 isolated: true,
                 magic: true,
@@ -45,6 +45,14 @@ define(
                     // Define the behavior (event handlers).
 
                     // TODO ...
+
+                    browsedElementHolder.observeSelectionChanges();
+
+                },
+
+                onteardown: function() {
+
+                    browsedElementHolder.unobserveSelectionChanges();
 
                 }
             }

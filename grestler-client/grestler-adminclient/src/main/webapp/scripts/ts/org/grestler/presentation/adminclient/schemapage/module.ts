@@ -9,6 +9,7 @@
 
 import api_queries = require( '../../../domain/metamodel/api/queries' )
 import elementmodel = require( '../../metamodel/elementmodel' );
+import elementviewmodel = require( '../../metamodel/elementviewmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
 import leftnavmodel = require( './leftnavmodel' );
 import leftnavviewmodel = require( './leftnavviewmodel' );
@@ -20,6 +21,11 @@ import rightnavviewmodel = require( './rightnavviewmodel' );
 
 /** The one and only element currently being browsed. */
 var theBrowsedElement : elementmodel.ElementSelection = null;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** The one and only element currently being browsed. */
+var theBrowsedElementHolder : elementviewmodel.ElementHolder = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,6 +63,21 @@ export var schemaPageModule = {
         }
 
         return theBrowsedElement;
+
+    },
+
+    /**
+     * Creates or returns the one and only schema page browsed element selection view model, creating it when first requested.
+     * @returns {ElementSelection} the browsed element selection.
+     */
+    provideSchemaPageBrowsedElementHolder: function provideSchemaPageBrowsedElementHolder( schemaPageBrowsedElement : elementmodel.ElementSelection ) : elementviewmodel.ElementHolder {
+
+        // Create the page selection first time through.
+        if ( theBrowsedElementHolder == null ) {
+            theBrowsedElementHolder = new elementviewmodel.ElementHolder( schemaPageBrowsedElement );
+        }
+
+        return theBrowsedElementHolder;
 
     },
 

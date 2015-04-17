@@ -7,8 +7,9 @@
  * Module: org/grestler/presentation/metamodel/elementmodel
  */
 
-import api_elements = require( '../../domain/metamodel/api/elements' )
-import api_queries = require( '../../domain/metamodel/api/queries' )
+import api_elements = require( '../../domain/metamodel/api/elements' );
+import api_queries = require( '../../domain/metamodel/api/queries' );
+import values = require( '../../infrastructure/utilities/values' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +22,14 @@ export class ElementSelection {
      * Constructs a new element selection object.
      */
     constructor( metamodelRepository : api_queries.IMetamodelRepository ) {
-        this._elementSelection = null; // TODO: root package
+
+        this._elementSelection = null;
+
+        metamodelRepository.loaded.then(
+            // TODO: recall the saved selection
+            ( _ : values.ENothing ) => this.elementSelection = metamodelRepository.findRootPackage()
+        );
+
     }
 
     get elementSelection() : api_elements.IDocumentedElement {
@@ -46,8 +54,9 @@ export class ElementSelection {
 
     private _elementSelection : api_elements.IDocumentedElement;
 
-    // TODO: store selection
+    // TODO: save the selection after each change
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

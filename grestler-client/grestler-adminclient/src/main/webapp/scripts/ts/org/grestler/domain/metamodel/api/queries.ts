@@ -8,6 +8,7 @@
  */
 
 import elements = require( './elements' );
+import values = require( '../../../infrastructure/utilities/values' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -185,6 +186,11 @@ export interface IMetamodelRepository {
      * @return the vertex type found.
      */
     findVertexTypeById( id : string ) : elements.IVertexType;
+
+    /**
+     * Promise fulfilled when the repository has been fully loaded.
+     */
+    loaded : Promise<values.ENothing>;
 
 }
 

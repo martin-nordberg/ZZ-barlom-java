@@ -54,6 +54,8 @@ export class RightTabVisibilities {
 
     }
 
+    // TODO: unobserveModelChanges
+
     /**
      * @returns the model behind this viewmodel.
      */

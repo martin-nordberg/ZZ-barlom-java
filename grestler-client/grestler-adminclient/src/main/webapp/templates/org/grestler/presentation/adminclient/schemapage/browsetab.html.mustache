@@ -1,5 +1,22 @@
 <!-- Browse tab panel of the Schema page -->
 
 <div class="tab-pane active" id="focusedElementTab">
-    Browse Tab Panel (TODO) ...
+    {{#with browsedElementHolder}}
+
+        <!-- {{browsedElementHolder.revision}} -->
+        Browse Tab ...
+        [{{browsedElementHolder.revision}}] ...
+
+        {{#if element}}
+
+            <!-- TODO: different children depending on what's selected -->
+            <h4>Sub-Packages</h4>
+            {{#each element.childPackages}}
+                <!-- TODO: clickable component for the name -->
+                {{name}}<br>
+            {{/each}}
+
+        {{/if}}
+
+    {{/with}}
 </div>

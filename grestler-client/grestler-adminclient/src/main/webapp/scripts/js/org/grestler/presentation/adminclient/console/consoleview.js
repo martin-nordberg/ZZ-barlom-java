@@ -68,6 +68,8 @@ require(
         /** Wire the viewmodel to the model. */
         pageVisibilities.observeModelChanges();
 
+        // TODO: oninit / onteardown
+
     }
 );
 

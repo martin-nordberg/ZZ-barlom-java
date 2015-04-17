@@ -55,6 +55,8 @@ export class LeftTabVisibilities {
 
     }
 
+    // TODO: unobserveModelChanges
+
     /**
      * @returns the model behind this viewmodel.
      */

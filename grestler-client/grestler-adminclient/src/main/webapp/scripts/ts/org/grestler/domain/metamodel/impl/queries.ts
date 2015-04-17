@@ -40,6 +40,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
         attributeDeclLoader : spi_queries.IAttributeDeclLoader
     ) {
 
+        // Define arrays of elements.
         this._packages = [];
         this._vertexTypes = [];
         this._edgeTypes = [];
@@ -47,6 +48,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
         this._undirectedEdgeTypes = [];
         this._attributeTypes = [];
 
+        // Define keyed maps of elements.
         this._packagesById = {};
         this._vertexTypesById = {};
         this._edgeTypesById = {};
@@ -54,37 +56,29 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
         this._undirectedEdgeTypesById = {};
         this._attributeTypesById = {};
 
+        // Define root elements.
         this._rootDirectedEdgeType = null;
         this._rootPackage = null;
         this._rootUndirectedEdgeType = null;
         this._rootVertexType = null;
 
+        // Load all the metamodel elements in appropriate order
         // TODO: initiate the AJAX in parallel, join, then do the loading in sequence
         this._loaded = packageLoader.loadAllPackages( this );
         this._loaded = this._loaded.then(
-            function ( _ : values.ENothing ) {
-                return packageDependencyLoader.loadAllPackageDependencies( this );
-            }
+            ( _ : values.ENothing ) => packageDependencyLoader.loadAllPackageDependencies( this )
         );
         this._loaded = this._loaded.then(
-            function ( _ : values.ENothing ) {
-                return attributeTypeLoader.loadAllAttributeTypes( this );
-            }
+            ( _ : values.ENothing ) => attributeTypeLoader.loadAllAttributeTypes( this )
         );
         this._loaded = this._loaded.then(
-            function ( _ : values.ENothing ) {
-                return vertexTypeLoader.loadAllVertexTypes( this );
-            }
+            ( _ : values.ENothing ) => vertexTypeLoader.loadAllVertexTypes( this )
         );
         this._loaded = this._loaded.then(
-            function ( _ : values.ENothing ) {
-                return edgeTypeLoader.loadAllEdgeTypes( this );
-            }
+            ( _ : values.ENothing ) => edgeTypeLoader.loadAllEdgeTypes( this )
         );
         this._loaded = this._loaded.then(
-            function ( _ : values.ENothing ) {
-                return attributeDeclLoader.loadAllAttributeDecls( this );
-            }
+            ( _ : values.ENothing ) => attributeDeclLoader.loadAllAttributeDecls( this )
         );
 
     }
@@ -523,6 +517,13 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
 
         return result;
 
+    }
+
+    /**
+     * @returns Promise fulfilled when the repository has been loaded.
+     */
+    public get loaded() : Promise<values.ENothing> {
+        return this._loaded;
     }
 
     private _attributeTypes : api_elements.IAttributeType[];
