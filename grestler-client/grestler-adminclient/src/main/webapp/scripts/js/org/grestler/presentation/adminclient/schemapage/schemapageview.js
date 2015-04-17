@@ -106,9 +106,15 @@ define(
                     leftTabVisibilities.observeModelChanges();
                     rightTabVisibilities.observeModelChanges();
 
-                }
+                },
 
-                // TODO: onteardown
+                onteardown: function() {
+
+                    // Turn off the wiring between model and viewmodel.
+                    leftTabVisibilities.unobserveModelChanges();
+                    rightTabVisibilities.unobserveModelChanges();
+
+                }
 
             }
         );
