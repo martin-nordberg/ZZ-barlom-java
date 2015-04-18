@@ -43,9 +43,7 @@ export class RightTabVisibilities {
      */
     public observeModelChanges() {
 
-        var me = this;
-
-        me.setRightTabSelection( this._rightTabSelection.rightTabSelection );
+        this.setRightTabSelection( this._rightTabSelection.rightTabSelection );
 
         Object['observe'](
             this._rightTabSelection,

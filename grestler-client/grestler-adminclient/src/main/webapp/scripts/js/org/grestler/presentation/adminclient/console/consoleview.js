@@ -33,42 +33,53 @@ require(
                 data: pageVisibilities,
                 el: 'console-id',
                 magic: true,
-                template: consoleTemplate
+                template: consoleTemplate,
+
+                oninit: function() {
+
+                    // Define the behavior (event handlers).
+                    var controller = dependencies.context.get( 'topNavController' );
+
+                    this.on(
+                        'queriesClicked', function ( event ) {
+                            controller.onQueriesClicked( event );
+                            return false;
+                        }
+                    );
+                    this.on(
+                        'schemaClicked', function ( event ) {
+                            controller.onSchemaClicked( event );
+                            return false;
+                        }
+                    );
+                    this.on(
+                        'searchClicked', function ( event ) {
+                            controller.onSearchClicked( event );
+                            return false;
+                        }
+                    );
+                    this.on(
+                        'serverClicked', function ( event ) {
+                            controller.onServerClicked( event );
+                            return false;
+                        }
+                    );
+
+                    /** Wire the viewmodel to the model. */
+                    pageVisibilities.observeModelChanges();
+
+                },
+
+                onteardown: function() {
+
+                    // Turn off the wiring between model and viewmodel.
+                    pageVisibilities.unobserveModelChanges();
+
+                }
+
             }
         );
 
-        // Define the behavior (event handlers).
-        var controller = dependencies.context.get( 'topNavController' );
-
-        view.on(
-            'queriesClicked', function ( event ) {
-                controller.onQueriesClicked( event );
-                return false;
-            }
-        );
-        view.on(
-            'schemaClicked', function ( event ) {
-                controller.onSchemaClicked( event );
-                return false;
-            }
-        );
-        view.on(
-            'searchClicked', function ( event ) {
-                controller.onSearchClicked( event );
-                return false;
-            }
-        );
-        view.on(
-            'serverClicked', function ( event ) {
-                controller.onServerClicked( event );
-                return false;
-            }
-        );
-
-        /** Wire the viewmodel to the model. */
-        pageVisibilities.observeModelChanges();
-
-        // TODO: oninit / onteardown
 
     }
 );

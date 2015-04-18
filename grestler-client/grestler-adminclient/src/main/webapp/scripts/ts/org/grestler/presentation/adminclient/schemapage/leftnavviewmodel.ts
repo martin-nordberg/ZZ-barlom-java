@@ -43,9 +43,7 @@ export class LeftTabVisibilities {
      */
     public observeModelChanges() {
 
-        var me = this;
-
-        me.setLeftTabSelection( this._leftTabSelection.leftTabSelection );
+        this.setLeftTabSelection( this._leftTabSelection.leftTabSelection );
 
         Object['observe'](
             this._leftTabSelection,

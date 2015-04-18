@@ -20,7 +20,22 @@ export class PageVisibilities {
      * Constructs a new page visibilities object.
      */
     constructor( pageSelection : topnavmodel.PageSelection ) {
-        this._pageSelection = pageSelection;
+
+        var me = this;
+
+        me._pageSelection = pageSelection;
+
+        me._modelObserver = function ( changes ) {
+            changes.forEach(
+                function ( change ) {
+                    console.log( change );
+                    if ( change.name == 'topNavSelection' ) {
+                        me.setPageSelection( change.newValue );
+                    }
+                }
+            )
+        }
+
     }
 
     /**
@@ -28,39 +43,45 @@ export class PageVisibilities {
      */
     public observeModelChanges() {
 
-        var me = this;
-
-        var setTopNavActivePage = function ( topNavSelection : topnavmodel.ETopNavSelection ) : void {
-            me.isQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
-            me.isSchemaPageActive = topNavSelection == topnavmodel.ETopNavSelection.SCHEMA;
-            me.isServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
-        };
-
-        setTopNavActivePage( this._pageSelection.topNavSelection );
+        this.setPageSelection( this._pageSelection.topNavSelection );
 
         Object['observe'](
             this._pageSelection,
-            function ( changes ) {
-                changes.forEach(
-                    function ( change ) {
-                        console.log( change );
-                        if ( change.name == 'topNavSelection' ) {
-                            setTopNavActivePage( change.newValue );
-                        }
-                    }
-                )
-            }, ['change.topNavSelection']
+            this._modelObserver,
+            ['change.topNavSelection']
         );
 
     }
 
-    // TODO: unobserveModelChanges
+    /**
+     * Stops observing the associated model for changes.
+     */
+    public unobserveModelChanges() {
+
+        Object['unobserve'](
+            this._pageSelection,
+            this._modelObserver,
+            ['change.topNavSelection']
+        );
+
+    }
+
 
     /**
      * @returns the model behind this viewmodel.
      */
     public get pageSelection() : topnavmodel.PageSelection {
         return this._pageSelection;
+    }
+
+    /**
+     * Changes the selected page.
+     * @param topNavSelection the new selection.
+     */
+    private setPageSelection( topNavSelection : topnavmodel.ETopNavSelection ) : void {
+        this.isQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
+        this.isSchemaPageActive = topNavSelection == topnavmodel.ETopNavSelection.SCHEMA;
+        this.isServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
     }
 
     /** Whether the Queries page is active. */
@@ -71,6 +92,9 @@ export class PageVisibilities {
 
     /** Whether the Server page is active. */
     public isServerPageActive = false;
+
+    /** The observer function for top nav selection changes. */
+    private _modelObserver : ( changes : any ) => void;
 
     /** The page selection model that feeds into this view model. */
     private _pageSelection : topnavmodel.PageSelection;
