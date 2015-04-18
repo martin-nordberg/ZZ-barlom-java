@@ -101,6 +101,8 @@ export class ElementHolder extends ElementHandle {
 
         me._elementSelection = elementSelection;
 
+        me._selectionObservationCount = 0;
+
         me._selectionObserver = function ( changes ) {
             changes.forEach(
                 function ( change ) {
@@ -120,15 +122,19 @@ export class ElementHolder extends ElementHandle {
      */
     public observeSelectionChanges() {
 
-        this.element = this._elementSelection.elementSelection;
+        if ( this._selectionObservationCount == 0 ) {
+            this.element = this._elementSelection.elementSelection;
 
-        super.observeModelChanges();
+            super.observeModelChanges();
 
-        Object['observe'](
-            this._elementSelection,
-            this._selectionObserver,
-            ['change.elementSelection']
-        );
+            Object['observe'](
+                this._elementSelection,
+                this._selectionObserver,
+                ['change.elementSelection']
+            );
+        }
+
+        this._selectionObservationCount += 1;
 
     }
 
@@ -137,14 +143,21 @@ export class ElementHolder extends ElementHandle {
      */
     public unobserveSelectionChanges() {
 
-        Object['unobserve']( this._elementSelection, this._selectionObserver );
+        this._selectionObservationCount -= 1;
 
-        super.unobserveModelChanges();
+        if ( this._selectionObservationCount == 0 ) {
+            Object['unobserve']( this._elementSelection, this._selectionObserver );
+
+            super.unobserveModelChanges();
+        }
 
     }
 
     /** The selected element to be watched. */
     private _elementSelection : elementmodel.ElementSelection;
+
+    /** Number of time observeSelectionChanges has been called. */
+    private _selectionObservationCount : number;
 
     /** The observer function for selection changes. */
     private _selectionObserver : ( changes : any ) => void;

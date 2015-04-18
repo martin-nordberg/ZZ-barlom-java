@@ -12,8 +12,8 @@
             <!-- TODO: different children depending on what's selected -->
             <h4>Sub-Packages</h4>
             {{#each element.childPackages}}
-                <!-- TODO: clickable component for the name -->
-                {{name}}<br>
+                <grestler-element-link id="{{id}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
+                <br>
             {{/each}}
 
         {{/if}}

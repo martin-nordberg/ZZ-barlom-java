@@ -11,6 +11,7 @@
 
 define(
     [
+        'scripts/js/org/grestler/presentation/metamodel/elementlinkview',
         'dependencies',
         'ractive',
         'jquery',
@@ -20,6 +21,7 @@ define(
         'css!styles/css-gen/org/grestler/presentation/adminclient/schemapage/browsetab.css'
     ],
     function (
+        elementlinkview,
         dependencies,
         Ractive,
         $,
@@ -33,6 +35,9 @@ define(
         // Define the Ractive view
         exports.BrowseTabView = Ractive.extend(
             {
+                components: {
+                    "grestler-element-link": elementlinkview.ElementLinkView
+                },
                 data: {
                     browsedElementHolder: browsedElementHolder
                 },
