@@ -12,7 +12,7 @@
             <!-- TODO: different children depending on what's selected -->
             <h4>Sub-Packages</h4>
             {{#each element.childPackages}}
-                <grestler-element-link id="{{id}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
+                <grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
                 <br>
             {{/each}}
 

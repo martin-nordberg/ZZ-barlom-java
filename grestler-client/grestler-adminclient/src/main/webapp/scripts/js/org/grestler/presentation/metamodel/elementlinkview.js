@@ -14,7 +14,6 @@ define(
         'scripts/js-gen/org/grestler/presentation/metamodel/elementviewmodel',
         'dependencies',
         'ractive',
-        'jquery',
         'text!templates/org/grestler/presentation/metamodel/elementlink.html.mustache',
         'exports',
 
@@ -24,17 +23,16 @@ define(
         elementviewmodel,
         dependencies,
         Ractive,
-        $,
         elementLinkTemplate,
         exports
     ) {
 
-        // Define the Ractive view
+        // Define the Ractive view.
         exports.ElementLinkView = Ractive.extend(
             {
                 data: {
+                    element: '<parameter>',
                     elementHandle: '<constructed>',
-                    id: '<parameter>',
                     targetElement: '<constructed>',
                     targetElementName: '<parameter>'
                 },
@@ -46,19 +44,10 @@ define(
 
                     console.log( options );
 
-                    // TODO: establish a handle to the given element ID
-                    // - get the metamodel repository from the context
-                    // - look up the element by ID
-                    // - create the element handle from the element
+                    // Set the element linked to.
+                    options.data.elementHandle = new elementviewmodel.ElementHandle( options.data.element );
 
-                    var metamodelRepository = dependencies.context.get( 'metamodelRepository' );
-
-                    // TODO: find arbitrary element, not package in particular
-                    var pkg = metamodelRepository.findPackageById( options.data.id );
-
-                    options.data.elementHandle = new elementviewmodel.ElementHandle( pkg );
-
-                    // TODO: make it work for different target element holders
+                    // Set the element model to be changed when the link is clicked.
                     options.data.targetElement = dependencies.context.get( options.data.targetElementName );
 
                 },
@@ -67,7 +56,13 @@ define(
 
                     // Define the behavior (event handlers).
 
-                    // TODO ...
+                    this.on(
+                        'linkClicked', function ( event ) {
+                            this.get( 'targetElement' ).elementSelection = this.get( 'element' );
+                            return false;
+                        }
+                    );
+
 
                     this.get( 'elementHandle' ).observeModelChanges();
 
