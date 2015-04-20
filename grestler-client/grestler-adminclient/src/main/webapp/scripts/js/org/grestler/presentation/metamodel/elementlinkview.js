@@ -11,38 +11,47 @@
 
 define(
     [
+        'scripts/js-gen/org/grestler/presentation/metamodel/elementcontroller',
         'scripts/js-gen/org/grestler/presentation/metamodel/elementviewmodel',
         'dependencies',
-        'ractive',
+        'scripts/js/org/grestler/presentation/utilities/ractiveinjection',
         'text!templates/org/grestler/presentation/metamodel/elementlink.html.mustache',
         'exports',
 
         'css!styles/css-gen/org/grestler/presentation/metamodel/elementlink.css'
     ],
     function (
+        elementcontroller,
         elementviewmodel,
         dependencies,
-        Ractive,
+        ractiveinjection,
         elementLinkTemplate,
         exports
     ) {
 
         // Define the Ractive view.
-        exports.ElementLinkView = Ractive.extend(
+        exports.ElementLinkView = ractiveinjection.InjectedRactive.extend(
             {
+
                 data: {
                     element: '<parameter>',
                     elementHandle: '<constructed>',
                     targetElement: '<constructed>',
                     targetElementName: '<parameter>'
                 },
+
                 isolated: true,
+
                 magic: true,
+
                 template: elementLinkTemplate,
 
                 onconstruct: function( options ) {
 
                     console.log( options );
+
+                    // Do the default thing.
+                    this._super( options );
 
                     // Set the element linked to.
                     options.data.elementHandle = new elementviewmodel.ElementHandle( options.data.element );
@@ -50,27 +59,15 @@ define(
                     // Set the element model to be changed when the link is clicked.
                     options.data.targetElement = dependencies.context.get( options.data.targetElementName );
 
-                },
+                    // Create a custom controller.
+                    this.controllers = [
+                        new elementcontroller.ElementController( options.data.elementHandle )
+                    ];
 
-                oninit: function () {
-
-                    // Define the behavior (event handlers).
-
-                    this.on(
-                        'linkClicked', function ( event ) {
-                            this.get( 'targetElement' ).elementSelection = this.get( 'element' );
-                            return false;
-                        }
-                    );
-
-
-                    this.get( 'elementHandle' ).observeModelChanges();
-
-                },
-
-                onteardown: function() {
-
-                    this.get( 'elementHandle' ).unobserveModelChanges();
+                    // Make note of our custom view models for initialization and tear down.
+                    // TODO: would be nice to use something like get('.') and then enumerate the view models w/o knowing their names separately
+                    this.viewModelNames.elementHandle = 'custom';
+                    this.viewModelNames.targetElement = 'custom';
 
                 }
             }

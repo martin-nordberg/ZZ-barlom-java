@@ -27,12 +27,17 @@ require(
         // Define the view.
         var view = new Ractive(
             {
+
                 components: {
                     "grestler-schema-page": schemapageview.SchemaPageView
                 },
+
                 data: pageVisibilities,
+
                 el: 'console-id',
+
                 magic: true,
+
                 template: consoleTemplate,
 
                 oninit: function() {

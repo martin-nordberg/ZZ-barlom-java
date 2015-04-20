@@ -12,9 +12,7 @@
 define(
     [
         'scripts/js/org/grestler/presentation/metamodel/elementlinkview',
-        'dependencies',
-        'ractive',
-        'jquery',
+        'scripts/js/org/grestler/presentation/utilities/ractiveinjection',
         'text!templates/org/grestler/presentation/adminclient/schemapage/browsetab.html.mustache',
         'exports',
 
@@ -22,44 +20,27 @@ define(
     ],
     function (
         elementlinkview,
-        dependencies,
-        Ractive,
-        $,
+        ractiveinjection,
         browseTabTemplate,
         exports
     ) {
 
-        // Load the focused element of the schema page.
-        var browsedElementHolder = dependencies.context.get( 'schemaPageBrowsedElementHolder' );
-
         // Define the Ractive view
-        exports.BrowseTabView = Ractive.extend(
+        exports.BrowseTabView = ractiveinjection.InjectedRactive.extend(
             {
+
                 components: {
                     "grestler-element-link": elementlinkview.ElementLinkView
                 },
-                data: {
-                    browsedElementHolder: browsedElementHolder
-                },
-                isolated: true,
-                magic: true,
+
+                controllerNames: [],
+
                 template: browseTabTemplate,
 
-                oninit: function () {
-
-                    // Define the behavior (event handlers).
-
-                    // TODO ...
-
-                    browsedElementHolder.observeSelectionChanges();
-
-                },
-
-                onteardown: function() {
-
-                    browsedElementHolder.unobserveSelectionChanges();
-
+                viewModelNames: {
+                    browsedElementHolder: 'schemaPageBrowsedElementHolder'
                 }
+
             }
         );
 
