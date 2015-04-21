@@ -150,14 +150,14 @@ export interface INamedElement {
  */
 export interface IDocumentedElement {
 
-    /** An array of elements from the root package down to and including this element. */
-    elementsInPath : IDocumentedElement[];
-
     /** The unique ID of this element */
     id : string;
 
     /** The parent element of this element. */
     parent : INamedElement;
+
+    /** An array of elements from the root package down to but not including this element. */
+    parentsInPath : IDocumentedElement[];
 
     /** The concrete type name of this element. */
     typeName : string;

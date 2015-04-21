@@ -13,6 +13,11 @@ $nav-tabs-active-link-hover-bg: $pale_background;
   text-transform: none;
 }
 
+// Element links
+a.elementlink {
+  color: $gray-dark;
+}
+
 // Tab panes
 div.tab-content {
   background-color: $pale_background;

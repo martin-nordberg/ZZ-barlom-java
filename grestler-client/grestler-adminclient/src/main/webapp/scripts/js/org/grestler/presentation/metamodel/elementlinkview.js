@@ -40,15 +40,11 @@ define(
                     targetElementName: '<parameter>'
                 },
 
-                isolated: true,
-
-                magic: true,
-
                 template: elementLinkTemplate,
 
                 onconstruct: function( options ) {
 
-                    console.log( options );
+                    // TODO: sanity checking on element and targetElementName
 
                     // Do the default thing.
                     this._super( options );

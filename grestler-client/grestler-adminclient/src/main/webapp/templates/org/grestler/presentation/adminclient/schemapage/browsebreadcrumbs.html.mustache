@@ -6,9 +6,17 @@
 
         {{#if element}}
 
-            {{#each element.elementsInPath}}
-                <li><grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link></li>
+            {{#each element.parentsInPath}}
+
+                <li>
+                    <grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
+                </li>
+
             {{/each}}
+
+            <li>
+                {{element.name}}
+            </li>
 
         {{/if}}
 

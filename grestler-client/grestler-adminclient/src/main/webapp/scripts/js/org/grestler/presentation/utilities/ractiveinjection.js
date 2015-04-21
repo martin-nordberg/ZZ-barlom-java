@@ -40,14 +40,16 @@ define(
 
                 magic: true,
 
+                twoway: false,
+
                 onconstruct: function ( options ) {
 
-                    this.viewModelNames = this.viewModelNames || {};
-
-                    // Instantiate the view models for this component.
-                    for ( var viewModelName in this.viewModelNames ) {
-                        if ( this.viewModelNames.hasOwnProperty( viewModelName ) ) {
-                            options.data[viewModelName] = dependencies.context.get( this.viewModelNames[viewModelName] );
+                    // Instantiate the injected view models (if any) for this component.
+                    if ( this.viewModelNames ) {
+                        for ( var viewModelName in this.viewModelNames ) {
+                            if ( this.viewModelNames.hasOwnProperty( viewModelName ) ) {
+                                options.data[viewModelName] = dependencies.context.get( this.viewModelNames[viewModelName] );
+                            }
                         }
                     }
 
@@ -72,15 +74,17 @@ define(
                         );
                     };
 
-                    me.controllerNames = me.controllerNames || [];
+                    // A derived instance can also provide controllers it constructs by custom means.
+                    var controllers = me.controllers || [];
 
-                    // Create the controllers.
-                    var controllers = this.controllers || [];
-                    me.controllerNames.forEach(
-                        function ( controllerName ) {
-                            controllers.push( dependencies.context.get( controllerName ) );
-                        }
-                    );
+                    // Instantiate the injected controllers (if any) for this component.
+                    if ( me.controllerNames ) {
+                        me.controllerNames.forEach(
+                            function ( controllerName ) {
+                                controllers.push( dependencies.context.get( controllerName ) );
+                            }
+                        );
+                    }
 
                     // Wire up the controller event handlers.
                     controllers.forEach(
