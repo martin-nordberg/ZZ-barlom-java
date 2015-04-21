@@ -150,6 +150,9 @@ export interface INamedElement {
  */
 export interface IDocumentedElement {
 
+    /** An array of elements from the root package down to and including this element. */
+    elementsInPath : IDocumentedElement[];
+
     /** The unique ID of this element */
     id : string;
 

@@ -4,6 +4,6 @@
 
     <!-- {{revision}} -->
 
-    <a href="#" on-click="linkClicked">{{element.name}}</a>
+    <a href="#" on-click="linkClicked">{{#if element.name}}{{element.name}}{{else}}${{/if}}</a>
 
 {{/with}}

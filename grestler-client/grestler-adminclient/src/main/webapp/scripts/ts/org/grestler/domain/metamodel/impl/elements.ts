@@ -31,6 +31,23 @@ export class DocumentedElement implements api_elements.IDocumentedElement {
         return this._id;
     }
 
+    public get elementsInPath() : api_elements.IDocumentedElement[] {
+        var result : api_elements.IDocumentedElement[] = [];
+
+        var element : api_elements.IDocumentedElement = this;
+        while ( true ) {
+            result.push( element );
+
+            if ( element.typeName == 'RootPackage' ) {
+                break;
+            }
+
+            element = element.parent;
+        }
+
+        return result.reverse();
+    }
+
     /**
      * Returns the parent element of this element.
      */
@@ -1942,6 +1959,10 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
         return this._packageContents.edgeTypes;
     }
 
+    public get elementsInPath() : api_elements.IDocumentedElement[] {
+        return [this];
+    }
+
     public get id() : string {
         return this._id;
     }
@@ -2035,6 +2056,10 @@ export class RootVertexType implements api_elements.IVertexType, IVertexTypeUnde
 
     public get attributes() : api_elements.IVertexAttributeDecl[] {
         return this._attributes;
+    }
+
+    public get elementsInPath() : api_elements.IDocumentedElement[] {
+        return [this];
     }
 
     public get id() : string {
@@ -2133,6 +2158,10 @@ export class RootDirectedEdgeType implements api_elements.IDirectedEdgeType, IEd
 
     public get cyclicity() : api_elements.ECyclicity {
         return api_elements.ECyclicity.UNCONSTRAINED;
+    }
+
+    public get elementsInPath() : api_elements.IDocumentedElement[] {
+        return [this];
     }
 
     public get headRoleName() : string {
@@ -2282,6 +2311,10 @@ export class RootUndirectedEdgeType implements api_elements.IUndirectedEdgeType,
 
     public get cyclicity() : api_elements.ECyclicity {
         return api_elements.ECyclicity.UNCONSTRAINED;
+    }
+
+    public get elementsInPath() : api_elements.IDocumentedElement[] {
+        return [this];
     }
 
     public get id() : string {

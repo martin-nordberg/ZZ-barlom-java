@@ -1,0 +1,17 @@
+
+{{#with browsedElementHolder}}
+
+    <!-- Breadcrumbs for focused element -->
+    <ul class="breadcrumb">
+
+        {{#if element}}
+
+            {{#each element.elementsInPath}}
+                <li><grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link></li>
+            {{/each}}
+
+        {{/if}}
+
+    </ul>
+
+{{/with}}
