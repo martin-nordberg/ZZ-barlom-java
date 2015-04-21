@@ -64,11 +64,6 @@ define(
                         new elementcontroller.ElementController( options.data.elementHandle )
                     ];
 
-                    // Make note of our custom view models for initialization and tear down.
-                    // TODO: would be nice to use something like get('.') and then enumerate the view models w/o knowing their names separately
-                    this.viewModelNames.elementHandle = 'custom';
-                    this.viewModelNames.targetElement = 'custom';
-
                 }
             }
         );

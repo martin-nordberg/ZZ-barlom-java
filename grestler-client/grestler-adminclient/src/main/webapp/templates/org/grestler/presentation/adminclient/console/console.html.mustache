@@ -1,12 +1,12 @@
 
-<!-- Template for the main page of Grestler Console -->
+{{! Template for the main page of Grestler Console }}
 
-<!-- Navigation -->
+{{! Navigation }}
 <header class="navigation" id="top-nav-id" role="banner">
 
     <nav role="navigation" class="navbar navbar-default">
 
-        <!-- Brand and toggle get grouped for better mobile display -->
+        {{! Brand and toggle get grouped for better mobile display }}
 
         <div class="navbar-header">
 
@@ -22,7 +22,7 @@
 
         </div>
 
-        <!-- Collection of nav links and other content for toggling -->
+        {{! Collection of nav links and other content for toggling }}
 
         <div id="navbarCollapse" class="collapse navbar-collapse">
 
@@ -48,11 +48,11 @@
 
 </header>
 
-<!-- Server Page -->
+{{! Server Page }}
 {{#if isServerPageActive}}
     <section class="server-page" id="server-page-id">
 
-        <!-- TODO: separate component; lots more functionality -->
+        {{! TODO: separate component; lots more functionality }}
         <div class="left-panel col-xs-12">
 
             <h1 class="grestler">Grestler Server</h1>
@@ -63,16 +63,16 @@
     </section>
 {{/if}}
 
-<!-- Schema Page -->
+{{! Schema Page }}
 {{#if isSchemaPageActive}}
     <grestler-schema-page></grestler-schema-page>
 {{/if}}
 
-<!-- Queries Page -->
+{{! Queries Page }}
 {{#if isQueriesPageActive}}
     <section class="queries-page" id="queries-page-id">
 
-        <!-- TODO: separate component; lots more functionality -->
+        {{! TODO: separate component; lots more functionality }}
         <div class="left-panel col-xs-12">
 
             <h1 class="grestler">Queries</h1>

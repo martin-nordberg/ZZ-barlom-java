@@ -94,8 +94,9 @@ define(
                     );
 
                     // Turn on the wiring between model and viewmodel.
-                    for ( var viewModelName in me.viewModelNames ) {
-                        if ( me.viewModelNames.hasOwnProperty( viewModelName ) ) {
+                    var data = me.get('.');
+                    for ( var viewModelName in data ) {
+                        if ( data.hasOwnProperty( viewModelName ) ) {
                             var viewModel = me.get( viewModelName );
                             if ( viewModel.observeSelectionChanges ) {
                                 viewModel.observeSelectionChanges();
@@ -111,8 +112,9 @@ define(
                 onteardown: function () {
 
                     // Turn off the wiring between model and viewmodel.
-                    for ( var viewModelName in this.viewModelNames ) {
-                        if ( this.viewModelNames.hasOwnProperty( viewModelName ) ) {
+                    var data = this.get('.');
+                    for ( var viewModelName in data ) {
+                        if ( data.hasOwnProperty( viewModelName ) ) {
                             var viewModel = this.get( viewModelName );
                             if ( viewModel.observeSelectionChanges ) {
                                 viewModel.unobserveSelectionChanges();

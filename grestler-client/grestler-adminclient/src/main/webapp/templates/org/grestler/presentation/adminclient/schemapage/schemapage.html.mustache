@@ -1,15 +1,15 @@
-<!-- Left and Right tabs for the Schema page -->
+{{! Left and Right tabs for the Schema page }}
 
 <section class="schema-page" id="schema-page-id">
 
-    <!-- Breadcrumbs for focused element -->
+    {{! Breadcrumbs for focused element }}
     <grestler-browse-breadcrumbs></grestler-browse-breadcrumbs>
 
-    <!-- Left Tabs -->
+    {{! Left Tabs }}
     {{#with leftTabVisibilities}}
         <div class="col-xs-6">
 
-            <!-- Left tabs -->
+            {{! Left tabs }}
             <div class="left-tabs-container">
                 <ul class="nav nav-tabs tabs-left sideways">
                     <li class="{{#if isBrowseTabActive}}active{{/if}} first">
@@ -27,7 +27,7 @@
                 </ul>
             </div>
 
-            <!-- Left panel contents -->
+            {{! Left panel contents }}
             <div class="left-panels-container">
                 <div class="tab-content">
                     {{#if isBrowseTabActive}}
@@ -47,11 +47,11 @@
         </div>
     {{/with}}
 
-    <!-- Right Tabs -->
+    {{! Right Tabs }}
     {{#with rightTabVisibilities}}
         <div class="col-xs-6">
 
-            <!-- Right tabs -->
+            {{! Right tabs }}
             <div class="right-tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="{{#if isPropertiesTabActive}}active {{/if}}first">
@@ -66,7 +66,7 @@
                 </ul>
             </div>
 
-            <!-- Right panel contents -->
+            {{! Right panel contents }}
             <div class="right-panels-container">
                 <div class="tab-content">
                     {{#if isPropertiesTabActive}}
