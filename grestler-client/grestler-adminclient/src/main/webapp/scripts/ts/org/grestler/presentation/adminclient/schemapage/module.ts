@@ -7,7 +7,9 @@
  * Module: org/grestler/presentation/adminclient/schemapage/module
  */
 
+import api_commands = require( '../../../domain/metamodel/api/commands' )
 import api_queries = require( '../../../domain/metamodel/api/queries' )
+import creationcontrollers = require( './creationcontrollers' );
 import elementmodel = require( '../../metamodel/elementmodel' );
 import elementviewmodel = require( '../../metamodel/elementviewmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
@@ -22,27 +24,17 @@ import rightnavviewmodel = require( './rightnavviewmodel' );
 /** The one and only element currently being browsed. */
 var theBrowsedElement : elementmodel.ElementSelection = null;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /** The one and only element currently being browsed. */
 var theBrowsedElementHolder : elementviewmodel.ElementHolder = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The one and only schema page selection instance. */
 var theLeftTabSelection : leftnavmodel.LeftTabSelection = null;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /** The singleton page visibilities viewmodel instance. */
 var theLeftTabVisibilities : leftnavviewmodel.LeftTabVisibilities = null;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /** The one and only schema page selections instance. */
 var theRightTabSelection : rightnavmodel.RightTabSelection = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** The singleton page visibilities viewmodel instance. */
 var theRightTabVisibilities : rightnavviewmodel.RightTabVisibilities = null;
@@ -50,6 +42,18 @@ var theRightTabVisibilities : rightnavviewmodel.RightTabVisibilities = null;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export var schemaPageModule = {
+
+    /**
+     * Provides a controller or creating new packages.
+     * @param schemaPageBrowsedElement the browsed element that is to be the parent package.
+     * @param metamodelCommandFactory the factory for making commands.
+     * @returns {PackageCreationController}
+     */
+    providePackageCreationController: function providePackageCreationController( schemaPageBrowsedElement : elementmodel.ElementSelection, metamodelCommandFactory : api_commands.IMetamodelCommandFactory ) : creationcontrollers.PackageCreationController {
+
+        return new creationcontrollers.PackageCreationController( schemaPageBrowsedElement, metamodelCommandFactory );
+
+    },
 
     /**
      * Creates or returns the one and only schema page browsed element selection model, creating it when first requested.

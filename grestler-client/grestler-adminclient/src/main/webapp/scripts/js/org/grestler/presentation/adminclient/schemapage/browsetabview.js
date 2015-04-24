@@ -33,7 +33,9 @@ define(
                     "grestler-element-link": elementlinkview.ElementLinkView
                 },
 
-                controllerNames: [],
+                controllerNames: [
+                    'packageCreationController'
+                ],
 
                 template: browseTabTemplate,
 

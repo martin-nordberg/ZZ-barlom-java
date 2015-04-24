@@ -37,8 +37,6 @@ export class DocumentedElement implements api_elements.IDocumentedElement {
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
 
-        console.log( 'parentsInPath:' );
-
         var result : api_elements.IDocumentedElement[] = [];
 
         // Loop through the parents, adding them to the result.
@@ -51,8 +49,6 @@ export class DocumentedElement implements api_elements.IDocumentedElement {
             element = element.parent;
 
             result.push( element );
-
-            console.log( result );
         }
 
         return result.reverse();

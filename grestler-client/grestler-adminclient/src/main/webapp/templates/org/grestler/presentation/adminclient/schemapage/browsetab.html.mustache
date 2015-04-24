@@ -1,18 +1,25 @@
+
 {{! Browse tab panel of the Schema page }}
 
 <div class="tab-pane active" id="focusedElementTab">
+
     {{#with browsedElementHolder}}
 
-        {{#if element}}
+        <!-- TODO: different children depending on what's selected -->
+        <!-- TODO: use something like isPackage, etc. in the viewmodel -->
 
-            <!-- TODO: different children depending on what's selected -->
+        {{#if isPackage}}
+
             <h4>Sub-Packages</h4>
             {{#each element.childPackages}}
                 <grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
                 <br>
             {{/each}}
 
+            <a class="elementlink add Package" href="#" on-click="addPackageClicked">Add a package</a>
+
         {{/if}}
 
     {{/with}}
+
 </div>

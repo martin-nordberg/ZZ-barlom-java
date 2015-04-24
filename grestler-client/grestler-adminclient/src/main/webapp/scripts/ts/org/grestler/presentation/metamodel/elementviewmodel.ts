@@ -108,7 +108,7 @@ export class ElementHolder extends ElementHandle {
                 function ( change ) {
                     console.log( change );
                     me.unobserveModelChanges();
-                    me.element = change.newValue;
+                    me.setElement( change.newValue );
                     me.revision += 1;
                     me.observeModelChanges();
                 }
@@ -123,7 +123,7 @@ export class ElementHolder extends ElementHandle {
     public observeSelectionChanges() {
 
         if ( this._selectionObservationCount == 0 ) {
-            this.element = this._elementSelection.elementSelection;
+            this.setElement( this._elementSelection.elementSelection );
 
             super.observeModelChanges();
 
@@ -152,6 +152,14 @@ export class ElementHolder extends ElementHandle {
         }
 
     }
+
+    private setElement( element : api_elements.IDocumentedElement ) {
+        this.element = element;
+        this.isPackage = this.element && this.element.typeName.indexOf( 'Package' ) >= 0;
+    }
+
+    /** Whether the selected element is a package. */
+    public isPackage : boolean = false;
 
     /** The selected element to be watched. */
     private _elementSelection : elementmodel.ElementSelection;

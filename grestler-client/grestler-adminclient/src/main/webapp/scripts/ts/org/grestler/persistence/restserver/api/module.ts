@@ -9,6 +9,7 @@
 
 import restserver_api_commands = require( './commands' )
 import restserver_api_queries = require( './queries' )
+import spi_commands = require( '../../../domain/metamodel/spi/commands' )
 import spi_queries = require( '../../../domain/metamodel/spi/queries' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,6 +35,13 @@ export var restserverApiModule = {
      */
     provideEdgeTypeLoader: function provideEdgeTypeLoader() : spi_queries.IEdgeTypeLoader {
         return new restserver_api_queries.EdgeTypeLoader();
+    },
+
+    /**
+     * Provides a factory for persisting commands.
+     */
+    provideMetamodelCommandWriterFactory : function provideMetamodelCommandWriterFactory() : spi_commands.IMetamodelCommandWriterFactory {
+        return new restserver_api_commands.MetamodelCommandWriterFactory();
     },
 
     /**

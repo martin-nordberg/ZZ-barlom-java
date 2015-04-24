@@ -177,17 +177,24 @@ export class PackageLoader implements spi_queries.IPackageLoader {
 
         /**
          * Loads one package from its JSON representation.
-         * @param pkg parsed JSON for the package.
+         * @param pkgJson parsed JSON for the package.
          */
-        var loadPackage = function ( pkg : any ) : void {
-            var parentPackageId = pkg.parentPackageId;
+        var loadPackage = function ( pkgJson : any ) : api_elements.IPackage {
+
+            var parentPackageId = pkgJson.parentPackageId;
 
             if ( parentPackageId ) {
-                var parentPackage = repository.findPackageById( parentPackageId );
-                repository.loadPackage( pkg.id, parentPackage, pkg.name );
+                var parentPackage = repository.findOptionalPackageById( parentPackageId );
+
+                if ( parentPackage ) {
+                    return repository.loadPackage( pkgJson.id, parentPackage, pkgJson.name );
+                }
+                else {
+                    return null;
+                }
             }
             else {
-                repository.loadRootPackage( pkg.id );
+                return repository.loadRootPackage( pkgJson.id );
             }
 
         };
@@ -197,8 +204,30 @@ export class PackageLoader implements spi_queries.IPackageLoader {
          * @param pkgsJson parsed JSON for an array of packages.
          */
         var loadPackages = function ( pkgsJson : any ) : values.ENothing {
-            pkgsJson.packages.forEach( loadPackage );
-            return values.nothing;
+
+            // Keep track of packages that fail to create on this round becasue their parents are later in the list.
+            var pkgsJsonToDo = {
+                packages: []
+            };
+
+            // Create each package from the JSON
+            pkgsJson.packages.forEach( function( pkgJson : any ) : void {
+                var pkg = loadPackage( pkgJson );
+
+                // If not created, try again in next round (parent presumably later in the list).
+                if ( pkg == null ) {
+                    pkgsJsonToDo.packages.push( pkgJson );
+                }
+            } );
+
+            // Done when all packages created.
+            if ( pkgsJsonToDo.packages.length == 0 ) {
+                return values.nothing;
+            }
+
+            // Recursively create whatever packages remain.
+            return loadPackages( pkgsJsonToDo );
+
         };
 
         // Perform the AJAX call and handle the response.
