@@ -3,22 +3,21 @@
 
 <div class="tab-pane active" id="focusedElementTab">
 
-    {{#with browsedElementHolder}}
+    {{#with browseTabEntries}}
 
-        <!-- TODO: different children depending on what's selected -->
-        <!-- TODO: use something like isPackage, etc. in the viewmodel -->
+        {{#each browseSections}}
 
-        {{#if isPackage}}
+            <h4>{{title}}</h4>
 
-            <h4>Sub-Packages</h4>
-            {{#each element.childPackages}}
+            {{#each elements}}
                 <grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
                 <br>
             {{/each}}
 
+            <!-- TODO: different add link for each section -->
             <a class="elementlink add Package" href="#" on-click="addPackageClicked">Add a package</a>
 
-        {{/if}}
+        {{/each}}
 
     {{/with}}
 

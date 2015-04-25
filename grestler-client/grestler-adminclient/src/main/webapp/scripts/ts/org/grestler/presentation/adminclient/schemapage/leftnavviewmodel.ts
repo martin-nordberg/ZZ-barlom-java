@@ -26,14 +26,19 @@ export class LeftTabVisibilities {
         this._leftTabSelection = leftTabSelection;
 
         this._modelObserver = function ( changes ) {
-            changes.forEach(
-                function ( change ) {
-                    console.log( change );
-                    if ( change.name == 'leftTabSelection' ) {
-                        me.setLeftTabSelection( change.newValue );
+            try {
+                changes.forEach(
+                    function ( change ) {
+                        console.log( change );
+                        if ( change.name == 'leftTabSelection' ) {
+                            me.setLeftTabSelection( change.newValue );
+                        }
                     }
-                }
-            )
+                );
+            }
+            catch ( error ) {
+                console.log( error );
+            }
         }
 
     }

@@ -859,11 +859,21 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
 
     }
 
-    public  addChildElement( packagedElement : api_elements.IPackagedElement ) : void {
+    public addChildElement( packagedElement : api_elements.IPackagedElement ) : void {
+
         this._packageContents.addChildElement( packagedElement );
+
+        Object['getNotifier']( this ).notify(
+            {
+                type: 'change.childElements',
+                name: 'childElements',
+                newValue: this._packageContents
+            }
+        );
+
     }
 
-    public  addPackageDependency( packageDependency : api_elements.IPackageDependency ) : void {
+    public addPackageDependency( packageDependency : api_elements.IPackageDependency ) : void {
         this._packageDependencies.addPackageDependency( packageDependency );
     }
 

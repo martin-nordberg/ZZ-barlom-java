@@ -9,6 +9,7 @@
 
 import api_commands = require( '../../../domain/metamodel/api/commands' )
 import api_queries = require( '../../../domain/metamodel/api/queries' )
+import browsetabviewmodel = require( './browsetabviewmodel' );
 import creationcontrollers = require( './creationcontrollers' );
 import elementmodel = require( '../../metamodel/elementmodel' );
 import elementviewmodel = require( '../../metamodel/elementviewmodel' );
@@ -82,6 +83,17 @@ export var schemaPageModule = {
         }
 
         return theBrowsedElementHolder;
+
+    },
+
+    /**
+     * Provides the view model for the browse tab.
+     * @param schemaPageBrowsedElement the browsed element that is to have its related elements shown.
+     * @returns {BrowseTabEntries}
+     */
+    provideSchemaPageBrowseTabEntries: function provideSchemaPageBrowseTabEntries( schemaPageBrowsedElement : elementmodel.ElementSelection ) : browsetabviewmodel.BrowseTabEntries {
+
+        return new browsetabviewmodel.BrowseTabEntries( schemaPageBrowsedElement );
 
     },
 
