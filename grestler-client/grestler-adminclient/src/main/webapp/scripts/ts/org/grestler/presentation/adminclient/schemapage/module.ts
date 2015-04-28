@@ -16,6 +16,7 @@ import elementviewmodel = require( '../../metamodel/elementviewmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
 import leftnavmodel = require( './leftnavmodel' );
 import leftnavviewmodel = require( './leftnavviewmodel' );
+import propertiestabcontroller = require( './propertiestabcontroller' );
 import propertiestabviewmodel = require( './propertiestabviewmodel' );
 import rightnavcontroller = require( './rightnavcontroller' );
 import rightnavmodel = require( './rightnavmodel' );
@@ -64,7 +65,9 @@ export var schemaPageModule = {
      * Creates or returns the one and only schema page browsed element selection model, creating it when first requested.
      * @returns {ElementSelection} the browsed element selection.
      */
-    provideSchemaPageBrowsedElement: function provideSchemaPageBrowsedElement( metamodelRepository : api_queries.IMetamodelRepository ) : elementmodel.ElementSelection {
+    provideSchemaPageBrowsedElement: function provideSchemaPageBrowsedElement(
+        metamodelRepository : api_queries.IMetamodelRepository
+    ) : elementmodel.ElementSelection {
 
         // Create the page selection first time through.
         if ( theBrowsedElement == null ) {
@@ -79,7 +82,9 @@ export var schemaPageModule = {
      * Creates or returns the one and only schema page browsed element selection view model, creating it when first requested.
      * @returns {ElementSelection} the browsed element selection.
      */
-    provideSchemaPageBrowsedElementHolder: function provideSchemaPageBrowsedElementHolder( schemaPageBrowsedElement : elementmodel.ElementSelection ) : elementviewmodel.ElementHolder {
+    provideSchemaPageBrowsedElementHolder: function provideSchemaPageBrowsedElementHolder(
+        schemaPageBrowsedElement : elementmodel.ElementSelection
+    ) : elementviewmodel.ElementHolder {
 
         // Create the page selection first time through.
         if ( theBrowsedElementHolder == null ) {
@@ -95,7 +100,9 @@ export var schemaPageModule = {
      * @param schemaPageBrowsedElement the browsed element that is to have its related elements shown.
      * @returns {BrowseTabEntries}
      */
-    provideSchemaPageBrowseTabEntries: function provideSchemaPageBrowseTabEntries( schemaPageBrowsedElement : elementmodel.ElementSelection ) : browsetabviewmodel.BrowseTabEntries {
+    provideSchemaPageBrowseTabEntries: function provideSchemaPageBrowseTabEntries(
+        schemaPageBrowsedElement : elementmodel.ElementSelection )
+        : browsetabviewmodel.BrowseTabEntries {
 
         return new browsetabviewmodel.BrowseTabEntries( schemaPageBrowsedElement );
 
@@ -106,7 +113,9 @@ export var schemaPageModule = {
      * @param schemaPageLeftTabSelection the tab selection model to control.
      * @returns {LeftNavController} the newly created controller.
      */
-    provideSchemaPageLeftNavController: function provideSchemaPageLeftNavController( schemaPageLeftTabSelection : leftnavmodel.LeftTabSelection ) : leftnavcontroller.LeftNavController {
+    provideSchemaPageLeftNavController: function provideSchemaPageLeftNavController(
+        schemaPageLeftTabSelection : leftnavmodel.LeftTabSelection
+    ) : leftnavcontroller.LeftNavController {
 
         return new leftnavcontroller.LeftNavController( schemaPageLeftTabSelection );
 
@@ -131,7 +140,9 @@ export var schemaPageModule = {
      * Provides the singleton page visibilities viewmodel.
      * @returns the viewmodel instance.
      */
-    provideSchemaPageLeftTabVisibilities: function provideSchemaPageLeftTabVisibilities( schemaPageLeftTabSelection : leftnavmodel.LeftTabSelection ) : leftnavviewmodel.LeftTabVisibilities {
+    provideSchemaPageLeftTabVisibilities: function provideSchemaPageLeftTabVisibilities(
+        schemaPageLeftTabSelection : leftnavmodel.LeftTabSelection
+    ) : leftnavviewmodel.LeftTabVisibilities {
 
         // Create the singleton on the first time through.
         if ( theLeftTabVisibilities == null ) {
@@ -143,11 +154,28 @@ export var schemaPageModule = {
     },
 
     /**
+     * Provides the controller for the properties tab.
+     * @param schemaPageBrowsedElement the browsed element that is to have its properties changed.
+     * @param metamodelCommandFactory the factory for making commands.
+     * @returns {PropertiesTabFields}
+     */
+    provideSchemaPagePropertiesTabController: function provideSchemaPagePropertiesTabController(
+        schemaPageBrowsedElement : elementmodel.ElementSelection,
+        metamodelCommandFactory : api_commands.IMetamodelCommandFactory
+    ) : propertiestabcontroller.PropertiesTabController {
+
+        return new propertiestabcontroller.PropertiesTabController( schemaPageBrowsedElement, metamodelCommandFactory );
+
+    },
+
+    /**
      * Provides the view model for the properties tab.
      * @param schemaPageBrowsedElement the browsed element that is to have its properties shown.
      * @returns {PropertiesTabFields}
      */
-    provideSchemaPagePropertiesTabFields: function provideSchemaPagePropertiesTabFields( schemaPageBrowsedElement : elementmodel.ElementSelection ) : propertiestabviewmodel.PropertiesTabFields {
+    provideSchemaPagePropertiesTabFields: function provideSchemaPagePropertiesTabFields(
+        schemaPageBrowsedElement : elementmodel.ElementSelection
+    ) : propertiestabviewmodel.PropertiesTabFields {
 
         return new propertiestabviewmodel.PropertiesTabFields( schemaPageBrowsedElement );
 
@@ -158,7 +186,9 @@ export var schemaPageModule = {
      * @param schemaPageRightTabSelection the tab selection model to control.
      * @returns {RightNavController} the newly created controller.
      */
-    provideSchemaPageRightNavController: function provideSchemaPageRightNavController( schemaPageRightTabSelection : rightnavmodel.RightTabSelection ) : rightnavcontroller.RightNavController {
+    provideSchemaPageRightNavController: function provideSchemaPageRightNavController(
+        schemaPageRightTabSelection : rightnavmodel.RightTabSelection
+    ) : rightnavcontroller.RightNavController {
 
         return new rightnavcontroller.RightNavController( schemaPageRightTabSelection );
 
@@ -183,7 +213,9 @@ export var schemaPageModule = {
      * Loads the page visibilities viewmodel asynchronously.
      * @returns a promise for the viewmodel instance.
      */
-    provideSchemaPageRightTabVisibilities: function provideSchemaPageRightTabVisibilities( schemaPageRightTabSelection : rightnavmodel.RightTabSelection ) : rightnavviewmodel.RightTabVisibilities {
+    provideSchemaPageRightTabVisibilities: function provideSchemaPageRightTabVisibilities(
+        schemaPageRightTabSelection : rightnavmodel.RightTabSelection
+    ) : rightnavviewmodel.RightTabVisibilities {
 
         // Create the singleton on the first time through.
         if ( theRightTabVisibilities == null ) {
@@ -193,6 +225,7 @@ export var schemaPageModule = {
         return theRightTabVisibilities;
 
     }
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

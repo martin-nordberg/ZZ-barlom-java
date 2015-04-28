@@ -30,20 +30,22 @@ export var metamodelImplModule = {
      * Creates a command factory for metamodel changes.
      * @param metamodelRepository the repository being controlled.
      * @param metamodelCommandWriterFactory the corresponding persistence factory.
-     * @returns {api_commands.IMetamodelCommandFactory} the new command factory.
+     * @returns {IMetamodelCommandFactory} the new command factory.
      */
     provideMetamodelCommandFactory: function provideMetamodelCommandFactory(
         metamodelRepository : spi_queries.IMetamodelRepositorySpi,
         metamodelCommandWriterFactory : spi_commands.IMetamodelCommandWriterFactory
     ) : api_commands.IMetamodelCommandFactory {
+
+        // Create the command factory first time through.
         if ( theMetamodelCommandFactory == null ) {
             theMetamodelCommandFactory = new impl_commands.MetamodelCommandFactory(
                 metamodelRepository,
                 metamodelCommandWriterFactory
             );
-
-            return theMetamodelCommandFactory;
         }
+
+        return theMetamodelCommandFactory;
     },
 
     /**

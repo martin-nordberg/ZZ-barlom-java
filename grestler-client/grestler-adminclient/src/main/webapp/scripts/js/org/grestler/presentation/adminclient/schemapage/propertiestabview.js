@@ -31,7 +31,9 @@ define(
 
                 components: {},
 
-                controllerNames: [],
+                controllerNames: [
+                    'schemaPagePropertiesTabController'
+                ],
 
                 template: propertiesTabTemplate,
 

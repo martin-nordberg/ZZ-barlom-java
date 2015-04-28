@@ -8,7 +8,7 @@
 
             <label for="field-{{name}}">{{label}}:</label>
             <br>
-            <input id="field-{{name}}" type="{{type}}" name="{{name}}" value="{{element.name}}">
+            <input id="field-{{name}}" type="{{type}}" name="{{name}}" on-change="inputChanged" value="{{element.name}}">
 
         {{/each}}
 
