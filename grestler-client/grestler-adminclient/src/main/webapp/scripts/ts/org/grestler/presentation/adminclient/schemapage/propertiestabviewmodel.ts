@@ -113,11 +113,13 @@ export class PropertiesTabFields {
         if ( element != null && element.typeName.indexOf( 'Package' ) >= 0 ) {
             var pkg = <api_elements.IPackage> element;
 
-            this.fields.push( {
-                label: "Name",
-                name: 'name',
-                type: 'text'
-            } );
+            this.fields.push(
+                {
+                    label: "Name",
+                    name: 'name',
+                    type: 'text'
+                }
+            );
 
         }
 

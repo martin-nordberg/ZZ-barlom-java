@@ -40,7 +40,7 @@ export var restserverApiModule = {
     /**
      * Provides a factory for persisting commands.
      */
-    provideMetamodelCommandWriterFactory : function provideMetamodelCommandWriterFactory() : spi_commands.IMetamodelCommandWriterFactory {
+    provideMetamodelCommandWriterFactory: function provideMetamodelCommandWriterFactory() : spi_commands.IMetamodelCommandWriterFactory {
         return new restserver_api_commands.MetamodelCommandWriterFactory();
     },
 

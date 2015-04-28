@@ -5,12 +5,12 @@ define( [], ()->
   describe( "Function Introspection Specs", () ->
 
     #####################################################################################
-
     beforeEach( ( done ) ->
       me = this
 
       # Bring in the functionintrospection module before testing
-      require( ['scripts/js-gen/org/grestler/infrastructure/reflection/functionintrospection'], ( functionintrospection ) ->
+      require( ['scripts/js-gen/org/grestler/infrastructure/reflection/functionintrospection'],
+      ( functionintrospection ) ->
         me.functionintrospection = functionintrospection
         done()
       )
@@ -19,11 +19,10 @@ define( [], ()->
     #####################################################################################
 
     describe( "A function description:", () ->
-
       fnDesc = null
 
       beforeEach( () ->
-        fn = (a,b,c) -> a+b+c
+        fn = ( a, b, c ) -> a + b + c
         fnDesc = this.functionintrospection.describeFunction( fn )
       )
 
@@ -44,7 +43,6 @@ define( [], ()->
         fnDesc = this.functionintrospection.describeFunction( fn0 )
         expect( fnDesc.parameters.length ).toBe( 0 )
       )
-
     )
 
     #####################################################################################

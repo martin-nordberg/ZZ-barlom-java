@@ -1,7 +1,6 @@
-
 {{#with browsedElementHolder}}
 
-    {{! Breadcrumbs for focused element }}
+{{! Breadcrumbs for focused element }}
     <ul class="breadcrumb">
 
         {{#if element}}
@@ -9,7 +8,8 @@
             {{#each element.parentsInPath}}
 
                 <li>
-                    <grestler-element-link element="{{.}}" targetElementName="schemaPageBrowsedElement"></grestler-element-link>
+                    <grestler-element-link element="{{.}}"
+                                           targetElementName="schemaPageBrowsedElement"></grestler-element-link>
                 </li>
 
             {{/each}}

@@ -40,7 +40,7 @@ require(
 
                 template: consoleTemplate,
 
-                oninit: function() {
+                oninit: function () {
 
                     // Define the behavior (event handlers).
                     var controller = dependencies.context.get( 'topNavController' );
@@ -75,7 +75,7 @@ require(
 
                 },
 
-                onteardown: function() {
+                onteardown: function () {
 
                     // Turn off the wiring between model and viewmodel.
                     pageVisibilities.unobserveModelChanges();

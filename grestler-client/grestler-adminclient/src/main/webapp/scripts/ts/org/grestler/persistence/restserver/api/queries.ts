@@ -211,14 +211,16 @@ export class PackageLoader implements spi_queries.IPackageLoader {
             };
 
             // Create each package from the JSON
-            pkgsJson.packages.forEach( function( pkgJson : any ) : void {
-                var pkg = loadPackage( pkgJson );
+            pkgsJson.packages.forEach(
+                function ( pkgJson : any ) : void {
+                    var pkg = loadPackage( pkgJson );
 
-                // If not created, try again in next round (parent presumably later in the list).
-                if ( pkg == null ) {
-                    pkgsJsonToDo.packages.push( pkgJson );
+                    // If not created, try again in next round (parent presumably later in the list).
+                    if ( pkg == null ) {
+                        pkgsJsonToDo.packages.push( pkgJson );
+                    }
                 }
-            } );
+            );
 
             // Done when all packages created.
             if ( pkgsJsonToDo.packages.length == 0 ) {

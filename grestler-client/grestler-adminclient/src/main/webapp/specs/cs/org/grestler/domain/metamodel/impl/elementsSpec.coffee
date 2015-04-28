@@ -15,7 +15,11 @@ define( [], ()->
       me.id4 = '44444444' # TOD: real UUID
 
       # Bring in the elements module before testing
-      require( ['scripts/js-gen/org/grestler/domain/metamodel/api/elements','scripts/js-gen/org/grestler/domain/metamodel/impl/elements'], ( api, impl ) ->
+      require( [
+          'scripts/js-gen/org/grestler/domain/metamodel/api/elements',
+          'scripts/js-gen/org/grestler/domain/metamodel/impl/elements'
+        ],
+      ( api, impl ) ->
         me.api = api
         me.impl = impl
         done()
@@ -25,7 +29,6 @@ define( [], ()->
     #####################################################################################
 
     describe( "A root package:", () ->
-
       pkg = null
 
       beforeEach( () ->
@@ -54,7 +57,6 @@ define( [], ()->
     #####################################################################################
 
     describe( "A package:", () ->
-
       root = null
       pkg1 = null
       pkg2 = null
@@ -96,7 +98,6 @@ define( [], ()->
     #####################################################################################
 
     describe( "A vertex type:", () ->
-
       root = null
       pkg1 = null
       vt0 = null
@@ -127,7 +128,6 @@ define( [], ()->
       it( "should know its super type", () ->
         expect( vt1.superType ).toBe( vt0 )
       )
-
     )
 
     #####################################################################################
@@ -143,10 +143,38 @@ define( [], ()->
         root = new this.impl.RootPackage( '00000000' )
         pkg1 = new this.impl.Package( this.id1, root, 'pkg1' )
         vt0 = new this.impl.VertexType( this.id2, pkg1, 'Vertex Type', null, this.api.EAbstractness.ABSTRACT )
-        et0 = new this.impl.DirectedEdgeType( this.id3, pkg1, 'et1', et0, this.api.EAbstractness.ABSTRACT, this.api.ECyclicity.ACYCLIC,
-          this.api.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED, this.api.ESelfLooping.SELF_LOOPS_NOT_ALLOWED, vt0, vt0, null, null, null, null, null, null )
-        et1 = new this.impl.DirectedEdgeType( this.id4, pkg1, 'et1', et0, this.api.EAbstractness.CONCRETE, this.api.ECyclicity.ACYCLIC,
-          this.api.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED, this.api.ESelfLooping.SELF_LOOPS_NOT_ALLOWED, vt0, vt0, 'tailRole', 'headRole', 0, 5, 0, 1 )
+        et0 = new this.impl.DirectedEdgeType( this.id3,
+          pkg1,
+          'et1',
+          et0,
+          this.api.EAbstractness.ABSTRACT,
+          this.api.ECyclicity.ACYCLIC,
+          this.api.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED,
+          this.api.ESelfLooping.SELF_LOOPS_NOT_ALLOWED,
+          vt0,
+          vt0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null )
+        et1 = new this.impl.DirectedEdgeType( this.id4,
+          pkg1,
+          'et1',
+          et0,
+          this.api.EAbstractness.CONCRETE,
+          this.api.ECyclicity.ACYCLIC,
+          this.api.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED,
+          this.api.ESelfLooping.SELF_LOOPS_NOT_ALLOWED,
+          vt0,
+          vt0,
+          'tailRole',
+          'headRole',
+          0,
+          5,
+          0,
+          1 )
       )
 
       it( "should initialize its attributes", () ->
@@ -180,7 +208,6 @@ define( [], ()->
       it( "should know its super type", () ->
         expect( et1.superType ).toBe( et0 )
       )
-
     )
 
     #####################################################################################

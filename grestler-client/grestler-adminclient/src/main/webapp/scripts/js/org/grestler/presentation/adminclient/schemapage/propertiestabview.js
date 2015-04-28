@@ -29,11 +29,9 @@ define(
         exports.PropertiesTabView = ractiveinjection.InjectedRactive.extend(
             {
 
-                components: {
-                },
+                components: {},
 
-                controllerNames: [
-                ],
+                controllerNames: [],
 
                 template: propertiesTabTemplate,
 

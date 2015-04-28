@@ -37,9 +37,13 @@ export var metamodelImplModule = {
         metamodelCommandWriterFactory : spi_commands.IMetamodelCommandWriterFactory
     ) : api_commands.IMetamodelCommandFactory {
         if ( theMetamodelCommandFactory == null ) {
-            theMetamodelCommandFactory = new impl_commands.MetamodelCommandFactory( metamodelRepository, metamodelCommandWriterFactory );
+            theMetamodelCommandFactory = new impl_commands.MetamodelCommandFactory(
+                metamodelRepository,
+                metamodelCommandWriterFactory
+            );
 
-        return theMetamodelCommandFactory;        }
+            return theMetamodelCommandFactory;
+        }
     },
 
     /**

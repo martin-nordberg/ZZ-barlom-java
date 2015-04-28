@@ -117,9 +117,11 @@ export class BrowseTabEntries {
                 elements: []
             };
 
-            pkg.childPackages.forEach( function( subPkg ) {
-                subPackagesSection.elements.push( subPkg );
-            } );
+            pkg.childPackages.forEach(
+                function ( subPkg ) {
+                    subPackagesSection.elements.push( subPkg );
+                }
+            );
 
             this.browseSections.push( subPackagesSection );
         }

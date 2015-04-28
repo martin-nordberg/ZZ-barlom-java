@@ -42,7 +42,7 @@ define(
 
                 template: elementLinkTemplate,
 
-                onconstruct: function( options ) {
+                onconstruct: function ( options ) {
 
                     // TODO: sanity checking on element and targetElementName
 
