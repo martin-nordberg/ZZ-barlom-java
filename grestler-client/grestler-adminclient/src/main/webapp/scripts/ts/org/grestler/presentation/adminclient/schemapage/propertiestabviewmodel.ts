@@ -4,7 +4,7 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/schemapage/browsetabviewmodel
+ * Module: org/grestler/presentation/adminclient/schemapage/propertiestabviewmodel
  */
 
 import api_elements = require( '../../../domain/metamodel/api/elements' );
@@ -13,9 +13,10 @@ import elementmodel = require( '../../metamodel/elementmodel' )
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Schema page browse tab panel sections.
+ * Schema page left tab visibilities as a number of boolean attributes.
+ * // TODO: abstract base class w/ browsetabviewmodel, etc.
  */
-export class BrowseTabEntries {
+export class PropertiesTabFields {
 
     /**
      * Constructs a new schema page visibilities object.
@@ -24,13 +25,13 @@ export class BrowseTabEntries {
 
         var me = this;
 
-        me.browseSections = [];
+        me.element = null;
+        me.fields = [];
 
-        me._element = null;
         me._elementSelection = elementSelection;
 
         me._modelObserver = function ( changes ) {
-            me._updateBrowseSections( me._elementSelection.elementSelection );
+            me._updateFields( me._elementSelection.elementSelection );
         };
 
         me._selectionObserver = function ( changes ) {
@@ -103,25 +104,21 @@ export class BrowseTabEntries {
      * @param element the new or changed model element.
      * @private
      */
-    private _updateBrowseSections( element : api_elements.IDocumentedElement ) {
+    private _updateFields( element : api_elements.IDocumentedElement ) {
 
         console.log( "_updateBrowseSections: ", element );
-        this.browseSections = [];
+        this.fields = [];
 
         // Package
         if ( element != null && element.typeName.indexOf( 'Package' ) >= 0 ) {
             var pkg = <api_elements.IPackage> element;
 
-            var subPackagesSection = {
-                title: "Sub-Packages",
-                elements: []
-            };
-
-            pkg.childPackages.forEach( function( subPkg ) {
-                subPackagesSection.elements.push( subPkg );
+            this.fields.push( {
+                label: "Name",
+                name: 'name',
+                type: 'text'
             } );
 
-            this.browseSections.push( subPackagesSection );
         }
 
     }
@@ -134,20 +131,21 @@ export class BrowseTabEntries {
     private _updateElementSelection( element : api_elements.IDocumentedElement ) {
 
         console.log( "_updateElementSelection: ", element );
-        this._unobserveModelChanges( this._element );
+        this._unobserveModelChanges( this.element );
 
-        this._element = element;
+        this.element = element;
 
-        this._updateBrowseSections( element );
+        this._updateFields( element );
 
         this._observeModelChanges( element );
 
     }
 
-    public browseSections : any;
-
     /* The currently selected model element. */
-    private _element : api_elements.IDocumentedElement;
+    private element : api_elements.IDocumentedElement;
+
+    /** Metadata for the fields to display in the form. */
+    public fields : any;
 
     /** The selected element to be watched. */
     private _elementSelection : elementmodel.ElementSelection;

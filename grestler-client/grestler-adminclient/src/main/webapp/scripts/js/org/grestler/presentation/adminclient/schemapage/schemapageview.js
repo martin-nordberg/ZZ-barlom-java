@@ -13,6 +13,7 @@ define(
     [
         'scripts/js/org/grestler/presentation/adminclient/schemapage/browsebreadcrumbsview',
         'scripts/js/org/grestler/presentation/adminclient/schemapage/browsetabview',
+        'scripts/js/org/grestler/presentation/adminclient/schemapage/propertiestabview',
         'scripts/js/org/grestler/presentation/utilities/ractiveinjection',
         'text!templates/org/grestler/presentation/adminclient/schemapage/schemapage.html.mustache',
         'exports',
@@ -22,6 +23,7 @@ define(
     function (
         browsebreadcrumbsview,
         browsetabview,
+        propertiestabview,
         ractiveinjection,
         schemaPageTemplate,
         exports
@@ -32,8 +34,9 @@ define(
             {
 
                 components: {
-                    "grestler-browse-breadcrumbs": browsebreadcrumbsview.BrowseBreadCrumbsView,
-                    "grestler-browse-tab": browsetabview.BrowseTabView
+                    'grestler-browse-breadcrumbs': browsebreadcrumbsview.BrowseBreadCrumbsView,
+                    'grestler-browse-tab': browsetabview.BrowseTabView,
+                    'grestler-properties-tab': propertiestabview.PropertiesTabView
                 },
 
                 controllerNames: [

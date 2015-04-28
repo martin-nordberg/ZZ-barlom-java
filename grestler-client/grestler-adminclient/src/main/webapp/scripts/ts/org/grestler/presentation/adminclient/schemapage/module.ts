@@ -16,6 +16,7 @@ import elementviewmodel = require( '../../metamodel/elementviewmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
 import leftnavmodel = require( './leftnavmodel' );
 import leftnavviewmodel = require( './leftnavviewmodel' );
+import propertiestabviewmodel = require( './propertiestabviewmodel' );
 import rightnavcontroller = require( './rightnavcontroller' );
 import rightnavmodel = require( './rightnavmodel' );
 import rightnavviewmodel = require( './rightnavviewmodel' );
@@ -50,7 +51,10 @@ export var schemaPageModule = {
      * @param metamodelCommandFactory the factory for making commands.
      * @returns {PackageCreationController}
      */
-    providePackageCreationController: function providePackageCreationController( schemaPageBrowsedElement : elementmodel.ElementSelection, metamodelCommandFactory : api_commands.IMetamodelCommandFactory ) : creationcontrollers.PackageCreationController {
+    providePackageCreationController: function providePackageCreationController(
+        schemaPageBrowsedElement : elementmodel.ElementSelection,
+        metamodelCommandFactory : api_commands.IMetamodelCommandFactory
+    ) : creationcontrollers.PackageCreationController {
 
         return new creationcontrollers.PackageCreationController( schemaPageBrowsedElement, metamodelCommandFactory );
 
@@ -135,6 +139,17 @@ export var schemaPageModule = {
         }
 
         return theLeftTabVisibilities;
+
+    },
+
+    /**
+     * Provides the view model for the properties tab.
+     * @param schemaPageBrowsedElement the browsed element that is to have its properties shown.
+     * @returns {PropertiesTabFields}
+     */
+    provideSchemaPagePropertiesTabFields: function provideSchemaPagePropertiesTabFields( schemaPageBrowsedElement : elementmodel.ElementSelection ) : propertiestabviewmodel.PropertiesTabFields {
+
+        return new propertiestabviewmodel.PropertiesTabFields( schemaPageBrowsedElement );
 
     },
 
