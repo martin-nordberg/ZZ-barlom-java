@@ -25,17 +25,23 @@ define( [], ()->
 
       it( "should load packages", ( done ) ->
         loadCount = 0
+        packages = {}
 
         loader = new this.restserver_api_queries.PackageLoader()
 
         repository = {
           findPackageById: ( id ) ->
-            null
+            packages[id]
+
+          findOptionalPackageById: ( id ) ->
+            packages[id]
 
           loadPackage: ( id, parentPackage, name ) ->
+            packages[id] = { id: id }
             loadCount += 1
 
           loadRootPackage: ( id ) ->
+            packages[id] = { id: id }
             loadCount += 1
         }
 

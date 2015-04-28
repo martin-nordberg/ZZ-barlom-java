@@ -33,6 +33,8 @@ public class MetamodelCommandWriterFactory
         switch ( commandTypeName.toLowerCase() ) {
             case "packagecreation":
                 return new PackageCreationCmdWriter( this.dataSource );
+            case "packagedelementnamechange":
+                return new PackagedElementNameChangeCmdWriter( this.dataSource );
             case "vertextypecreation":
                 return new VertexTypeCreationCmdWriter( this.dataSource );
             default:

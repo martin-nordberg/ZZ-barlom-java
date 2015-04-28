@@ -73,6 +73,7 @@ public final class MetamodelRepository
             this.undirectedEdgeTypes = new VArray<>();
             this.attributeTypes = new VArray<>();
 
+            this.packagedElementsById = new VHashMap<>( 500 );
             this.packagesById = new VHashMap<>( 500 );
             this.vertexTypesById = new VHashMap<>( 500 );
             this.edgeTypesById = new VHashMap<>( 500 );
@@ -369,6 +370,15 @@ public final class MetamodelRepository
     }
 
     @Override
+    public IPackagedElement findPackagedElementById( UUID id ) {
+        return this.packagedElementsById.get( id ).orElseThrow(
+            () -> new MetamodelException(
+                MetamodelRepository.LOG, "Packaged element not found: " + id + "."
+            )
+        );
+    }
+
+    @Override
     public IDirectedEdgeType findRootDirectedEdgeType() {
         if ( this.rootDirectedEdgeType == null ) {
             throw new MetamodelException( MetamodelRepository.LOG, "Missing root directed edge type." );
@@ -425,6 +435,7 @@ public final class MetamodelRepository
 
         IBooleanAttributeType result = new BooleanAttributeType( id, parentPackage, name, defaultValue );
 
+        this.packagedElementsById.put( id, result );
         this.attributeTypes.add( result );
         this.attributeTypesById.put( id, result );
 
@@ -439,6 +450,7 @@ public final class MetamodelRepository
 
         IDateTimeAttributeType result = new DateTimeAttributeType( id, parentPackage, name, minValue, maxValue );
 
+        this.packagedElementsById.put( id, result );
         this.attributeTypes.add( result );
         this.attributeTypesById.put( id, result );
 
@@ -485,6 +497,7 @@ public final class MetamodelRepository
             maxHeadInDegree
         );
 
+        this.packagedElementsById.put( id, result );
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
         this.directedEdgeTypes.add( result );
@@ -514,6 +527,7 @@ public final class MetamodelRepository
             id, parentPackage, name, minValue, maxValue, defaultValue
         );
 
+        this.packagedElementsById.put( id, result );
         this.attributeTypes.add( result );
         this.attributeTypesById.put( id, result );
 
@@ -533,6 +547,7 @@ public final class MetamodelRepository
             id, parentPackage, name, minValue, maxValue, defaultValue
         );
 
+        this.packagedElementsById.put( id, result );
         this.attributeTypes.add( result );
         this.attributeTypesById.put( id, result );
 
@@ -544,6 +559,7 @@ public final class MetamodelRepository
 
         IPackage result = new Package( id, parentPackage, name );
 
+        this.packagedElementsById.put( id, result );
         this.packages.add( result );
         this.packagesById.put( id, result );
 
@@ -563,6 +579,7 @@ public final class MetamodelRepository
 
         IDirectedEdgeType result = new RootDirectedEdgeType( id, parentPackage, this.rootVertexType.get() );
 
+        this.packagedElementsById.put( id, result );
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
         this.directedEdgeTypes.add( result );
@@ -578,6 +595,7 @@ public final class MetamodelRepository
 
         IPackage result = new RootPackage( id );
 
+        this.packagedElementsById.put( id, result );
         this.packages.add( result );
         this.packagesById.put( id, result );
         this.rootPackage = new V<>( result );
@@ -593,6 +611,7 @@ public final class MetamodelRepository
 
         IUndirectedEdgeType result = new RootUndirectedEdgeType( id, parentPackage, this.rootVertexType.get() );
 
+        this.packagedElementsById.put( id, result );
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
         this.undirectedEdgeTypes.add( result );
@@ -608,6 +627,7 @@ public final class MetamodelRepository
 
         IVertexType result = new RootVertexType( id, parentPackage );
 
+        this.packagedElementsById.put( id, result );
         this.vertexTypes.add( result );
         this.vertexTypesById.put( id, result );
         this.rootVertexType = new V<>( result );
@@ -629,6 +649,7 @@ public final class MetamodelRepository
             id, parentPackage, name, minLength, maxLength, regexPattern
         );
 
+        this.packagedElementsById.put( id, result );
         this.attributeTypes.add( result );
         this.attributeTypesById.put( id, result );
 
@@ -664,6 +685,7 @@ public final class MetamodelRepository
             maxDegree
         );
 
+        this.packagedElementsById.put( id, result );
         this.edgeTypes.add( result );
         this.edgeTypesById.put( id, result );
         this.undirectedEdgeTypes.add( result );
@@ -679,6 +701,7 @@ public final class MetamodelRepository
     ) {
         IUuidAttributeType result = new UuidAttributeType( id, parentPackage, name );
 
+        this.packagedElementsById.put( id, result );
         this.attributeTypes.add( result );
         this.attributeTypesById.put( id, result );
 
@@ -704,6 +727,7 @@ public final class MetamodelRepository
 
         IVertexType result = new VertexType( id, parentPackage, name, superType, abstractness );
 
+        this.packagedElementsById.put( id, result );
         this.vertexTypes.add( result );
         this.vertexTypesById.put( id, result );
 
@@ -724,6 +748,8 @@ public final class MetamodelRepository
     private final VArray<IEdgeType> edgeTypes;
 
     private final VHashMap<UUID, IEdgeType> edgeTypesById;
+
+    private final VHashMap<UUID, IPackagedElement> packagedElementsById;
 
     private final VArray<IPackage> packages;
 

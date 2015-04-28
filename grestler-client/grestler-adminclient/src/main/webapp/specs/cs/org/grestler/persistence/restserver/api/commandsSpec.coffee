@@ -58,5 +58,52 @@ define( [], ()->
         )
       )
     )
+
+    #####################################################################################
+
+    describe( "A packaged element name change command:", () ->
+      beforeEach( () ->
+      )
+
+      it( "should rename a package", ( done ) ->
+        packagedElements = {}
+
+        repository = {
+          findPackagedElementById: ( id ) ->
+            packagedElements[id]
+
+          findPackageById: ( id ) ->
+            null
+
+          loadPackage: ( id, parentPackage, name ) ->
+            packagedElements[id] = { id: id, name: name }
+
+          loadRootPackage: ( id ) ->
+            packagedElements[id] = { id: id, name: "$" }
+        }
+
+        cmdWriterFactory = new this.restserver_api_commands.MetamodelCommandWriterFactory()
+        cmdFactory = new this.metamodel_impl_commands.MetamodelCommandFactory( repository, cmdWriterFactory )
+
+        cmdId1 = this.uuids.makeUuid();
+        cmdId2 = this.uuids.makeUuid();
+        pkgId = this.uuids.makeUuid();
+        rootPkgId = "00000000-7a26-11e4-a545-08002741a702"
+
+        pkgJson = { cmdId: cmdId1, id: pkgId, parentPackageId: rootPkgId, name: "restsample" + pkgId.substring( 0, 8 ) }
+
+        cmdFactory.makeCommand( "packagecreation" ).execute( pkgJson ).then( () ->
+          pkgJson.cmdId = cmdId2
+          delete pkgJson.parentPackageId
+          pkgJson.name = pkgJson.name + "renamed"
+          cmdFactory.makeCommand( "packagedelementnamechange" ).execute( pkgJson ).then( () ->
+            pkg = repository.findPackagedElementById( pkgId )
+            expect( pkg.name ).toBe( "restsample" + pkgId.substring( 0, 8 ) + "renamed" )
+            done()
+          )
+        )
+      )
+    )
+
   )
 )

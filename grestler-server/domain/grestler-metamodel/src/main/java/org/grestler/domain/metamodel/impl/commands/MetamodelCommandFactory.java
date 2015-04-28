@@ -42,6 +42,8 @@ public class MetamodelCommandFactory
         switch ( commandTypeName.toLowerCase() ) {
             case "packagecreation":
                 return new PackageCreationCmd( this.metamodelRepository, cmdWriter );
+            case "packagedelementnamechange":
+                return new PackagedElementNameChangeCmd( this.metamodelRepository, cmdWriter );
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this.metamodelRepository, cmdWriter );
             default:

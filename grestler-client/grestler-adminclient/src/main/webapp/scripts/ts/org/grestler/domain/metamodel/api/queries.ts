@@ -142,6 +142,17 @@ export interface IMetamodelRepository {
     findPackageById( id : string ) : elements.IPackage;
 
     /**
+     * Finds the packaged element with given ID.
+     *
+     * @param id the UUID of the element to find.
+     *
+     * @return the element found.
+     *
+     * @throws org.grestler.domain.metamodel.api.exceptions.MetamodelException if the element is not found.
+     */
+    findPackagedElementById( id : string ) : elements.IPackagedElement;
+
+    /**
      * Finds the root directed edge type.
      *
      * @return the root edge type or empty if not loaded yet.

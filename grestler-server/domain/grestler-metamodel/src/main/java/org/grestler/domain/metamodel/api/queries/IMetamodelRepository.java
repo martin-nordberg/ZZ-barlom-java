@@ -10,6 +10,7 @@ import org.grestler.domain.metamodel.api.elements.IAttributeType;
 import org.grestler.domain.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.domain.metamodel.api.elements.IEdgeType;
 import org.grestler.domain.metamodel.api.elements.IPackage;
+import org.grestler.domain.metamodel.api.elements.IPackagedElement;
 import org.grestler.domain.metamodel.api.elements.IUndirectedEdgeType;
 import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.infrastructure.utilities.collections.IIndexable;
@@ -213,6 +214,17 @@ public interface IMetamodelRepository {
      * @throws org.grestler.domain.metamodel.api.exceptions.MetamodelException if the package is not found.
      */
     IPackage findPackageById( UUID id );
+
+    /**
+     * Finds the packaged element with given ID.
+     *
+     * @param id the UUID of the element to find.
+     *
+     * @return the element found.
+     *
+     * @throws org.grestler.domain.metamodel.api.exceptions.MetamodelException if the element is not found.
+     */
+    IPackagedElement findPackagedElementById( UUID id );
 
     /**
      * Finds the root directed edge type.

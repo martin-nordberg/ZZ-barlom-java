@@ -50,6 +50,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
 
         // Define keyed maps of elements.
         this._packagesById = {};
+        this._packagedElementsById = {};
         this._vertexTypesById = {};
         this._edgeTypesById = {};
         this._directedEdgeTypesById = {};
@@ -163,6 +164,14 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
         return result;
     }
 
+    public findPackagedElementById( id : string ) : api_elements.IPackagedElement {
+        var result = this._packagedElementsById[id];
+        if ( !result ) {
+            throw new Error( "Packaged element not found: " + id + "." );
+        }
+        return result;
+    }
+
     public findRootDirectedEdgeType() : api_elements.IDirectedEdgeType {
         if ( this._rootDirectedEdgeType == null ) {
             throw new Error( "Missing root directed edge type." );
@@ -218,6 +227,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             defaultValue
         );
 
+        this._packagedElementsById[id] = result;
         this._attributeTypes.push( result );
         this._attributeTypesById[id] = result;
 
@@ -237,6 +247,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             maxValue
         );
 
+        this._packagedElementsById[id] = result;
         this._attributeTypes.push( result );
         this._attributeTypesById[id] = result;
 
@@ -282,6 +293,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             maxHeadInDegree
         );
 
+        this._packagedElementsById[id] = result;
         this._edgeTypes.push( result );
         this._edgeTypesById[id] = result;
         this._directedEdgeTypes.push( result );
@@ -313,6 +325,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             id, parentPackage, name, minValue, maxValue, defaultValue
         );
 
+        this._packagedElementsById[id] = result;
         this._attributeTypes.push( result );
         this._attributeTypesById[id] = result;
 
@@ -331,6 +344,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             id, parentPackage, name, minValue, maxValue, defaultValue
         );
 
+        this._packagedElementsById[id] = result;
         this._attributeTypes.push( result );
         this._attributeTypesById[id] = result;
 
@@ -341,6 +355,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
 
         var result : api_elements.IPackage = new impl_elements.Package( id, parentPackage, name );
 
+        this._packagedElementsById[id] = result;
         this._packages.push( result );
         this._packagesById[id] = result;
 
@@ -365,6 +380,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             this._rootVertexType
         );
 
+        this._packagedElementsById[id] = result;
         this._edgeTypes.push( result );
         this._edgeTypesById[id] = result;
         this._directedEdgeTypes.push( result );
@@ -379,6 +395,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
 
         var result : api_elements.IPackage = new impl_elements.RootPackage( id );
 
+        this._packagedElementsById[id] = result;
         this._packages.push( result );
         this._packagesById[id] = result;
         this._rootPackage = result;
@@ -397,6 +414,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             this._rootVertexType
         );
 
+        this._packagedElementsById[id] = result;
         this._edgeTypes.push( result );
         this._edgeTypesById[id] = result;
         this._undirectedEdgeTypes.push( result );
@@ -411,6 +429,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
 
         var result : api_elements.IVertexType = new impl_elements.RootVertexType( id, parentPackage );
 
+        this._packagedElementsById[id] = result;
         this._vertexTypes.push( result );
         this._vertexTypesById[id] = result;
         this._rootVertexType = result;
@@ -431,6 +450,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             id, parentPackage, name, minLength, maxLength, regexPattern
         );
 
+        this._packagedElementsById[id] = result;
         this._attributeTypes.push( result );
         this._attributeTypesById[id] = result;
 
@@ -465,6 +485,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             maxDegree
         );
 
+        this._packagedElementsById[id] = result;
         this._edgeTypes.push( result );
         this._edgeTypesById[id] = result;
         this._undirectedEdgeTypes.push( result );
@@ -479,6 +500,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
     ) : api_elements.IUuidAttributeType {
         var result : api_elements.IUuidAttributeType = new impl_elements.UuidAttributeType( id, parentPackage, name );
 
+        this._packagedElementsById[id] = result;
         this._attributeTypes.push( result );
         this._attributeTypesById[id] = result;
 
@@ -512,6 +534,7 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             abstractness
         );
 
+        this._packagedElementsById[id] = result;
         this._vertexTypes.push( result );
         this._vertexTypesById[id] = result;
 
@@ -541,6 +564,8 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
     private _loaded : Promise<values.ENothing>;
 
     private _packages : api_elements.IPackage[];
+
+    private _packagedElementsById : {};
 
     private _packagesById : {};
 

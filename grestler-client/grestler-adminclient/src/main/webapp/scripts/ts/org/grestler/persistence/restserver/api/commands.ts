@@ -54,7 +54,7 @@ class AbstractMetamodelCommandWriter implements spi_commands.IMetamodelCommandWr
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Command to create a vertex type.
+ * Command to create a package.
  */
 class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
 
@@ -100,6 +100,50 @@ class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to rename a packaged element.
+ */
+class PackagedElementNameChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new packaged element rename command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var name : string = jsonCmdArgs.name;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                name: name
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/packagedelementnamechange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Factory for metamodel commands supported by the H2 Database provider.
  */
 export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCommandWriterFactory {
@@ -116,6 +160,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
         switch ( commandTypeName.toLowerCase() ) {
             case "packagecreation":
                 return new PackageCreationCmdWriter();
+            case "packagedelementnamechange":
+                return new PackagedElementNameChangeCmdWriter();
             default:
                 throw new Error( "Unknown command type: \"" + commandTypeName + "\"." );
         }

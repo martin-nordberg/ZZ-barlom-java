@@ -102,6 +102,38 @@ class PackageCreationCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to rename a packaged element.
+ */
+class PackagedElementNameChangeCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the package attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var name : string = jsonCmdArgs.name;
+
+        // Create the new package.
+        this.metamodelRepository.findPackagedElementById( id ).name = name;
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Factory for metamodel commands.
  */
 export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFactory {
@@ -129,6 +161,8 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
         switch ( commandTypeName.toLowerCase() ) {
             case "packagecreation":
                 return new PackageCreationCmd( this._metamodelRepository, cmdWriter );
+            case "packagedelementnamechange":
+                return new PackagedElementNameChangeCmd( this._metamodelRepository, cmdWriter );
             default:
                 throw new Error( "Unknown command type: \"" + commandTypeName + "\"." );
         }
