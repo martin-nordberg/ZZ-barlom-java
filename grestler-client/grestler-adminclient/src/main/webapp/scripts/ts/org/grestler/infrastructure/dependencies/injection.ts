@@ -36,7 +36,8 @@ export interface IContext {
 
 /**
  * Class representing the ability to provide an object of given name. Captures the function that will construct
- * the object plus the object names (parameter names) of the arguments needed by that function.
+ * the object plus the object names (parameter names) of the arguments needed by that function. For a singleton
+ * captures the value of the singleton when first needed and gives it out for all later uses.
  */
 class Provider {
 
@@ -54,10 +55,24 @@ class Provider {
             throw new Error( "Provider function may not be anonymous." );
         }
         if ( objectName.length < 8 || objectName.indexOf( 'provide' ) != 0 ) {
-            throw new Error( "Provider function " + objectName + " expected to be named provide[objectName]." )
+            throw new Error( "Provider function " + objectName + " expected to be named provide{{ObjectName}}." )
         }
 
-        this._objectName = objectName.charAt( 7 ).toLowerCase() + objectName.substring( 8 );
+        // Differentiate handling for singleton objects.
+        if ( objectName.indexOf( 'provideSingleton' ) === 0 ) {
+            if ( objectName.length < 17 || objectName.indexOf( 'provide' ) != 0 ) {
+                throw new Error( "Singleton provider function " + objectName + " expected to be named provideSingleton{{ObjectName}}." )
+            }
+
+            this._objectName = objectName.charAt( 16 ).toLowerCase() + objectName.substring( 17 );
+            this._isSingleton = true;
+        }
+        else {
+            this._objectName = objectName.charAt( 7 ).toLowerCase() + objectName.substring( 8 );
+            this._isSingleton = false;
+        }
+
+        this._singletonValue = null;
 
         // Retrieve the names of the provider function parameters to become object names needed.
         this._providerArgObjectNames = [];
@@ -80,22 +95,49 @@ class Provider {
      * @returns {any} the provided object.
      */
     provide( context : IContext ) : any {
-        var args = [];
 
-        this._providerArgObjectNames.forEach(
-            function ( objectName ) {
-                args.push( context.get( objectName ) );
+        var result : any;
+
+        if ( this._isSingleton && this._singletonValue ) {
+            // For singleton, use the prior value on second & later calls.
+            result = this._singletonValue;
+        }
+        else {
+            var args = [];
+
+            // Get the arguments to inject into the provider.
+            this._providerArgObjectNames.forEach(
+                function ( objectName ) {
+                    args.push( context.get( objectName ) );
+                }
+            );
+
+            // Construct the object.
+            result = this._providerFunction.apply( context, args );
+
+            // Save it if it's to be a singleton.
+            if ( this._isSingleton ) {
+                this._singletonValue = result;
             }
-        );
+        }
 
-        return this._providerFunction.apply( context, args );
+        return result;
     }
 
+    /** Whether this provider provides the same singleton instance after first construction. */
+    private _isSingleton : boolean;
+
+    /** the name of the object provided. */
     private _objectName : string;
 
+    /** The names of the arguments needed by the provider function. */
     private _providerArgObjectNames : string[];
 
+    /** The function that constructs a new object for this provider. */
     private _providerFunction : Function;
+
+    /** The singleton value saved from first object use when relevant. */
+    private _singletonValue : any;
 
 }
 

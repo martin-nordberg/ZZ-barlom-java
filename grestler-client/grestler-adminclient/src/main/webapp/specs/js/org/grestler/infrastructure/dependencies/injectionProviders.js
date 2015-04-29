@@ -13,6 +13,14 @@ define(
             return a + b + "C";
         }
 
+        function provideSingletonD( a ) {
+            return { a: a, d: true };
+        }
+
+        function provideE( a, b ) {
+            return { a:a, b:b, e:true };
+        }
+
         var module = {
 
             provideA: function provideA() {
@@ -21,6 +29,10 @@ define(
 
             provideB: function provideB( a ) {
                 return a + "B";
+            },
+
+            provideSingletonD: function provideSingletonD( a ) {
+                return { a: a, d: true };
             }
 
         };
@@ -28,6 +40,8 @@ define(
         exports.provideA = provideA;
         exports.provideB = provideB;
         exports.provideC = provideC;
+        exports.provideSingletonD = provideSingletonD;
+        exports.provideE = provideE;
         exports.module = module;
 
     }
