@@ -7,11 +7,9 @@
  * Module: org/grestler/presentation/adminclient/schemapage/module
  */
 
-import topnavcontroller = require( './topnavcontroller' )
-import topnavmodel = require( './topnavmodel' )
-import topnavviewmodel = require( './topnavviewmodel' )
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import topnavcontroller = require( './topnavcontroller' );
+import topnavmodel = require( './topnavmodel' );
+import topnavviewmodel = require( './topnavviewmodel' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,15 +18,19 @@ var thePageSelection : topnavmodel.PageSelection = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** The singleton page visibilities viewmodel instance. */
-var thePageVisibilities : topnavviewmodel.PageVisibilities;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 export var consoleModule = {
 
-    provideTopNavController: function provideTopNavController( topNavModelPageSelection : topnavmodel.PageSelection ) : topnavcontroller.TopNavController {
+    /**
+     * Creates a controller for the top nav age selection.
+     * @param topNavModelPageSelection the model object for page selection.
+     * @returns {TopNavController} the created controller.
+     */
+    provideTopNavController: function provideTopNavController(
+        topNavModelPageSelection : topnavmodel.PageSelection
+    ) : topnavcontroller.TopNavController {
+
         return new topnavcontroller.TopNavController( topNavModelPageSelection );
+
     },
 
     /**
@@ -48,16 +50,14 @@ export var consoleModule = {
 
     /**
      * Provides the page visibilities viewmodel for given model.
-     * @returns the viewmodel instance.
+     * @param topNavModelPageSelection the model page selection behind the view model.
+     * @returns {PageVisibilities} the viewmodel instance.
      */
-    provideTopNavViewModelPageVisibilities: function provideTopNavViewModelPageVisibilities( topNavModelPageSelection : topnavmodel.PageSelection ) : topnavviewmodel.PageVisibilities {
+    provideTopNavViewModelPageVisibilities: function provideTopNavViewModelPageVisibilities(
+        topNavModelPageSelection : topnavmodel.PageSelection
+    ) : topnavviewmodel.PageVisibilities {
 
-        // Create the singleton on the first time through.
-        if ( thePageVisibilities == null ) {
-            return new topnavviewmodel.PageVisibilities( topNavModelPageSelection );
-        }
-
-        return thePageVisibilities;
+        return new topnavviewmodel.PageVisibilities( topNavModelPageSelection );
 
     }
 

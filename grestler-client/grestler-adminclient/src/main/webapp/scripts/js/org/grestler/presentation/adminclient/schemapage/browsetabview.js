@@ -34,7 +34,7 @@ define(
                 },
 
                 controllerNames: [
-                    'packageCreationController'
+                    'schemaPageBrowseTabController'
                 ],
 
                 template: browseTabTemplate,

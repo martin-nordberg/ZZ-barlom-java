@@ -10,7 +10,7 @@
 import api_commands = require( '../../../domain/metamodel/api/commands' )
 import api_queries = require( '../../../domain/metamodel/api/queries' )
 import browsetabviewmodel = require( './browsetabviewmodel' );
-import creationcontrollers = require( './creationcontrollers' );
+import browsetabcontroller = require( './browsetabcontroller' );
 import elementmodel = require( '../../metamodel/elementmodel' );
 import elementviewmodel = require( '../../metamodel/elementviewmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
@@ -33,33 +33,12 @@ var theBrowsedElementHolder : elementviewmodel.ElementHolder = null;
 /** The one and only schema page selection instance. */
 var theLeftTabSelection : leftnavmodel.LeftTabSelection = null;
 
-/** The singleton page visibilities viewmodel instance. */
-var theLeftTabVisibilities : leftnavviewmodel.LeftTabVisibilities = null;
-
 /** The one and only schema page selections instance. */
 var theRightTabSelection : rightnavmodel.RightTabSelection = null;
-
-/** The singleton page visibilities viewmodel instance. */
-var theRightTabVisibilities : rightnavviewmodel.RightTabVisibilities = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export var schemaPageModule = {
-
-    /**
-     * Provides a controller or creating new packages.
-     * @param schemaPageBrowsedElement the browsed element that is to be the parent package.
-     * @param metamodelCommandFactory the factory for making commands.
-     * @returns {PackageCreationController}
-     */
-    providePackageCreationController: function providePackageCreationController(
-        schemaPageBrowsedElement : elementmodel.ElementSelection,
-        metamodelCommandFactory : api_commands.IMetamodelCommandFactory
-    ) : creationcontrollers.PackageCreationController {
-
-        return new creationcontrollers.PackageCreationController( schemaPageBrowsedElement, metamodelCommandFactory );
-
-    },
 
     /**
      * Creates or returns the one and only schema page browsed element selection model, creating it when first requested.
@@ -96,12 +75,28 @@ export var schemaPageModule = {
     },
 
     /**
+     * Provides a controller for the Browse tab.
+     * @param schemaPageBrowsedElement the browsed element that is to be the parent package of newly created elements.
+     * @param metamodelCommandFactory the factory for making commands.
+     * @returns {BrowseTabController}
+     */
+    provideSchemaPageBrowseTabController: function provideSchemaPageBrowseTabController(
+        schemaPageBrowsedElement : elementmodel.ElementSelection,
+        metamodelCommandFactory : api_commands.IMetamodelCommandFactory
+    ) : browsetabcontroller.BrowseTabController {
+
+        return new browsetabcontroller.BrowseTabController( schemaPageBrowsedElement, metamodelCommandFactory );
+
+    },
+
+    /**
      * Provides the view model for the browse tab.
      * @param schemaPageBrowsedElement the browsed element that is to have its related elements shown.
      * @returns {BrowseTabEntries}
      */
     provideSchemaPageBrowseTabEntries: function provideSchemaPageBrowseTabEntries(
-        schemaPageBrowsedElement : elementmodel.ElementSelection )
+        schemaPageBrowsedElement : elementmodel.ElementSelection
+    )
         : browsetabviewmodel.BrowseTabEntries {
 
         return new browsetabviewmodel.BrowseTabEntries( schemaPageBrowsedElement );
@@ -144,12 +139,7 @@ export var schemaPageModule = {
         schemaPageLeftTabSelection : leftnavmodel.LeftTabSelection
     ) : leftnavviewmodel.LeftTabVisibilities {
 
-        // Create the singleton on the first time through.
-        if ( theLeftTabVisibilities == null ) {
-            theLeftTabVisibilities = new leftnavviewmodel.LeftTabVisibilities( schemaPageLeftTabSelection );
-        }
-
-        return theLeftTabVisibilities;
+        return new leftnavviewmodel.LeftTabVisibilities( schemaPageLeftTabSelection );
 
     },
 
@@ -217,12 +207,7 @@ export var schemaPageModule = {
         schemaPageRightTabSelection : rightnavmodel.RightTabSelection
     ) : rightnavviewmodel.RightTabVisibilities {
 
-        // Create the singleton on the first time through.
-        if ( theRightTabVisibilities == null ) {
-            theRightTabVisibilities = new rightnavviewmodel.RightTabVisibilities( schemaPageRightTabSelection );
-        }
-
-        return theRightTabVisibilities;
+        return new rightnavviewmodel.RightTabVisibilities( schemaPageRightTabSelection );
 
     }
 

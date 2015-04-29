@@ -71,13 +71,6 @@ export class LeftTabVisibilities {
     }
 
     /**
-     * @returns the model behind this viewmodel.
-     */
-    public get leftTabSelection() : leftnavmodel.LeftTabSelection {
-        return this._leftTabSelection;
-    }
-
-    /**
      * Changes the selected left tab.
      * @param leftTabSelection the new selection.
      */

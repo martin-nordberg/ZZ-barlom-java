@@ -66,13 +66,6 @@ export class RightTabVisibilities {
     }
 
     /**
-     * @returns the model behind this viewmodel.
-     */
-    public get rightTabSelection() : rightnavmodel.RightTabSelection {
-        return this._rightTabSelection;
-    }
-
-    /**
      * Changes the selected right tab.
      * @param rightTabSelection the new selection.
      */

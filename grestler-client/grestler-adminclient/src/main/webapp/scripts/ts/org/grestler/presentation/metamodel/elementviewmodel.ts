@@ -91,8 +91,15 @@ export class ElementHandle implements IElementHandle {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Extension of an element handle to a holder - where the element held can change along with its attributes.
+ */
 export class ElementHolder extends ElementHandle {
 
+    /**
+     * Constructs a new element holder starting with the given element.
+     * @param elementSelection
+     */
     constructor( elementSelection : elementmodel.ElementSelection ) {
 
         super( elementSelection.elementSelection );
@@ -108,7 +115,7 @@ export class ElementHolder extends ElementHandle {
                 function ( change ) {
                     console.log( change );
                     me.unobserveModelChanges();
-                    me.setElement( change.newValue );
+                    me._setElement( change.newValue );
                     me.revision += 1;
                     me.observeModelChanges();
                 }
@@ -123,7 +130,7 @@ export class ElementHolder extends ElementHandle {
     public observeSelectionChanges() {
 
         if ( this._selectionObservationCount == 0 ) {
-            this.setElement( this._elementSelection.elementSelection );
+            this._setElement( this._elementSelection.elementSelection );
 
             super.observeModelChanges();
 
@@ -153,7 +160,12 @@ export class ElementHolder extends ElementHandle {
 
     }
 
-    private setElement( element : api_elements.IDocumentedElement ) {
+    /**
+     * Changes what element is held.
+     * @param element the new element to hold.
+     * @private
+     */
+    private _setElement( element : api_elements.IDocumentedElement ) {
         this.element = element;
         this.isPackage = this.element && this.element.typeName.indexOf( 'Package' ) >= 0;
     }

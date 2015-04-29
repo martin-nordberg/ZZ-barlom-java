@@ -17,7 +17,7 @@ import uuids = require( '../../../infrastructure/utilities/uuids' );
 /**
  * Controller for creating packages.
  */
-export class PackageCreationController {
+export class BrowseTabController {
 
     /**
      * Constructs a new schema page package creation controller.
@@ -41,13 +41,27 @@ export class PackageCreationController {
         // TODO: UUIDs from server
         var cmdId = uuids.makeUuid();
         var pkgId = uuids.makeUuid();
-        var parentPkgId = this._elementSelection.elementSelection.id;
+        var parentPkg = <api_elements.IPackage> this._elementSelection.elementSelection;
+        var parentPkgId = parentPkg.id;
+
+        var pkgName = "package";
+        var isUnique = false;
+        for ( var counter = 1 ; !isUnique && counter < 1000 ; counter += 1 ) {
+            isUnique = true;
+            pkgName = "package" + counter;
+            parentPkg.childPackages.forEach( function( pkg ) {
+                if ( pkg.name === pkgName ) {
+                    isUnique = false;
+                    return false;
+                }
+            });
+        }
 
         var pkgJson = {
             cmdId: cmdId,
             id: pkgId,
             parentPackageId: parentPkgId,
-            name: "package" + PackageCreationController._counter++
+            name: pkgName
         };
 
         var cmd = this._metamodelCommandFactory.makeCommand( "packagecreation" );

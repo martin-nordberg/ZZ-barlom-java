@@ -18,6 +18,11 @@ export enum ETopNavSelection {
     SERVER
 }
 
+/**
+ * Converts an ETopNavSelection enum to a string.
+ * @param value the enum value to convert.
+ * @returns {*} the enum name as a string.
+ */
 export function topNavSelectionToString( value : ETopNavSelection ) : string {
     if ( value != null ) {
         return ETopNavSelection[value];
@@ -25,6 +30,11 @@ export function topNavSelectionToString( value : ETopNavSelection ) : string {
     return null;
 }
 
+/**
+ * Converts a string to a top nav enum value.
+ * @param value the string to convert.
+ * @returns {*} the enum value or null if not matched.
+ */
 export function topNavSelectionFromString( value : string ) : ETopNavSelection {
     if ( value != null ) {
         switch ( value ) {
@@ -56,10 +66,17 @@ export class PageSelection {
         }
     }
 
+    /**
+     * @returns {ETopNavSelection} The top navigation page selection.
+     */
     get topNavSelection() : ETopNavSelection {
         return this._topNavSelection;
     }
 
+    /**
+     * Sets the top navigation page selection.
+     * @param value the new value.
+     */
     set topNavSelection( value : ETopNavSelection ) {
         // Notify observers of the change (happens asynchronously).
         Object['getNotifier']( this ).notify(
@@ -78,9 +95,12 @@ export class PageSelection {
         window.localStorage[PageSelection.PREFIX + 'topNavSelection'] = topNavSelectionToString( value );
     }
 
+    /** The currently selected top navigation item. */
     private _topNavSelection : ETopNavSelection;
 
+    /** Prefix used for browser local storage. */
     private static PREFIX = 'org.grestler.presentation.adminclient.console.topnavmodel.PageSelection.';
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@ export class PageVisibilities {
                 function ( change ) {
                     console.log( change );
                     if ( change.name == 'topNavSelection' ) {
-                        me.setPageSelection( change.newValue );
+                        me._setPageSelection( change.newValue );
                     }
                 }
             )
@@ -43,7 +43,7 @@ export class PageVisibilities {
      */
     public observeModelChanges() {
 
-        this.setPageSelection( this._pageSelection.topNavSelection );
+        this._setPageSelection( this._pageSelection.topNavSelection );
 
         Object['observe'](
             this._pageSelection,
@@ -66,19 +66,11 @@ export class PageVisibilities {
 
     }
 
-
-    /**
-     * @returns the model behind this viewmodel.
-     */
-    public get pageSelection() : topnavmodel.PageSelection {
-        return this._pageSelection;
-    }
-
     /**
      * Changes the selected page.
      * @param topNavSelection the new selection.
      */
-    private setPageSelection( topNavSelection : topnavmodel.ETopNavSelection ) : void {
+    private _setPageSelection( topNavSelection : topnavmodel.ETopNavSelection ) : void {
         this.isQueriesPageActive = topNavSelection == topnavmodel.ETopNavSelection.QUERIES;
         this.isSchemaPageActive = topNavSelection == topnavmodel.ETopNavSelection.SCHEMA;
         this.isServerPageActive = topNavSelection == topnavmodel.ETopNavSelection.SERVER;
