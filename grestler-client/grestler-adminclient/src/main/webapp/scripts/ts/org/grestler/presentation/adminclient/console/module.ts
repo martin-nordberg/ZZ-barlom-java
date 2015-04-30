@@ -13,11 +13,6 @@ import topnavviewmodel = require( './topnavviewmodel' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** The one and only page selections instance available asynchronously. */
-var thePageSelection : topnavmodel.PageSelection = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 export var consoleModule = {
 
     /**
@@ -37,14 +32,9 @@ export var consoleModule = {
      * Creates or returns the one and only page selection, loading it when first requested.
      * @returns {PageSelection} the page selection.
      */
-    provideTopNavModelPageSelection: function provideTopNavModelPageSelection() : topnavmodel.PageSelection {
+    provideSingletonTopNavModelPageSelection: function provideSingletonTopNavModelPageSelection() : topnavmodel.PageSelection {
 
-        // Create the page selection first time through.
-        if ( thePageSelection == null ) {
-            thePageSelection = new topnavmodel.PageSelection();
-        }
-
-        return thePageSelection;
+        return new topnavmodel.PageSelection();
 
     },
 

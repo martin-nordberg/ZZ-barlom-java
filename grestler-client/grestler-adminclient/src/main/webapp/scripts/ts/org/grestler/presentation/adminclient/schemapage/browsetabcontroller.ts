@@ -11,6 +11,7 @@ import api_commands = require( '../../../domain/metamodel/api/commands' );
 import api_elements = require( '../../../domain/metamodel/api/elements' );
 import elementmodel = require( '../../metamodel/elementmodel' );
 import uuids = require( '../../../infrastructure/utilities/uuids' );
+import values = require( '../../../infrastructure/utilities/values' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,16 +46,11 @@ export class BrowseTabController {
         var parentPkgId = parentPkg.id;
 
         var pkgName = "package";
-        var isUnique = false;
-        for ( var counter = 1 ; !isUnique && counter < 1000 ; counter += 1 ) {
-            isUnique = true;
+        for ( var counter = 1; counter < 1000; counter += 1 ) {
             pkgName = "package" + counter;
-            parentPkg.childPackages.forEach( function( pkg ) {
-                if ( pkg.name === pkgName ) {
-                    isUnique = false;
-                    return false;
-                }
-            });
+            if ( !parentPkg.findOptionalChildPackageByName( pkgName ) ) {
+                break;
+            }
         }
 
         var pkgJson = {
@@ -66,7 +62,12 @@ export class BrowseTabController {
 
         var cmd = this._metamodelCommandFactory.makeCommand( "packagecreation" );
 
-        cmd.execute( pkgJson )
+        cmd.execute( pkgJson ).then(
+            ( nothing : values.ENothing ) => {
+                this._elementSelection.elementSelection = parentPkg.findOptionalChildPackageByName( pkgName );
+            }
+        );
+
     }
 
     /** Counter for adding to names for more likely uniqueness. */

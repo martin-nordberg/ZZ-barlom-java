@@ -16,14 +16,6 @@ import spi_queries = require( '../spi/queries' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** The one and only factory for metamodel commands. */
-var theMetamodelCommandFactory : api_commands.IMetamodelCommandFactory;
-
-/** The one and only metamodel repository. */
-var theMetamodelRepository : api_queries.IMetamodelRepository;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 export var metamodelImplModule = {
 
     /**
@@ -37,22 +29,18 @@ export var metamodelImplModule = {
         metamodelCommandWriterFactory : spi_commands.IMetamodelCommandWriterFactory
     ) : api_commands.IMetamodelCommandFactory {
 
-        // Create the command factory first time through.
-        if ( theMetamodelCommandFactory == null ) {
-            theMetamodelCommandFactory = new impl_commands.MetamodelCommandFactory(
-                metamodelRepository,
-                metamodelCommandWriterFactory
-            );
-        }
+        return new impl_commands.MetamodelCommandFactory(
+            metamodelRepository,
+            metamodelCommandWriterFactory
+        );
 
-        return theMetamodelCommandFactory;
     },
 
     /**
-     * Creates or returns the one and only metamodel repository, loading it when first requested.
+     * Creates the one and only metamodel repository.
      * @returns {PageSelection} the page selection.
      */
-    provideMetamodelRepository: function provideMetamodelRepository(
+    provideSingletonMetamodelRepository: function provideSingletonMetamodelRepository(
         packageLoader : spi_queries.IPackageLoader,
         packageDependencyLoader : spi_queries.IPackageDependencyLoader,
         attributeTypeLoader : spi_queries.IAttributeTypeLoader,
@@ -61,19 +49,14 @@ export var metamodelImplModule = {
         attributeDeclLoader : spi_queries.IAttributeDeclLoader
     ) : api_queries.IMetamodelRepository {
 
-        // Create the metamodel repository first time through.
-        if ( theMetamodelRepository == null ) {
-            theMetamodelRepository = new impl_queries.MetamodelRepository(
-                packageLoader,
-                packageDependencyLoader,
-                attributeTypeLoader,
-                vertexTypeLoader,
-                edgeTypeLoader,
-                attributeDeclLoader
-            );
-        }
-
-        return theMetamodelRepository;
+        return new impl_queries.MetamodelRepository(
+            packageLoader,
+            packageDependencyLoader,
+            attributeTypeLoader,
+            vertexTypeLoader,
+            edgeTypeLoader,
+            attributeDeclLoader
+        );
 
     }
 

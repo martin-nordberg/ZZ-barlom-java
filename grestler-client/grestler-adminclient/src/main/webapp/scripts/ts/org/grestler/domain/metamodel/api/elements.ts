@@ -365,6 +365,12 @@ export interface IPackage extends IPackagedElement {
     vertexTypes : IVertexType[];
 
     /**
+     * Finds the child package with given name (or null if not found).
+     * @param name
+     */
+    findOptionalChildPackageByName( name : string ) : IPackage;
+
+    /**
      * Determines the packages that depend upon this one.
      *
      * @param dependencyDepth whether to include indirect clients.

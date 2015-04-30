@@ -639,11 +639,30 @@ class PackageContents {
     }
 
     get childPackages() : api_elements.IPackage[] {
-        return this._childPackages;
+        return this._childPackages.sort(
+            ( pkg1, pkg2 ) => {
+                if ( pkg1.name < pkg2.name ) {
+                    return -1;
+                }
+                if ( pkg1.name > pkg2.name ) {
+                    return 1;
+                }
+                return 0;
+            }
+        );
     }
 
     get edgeTypes() : api_elements.IEdgeType[] {
         return this._edgeTypes;
+    }
+
+    findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
+        for ( var i = 0; i < this._childPackages.length; i += 1 ) {
+            if ( this._childPackages[i].name == name ) {
+                return this._childPackages[i];
+            }
+        }
+        return null;
     }
 
     removeChildElement( packagedElement : api_elements.IPackagedElement ) : void {
@@ -883,6 +902,10 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
 
     public get childPackages() : api_elements.IPackage[] {
         return this._packageContents.childPackages;
+    }
+
+    public findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
+        return this._packageContents.findOptionalChildPackageByName( name );
     }
 
     public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
@@ -1961,12 +1984,16 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
         return this._packageContents.childPackages;
     }
 
-    public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
-        return this._packageDependencies.getClientPackages( dependencyDepth );
-    }
-
     public get edgeTypes() : api_elements.IEdgeType[] {
         return this._packageContents.edgeTypes;
+    }
+
+    public findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
+        return this._packageContents.findOptionalChildPackageByName( name );
+    }
+
+    public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
+        return this._packageDependencies.getClientPackages( dependencyDepth );
     }
 
     public get id() : string {

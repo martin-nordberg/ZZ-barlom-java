@@ -24,36 +24,17 @@ import rightnavviewmodel = require( './rightnavviewmodel' );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** The one and only element currently being browsed. */
-var theBrowsedElement : elementmodel.ElementSelection = null;
-
-/** The one and only element currently being browsed. */
-var theBrowsedElementHolder : elementviewmodel.ElementHolder = null;
-
-/** The one and only schema page selection instance. */
-var theLeftTabSelection : leftnavmodel.LeftTabSelection = null;
-
-/** The one and only schema page selections instance. */
-var theRightTabSelection : rightnavmodel.RightTabSelection = null;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 export var schemaPageModule = {
 
     /**
      * Creates or returns the one and only schema page browsed element selection model, creating it when first requested.
      * @returns {ElementSelection} the browsed element selection.
      */
-    provideSchemaPageBrowsedElement: function provideSchemaPageBrowsedElement(
+    provideSingletonSchemaPageBrowsedElement: function provideSingletonSchemaPageBrowsedElement(
         metamodelRepository : api_queries.IMetamodelRepository
     ) : elementmodel.ElementSelection {
 
-        // Create the page selection first time through.
-        if ( theBrowsedElement == null ) {
-            theBrowsedElement = new elementmodel.ElementSelection( metamodelRepository );
-        }
-
-        return theBrowsedElement;
+        return new elementmodel.ElementSelection( metamodelRepository );
 
     },
 
@@ -61,16 +42,11 @@ export var schemaPageModule = {
      * Creates or returns the one and only schema page browsed element selection view model, creating it when first requested.
      * @returns {ElementSelection} the browsed element selection.
      */
-    provideSchemaPageBrowsedElementHolder: function provideSchemaPageBrowsedElementHolder(
+    provideSingletonSchemaPageBrowsedElementHolder: function provideSingletonSchemaPageBrowsedElementHolder(
         schemaPageBrowsedElement : elementmodel.ElementSelection
     ) : elementviewmodel.ElementHolder {
 
-        // Create the page selection first time through.
-        if ( theBrowsedElementHolder == null ) {
-            theBrowsedElementHolder = new elementviewmodel.ElementHolder( schemaPageBrowsedElement );
-        }
-
-        return theBrowsedElementHolder;
+        return new elementviewmodel.ElementHolder( schemaPageBrowsedElement );
 
     },
 
@@ -96,8 +72,7 @@ export var schemaPageModule = {
      */
     provideSchemaPageBrowseTabEntries: function provideSchemaPageBrowseTabEntries(
         schemaPageBrowsedElement : elementmodel.ElementSelection
-    )
-        : browsetabviewmodel.BrowseTabEntries {
+    ) : browsetabviewmodel.BrowseTabEntries {
 
         return new browsetabviewmodel.BrowseTabEntries( schemaPageBrowsedElement );
 
@@ -120,14 +95,9 @@ export var schemaPageModule = {
      * Creates or returns the one and only schema page left tab selection model, loading it when first requested.
      * @returns {LeftTabSelection} the left tab selection.
      */
-    provideSchemaPageLeftTabSelection: function provideSchemaPageLeftTabSelection() : leftnavmodel.LeftTabSelection {
+    provideSingletonSchemaPageLeftTabSelection: function provideSingletonSchemaPageLeftTabSelection() : leftnavmodel.LeftTabSelection {
 
-        // Create the page selection first time through.
-        if ( theLeftTabSelection == null ) {
-            theLeftTabSelection = new leftnavmodel.LeftTabSelection();
-        }
-
-        return theLeftTabSelection;
+        return new leftnavmodel.LeftTabSelection();
 
     },
 
@@ -188,14 +158,9 @@ export var schemaPageModule = {
      * Creates or returns the one and only schema page right tab selection model, loading it when first requested.
      * @returns {RightTabSelection} the right tab selection.
      */
-    provideSchemaPageRightTabSelection: function provideSchemaPageRightTabSelection() : rightnavmodel.RightTabSelection {
+    provideSingletonSchemaPageRightTabSelection: function provideSingletonSchemaPageRightTabSelection() : rightnavmodel.RightTabSelection {
 
-        // Create the page selection first time through.
-        if ( theRightTabSelection == null ) {
-            theRightTabSelection = new rightnavmodel.RightTabSelection();
-        }
-
-        return theRightTabSelection;
+        return new rightnavmodel.RightTabSelection();
 
     },
 
