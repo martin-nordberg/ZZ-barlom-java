@@ -144,6 +144,56 @@ class PackagedElementNameChangeCmdWriter extends AbstractMetamodelCommandWriter 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to create a vertex type.
+ */
+class VertexTypeCreationCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new vertex type creation command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var parentPackageId : string = jsonCmdArgs.parentPackageId;
+        var name : string = jsonCmdArgs.name;
+        var superTypeId : string = jsonCmdArgs.superTypeId;
+        var abstractness : boolean = jsonCmdArgs.abstractness;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                parentPackageId: parentPackageId,
+                name: name,
+                superTypeId: superTypeId,
+                abstractness: abstractness
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/vertextypecreation",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Factory for metamodel commands supported by the H2 Database provider.
  */
 export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCommandWriterFactory {
@@ -162,6 +212,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmdWriter();
+            case "vertextypecreation":
+                return new VertexTypeCreationCmdWriter();
             default:
                 throw new Error( "Unknown command type: \"" + commandTypeName + "\"." );
         }

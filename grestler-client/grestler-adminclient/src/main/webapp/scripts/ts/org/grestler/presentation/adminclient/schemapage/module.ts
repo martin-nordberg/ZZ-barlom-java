@@ -54,14 +54,20 @@ export var schemaPageModule = {
      * Provides a controller for the Browse tab.
      * @param schemaPageBrowsedElement the browsed element that is to be the parent package of newly created elements.
      * @param metamodelCommandFactory the factory for making commands.
+     * @param metamodelRepository the repository for querying root elements when needed.
      * @returns {BrowseTabController}
      */
     provideSchemaPageBrowseTabController: function provideSchemaPageBrowseTabController(
         schemaPageBrowsedElement : elementmodel.ElementSelection,
-        metamodelCommandFactory : api_commands.IMetamodelCommandFactory
+        metamodelCommandFactory : api_commands.IMetamodelCommandFactory,
+        metamodelRepository : api_queries.IMetamodelRepository
     ) : browsetabcontroller.BrowseTabController {
 
-        return new browsetabcontroller.BrowseTabController( schemaPageBrowsedElement, metamodelCommandFactory );
+        return new browsetabcontroller.BrowseTabController(
+            schemaPageBrowsedElement,
+            metamodelCommandFactory,
+            metamodelRepository
+        );
 
     },
 

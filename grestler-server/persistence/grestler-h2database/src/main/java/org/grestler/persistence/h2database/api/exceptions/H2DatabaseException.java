@@ -71,7 +71,10 @@ public class H2DatabaseException
         EValidationType vtype = EValidationType.NONSPECIFIC;
         StringBuilder vmsg = new StringBuilder();
 
-        if ( msg.startsWith( "Referential integrity constraint violation" ) ) {
+        if ( msg == null ) {
+            vmsg.append( "Unknown error." );
+        }
+        else if ( msg.startsWith( "Referential integrity constraint violation" ) ) {
             vtype = EValidationType.RELATED_ENTITY_NOT_FOUND;
             vmsg.append( "Related " );
             vmsg.append(

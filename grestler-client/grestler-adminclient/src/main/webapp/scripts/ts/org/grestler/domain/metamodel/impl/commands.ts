@@ -134,6 +134,45 @@ class PackagedElementNameChangeCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to create a package.
+ */
+class VertexTypeCreationCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the vertex attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var parentPackageId : string = jsonCmdArgs.parentPackageId;
+        var name : string = jsonCmdArgs.name;
+        var superTypeId : string = jsonCmdArgs.superTypeId;
+        var abstractness = jsonCmdArgs.abstractness == "ABSTRACT" ? api_elements.EAbstractness.ABSTRACT : api_elements.EAbstractness.CONCRETE;
+
+        // Look up the related elements.
+        var parentPackage : api_elements.IPackage = this.metamodelRepository.findPackageById( parentPackageId );
+        var superType : api_elements.IVertexType = this.metamodelRepository.findVertexTypeById( superTypeId );
+
+        // Create the new package.
+        this.metamodelRepository.loadVertexType( id, parentPackage, name, superType, abstractness );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Factory for metamodel commands.
  */
 export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFactory {
@@ -163,6 +202,8 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
                 return new PackageCreationCmd( this._metamodelRepository, cmdWriter );
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmd( this._metamodelRepository, cmdWriter );
+            case "vertextypecreation":
+                return new VertexTypeCreationCmd( this._metamodelRepository, cmdWriter );
             default:
                 throw new Error( "Unknown command type: \"" + commandTypeName + "\"." );
         }

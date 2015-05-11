@@ -14,8 +14,10 @@
                 <br>
             {{/each}}
 
-            <!-- TODO: different add link for each section -->
-            <a class="elementlink add Package" href="#" on-click="addPackageClicked">Add a package</a>
+            {{#each addLinks}}
+                <a class="elementlink add {{cls}}" href="#" on-click="addClicked">{{text}}</a>
+                <br>
+            {{/each}}
 
         {{/each}}
 

@@ -371,6 +371,12 @@ export interface IPackage extends IPackagedElement {
     findOptionalChildPackageByName( name : string ) : IPackage;
 
     /**
+     * Finds the vertex type with given name (or null if not found).
+     * @param name
+     */
+    findOptionalVertexTypeByName( name : string ) : IVertexType;
+
+    /**
      * Determines the packages that depend upon this one.
      *
      * @param dependencyDepth whether to include indirect clients.

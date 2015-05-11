@@ -12,6 +12,35 @@ import elementmodel = require( '../../metamodel/elementmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** Interface defining one add link in a browse tab section. */
+export interface IAddLink {
+
+    /** The CSS class for the link. */
+    cls: string;
+
+    /** The text of the link. */
+    text: string;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** Interface defining one section of the browse tab. */
+export interface IBrowseSection {
+
+    /** Title of the section. */
+    title: string;
+
+    /** Elements within the section. */
+    elements: api_elements.IDocumentedElement[];
+
+    /** Add links within the section. */
+    addLinks: IAddLink[]
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Schema page browse tab panel sections.
  */
@@ -105,25 +134,38 @@ export class BrowseTabEntries {
      */
     private _updateBrowseSections( element : api_elements.IDocumentedElement ) {
 
+        var me = this;
+
         console.log( "_updateBrowseSections: ", element );
-        this.browseSections = [];
+        me.browseSections = [];
+
+        var addBrowseSection = function (
+            title : string,
+            addLinks : IAddLink[],
+            elements : api_elements.IDocumentedElement[]
+        ) {
+
+            var section = {
+                title: title,
+                elements: [],
+                addLinks: addLinks
+            };
+
+            elements.forEach(
+                function ( element ) {
+                    section.elements.push( element );
+                }
+            );
+
+            me.browseSections.push( section );
+        };
 
         // Package
         if ( element != null && element.typeName.indexOf( 'Package' ) >= 0 ) {
             var pkg = <api_elements.IPackage> element;
 
-            var subPackagesSection = {
-                title: "Sub-Packages",
-                elements: []
-            };
-
-            pkg.childPackages.forEach(
-                function ( subPkg ) {
-                    subPackagesSection.elements.push( subPkg );
-                }
-            );
-
-            this.browseSections.push( subPackagesSection );
+            addBrowseSection( "Sub-Packages", [{cls: 'Package', text: "Add a package"}], pkg.childPackages );
+            addBrowseSection( "Vertex Types", [{cls: 'VertexType', text: "Add a vertex type"}], pkg.vertexTypes );
         }
 
     }
@@ -146,7 +188,8 @@ export class BrowseTabEntries {
 
     }
 
-    public browseSections : any;
+    /** Attributes of the sections of browsed items to show. */
+    public browseSections : IBrowseSection[];
 
     /* The currently selected model element. */
     private _element : api_elements.IDocumentedElement;

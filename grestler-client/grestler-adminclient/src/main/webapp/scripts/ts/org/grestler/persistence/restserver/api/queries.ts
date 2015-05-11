@@ -227,6 +227,11 @@ export class PackageLoader implements spi_queries.IPackageLoader {
                 return values.nothing;
             }
 
+            // Error if no progress
+            if ( pkgsJsonToDo.packages.length === pkgsJson.packages.length ) {
+                throw new Error( "Failed to load all packages." );
+            }
+
             // Recursively create whatever packages remain.
             return loadPackages( pkgsJsonToDo );
 
@@ -247,11 +252,77 @@ export class PackageLoader implements spi_queries.IPackageLoader {
 export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
 
     loadAllVertexTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
-        return new Promise<values.ENothing>(
-            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
-                resolve( values.nothing );  // TODO
+
+        // TODO: externally configured host & port
+        const url = "http://localhost:8080/grestlerdata/metadata/vertextypes";
+
+        /**
+         * Loads one vertex type from its JSON representation.
+         * @param vtJson parsed JSON for the vertex type.
+         */
+        var loadVertexType = function ( vtJson : any ) : api_elements.IVertexType {
+
+            var parentPackage = repository.findPackageById( vtJson.parentPackageId );
+            var superTypeId = vtJson.superTypeId;
+            var abstractness = vtJson.isAbstract ? api_elements.EAbstractness.ABSTRACT : api_elements.EAbstractness.CONCRETE;
+
+            if ( superTypeId ) {
+                var superType = repository.findOptionalVertexTypeById( superTypeId );
+
+                if ( superType ) {
+                    return repository.loadVertexType( vtJson.id, parentPackage, vtJson.name, superType, abstractness );
+                }
+                else {
+                    return null;
+                }
             }
-        );
+            else {
+                return repository.loadRootVertexType( vtJson.id, parentPackage );
+            }
+
+        };
+
+        /**
+         * Loads all vertex types from their representation as a JSON object.
+         * @param vtsJson parsed JSON for an array of vertex types.
+         */
+        var loadVertexTypes = function ( vtsJson : any ) : values.ENothing {
+
+            // Keep track of vertex types that fail to create on this round becasue their parents are later in the list.
+            var vtsJsonToDo = {
+                vertexTypes: []
+            };
+
+            // Create each vertex type from the JSON
+            vtsJson.vertexTypes.forEach(
+                function ( pkgJson : any ) : void {
+                    var pkg = loadVertexType( pkgJson );
+
+                    // If not created, try again in next round (super type presumably later in the list).
+                    if ( pkg == null ) {
+                        vtsJsonToDo.vertexTypes.push( pkgJson );
+                    }
+                }
+            );
+
+            // Done when all vertex types created.
+            if ( vtsJsonToDo.vertexTypes.length == 0 ) {
+                return values.nothing;
+            }
+
+            // Error if no progress
+            if ( vtsJsonToDo.vertexTypes.length === vtsJson.vertexTypes.length ) {
+                throw new Error( "Failed to load all vertex types." );
+            }
+
+            // Recursively create whatever vertex types remain.
+            return loadVertexTypes( vtsJsonToDo );
+
+        };
+
+        // Perform the AJAX call and handle the response.
+        return ajax.httpGet( url ).then( JSON.parse ).then( loadVertexTypes );
+
     }
 
 }

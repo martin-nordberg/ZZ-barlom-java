@@ -622,7 +622,7 @@ class PackageContents {
         else if ( packagedElement.typeName == "Package" ) {
             this._childPackages.push( <api_elements.IPackage> packagedElement );
         }
-        else if ( packagedElement.typeName == "VertexType" ) {
+        else if ( packagedElement.typeName.match( /VertexType$/ ) ) {
             this._vertexTypes.push( <api_elements.IVertexType> packagedElement );
         }
         else if ( packagedElement.typeName.match( /EdgeType$/ ) ) {
@@ -660,6 +660,15 @@ class PackageContents {
         for ( var i = 0; i < this._childPackages.length; i += 1 ) {
             if ( this._childPackages[i].name == name ) {
                 return this._childPackages[i];
+            }
+        }
+        return null;
+    }
+
+    findOptionalVertexTypeByName( name : string ) : api_elements.IVertexType {
+        for ( var i = 0; i < this._vertexTypes.length; i += 1 ) {
+            if ( this._vertexTypes[i].name == name ) {
+                return this._vertexTypes[i];
             }
         }
         return null;
@@ -906,6 +915,10 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
 
     public findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
         return this._packageContents.findOptionalChildPackageByName( name );
+    }
+
+    public findOptionalVertexTypeByName( name : string ) : api_elements.IVertexType {
+        return this._packageContents.findOptionalVertexTypeByName( name );
     }
 
     public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
@@ -1990,6 +2003,10 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
 
     public findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
         return this._packageContents.findOptionalChildPackageByName( name );
+    }
+
+    public findOptionalVertexTypeByName( name : string ) : api_elements.IVertexType {
+        return this._packageContents.findOptionalVertexTypeByName( name );
     }
 
     public getClientPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
