@@ -110,8 +110,7 @@ export class PropertiesTabFields {
         this.fields = [];
 
         // Package
-        if ( element != null && element.typeName.indexOf( 'Package' ) >= 0 ) {
-            var pkg = <api_elements.IPackage> element;
+        if ( element != null && element.isA( api_elements.NAMED_ELEMENT ) ) {
 
             this.fields.push(
                 {

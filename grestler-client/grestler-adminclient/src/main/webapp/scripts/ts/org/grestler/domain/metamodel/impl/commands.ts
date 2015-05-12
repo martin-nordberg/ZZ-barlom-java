@@ -134,7 +134,7 @@ class PackagedElementNameChangeCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Command to create a package.
+ * Command to create a vertex type.
  */
 class VertexTypeCreationCmd extends AbstractMetamodelCommand {
 
@@ -163,7 +163,7 @@ class VertexTypeCreationCmd extends AbstractMetamodelCommand {
         var parentPackage : api_elements.IPackage = this.metamodelRepository.findPackageById( parentPackageId );
         var superType : api_elements.IVertexType = this.metamodelRepository.findVertexTypeById( superTypeId );
 
-        // Create the new package.
+        // Create the new vertex type.
         this.metamodelRepository.loadVertexType( id, parentPackage, name, superType, abstractness );
 
     }

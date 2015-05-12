@@ -167,7 +167,7 @@ export class ElementHolder extends ElementHandle {
      */
     private _setElement( element : api_elements.IDocumentedElement ) {
         this.element = element;
-        this.isPackage = this.element && this.element.typeName.indexOf( 'Package' ) >= 0;
+        this.isPackage = this.element && this.element.isA( api_elements.PACKAGE );
     }
 
     /** Whether the selected element is a package. */

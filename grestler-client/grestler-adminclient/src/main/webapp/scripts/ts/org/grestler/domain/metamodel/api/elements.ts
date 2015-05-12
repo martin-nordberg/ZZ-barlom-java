@@ -162,7 +162,16 @@ export interface IDocumentedElement {
     /** The concrete type name of this element. */
     typeName : string;
 
+    /** Whether this element has the given type. */
+    isA( typeName : string ) : boolean;
+
 }
+
+/**
+ * Type name for documented elements.
+ * @type {string}
+ */
+export const DOCUMENTED_ELEMENT = 'DocumentedElement';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -180,6 +189,12 @@ export interface INamedElement extends IDocumentedElement {
     path : string;
 
 }
+
+/**
+ * Type name for named elements.
+ * @type {string}
+ */
+export const NAMED_ELEMENT = 'NamedElement';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -209,6 +224,12 @@ export interface IPackagedElement extends INamedElement {
     isChildOf( parentPackage : IPackage ) : boolean;
 
 }
+
+/**
+ * Type name for packaged elements.
+ * @type {string}
+ */
+export const PACKAGED_ELEMENT = 'PackagedElement';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -249,6 +270,18 @@ export interface IVertexType extends IPackagedElement {
     isSubTypeOf( vertexType : IVertexType ) : boolean;
 
 }
+
+/**
+ * Type name for vertex types.
+ * @type {string}
+ */
+export const VERTEX_TYPE = 'VertexType';
+
+/**
+ * Type name for root vertex types.
+ * @type {string}
+ */
+export const ROOT_VERTEX_TYPE = 'RootVertexType';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -306,6 +339,12 @@ export interface IEdgeType extends IPackagedElement {
 
 }
 
+/**
+ * Type name for edge types.
+ * @type {string}
+ */
+export const EDGE_TYPE = 'EdgeType';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -319,6 +358,12 @@ export interface IAttributeType extends IPackagedElement {
     dataType : EDataType;
 
 }
+
+/**
+ * Type name for attribute types.
+ * @type {string}
+ */
+export const ATTRIBUTE_TYPE = 'AttributeType';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -339,6 +384,12 @@ export interface IPackageDependency extends IDocumentedElement {
     supplierPackage : IPackage;
 
 }
+
+/**
+ * Type name for package dependencies.
+ * @type {string}
+ */
+export const PACKAGE_DEPENDENCY = 'PackageDependency';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -405,6 +456,18 @@ export interface IPackage extends IPackagedElement {
     hasSupplierPackage( pkg : IPackage, dependencyDepth : EDependencyDepth ) : boolean;
 
 }
+
+/**
+ * Type name for packages.
+ * @type {string}
+ */
+export const PACKAGE = 'Package';
+
+/**
+ * Type name for root packages.
+ * @type {string}
+ */
+export const ROOT_PACKAGE = 'RootPackage';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -478,6 +541,18 @@ export interface IDirectedEdgeType extends IEdgeType {
 
 }
 
+/**
+ * Type name for directed edge types.
+ * @type {string}
+ */
+export const DIRECTED_EDGE_TYPE = 'DirectedEdgeType';
+
+/**
+ * Type name for a root directed edge type.
+ * @type {string}
+ */
+export const ROOT_DIRECTED_EDGE_TYPE = 'RootDirectedEdgeType';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -521,6 +596,18 @@ export interface IUndirectedEdgeType extends IEdgeType {
 
 }
 
+/**
+ * Type name for undirected edge types.
+ * @type {string}
+ */
+export const UNDIRECTED_EDGE_TYPE = 'UndirectedEdgeType';
+
+/**
+ * Type name for a root undirected edge type.
+ * @type {string}
+ */
+export const ROOT_UNDIRECTED_EDGE_TYPE = 'RootUndirectedEdgeType';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -537,6 +624,12 @@ export interface IBooleanAttributeType extends IAttributeType {
     defaultValue : boolean;
 
 }
+
+/**
+ * Type name for boolean attributes.
+ * @type {string}
+ */
+export const BOOLEAN_ATTRIBUTE_TYPE = 'BooleanAttributeType';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -556,6 +649,12 @@ export interface IDateTimeAttributeType extends IAttributeType {
     minValue : Date;
 
 }
+
+/**
+ * Type name for date/time attribute types.
+ * @type {string}
+ */
+export const DATE_TIME_ATTRIBUTE_TYPE = 'DateTimeAttributeType';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -581,6 +680,12 @@ export interface IFloat64AttributeType extends IAttributeType {
 
 }
 
+/**
+ * Type name for 64-bit floating point attribute types.
+ * @type {string}
+ */
+export const FLOAT64_ATTRIBUTE_TYPE = 'Float64AttributeType';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -604,6 +709,12 @@ export interface IInteger32AttributeType extends IAttributeType {
     minValue : number;
 
 }
+
+/**
+ * Type name for 32-bit integer attribute types.
+ * @type {string}
+ */
+export const INTEGER32_ATTRIBUTE_TYPE = 'Integer32AttributeType';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -629,6 +740,12 @@ export interface IStringAttributeType extends IAttributeType {
 
 }
 
+/**
+ * Type name for string attribute types.
+ * @type {string}
+ */
+export const STRING_ATTRIBUTE_TYPE = 'StringAttributeType';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -637,6 +754,12 @@ export interface IStringAttributeType extends IAttributeType {
 export interface IUuidAttributeType extends IAttributeType {
 
 }
+
+/**
+ * Type name for UUID attribute types.
+ * @type {string}
+ */
+export const UUID_ATTRIBUTE_TYPE = 'UuidAttributeType';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -661,6 +784,12 @@ export interface IEdgeAttributeDecl extends INamedElement {
     type : IAttributeType;
 
 }
+
+/**
+ * Type name for edge attribute declarations.
+ * @type {string}
+ */
+export const EDGE_ATTRIBUTE_DECL = 'EdgeAttributeDecl';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -690,5 +819,11 @@ export interface IVertexAttributeDecl extends INamedElement {
     type : IAttributeType;
 
 }
+
+/**
+ * Type name for vertex type attribute declarations.
+ * @type {string}
+ */
+export const VERTEX_ATTRIBUTE_DECL = 'VertexAttributeDecl';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

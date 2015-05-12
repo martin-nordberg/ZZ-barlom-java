@@ -31,6 +31,10 @@ export class DocumentedElement implements api_elements.IDocumentedElement {
         return this._id;
     }
 
+    public isA( typeName : string ) : boolean {
+        return api_elements.DOCUMENTED_ELEMENT == typeName;
+    }
+
     public get parent() : api_elements.INamedElement {
         throw new Error( "Abstract method" );
     }
@@ -88,6 +92,10 @@ export class NamedElement extends DocumentedElement implements api_elements.INam
     constructor( typeName : string, id : string, name : string ) {
         super( typeName, id );
         this._name = name;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.NAMED_ELEMENT == typeName || super.isA( typeName );
     }
 
     /**
@@ -180,6 +188,10 @@ export class PackagedElement extends NamedElement implements api_elements.IPacka
 
     }
 
+    public isA( typeName : string ) : boolean {
+        return api_elements.PACKAGED_ELEMENT == typeName || super.isA( typeName );
+    }
+
     /**
      * Determines whether this package is a direct or indirect child of the given package.
      *
@@ -250,7 +262,7 @@ export class VertexType extends PackagedElement implements api_elements.IVertexT
         abstractness : api_elements.EAbstractness
     ) {
 
-        super( 'VertexType', id, parentPackage, name );
+        super( api_elements.VERTEX_TYPE, id, parentPackage, name );
 
         this._superType = superType;
         this._abstractness = abstractness;
@@ -282,6 +294,10 @@ export class VertexType extends PackagedElement implements api_elements.IVertexT
 
     public get attributes() : api_elements.IVertexAttributeDecl[] {
         return this._attributes;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.VERTEX_TYPE == typeName || super.isA( typeName );
     }
 
     public isSubTypeOf( vertexType : api_elements.IVertexType ) : boolean {
@@ -433,6 +449,10 @@ export class EdgeType extends PackagedElement implements api_elements.IEdgeType,
         this._cyclicity = value;
     }
 
+    public isA( typeName : string ) : boolean {
+        return api_elements.EDGE_TYPE == typeName || super.isA( typeName );
+    }
+
     /**
      * @return whether this edge type is abstract, i.e has no concrete instances. Note that a super type must be
      * abstract.
@@ -536,12 +556,16 @@ export class AttributeType extends PackagedElement implements api_elements.IAttr
         super( typeName, id, parentPackage, name );
     }
 
-    get dataType() : api_elements.EDataType {
+    public get dataType() : api_elements.EDataType {
         throw new Error( "Abstract method get dataType called on " + this.path + "." );
     }
 
-    set dataType( ignored : api_elements.EDataType ) {
+    public set dataType( ignored : api_elements.EDataType ) {
         throw new Error( "Abstract method set dataType called on " + this.path + "." );
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
 }
@@ -564,7 +588,7 @@ export class PackageDependency extends DocumentedElement implements api_elements
         id : string, clientPackage : api_elements.IPackage, supplierPackage : api_elements.IPackage
     ) {
 
-        super( 'PackageDependency', id );
+        super( api_elements.PACKAGE_DEPENDENCY, id );
 
         this._clientPackage = clientPackage;
         this._supplierPackage = supplierPackage;
@@ -577,6 +601,10 @@ export class PackageDependency extends DocumentedElement implements api_elements
 
     public get clientPackage() : api_elements.IPackage {
         return this._clientPackage;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.PACKAGE_DEPENDENCY == typeName || super.isA( typeName );
     }
 
     public get supplierPackage() : api_elements.IPackage {
@@ -880,7 +908,7 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
      */
     constructor( id : string, parentPackage : api_elements.IPackage, name : string ) {
 
-        super( 'Package', id, parentPackage, name );
+        super( api_elements.PACKAGE, id, parentPackage, name );
 
         this._packageDependencies = new PackageDependencies( this );
         this._packageContents = new PackageContents( this );
@@ -944,6 +972,10 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
         return this._packageDependencies.hasSupplierPackage( pkg, dependencyDepth );
     }
 
+    public isA( typeName : string ) : boolean {
+        return api_elements.PACKAGE == typeName || super.isA( typeName );
+    }
+
     public removeChildElement( packagedElement : api_elements.IPackagedElement ) : void {
         this._packageContents.removeChildElement( packagedElement );
     }
@@ -1002,7 +1034,16 @@ export class DirectedEdgeType extends EdgeType implements api_elements.IDirected
         minHeadInDegree : number,
         maxHeadInDegree : number
     ) {
-        super( 'DirectedEdgeType', id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super(
+            api_elements.DIRECTED_EDGE_TYPE,
+            id,
+            parentPackage,
+            name,
+            abstractness,
+            cyclicity,
+            multiEdgedness,
+            selfLooping
+        );
 
         this._superType = superType;
         this._tailVertexType = tailVertexType;
@@ -1046,6 +1087,10 @@ export class DirectedEdgeType extends EdgeType implements api_elements.IDirected
             }
         );
         this._headVertexType = value;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.DIRECTED_EDGE_TYPE == typeName || super.isA( typeName );
     }
 
     public  get maxHeadInDegree() : number {
@@ -1235,13 +1280,26 @@ export class UndirectedEdgeType extends EdgeType implements api_elements.IUndire
         minDegree : number,
         maxDegree : number
     ) {
-        super( 'UndirectedEdgeType', id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super(
+            api_elements.UNDIRECTED_EDGE_TYPE,
+            id,
+            parentPackage,
+            name,
+            abstractness,
+            cyclicity,
+            multiEdgedness,
+            selfLooping
+        );
 
         this._superType = superType;
         this._vertexType = vertexType;
         this._minDegree = minDegree;
         this._maxDegree = maxDegree;
 
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.UNDIRECTED_EDGE_TYPE == typeName || super.isA( typeName );
     }
 
     public  get maxDegree() : number {
@@ -1351,7 +1409,7 @@ export class BooleanAttributeType extends AttributeType implements api_elements.
     constructor(
         id : string, parentPackage : api_elements.IPackage, name : string, defaultValue : boolean
     ) {
-        super( 'BooleanAttributeType', id, parentPackage, name );
+        super( api_elements.BOOLEAN_ATTRIBUTE_TYPE, id, parentPackage, name );
         this._defaultValue = defaultValue;
     }
 
@@ -1369,6 +1427,10 @@ export class BooleanAttributeType extends AttributeType implements api_elements.
             }
         );
         this._defaultValue = value;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.BOOLEAN_ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
     /** The default value for attributes of this type. */
@@ -1396,11 +1458,15 @@ export class DateTimeAttributeType extends AttributeType implements api_elements
         id : string, parentPackage : api_elements.IPackage, name : string, minValue : Date, maxValue : Date
     ) {
 
-        super( 'DateTimeAttributeType', id, parentPackage, name );
+        super( api_elements.DATE_TIME_ATTRIBUTE_TYPE, id, parentPackage, name );
 
         this._maxValue = maxValue;
         this._minValue = minValue;
 
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.DATE_TIME_ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
     public get maxValue() : Date {
@@ -1468,7 +1534,7 @@ export class Float64AttributeType extends AttributeType implements api_elements.
         maxValue : number,
         defaultValue : number
     ) {
-        super( 'Float64AttributeType', id, parentPackage, name );
+        super( api_elements.FLOAT64_ATTRIBUTE_TYPE, id, parentPackage, name );
 
         this._minValue = minValue;
         this._maxValue = maxValue;
@@ -1489,6 +1555,10 @@ export class Float64AttributeType extends AttributeType implements api_elements.
             }
         );
         this._defaultValue = value;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.FLOAT64_ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
     public get maxValue() : number {
@@ -1559,7 +1629,7 @@ export class Integer32AttributeType extends AttributeType implements api_element
         maxValue : number,
         defaultValue : number
     ) {
-        super( 'Integer32AttributeType', id, parentPackage, name );
+        super( api_elements.INTEGER32_ATTRIBUTE_TYPE, id, parentPackage, name );
 
         this._minValue = minValue;
         this._maxValue = maxValue;
@@ -1580,6 +1650,10 @@ export class Integer32AttributeType extends AttributeType implements api_element
             }
         );
         this._defaultValue = value;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.INTEGER32_ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
     public get maxValue() : number {
@@ -1650,12 +1724,16 @@ export class StringAttributeType extends AttributeType implements api_elements.I
         maxLength : number,
         regexPattern : string
     ) {
-        super( 'StringAttributeType', id, parentPackage, name );
+        super( api_elements.STRING_ATTRIBUTE_TYPE, id, parentPackage, name );
 
         this._minLength = minLength;
         this._maxLength = maxLength;
 
         this._regexPattern = new RegExp( regexPattern );
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.STRING_ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
     public get maxLength() : number {
@@ -1734,7 +1812,11 @@ export class UuidAttributeType extends AttributeType implements api_elements.IUu
     constructor(
         id : string, parentPackage : api_elements.IPackage, name : string
     ) {
-        super( 'UuidAttributeType', id, parentPackage, name );
+        super( api_elements.UUID_ATTRIBUTE_TYPE, id, parentPackage, name );
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.UUID_ATTRIBUTE_TYPE == typeName || super.isA( typeName );
     }
 
 }
@@ -1763,7 +1845,7 @@ export class EdgeAttributeDecl extends NamedElement implements api_elements.IEdg
         optionality : api_elements.EAttributeOptionality
     ) {
 
-        super( 'EdgeAttributeDecl', id, name );
+        super( api_elements.EDGE_ATTRIBUTE_DECL, id, name );
 
         this._parentEdgeType = parentEdgeType;
         this._type = type;
@@ -1771,6 +1853,10 @@ export class EdgeAttributeDecl extends NamedElement implements api_elements.IEdg
 
         ( <IEdgeTypeUnderAssembly> parentEdgeType ).addAttribute( this );
 
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.EDGE_ATTRIBUTE_DECL == typeName || super.isA( typeName );
     }
 
     public get optionality() : api_elements.EAttributeOptionality {
@@ -1864,7 +1950,7 @@ export class VertexAttributeDecl extends NamedElement implements api_elements.IV
         labelDefaulting : api_elements.ELabelDefaulting
     ) {
 
-        super( 'VertexAttributeDecl', id, name );
+        super( api_elements.VERTEX_ATTRIBUTE_DECL, id, name );
 
         this._parentVertexType = parentVertexType;
         this._type = type;
@@ -1877,6 +1963,10 @@ export class VertexAttributeDecl extends NamedElement implements api_elements.IV
 
     public get labelDefaulting() : api_elements.ELabelDefaulting {
         return this._labelDefaulting;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.VERTEX_ATTRIBUTE_DECL == typeName || super.isA( typeName );
     }
 
     public get optionality() : api_elements.EAttributeOptionality {
@@ -2017,6 +2107,14 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
         return this._id;
     }
 
+    public isA( typeName : string ) : boolean {
+        return api_elements.ROOT_PACKAGE == typeName ||
+            api_elements.PACKAGE == typeName ||
+            api_elements.PACKAGED_ELEMENT == typeName ||
+            api_elements.NAMED_ELEMENT == typeName ||
+            api_elements.DOCUMENTED_ELEMENT == typeName;
+    }
+
     public get name() : string {
         return "$";
     }
@@ -2114,6 +2212,14 @@ export class RootVertexType implements api_elements.IVertexType, IVertexTypeUnde
 
     public get id() : string {
         return this._id;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.ROOT_VERTEX_TYPE == typeName ||
+            api_elements.VERTEX_TYPE == typeName ||
+            api_elements.PACKAGED_ELEMENT == typeName ||
+            api_elements.NAMED_ELEMENT == typeName ||
+            api_elements.DOCUMENTED_ELEMENT == typeName;
     }
 
     public isChildOf( parentPackage : api_elements.IPackage ) : boolean {
@@ -2224,6 +2330,15 @@ export class RootDirectedEdgeType implements api_elements.IDirectedEdgeType, IEd
 
     public get id() : string {
         return this._id;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.ROOT_DIRECTED_EDGE_TYPE == typeName ||
+            api_elements.DIRECTED_EDGE_TYPE == typeName ||
+            api_elements.EDGE_TYPE == typeName ||
+            api_elements.PACKAGED_ELEMENT == typeName ||
+            api_elements.NAMED_ELEMENT == typeName ||
+            api_elements.DOCUMENTED_ELEMENT == typeName;
     }
 
     public get isAbstract() : boolean {
@@ -2369,6 +2484,15 @@ export class RootUndirectedEdgeType implements api_elements.IUndirectedEdgeType,
 
     public get id() : string {
         return this._id;
+    }
+
+    public isA( typeName : string ) : boolean {
+        return api_elements.ROOT_UNDIRECTED_EDGE_TYPE == typeName ||
+            api_elements.UNDIRECTED_EDGE_TYPE == typeName ||
+            api_elements.EDGE_TYPE == typeName ||
+            api_elements.PACKAGED_ELEMENT == typeName ||
+            api_elements.NAMED_ELEMENT == typeName ||
+            api_elements.DOCUMENTED_ELEMENT == typeName;
     }
 
     public get isAbstract() : boolean {

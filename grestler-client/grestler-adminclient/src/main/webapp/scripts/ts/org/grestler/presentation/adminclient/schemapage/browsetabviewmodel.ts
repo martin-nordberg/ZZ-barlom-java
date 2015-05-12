@@ -161,7 +161,7 @@ export class BrowseTabEntries {
         };
 
         // Package
-        if ( element != null && element.typeName.indexOf( 'Package' ) >= 0 ) {
+        if ( element != null && element.isA( api_elements.PACKAGE ) ) {
             var pkg = <api_elements.IPackage> element;
 
             addBrowseSection( "Sub-Packages", [{cls: 'Package', text: "Add a package"}], pkg.childPackages );
