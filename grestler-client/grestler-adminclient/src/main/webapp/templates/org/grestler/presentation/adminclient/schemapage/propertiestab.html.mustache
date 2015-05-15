@@ -7,8 +7,23 @@
         {{#each fields}}
 
             <label for="field-{{name}}">{{label}}:</label>
+
             <br>
-            <input id="field-{{name}}" type="{{type}}" name="{{name}}" on-change="inputChanged" value="{{element.name}}">
+
+            {{#if isText}}
+                <input id="field-{{name}}" type="text" name="{{name}}" on-change="textChanged" value="{{value}}">
+            {{/if}}
+
+            {{#if isRadioGroup}}
+                {{#each radioButtons:index}}
+                    <label for="field-{{name}}-{{index}}">
+                        <input id="field-{{name}}-{{index}}" type="radio" name="{{name}}" on-change="radioChanged" checked="{{checked}}" value="{{value}}">
+                        {{label}}
+                    </label>
+                {{/each}}
+            {{/if}}
+
+            <br>
 
         {{/each}}
 

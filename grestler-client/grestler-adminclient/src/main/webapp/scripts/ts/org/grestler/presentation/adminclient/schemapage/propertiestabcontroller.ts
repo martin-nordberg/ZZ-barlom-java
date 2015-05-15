@@ -36,7 +36,7 @@ export class PropertiesTabController {
      * Responds to changing the name.
      * @param event
      */
-    public onInputChanged( event : any ) : void {
+    public onTextChanged( event : any ) : void {
 
         var fieldName = event.node.name;
 

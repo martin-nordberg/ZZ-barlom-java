@@ -109,14 +109,44 @@ export class PropertiesTabFields {
         console.log( "_updateBrowseSections: ", element );
         this.fields = [];
 
-        // Package
-        if ( element != null && element.isA( api_elements.NAMED_ELEMENT ) ) {
+        if ( element == null ) {
+            return;
+        }
+
+        // Named Element
+        if ( element.isA( api_elements.NAMED_ELEMENT ) ) {
 
             this.fields.push(
                 {
+                    isText: true,
                     label: "Name",
                     name: 'name',
-                    type: 'text'
+                    value: (<api_elements.INamedElement> element).name
+                }
+            );
+
+        }
+
+        // Vertex Type
+        if ( element.isA( api_elements.VERTEX_TYPE ) ) {
+
+            this.fields.push(
+                {
+                    isRadioGroup: true,
+                    label: "Abstractness",
+                    name: 'abstractness',
+                    radioButtons: [
+                        {
+                            checked: (<api_elements.IVertexType> element).abstractness == api_elements.EAbstractness.ABSTRACT,
+                            label: "Abstract",
+                            value: api_elements.EAbstractness.ABSTRACT
+                        },
+                        {
+                            checked: (<api_elements.IVertexType> element).abstractness == api_elements.EAbstractness.CONCRETE,
+                            label: "Concrete",
+                            value: api_elements.EAbstractness.CONCRETE
+                        }
+                    ]
                 }
             );
 
