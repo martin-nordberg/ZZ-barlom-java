@@ -134,7 +134,7 @@ export class PropertiesTabFields {
                 {
                     isRadioGroup: true,
                     label: "Abstractness",
-                    name: 'abstractness',
+                    name: 'vertexTypeAbstractness',
                     radioButtons: [
                         {
                             checked: (<api_elements.IVertexType> element).abstractness == api_elements.EAbstractness.ABSTRACT,

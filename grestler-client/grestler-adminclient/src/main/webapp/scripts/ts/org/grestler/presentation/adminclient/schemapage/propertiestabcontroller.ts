@@ -33,8 +33,27 @@ export class PropertiesTabController {
     }
 
     /**
-     * Responds to changing the name.
-     * @param event
+     * Responds to changing a radio field.
+     * @param event the Ractive event capturing the change.
+     */
+    public onRadioChanged( event : any ) : void {
+
+        var fieldName = event.node.name;
+
+        switch ( fieldName ) {
+            case 'vertexTypeAbstractness':
+                this._onVertexTypeAbstractnessChanged( event.node.value );
+                break;
+            default:
+                console.log( "Unknown field name: " + fieldName );
+                break
+        }
+
+    }
+
+    /**
+     * Responds to changing a text field.
+     * @param event the Ractive event signifying the change.
      */
     public onTextChanged( event : any ) : void {
 
@@ -42,28 +61,53 @@ export class PropertiesTabController {
 
         switch ( fieldName ) {
             case 'name':
-                this._onNameChanged( event );
+                this._onNameChanged( event.node.value );
                 break;
             default:
                 console.log( "Unknown field name: " + fieldName );
                 break
         }
+
     }
 
-    private _onNameChanged( event : any ) : void {
+    /**
+     * Responds to changing the name.
+     * @param newName the new element name.
+     */
+    private _onNameChanged( newName : string ) : void {
 
         // TODO: UUID from server
         var cmdId = uuids.makeUuid();
 
-        var element = this._elementSelection.elementSelection;
-
         var pkgJson = {
             cmdId: cmdId,
-            id: element.id,
-            name: event.node.value
+            id: this._elementSelection.elementSelection.id,
+            name: newName
         };
 
         var cmd = this._metamodelCommandFactory.makeCommand( "packagedelementnamechange" );
+
+        cmd.execute( pkgJson )
+
+    }
+
+    /**
+     * Responds to a change in the abstractness of a vertex type.
+     * @param abstractnessNumStr the new value as a numeric string.
+     * @private
+     */
+    private _onVertexTypeAbstractnessChanged( abstractnessNumStr : string ) : void {
+
+        // TODO: UUID from server
+        var cmdId = uuids.makeUuid();
+
+        var pkgJson = {
+            cmdId: cmdId,
+            id: this._elementSelection.elementSelection.id,
+            abstractness: api_elements.EAbstractness[parseInt( abstractnessNumStr, 10 )]
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "vertextypeabstractnesschange" );
 
         cmd.execute( pkgJson )
 

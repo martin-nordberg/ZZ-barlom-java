@@ -124,7 +124,7 @@ class PackagedElementNameChangeCmd extends AbstractMetamodelCommand {
         var id : string = jsonCmdArgs.id;
         var name : string = jsonCmdArgs.name;
 
-        // Create the new package.
+        // Change the name.
         this.metamodelRepository.findPackagedElementById( id ).name = name;
 
     }
@@ -173,6 +173,38 @@ class VertexTypeCreationCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to rename a packaged element.
+ */
+class VertexTypeAbstractnessChangeCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the package attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var abstractness : string = jsonCmdArgs.abstractness;
+
+        // Make the change.
+        this.metamodelRepository.findVertexTypeById( id ).abstractness = api_elements.EAbstractness[abstractness];
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Factory for metamodel commands.
  */
 export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFactory {
@@ -202,6 +234,8 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
                 return new PackageCreationCmd( this._metamodelRepository, cmdWriter );
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmd( this._metamodelRepository, cmdWriter );
+            case "vertextypeabstractnesschange":
+                return new VertexTypeAbstractnessChangeCmd( this._metamodelRepository, cmdWriter );
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this._metamodelRepository, cmdWriter );
             default:

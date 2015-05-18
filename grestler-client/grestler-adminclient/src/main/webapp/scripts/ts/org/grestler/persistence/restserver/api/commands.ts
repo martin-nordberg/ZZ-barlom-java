@@ -144,6 +144,50 @@ class PackagedElementNameChangeCmdWriter extends AbstractMetamodelCommandWriter 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the abstractness of a vertex type.
+ */
+class VertexTypeAbstractnessChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new vertex type abstractness change command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var abstractness : string = jsonCmdArgs.abstractness;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                abstractness: abstractness
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/vertextypeabstractnesschange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a vertex type.
  */
 class VertexTypeCreationCmdWriter extends AbstractMetamodelCommandWriter {
@@ -212,6 +256,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmdWriter();
+            case "vertextypeabstractnesschange":
+                return new VertexTypeAbstractnessChangeCmdWriter();
             case "vertextypecreation":
                 return new VertexTypeCreationCmdWriter();
             default:

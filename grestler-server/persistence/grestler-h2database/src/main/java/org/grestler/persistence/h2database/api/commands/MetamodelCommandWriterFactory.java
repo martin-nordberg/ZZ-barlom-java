@@ -35,6 +35,8 @@ public class MetamodelCommandWriterFactory
                 return new PackageCreationCmdWriter( this.dataSource );
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmdWriter( this.dataSource );
+            case "vertextypeabstractnesschange":
+                return new VertexTypeAbstractnessChangeCmdWriter( this.dataSource );
             case "vertextypecreation":
                 return new VertexTypeCreationCmdWriter( this.dataSource );
             default:

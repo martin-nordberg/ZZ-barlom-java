@@ -44,6 +44,8 @@ public class MetamodelCommandFactory
                 return new PackageCreationCmd( this.metamodelRepository, cmdWriter );
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmd( this.metamodelRepository, cmdWriter );
+            case "vertextypeabstractnesschange":
+                return new VertexTypeAbstractnessChangeCmd( this.metamodelRepository, cmdWriter );
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this.metamodelRepository, cmdWriter );
             default:

@@ -264,7 +264,7 @@ export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
 
             var parentPackage = repository.findPackageById( vtJson.parentPackageId );
             var superTypeId = vtJson.superTypeId;
-            var abstractness = vtJson.isAbstract ? api_elements.EAbstractness.ABSTRACT : api_elements.EAbstractness.CONCRETE;
+            var abstractness = api_elements.EAbstractness[vtJson.abstractness];
 
             if ( superTypeId ) {
                 var superType = repository.findOptionalVertexTypeById( superTypeId );

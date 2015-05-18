@@ -5,6 +5,7 @@
 
 package org.grestler.persistence.h2database.api.commands
 
+import org.grestler.domain.metamodel.api.elements.EAbstractness
 import org.grestler.domain.metamodel.impl.queries.MetamodelRepository
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
@@ -16,26 +17,26 @@ import spock.lang.Specification
 import javax.json.Json
 
 /**
- * Specification for packaged element renaming.
+ * Specification for vertex type abstractness changes.
  */
-class PackagedElementNameCmdSpec
+class VertexTypeAbstractnessChangeCmdSpec
         extends Specification {
 
-    def "A packaged element name change command renames an element"() {
+    def "A vertex type abstractness change command revises a vertex type"() {
 
         given:
         StmTransactionContext.beginReadWriteTransaction();
 
-        def cmdIdA = "1234111A-7a26-11e4-a545-08002741a702";
-        def cmdIdB = "1234111B-7a26-11e4-a545-08002741a702";
-        def pkgId = "12341113-7a26-11e4-a545-08002741a702";
-        def json = '{"cmdId":"' + cmdIdA + '","id":"' + pkgId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"pkg1before"}';
+        def cmdIdA = "1234111C-7a26-11e4-a545-08002741a702";
+        def cmdIdB = "1234111D-7a26-11e4-a545-08002741a702";
+        def vtId = "1234111E-7a26-11e4-a545-08002741a702";
+        def json = '{"cmdId":"' + cmdIdA + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"vt1","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
-        def cmd = new PackageCreationCmdWriter( dataSource );
+        def cmd = new VertexTypeCreationCmdWriter( dataSource );
         cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
-        json = '{"cmdId":"' + cmdIdB + '","id":"' + pkgId + '","name":"pkg1after"}';
-        cmd = new PackagedElementNameChangeCmdWriter( dataSource );
+        json = '{"cmdId":"' + cmdIdB + '","id":"' + vtId + '","abstractness":"CONCRETE"}';
+        cmd = new VertexTypeAbstractnessChangeCmdWriter( dataSource );
         cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
@@ -54,11 +55,11 @@ class PackagedElementNameCmdSpec
                 adloader
         );
 
-        def pkg = m.findOptionalPackageById( UUID.fromString( pkgId ) );
+        def vt = m.findOptionalVertexTypeById( UUID.fromString( vtId ) );
 
         expect:
-        pkg.isPresent();
-        pkg.get().name == "pkg1after";
+        vt.isPresent();
+        vt.get().abstractness == EAbstractness.CONCRETE;
 
         cleanup:
         StmTransactionContext.commitTransaction();
