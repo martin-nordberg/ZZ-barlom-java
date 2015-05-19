@@ -15,7 +15,10 @@
             {{/each}}
 
             {{#each addLinks}}
-                <a class="elementlink add {{cls}}" href="#" on-click="addClicked">{{text}}</a>
+                <a class="element-link add {{cls}}" href="#" on-click="addClicked">
+                    <div class="element-icon {{cls}}"></div>
+                    {{text}}
+                </a>
                 <br>
             {{/each}}
 

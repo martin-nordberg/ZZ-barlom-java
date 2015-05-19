@@ -2,6 +2,11 @@
 
 {{#with elementHandle}}
 
-    <a class="elementlink" href="#" on-click="linkClicked">{{#if element.name}}{{element.name}}{{/if}}</a>
+    <a class="element-link" href="#" on-click="linkClicked">
+        {{#if element.name}}
+            <div class="element-icon {{element.typeName}}"></div>
+            {{element.name}}
+        {{/if}}
+    </a>
 
 {{/with}}

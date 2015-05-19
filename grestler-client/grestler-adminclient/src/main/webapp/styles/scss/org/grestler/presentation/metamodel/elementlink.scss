@@ -2,3 +2,21 @@
 // Extra styling for element links
 //
 
+
+
+/* Element icons by element type */
+div.element-icon {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+
+  &.Package, &.RootPackage {
+    background: url('../../../../../../images/org/grestler/presentation/metamodel/elementicons.png') 0px 0px no-repeat;
+  }
+
+  &.RootVertexType, &.VertexType {
+    background: url('../../../../../../images/org/grestler/presentation/metamodel/elementicons.png') 0px -16px no-repeat;
+  }
+}
+
+
