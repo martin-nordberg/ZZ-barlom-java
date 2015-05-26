@@ -40,6 +40,7 @@ define(
                 template: browseTabTemplate,
 
                 viewModelNames: {
+                    browsedElementHolder: 'schemaPageBrowsedElementHolder',
                     browseTabEntries: 'schemaPageBrowseTabEntries'
                 }
 

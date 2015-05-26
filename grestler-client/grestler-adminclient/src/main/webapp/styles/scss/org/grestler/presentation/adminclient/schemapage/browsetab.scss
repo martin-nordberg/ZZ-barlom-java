@@ -2,3 +2,12 @@
 // Extra styling for schema page Browse tab
 //
 
+div#browseTab {
+
+  ul.breadcrumb {
+    border: none;
+    margin-left: 0;
+    padding: 0 0;
+  }
+
+}

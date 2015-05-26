@@ -2,6 +2,34 @@
 
 <div class="tab-pane active" id="browseTab">
 
+    {{#with browsedElementHolder}}
+
+        {{! Breadcrumbs for focused element }}
+        <ul class="breadcrumb">
+
+            {{#if element}}
+
+                {{#each element.parentsInPath}}
+
+                    <li>
+                        <grestler-element-link element="{{.}}"
+                                               targetElementName="schemaPageBrowsedElement"></grestler-element-link>
+                    </li>
+
+                {{/each}}
+
+                <li>
+                    <div class="element-icon {{element.typeName}}"></div>
+                    {{element.name}}
+                </li>
+
+            {{/if}}
+
+        </ul>
+
+    {{/with}}
+
+
     {{#with browseTabEntries}}
 
         {{#each browseSections}}
