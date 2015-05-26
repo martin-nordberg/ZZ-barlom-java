@@ -2,9 +2,9 @@
 
 <div class="tab-pane active" id="browseTab">
 
+    {{! Breadcrumbs for browsed element }}
     {{#with browsedElementHolder}}
 
-        {{! Breadcrumbs for focused element }}
         <ul class="breadcrumb">
 
             {{#if element}}
@@ -30,25 +30,49 @@
     {{/with}}
 
 
+    {{! Sub-elements of the browsed element }}
     {{#with browseTabEntries}}
 
         {{#each browseSections}}
 
-            <h4>{{title}}</h4>
+            <table class="table table-condensed table-hover table-striped">
 
-            {{#each elements}}
-                <grestler-element-link element="{{.}}"
-                                       targetElementName="schemaPageBrowsedElement"></grestler-element-link>
-                <br>
-            {{/each}}
+                <thead>
+                    <tr>
+                        <th>
+                            {{title}}
+                        </th>
+                    </tr>
+                </thead>
 
-            {{#each addLinks}}
-                <a class="element-link add {{cls}}" href="#" on-click="addClicked">
-                    <div class="element-icon {{cls}}"></div>
-                    {{text}}
-                </a>
-                <br>
-            {{/each}}
+                <tbody>
+
+                    {{!-- Existing elements --}}
+                    {{#each elements}}
+                        <tr>
+                            <td>
+                                <grestler-element-link element="{{.}}"
+                                                       targetElementName="schemaPageBrowsedElement"></grestler-element-link>
+                            </td>
+                        </tr>
+                    {{/each}}
+
+                    {{!-- Add links --}}
+                    {{#each addLinks}}
+                        <tr>
+                            <td>
+                                <a class="element-link add {{cls}}" href="#" on-click="addClicked">
+                                    <div class="element-icon {{cls}}"></div>
+                                    {{text}}
+                                </a>
+                            </td>
+                        </tr>
+                    {{/each}}
+
+                </tbody>
+
+            </table>
+
 
         {{/each}}
 
