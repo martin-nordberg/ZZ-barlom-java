@@ -50,8 +50,8 @@ define(
                     this._super( options );
 
                     // Extra constant data
-                    options.data.openIconText = "<i class=\"glyphicon glyphicon-folder-open\" aria-hidden=\"true\"></i>"
-
+                    options.data.addIconText = "<i class=\"fa fa-plus-square\"></i>";
+                    options.data.openIconText = "<i class=\"fa fa-folder-open\"></i>";
                 }
 
             }

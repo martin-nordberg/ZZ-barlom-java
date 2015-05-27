@@ -74,14 +74,15 @@
                     {{!-- Add links --}}
                     {{#each addLinks}}
                         <tr>
+                            <td></td>
+                            <td>
+                                {{text}}
+                            </td>
                             <td>
                                 <a class="element-link add {{cls}}" href="#" on-click="addClicked">
-                                    <div class="element-icon {{cls}}"></div>
-                                    {{text}}
+                                    {{{addIconText}}}
                                 </a>
                             </td>
-                            <td></td>
-                            <td></td>
                         </tr>
                     {{/each}}
 

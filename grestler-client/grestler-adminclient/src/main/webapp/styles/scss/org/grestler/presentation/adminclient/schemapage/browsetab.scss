@@ -4,8 +4,16 @@
 
 div#browseTab {
 
-  i.glyphicon-folder-open {
+  i.fa:hover {
+    color: #79a736;
+  }
+
+  i.fa-folder-open {
     color: #eee7b3;
+  }
+
+  i.fa-plus-square {
+    color: #93c63b;
   }
 
   ul.breadcrumb {
