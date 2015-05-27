@@ -57,8 +57,8 @@
                     {{#each elements}}
                         <tr>
                             <td>
-                                <div class="element-icon {{this.typeName}}"></div>
-                                {{this.name}}
+                                <grestler-element-link element="{{.}}"
+                                                       targetElementName="schemaPageBrowsedElement"></grestler-element-link>
                             </td>
                             <td>
 

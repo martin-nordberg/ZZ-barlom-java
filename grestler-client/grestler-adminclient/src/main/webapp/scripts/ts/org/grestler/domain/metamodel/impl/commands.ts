@@ -157,7 +157,7 @@ class VertexTypeCreationCmd extends AbstractMetamodelCommand {
         var parentPackageId : string = jsonCmdArgs.parentPackageId;
         var name : string = jsonCmdArgs.name;
         var superTypeId : string = jsonCmdArgs.superTypeId;
-        var abstractness = jsonCmdArgs.abstractness == "ABSTRACT" ? api_elements.EAbstractness.ABSTRACT : api_elements.EAbstractness.CONCRETE;
+        var abstractness = api_elements.abstractnessFromString( jsonCmdArgs.abstractness );
 
         // Look up the related elements.
         var parentPackage : api_elements.IPackage = this.metamodelRepository.findPackageById( parentPackageId );

@@ -22,6 +22,27 @@ export enum EAbstractness {
 
 }
 
+/**
+ * Converts a string value to an abstractness.
+ * @param abstractness the string - should be "ABSTRACT" or "CONCRETE".
+ * @returns {*} the corresponding abstractness enum value.
+ */
+export function abstractnessFromString( abstractness : string ) {
+
+    if ( abstractness == null ) {
+        return null;
+    }
+    if ( "ABSTRACT" === abstractness.toUpperCase().trim() ) {
+        return EAbstractness.ABSTRACT;
+    }
+    if ( "CONCRETE" === abstractness.toUpperCase().trim() ) {
+        return EAbstractness.CONCRETE;
+    }
+
+    throw new Error( "Undefined abstractness: '" + abstractness + "'." );
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
