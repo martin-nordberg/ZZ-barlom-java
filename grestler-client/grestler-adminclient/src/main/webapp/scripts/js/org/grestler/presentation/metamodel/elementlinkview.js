@@ -36,8 +36,10 @@ define(
                 data: {
                     element: '<parameter>',
                     elementHandle: '<constructed>',
+                    isIconShown: '<constructed>',
                     targetElement: '<constructed>',
-                    targetElementName: '<parameter>'
+                    targetElementName: '<parameter>',
+                    text: '<optionalparameter>'
                 },
 
                 template: elementLinkTemplate,
@@ -54,6 +56,15 @@ define(
 
                     // Set the element model to be changed when the link is clicked.
                     options.data.targetElement = dependencies.context.get( options.data.targetElementName );
+
+                    // Set the text for the link
+                    if ( options.data.text ) {
+                        options.data.isIconShown = false;
+                    }
+                    else {
+                        options.data.isIconShown = !!options.data.element.typeName;
+                        options.data.text = options.data.element.name || "??";
+                    }
 
                     // Create a custom controller.
                     this.controllers = [

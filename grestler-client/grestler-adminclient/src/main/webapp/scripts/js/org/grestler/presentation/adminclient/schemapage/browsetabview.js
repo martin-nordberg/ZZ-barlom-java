@@ -42,6 +42,16 @@ define(
                 viewModelNames: {
                     browsedElementHolder: 'schemaPageBrowsedElementHolder',
                     browseTabEntries: 'schemaPageBrowseTabEntries'
+                },
+
+                onconstruct: function ( options ) {
+
+                    // Do the default thing.
+                    this._super( options );
+
+                    // Extra constant data
+                    options.data.openIconText = "<i class=\"glyphicon glyphicon-folder-open\" aria-hidden=\"true\"></i>"
+
                 }
 
             }

@@ -1,12 +1,9 @@
 {{! An element link }}
 
-{{#with elementHandle}}
+<a class="element-link" href="#" on-click="linkClicked">
+    {{#if isIconShown}}
+        <div class="element-icon {{elementHandle.element.typeName}}"></div>
+    {{/if}}
+    {{{text}}}
+</a>
 
-    <a class="element-link" href="#" on-click="linkClicked">
-        {{#if element.name}}
-            <div class="element-icon {{element.typeName}}"></div>
-            {{element.name}}
-        {{/if}}
-    </a>
-
-{{/with}}
