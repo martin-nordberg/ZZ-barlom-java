@@ -72,7 +72,6 @@ export class RightTabVisibilities {
     private setRightTabSelection( rightTabSelection : rightnavmodel.ESchemaPageRightTabSelection ) : void {
         this.isDiagramsTabActive = rightTabSelection == rightnavmodel.ESchemaPageRightTabSelection.DIAGRAMS;
         this.isDocumentationTabActive = rightTabSelection == rightnavmodel.ESchemaPageRightTabSelection.DOCUMENTATION;
-        this.isPropertiesTabActive = rightTabSelection == rightnavmodel.ESchemaPageRightTabSelection.PROPERTIES;
     }
 
     /** Whether the Diagrams page is active. */
@@ -80,9 +79,6 @@ export class RightTabVisibilities {
 
     /** Whether the Documentation page is active. */
     public isDocumentationTabActive = false;
-
-    /** Whether the Properties page is active. */
-    public isPropertiesTabActive = false;
 
     /** The observer function for right tab selection changes. */
     private _modelObserver : ( changes : any ) => void;

@@ -12,7 +12,6 @@
 define(
     [
         'scripts/js/org/grestler/presentation/adminclient/schemapage/browsetabview',
-        'scripts/js/org/grestler/presentation/adminclient/schemapage/propertiestabview',
         'scripts/js/org/grestler/presentation/utilities/ractiveinjection',
         'text!templates/org/grestler/presentation/adminclient/schemapage/schemapage.html.mustache',
         'exports',
@@ -21,7 +20,6 @@ define(
     ],
     function (
         browsetabview,
-        propertiestabview,
         ractiveinjection,
         schemaPageTemplate,
         exports
@@ -32,8 +30,7 @@ define(
             {
 
                 components: {
-                    'grestler-browse-tab': browsetabview.BrowseTabView,
-                    'grestler-properties-tab': propertiestabview.PropertiesTabView
+                    'grestler-browse-tab': browsetabview.BrowseTabView
                 },
 
                 controllerNames: [

@@ -40,7 +40,6 @@ define( [], ()->
         setTimeout( () ->
           expect( me.viewmodel.isDiagramsTabActive ).toBeTruthy();
           expect( me.viewmodel.isDocumentationTabActive ).toBeFalsy();
-          expect( me.viewmodel.isPropertiesTabActive ).toBeFalsy();
           done();
         , 0 );
       )
@@ -53,23 +52,10 @@ define( [], ()->
         setTimeout( () ->
           expect( me.viewmodel.isDiagramsTabActive ).toBeFalsy();
           expect( me.viewmodel.isDocumentationTabActive ).toBeTruthy();
-          expect( me.viewmodel.isPropertiesTabActive ).toBeFalsy();
           done();
         , 0 );
       )
 
-      it( "should set the visibility of the Properties tab", ( done ) ->
-        me = this
-
-        me.controller.onPropertiesTabClicked();
-
-        setTimeout( () ->
-          expect( me.viewmodel.isDiagramsTabActive ).toBeFalsy();
-          expect( me.viewmodel.isDocumentationTabActive ).toBeFalsy();
-          expect( me.viewmodel.isPropertiesTabActive ).toBeTruthy();
-          done();
-        , 0 );
-      )
     )
   )
 )

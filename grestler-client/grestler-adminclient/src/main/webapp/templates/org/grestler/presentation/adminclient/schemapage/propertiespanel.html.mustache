@@ -1,0 +1,49 @@
+{{! Properties tab panel of the Schema page }}
+
+{{#with propertiesPanelFields}}
+
+    <table class="table table-condensed" id="propertiesPanelTable">
+
+        <thead>
+        <tr>
+            <th>
+                Properties
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+            {{#each fields}}
+
+                <tr>
+                    <td>
+                        <label for="field-{{name}}">{{label}}:</label>
+                    </td>
+
+                    <td>
+
+                        {{#if isText}}
+                            <input id="field-{{name}}" type="text" name="{{name}}" on-change="textChanged" value="{{value}}">
+                        {{/if}}
+
+                        {{#if isRadioGroup}}
+                            {{#each radioButtons:index}}
+                                <label for="field-{{name}}-{{index}}">
+                                    <input id="field-{{name}}-{{index}}" type="radio" name="{{name}}" on-change="radioChanged" checked="{{checked}}" value="{{value}}">
+                                    {{label}}
+                                </label>
+                            {{/each}}
+                        {{/if}}
+
+                    </td>
+                </tr>
+
+            {{/each}}
+        </tbody>
+
+    </table>
+
+{{/with}}
+

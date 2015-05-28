@@ -16,8 +16,8 @@ import elementviewmodel = require( '../../metamodel/elementviewmodel' );
 import leftnavcontroller = require( './leftnavcontroller' );
 import leftnavmodel = require( './leftnavmodel' );
 import leftnavviewmodel = require( './leftnavviewmodel' );
-import propertiestabcontroller = require( './propertiestabcontroller' );
-import propertiestabviewmodel = require( './propertiestabviewmodel' );
+import propertiespanelcontroller = require( './propertiespanelcontroller' );
+import propertiespanelviewmodel = require( './propertiespanelviewmodel' );
 import rightnavcontroller = require( './rightnavcontroller' );
 import rightnavmodel = require( './rightnavmodel' );
 import rightnavviewmodel = require( './rightnavviewmodel' );
@@ -120,30 +120,30 @@ export var schemaPageModule = {
     },
 
     /**
-     * Provides the controller for the properties tab.
+     * Provides the controller for the properties panel.
      * @param schemaPageBrowsedElement the browsed element that is to have its properties changed.
      * @param metamodelCommandFactory the factory for making commands.
-     * @returns {PropertiesTabFields}
+     * @returns {PropertiesPanelFields}
      */
-    provideSchemaPagePropertiesTabController: function provideSchemaPagePropertiesTabController(
+    provideSchemaPagePropertiesPanelController: function provideSchemaPagePropertiesPanelController(
         schemaPageBrowsedElement : elementmodel.ElementSelection,
         metamodelCommandFactory : api_commands.IMetamodelCommandFactory
-    ) : propertiestabcontroller.PropertiesTabController {
+    ) : propertiespanelcontroller.PropertiesPanelController {
 
-        return new propertiestabcontroller.PropertiesTabController( schemaPageBrowsedElement, metamodelCommandFactory );
+        return new propertiespanelcontroller.PropertiesPanelController( schemaPageBrowsedElement, metamodelCommandFactory );
 
     },
 
     /**
-     * Provides the view model for the properties tab.
+     * Provides the view model for the properties panel.
      * @param schemaPageBrowsedElement the browsed element that is to have its properties shown.
-     * @returns {PropertiesTabFields}
+     * @returns {PropertiesPanelFields}
      */
-    provideSchemaPagePropertiesTabFields: function provideSchemaPagePropertiesTabFields(
+    provideSchemaPagePropertiesPanelFields: function provideSchemaPagePropertiesPanelFields(
         schemaPageBrowsedElement : elementmodel.ElementSelection
-    ) : propertiestabviewmodel.PropertiesTabFields {
+    ) : propertiespanelviewmodel.PropertiesPanelFields {
 
-        return new propertiestabviewmodel.PropertiesTabFields( schemaPageBrowsedElement );
+        return new propertiespanelviewmodel.PropertiesPanelFields( schemaPageBrowsedElement );
 
     },
 

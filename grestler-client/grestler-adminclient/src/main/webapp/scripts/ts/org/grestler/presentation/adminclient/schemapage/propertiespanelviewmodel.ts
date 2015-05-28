@@ -4,7 +4,7 @@
 //
 
 /**
- * Module: org/grestler/presentation/adminclient/schemapage/propertiestabviewmodel
+ * Module: org/grestler/presentation/adminclient/schemapage/propertiespanelviewmodel
  */
 
 import api_elements = require( '../../../domain/metamodel/api/elements' );
@@ -13,13 +13,12 @@ import elementmodel = require( '../../metamodel/elementmodel' )
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Schema page left tab visibilities as a number of boolean attributes.
- * // TODO: abstract base class w/ browsetabviewmodel, etc.
+ * View model for the properties panel of the Browse tab of the Schema page.
  */
-export class PropertiesTabFields {
+export class PropertiesPanelFields {
 
     /**
-     * Constructs a new schema page visibilities object.
+     * Constructs a new properties panel fields object.
      */
     constructor( elementSelection : elementmodel.ElementSelection ) {
 
@@ -100,13 +99,13 @@ export class PropertiesTabFields {
     }
 
     /**
-     * Responds when the details of the browse tab need updating.
+     * Responds when the details of the properties panel need updating.
      * @param element the new or changed model element.
      * @private
      */
     private _updateFields( element : api_elements.IDocumentedElement ) {
 
-        console.log( "_updateBrowseSections: ", element );
+        console.log( "_updateFields: ", element );
         this.fields = [];
 
         if ( element == null ) {

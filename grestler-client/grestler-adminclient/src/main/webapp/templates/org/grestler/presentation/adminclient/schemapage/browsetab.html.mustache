@@ -30,12 +30,16 @@
     {{/with}}
 
 
+    {{!-- Properties --}}
+    <grestler-properties-panel></grestler-properties-panel>
+
+
     {{! Sub-elements of the browsed element }}
     {{#with browseTabEntries}}
 
         {{#each browseSections}}
 
-            <table class="table table-condensed table-hover table-striped">
+            <table class="table table-condensed table-hover">
 
                 <thead>
                     <tr>

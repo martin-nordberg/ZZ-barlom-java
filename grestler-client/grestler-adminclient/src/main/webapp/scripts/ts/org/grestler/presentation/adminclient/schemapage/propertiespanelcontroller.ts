@@ -15,13 +15,13 @@ import uuids = require( '../../../infrastructure/utilities/uuids' );
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Controller for the schema page Properties tab.
+ * Controller for the schema page Properties panel.
  */
-export class PropertiesTabController {
+export class PropertiesPanelController {
 
     /**
-     * Constructs a new schema page properties tab controller.
-     * @param elementSelection the selected element whose properties are shown and changed by the tab.
+     * Constructs a new schema page properties panel controller.
+     * @param elementSelection the selected element whose properties are shown and changed by the panel.
      * @param metamodelCommandFactory the factory for command creation.
      */
     constructor(
@@ -113,7 +113,7 @@ export class PropertiesTabController {
 
     }
 
-    /** The left tab selection model under control. */
+    /** The panel selection model under control. */
     private _elementSelection : elementmodel.ElementSelection;
 
     /** The factory for commands. */

@@ -40,14 +40,6 @@ export class RightNavController {
         this._rightTabSelection.rightTabSelection = rightnavmodel.ESchemaPageRightTabSelection.DOCUMENTATION;
     }
 
-    /**
-     * Responds to clicking the "Properties" tab.
-     * @param event
-     */
-    public onPropertiesTabClicked( event : any ) : void {
-        this._rightTabSelection.rightTabSelection = rightnavmodel.ESchemaPageRightTabSelection.PROPERTIES;
-    }
-
     /** The right tab selection model under control. */
     private _rightTabSelection : rightnavmodel.RightTabSelection;
 

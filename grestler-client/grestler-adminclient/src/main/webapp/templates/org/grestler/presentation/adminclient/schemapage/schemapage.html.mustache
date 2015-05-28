@@ -51,9 +51,6 @@
             {{! Right tabs }}
             <div class="right-tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="{{#if isPropertiesTabActive}}active {{/if}}first">
-                        <a href="#" on-click="propertiesTabClicked">PROPERTIES</a>
-                    </li>
                     <li {{#if isDocumentationTabActive}}class="active"{{/if}}>
                         <a href="#" on-click="documentationTabClicked">DOCUMENTATION</a>
                     </li>
@@ -66,9 +63,6 @@
             {{! Right panel contents }}
             <div class="right-panels-container">
                 <div class="tab-content">
-                    {{#if isPropertiesTabActive}}
-                        <grestler-properties-tab></grestler-properties-tab>
-                    {{/if}}
                     {{#if isDocumentationTabActive}}
                         <div class="tab-pane active" id="documentationTab">Documentation ...</div>
                     {{/if}}

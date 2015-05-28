@@ -14,8 +14,7 @@
  */
 export enum ESchemaPageRightTabSelection {
     DIAGRAMS,
-    DOCUMENTATION,
-    PROPERTIES
+    DOCUMENTATION
 }
 
 export function schemaPageRightTabSelectionToString( value : ESchemaPageRightTabSelection ) : string {
@@ -32,8 +31,6 @@ export function schemaPageRightTabSelectionFromString( value : string ) : ESchem
                 return ESchemaPageRightTabSelection.DIAGRAMS;
             case 'DOCUMENTATION' :
                 return ESchemaPageRightTabSelection.DOCUMENTATION;
-            case 'PROPERTIES' :
-                return ESchemaPageRightTabSelection.PROPERTIES;
         }
     }
     return null;
@@ -52,7 +49,7 @@ export class RightTabSelection {
     constructor() {
         this._rightTabSelection = schemaPageRightTabSelectionFromString( window.localStorage[RightTabSelection.PREFIX + 'rightTabSelection'] );
         if ( this._rightTabSelection == null ) {
-            this._rightTabSelection = ESchemaPageRightTabSelection.PROPERTIES;
+            this._rightTabSelection = ESchemaPageRightTabSelection.DOCUMENTATION;
         }
     }
 

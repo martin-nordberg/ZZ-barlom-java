@@ -11,6 +11,7 @@
 
 define(
     [
+        'scripts/js/org/grestler/presentation/adminclient/schemapage/propertiespanelview',
         'scripts/js/org/grestler/presentation/metamodel/elementlinkview',
         'scripts/js/org/grestler/presentation/utilities/ractiveinjection',
         'text!templates/org/grestler/presentation/adminclient/schemapage/browsetab.html.mustache',
@@ -19,6 +20,7 @@ define(
         'css!styles/css-gen/org/grestler/presentation/adminclient/schemapage/browsetab.css'
     ],
     function (
+        propertiespanelview,
         elementlinkview,
         ractiveinjection,
         browseTabTemplate,
@@ -30,7 +32,8 @@ define(
             {
 
                 components: {
-                    "grestler-element-link": elementlinkview.ElementLinkView
+                    "grestler-element-link": elementlinkview.ElementLinkView,
+                    "grestler-properties-panel": propertiespanelview.PropertiesPanelView
                 },
 
                 controllerNames: [
