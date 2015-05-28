@@ -37,6 +37,14 @@
                             {{/each}}
                         {{/if}}
 
+                        {{#if isDropDown}}
+                            <select id="field-{{name}}" name="{{name}}" on-change="dropDownChanged">
+                                {{#each selections}}
+                                    <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+
                     </td>
                 </tr>
 

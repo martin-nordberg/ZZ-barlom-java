@@ -71,6 +71,19 @@ export class PropertiesPanelFields {
     }
 
     /**
+     * Finds the potential super types for a given vertex type.
+     * @param vertexType the vertex type to be modified.
+     * @returns {{label: string, value: number}[]}
+     * @private
+     */
+    private _findPotentialVertexTypeSuperTypes( vertexType : api_elements.IVertexType ) {
+        return [
+            { label: "TODO-One", value: 1, selected: false },
+            { label: "TODO-Two", value: 2, selected: true }
+        ]
+    }
+
+    /**
      * Starts observing the associated model for changes.
      */
     private _observeModelChanges( element : api_elements.IDocumentedElement ) {
@@ -129,6 +142,8 @@ export class PropertiesPanelFields {
         // Vertex Type
         if ( element.isA( api_elements.VERTEX_TYPE ) ) {
 
+            var vertexType = <api_elements.IVertexType> element;
+
             this.fields.push(
                 {
                     isRadioGroup: true,
@@ -136,18 +151,27 @@ export class PropertiesPanelFields {
                     name: 'vertexTypeAbstractness',
                     radioButtons: [
                         {
-                            checked: (<api_elements.IVertexType> element).abstractness == api_elements.EAbstractness.ABSTRACT,
+                            checked: vertexType.abstractness == api_elements.EAbstractness.ABSTRACT,
                             label: "Abstract",
                             value: api_elements.EAbstractness.ABSTRACT
                         },
                         {
-                            checked: (<api_elements.IVertexType> element).abstractness == api_elements.EAbstractness.CONCRETE,
+                            checked: vertexType.abstractness == api_elements.EAbstractness.CONCRETE,
                             label: "Concrete",
                             value: api_elements.EAbstractness.CONCRETE
                         }
                     ]
                 }
             );
+
+            this.fields.push(
+                {
+                    isDropDown: true,
+                    label: "Super Type",
+                    name: 'vertexTypeSuperType',
+                    selections: this._findPotentialVertexTypeSuperTypes( vertexType )
+                }
+            )
 
         }
 
