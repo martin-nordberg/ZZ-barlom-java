@@ -2243,7 +2243,7 @@ export class RootVertexType implements api_elements.IVertexType, IVertexTypeUnde
     }
 
     public get path() : string {
-        return this._parentPackage.path + "." + this.name;
+        return this.name;
     }
 
     public get superType() : api_elements.IVertexType {
@@ -2394,7 +2394,7 @@ export class RootDirectedEdgeType implements api_elements.IDirectedEdgeType, IEd
     }
 
     public get path() : string {
-        return this._parentPackage.path + "." + this.name;
+        return this.name;
     }
 
     public get selfLooping() : api_elements.ESelfLooping {
@@ -2536,7 +2536,7 @@ export class RootUndirectedEdgeType implements api_elements.IUndirectedEdgeType,
     }
 
     public get path() : string {
-        return this._parentPackage.path + "." + this.name;
+        return this.name;
     }
 
     public get selfLooping() : api_elements.ESelfLooping {

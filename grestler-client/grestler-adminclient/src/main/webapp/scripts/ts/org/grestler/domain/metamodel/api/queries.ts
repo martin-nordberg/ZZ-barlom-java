@@ -207,3 +207,21 @@ export interface IMetamodelRepository {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Interface defining a service of queries into a metamodel repository.
+ */
+export interface IMetamodelQueries {
+
+    /**
+     * Finds the vertex types that are possible super types of the given vertex type.
+     *
+     * @param vertexType the vertex type whose possible super types are to be enumerated.
+     *
+     * @return the list of vertex types found, ordered by path.
+     */
+    findVertexTypePotentialSuperTypes( vertexType : elements.IVertexType ) : elements.IVertexType[];
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

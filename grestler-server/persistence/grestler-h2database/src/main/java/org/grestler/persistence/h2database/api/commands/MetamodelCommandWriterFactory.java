@@ -39,6 +39,8 @@ public class MetamodelCommandWriterFactory
                 return new VertexTypeAbstractnessChangeCmdWriter( this.dataSource );
             case "vertextypecreation":
                 return new VertexTypeCreationCmdWriter( this.dataSource );
+            case "vertextypesupertypechange":
+                return new VertexTypeSuperTypeChangeCmdWriter( this.dataSource );
             default:
                 throw new H2DatabaseException(
                     MetamodelCommandWriterFactory.LOG, "Unknown command type: \"" + commandTypeName + "\"."

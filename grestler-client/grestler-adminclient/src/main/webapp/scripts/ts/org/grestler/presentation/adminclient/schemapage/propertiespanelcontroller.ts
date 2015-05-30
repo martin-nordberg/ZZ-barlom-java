@@ -33,6 +33,25 @@ export class PropertiesPanelController {
     }
 
     /**
+     * Responds to changing a combo box field.
+     * @param event the Ractive event capturing the change.
+     */
+    public onDropDownChanged( event : any ) : void {
+
+        var fieldName = event.node.name;
+
+        switch ( fieldName ) {
+            case 'vertexTypeSuperType':
+                this._onVertexTypeSuperTypeChanged( event.node.value );
+                break;
+            default:
+                console.log( "Unknown field name: " + fieldName );
+                break
+        }
+
+    }
+
+    /**
      * Responds to changing a radio field.
      * @param event the Ractive event capturing the change.
      */
@@ -101,7 +120,7 @@ export class PropertiesPanelController {
         // TODO: UUID from server
         var cmdId = uuids.makeUuid();
 
-        var pkgJson = {
+        var vtJson = {
             cmdId: cmdId,
             id: this._elementSelection.elementSelection.id,
             abstractness: api_elements.EAbstractness[parseInt( abstractnessNumStr, 10 )]
@@ -109,7 +128,31 @@ export class PropertiesPanelController {
 
         var cmd = this._metamodelCommandFactory.makeCommand( "vertextypeabstractnesschange" );
 
-        cmd.execute( pkgJson )
+        cmd.execute( vtJson )
+
+    }
+
+    /**
+     * Responds to a change in the super type of a vertex type.
+     * @param superTypeId the new value as a numeric string.
+     * @private
+     */
+    private _onVertexTypeSuperTypeChanged( superTypeId : string ) : void {
+
+        // TODO: UUID from server
+        var cmdId = uuids.makeUuid();
+
+        var vtJson = {
+            cmdId: cmdId,
+            id: this._elementSelection.elementSelection.id,
+            superTypeId: superTypeId
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "vertextypesupertypechange" );
+
+        cmd.execute( vtJson )
+
+        alert( JSON.stringify( vtJson ) );
 
     }
 

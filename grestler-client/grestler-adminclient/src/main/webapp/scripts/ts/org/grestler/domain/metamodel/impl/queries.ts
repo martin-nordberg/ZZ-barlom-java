@@ -586,3 +586,51 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
     private _rootVertexType : api_elements.IVertexType;
 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A metamodel query service.
+ */
+export class MetamodelQueries implements api_queries.IMetamodelQueries {
+
+    /**
+     * Constructs a new metamodel query service.
+     *
+     * @param metamodelRepository the metamodel repository to filter results from.
+     */
+    constructor(
+        metamodelRepository : api_queries.IMetamodelRepository
+    ) {
+        this._metamodelRepository = metamodelRepository;
+    }
+
+    public findVertexTypePotentialSuperTypes( vertexType : api_elements.IVertexType ) : api_elements.IVertexType[] {
+
+        var result = this._metamodelRepository.findAllVertexTypes();
+
+        result = result.filter( ( vt : api_elements.IVertexType ) => !vt.isSubTypeOf( vertexType ) );
+
+        result.sort(
+            ( vt1 : api_elements.IVertexType, vt2 : api_elements.IVertexType ) => {
+                var path1 : string = vt1.path;
+                var path2 : string = vt2.path;
+                if ( path1 > path2 ) {
+                    return 1;
+                }
+                else if ( path2 > path1 ) {
+                    return -1;
+                }
+                return 0;
+            }
+        );
+
+        return result;
+    }
+
+    private _metamodelRepository : api_queries.IMetamodelRepository;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

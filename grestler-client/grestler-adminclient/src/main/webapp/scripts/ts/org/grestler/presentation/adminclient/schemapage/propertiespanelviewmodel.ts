@@ -8,6 +8,7 @@
  */
 
 import api_elements = require( '../../../domain/metamodel/api/elements' );
+import api_queries = require( '../../../domain/metamodel/api/queries' );
 import elementmodel = require( '../../metamodel/elementmodel' )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +21,10 @@ export class PropertiesPanelFields {
     /**
      * Constructs a new properties panel fields object.
      */
-    constructor( elementSelection : elementmodel.ElementSelection ) {
+    constructor(
+        elementSelection : elementmodel.ElementSelection,
+        metamodelQueries : api_queries.IMetamodelQueries
+    ) {
 
         var me = this;
 
@@ -28,6 +32,7 @@ export class PropertiesPanelFields {
         me.fields = [];
 
         me._elementSelection = elementSelection;
+        me._metamodelQueries = metamodelQueries;
 
         me._modelObserver = function ( changes ) {
             me._updateFields( me._elementSelection.elementSelection );
@@ -77,10 +82,24 @@ export class PropertiesPanelFields {
      * @private
      */
     private _findPotentialVertexTypeSuperTypes( vertexType : api_elements.IVertexType ) {
-        return [
-            { label: "TODO-One", value: 1, selected: false },
-            { label: "TODO-Two", value: 2, selected: true }
-        ]
+
+        var vertexTypes = this._metamodelQueries.findVertexTypePotentialSuperTypes( vertexType );
+
+        var result = [];
+
+        vertexTypes.forEach(
+            ( vt ) => {
+                result.push(
+                    {
+                        label: vt.path,
+                        value: vt.id,
+                        selected: vt == vertexType.superType
+                    }
+                )
+            }
+        );
+
+        return result;
     }
 
     /**
@@ -203,6 +222,9 @@ export class PropertiesPanelFields {
 
     /** The selected element to be watched. */
     private _elementSelection : elementmodel.ElementSelection;
+
+    /** the service for finding potential related elements. */
+    private _metamodelQueries : api_queries.IMetamodelQueries;
 
     /** Observer function. */
     private _modelObserver : ( changes : any ) => void;

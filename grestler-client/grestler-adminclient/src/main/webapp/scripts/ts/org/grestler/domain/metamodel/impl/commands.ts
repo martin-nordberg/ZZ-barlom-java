@@ -173,7 +173,7 @@ class VertexTypeCreationCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Command to rename a packaged element.
+ * Command to change the abstractness of a vertex type.
  */
 class VertexTypeAbstractnessChangeCmd extends AbstractMetamodelCommand {
 
@@ -197,6 +197,39 @@ class VertexTypeAbstractnessChangeCmd extends AbstractMetamodelCommand {
 
         // Make the change.
         this.metamodelRepository.findVertexTypeById( id ).abstractness = api_elements.EAbstractness[abstractness];
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Command to change the super type of a vertex type.
+ */
+class VertexTypeSuperTypeChangeCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the package attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var superTypeId : string = jsonCmdArgs.superTypeId;
+
+        // Make the change.
+        this.metamodelRepository.findVertexTypeById( id ).superType =
+            this.metamodelRepository.findVertexTypeById( superTypeId );
 
     }
 
@@ -238,6 +271,8 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
                 return new VertexTypeAbstractnessChangeCmd( this._metamodelRepository, cmdWriter );
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this._metamodelRepository, cmdWriter );
+            case "vertextypesupertypechange":
+                return new VertexTypeSuperTypeChangeCmd( this._metamodelRepository, cmdWriter );
             default:
                 throw new Error( "Unknown command type: \"" + commandTypeName + "\"." );
         }

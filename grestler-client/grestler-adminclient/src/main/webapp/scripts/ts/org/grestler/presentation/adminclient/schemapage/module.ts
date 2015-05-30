@@ -130,20 +130,25 @@ export var schemaPageModule = {
         metamodelCommandFactory : api_commands.IMetamodelCommandFactory
     ) : propertiespanelcontroller.PropertiesPanelController {
 
-        return new propertiespanelcontroller.PropertiesPanelController( schemaPageBrowsedElement, metamodelCommandFactory );
+        return new propertiespanelcontroller.PropertiesPanelController(
+            schemaPageBrowsedElement,
+            metamodelCommandFactory
+        );
 
     },
 
     /**
      * Provides the view model for the properties panel.
      * @param schemaPageBrowsedElement the browsed element that is to have its properties shown.
+     * @param metamodelQueries the metamodel queries service.
      * @returns {PropertiesPanelFields}
      */
     provideSchemaPagePropertiesPanelFields: function provideSchemaPagePropertiesPanelFields(
-        schemaPageBrowsedElement : elementmodel.ElementSelection
+        schemaPageBrowsedElement : elementmodel.ElementSelection,
+        metamodelQueries : api_queries.IMetamodelQueries
     ) : propertiespanelviewmodel.PropertiesPanelFields {
 
-        return new propertiespanelviewmodel.PropertiesPanelFields( schemaPageBrowsedElement );
+        return new propertiespanelviewmodel.PropertiesPanelFields( schemaPageBrowsedElement, metamodelQueries );
 
     },
 

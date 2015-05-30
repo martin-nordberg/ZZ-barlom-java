@@ -238,6 +238,50 @@ class VertexTypeCreationCmdWriter extends AbstractMetamodelCommandWriter {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the super type of a vertex type.
+ */
+class VertexTypeSuperTypeChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new vertex type super type change command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var superTypeId : string = jsonCmdArgs.superTypeId;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                superTypeId: superTypeId
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/vertextypesupertypechange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Factory for metamodel commands supported by the H2 Database provider.
  */
 export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCommandWriterFactory {
@@ -260,6 +304,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
                 return new VertexTypeAbstractnessChangeCmdWriter();
             case "vertextypecreation":
                 return new VertexTypeCreationCmdWriter();
+            case "vertextypesupertypechange":
+                return new VertexTypeSuperTypeChangeCmdWriter();
             default:
                 throw new Error( "Unknown command type: \"" + commandTypeName + "\"." );
         }

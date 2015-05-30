@@ -48,6 +48,8 @@ public class MetamodelCommandFactory
                 return new VertexTypeAbstractnessChangeCmd( this.metamodelRepository, cmdWriter );
             case "vertextypecreation":
                 return new VertexTypeCreationCmd( this.metamodelRepository, cmdWriter );
+            case "vertextypesupertypechange":
+                return new VertexTypeSuperTypeChangeCmd( this.metamodelRepository, cmdWriter );
             default:
                 throw new MetamodelException(
                     MetamodelCommandFactory.LOG, "Unknown command type: \"" + commandTypeName + "\"."

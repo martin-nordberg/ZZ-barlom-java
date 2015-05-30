@@ -37,6 +37,19 @@ export var metamodelImplModule = {
     },
 
     /**
+     * Creates a new metamodel query service.
+     * @param metamodelRepository the repository to filter results from.
+     * @returns {MetamodelQueries} the new query service.
+     */
+    provideMetamodelQueries: function provideMetamodelQueries(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi
+    ) : api_queries.IMetamodelQueries {
+
+        return new impl_queries.MetamodelQueries( metamodelRepository );
+
+    },
+
+    /**
      * Creates the one and only metamodel repository.
      * @returns {PageSelection} the page selection.
      */
