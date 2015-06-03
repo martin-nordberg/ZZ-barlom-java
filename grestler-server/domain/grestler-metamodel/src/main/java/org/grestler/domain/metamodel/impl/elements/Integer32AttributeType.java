@@ -11,7 +11,6 @@ import org.grestler.infrastructure.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.OptionalInt;
-import java.util.UUID;
 
 /**
  * Implementation for 32-bit integer attribute types.
@@ -23,26 +22,17 @@ public class Integer32AttributeType
     /**
      * Constructs a new integer attribute type.
      *
-     * @param id            the unique ID of the attribute type.
+     * @param record        the unique ID of the attribute type.
      * @param parentPackage the parent attribute type.
-     * @param name          the name of the attribute type.
-     * @param minValue      the minimum value for attributes of this type.
-     * @param maxValue      the minimum value for attributes of this type.
-     * @param defaultValue  the default value for attributes of this type.
      */
     public Integer32AttributeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        OptionalInt minValue,
-        OptionalInt maxValue,
-        OptionalInt defaultValue
+        IInteger32AttributeType.Record record, IPackage parentPackage
     ) {
-        super( id, parentPackage, name );
+        super( record, parentPackage );
 
-        this.minValue = new V<>( minValue );
-        this.maxValue = new V<>( maxValue );
-        this.defaultValue = new V<>( defaultValue );
+        this.minValue = new V<>( record.minValue );
+        this.maxValue = new V<>( record.maxValue );
+        this.defaultValue = new V<>( record.defaultValue );
     }
 
     @Override

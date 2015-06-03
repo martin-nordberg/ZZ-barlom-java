@@ -9,7 +9,6 @@ import org.grestler.domain.metamodel.api.elements.INamedElement;
 import org.grestler.infrastructure.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
-import java.util.UUID;
 
 /**
  * Implementation of abstract named element.
@@ -22,14 +21,13 @@ public abstract class NamedElement
     /**
      * Constructs a new named model element.
      *
-     * @param id   the unique ID for the element.
-     * @param name the name of the element.
+     * @param record the attributes of the element.
      */
-    protected NamedElement( UUID id, String name ) {
+    protected NamedElement( INamedElement.Record record ) {
 
-        super( id );
+        super( record );
 
-        this.name = new V<>( name );
+        this.name = new V<>( record.name );
 
     }
 

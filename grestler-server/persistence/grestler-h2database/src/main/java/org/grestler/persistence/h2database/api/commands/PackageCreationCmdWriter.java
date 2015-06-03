@@ -5,22 +5,21 @@
 
 package org.grestler.persistence.h2database.api.commands;
 
+import org.grestler.domain.metamodel.spi.commands.PackageCreationCmdRecord;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
-import javax.json.JsonObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Command to create a vertex type.
  */
 final class PackageCreationCmdWriter
-    extends AbstractMetamodelCommandWriter {
+    extends AbstractMetamodelCommandWriter<PackageCreationCmdRecord> {
 
     /**
      * Constructs a new package creation command.
@@ -32,23 +31,16 @@ final class PackageCreationCmdWriter
     }
 
     @Override
-    protected void writeCommand( IConnection connection, JsonObject jsonCmdArgs ) {
-
-        // Parse the JSON arguments.
-        // TODO: handle input validation problems
-        UUID cmdId = UUID.fromString( jsonCmdArgs.getString( "cmdId" ) );
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        UUID parentPackageId = UUID.fromString( jsonCmdArgs.getString( "parentPackageId" ) );
-        String name = jsonCmdArgs.getString( "name" );
+    protected void writeCommand( IConnection connection, PackageCreationCmdRecord record ) {
 
         // Build a map of the arguments.
         Map<String, Object> args = new HashMap<>();
-        args.put( "id", id );
-        args.put( "parentPackageId", parentPackageId );
-        args.put( "name", name );
+        args.put( "id", record.pkg.id );
+        args.put( "parentPackageId", record.pkg.parentPackageId );
+        args.put( "name", record.pkg.name );
 
-        args.put( "cmdId", cmdId );
-        args.put( "jsonCmdArgs", jsonCmdArgs.toString() );
+        args.put( "cmdId", record.cmdId );
+        args.put( "jsonCmdArgs", record.jsonCmdArgs );
 
         // Read the SQL commands.
         Configuration config = new Configuration( H2DatabaseModule.class );

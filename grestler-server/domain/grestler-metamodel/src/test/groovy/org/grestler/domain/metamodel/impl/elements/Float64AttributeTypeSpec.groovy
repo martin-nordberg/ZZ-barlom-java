@@ -4,6 +4,9 @@
 //
 
 package org.grestler.domain.metamodel.impl.elements
+
+import org.grestler.domain.metamodel.api.elements.IFloat64AttributeType
+
 /**
  * Spec for core behavior of a 64-bit floating point attribute type..
  */
@@ -22,12 +25,15 @@ class Float64AttributeTypeSpec
 
         expect:
         new Float64AttributeType(
-                id,
-                parentPackage,
-                name,
-                minValue,
-                maxValue,
-                defaultValue
+                new IFloat64AttributeType.Record(
+                        id,
+                        parentPackage.id,
+                        name,
+                        defaultValue,
+                        minValue,
+                        maxValue
+                ),
+                parentPackage
         ).toJson() == json;
 
         where:

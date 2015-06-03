@@ -8,6 +8,7 @@ package org.grestler.domain.metamodel.api.elements;
 import org.grestler.infrastructure.utilities.collections.ISizedIterable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Top level interface to an edge type.
@@ -59,6 +60,42 @@ public interface IEdgeType
      */
     default boolean isSimple() {
         return this.getMultiEdgedness() == EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED && this.getSelfLooping() == ESelfLooping.SELF_LOOPS_NOT_ALLOWED;
+    }
+
+    /**
+     * Data stricture for the attributes of an edge type
+     */
+    class Record
+        extends IPackagedElement.Record {
+
+        protected Record(
+            UUID id,
+            UUID parentPackageId,
+            UUID superTypeId,
+            String name,
+            EAbstractness abstractness,
+            ECyclicity cyclicity,
+            EMultiEdgedness multiEdgedness,
+            ESelfLooping selfLooping
+        ) {
+            super( id, parentPackageId, name );
+            this.abstractness = abstractness;
+            this.cyclicity = cyclicity;
+            this.multiEdgedness = multiEdgedness;
+            this.selfLooping = selfLooping;
+            this.superTypeId = superTypeId;
+        }
+
+        public final EAbstractness abstractness;
+
+        public final ECyclicity cyclicity;
+
+        public final EMultiEdgedness multiEdgedness;
+
+        public final ESelfLooping selfLooping;
+
+        public final UUID superTypeId;
+
     }
 
 }

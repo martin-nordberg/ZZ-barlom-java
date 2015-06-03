@@ -10,13 +10,11 @@ import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
 
-import javax.json.JsonObject;
-
 /**
  * Abstract H2 database command writer.
  */
-abstract class AbstractMetamodelCommandWriter
-    implements IMetamodelCommandWriter {
+abstract class AbstractMetamodelCommandWriter<R extends IMetamodelCommandSpi.CmdRecord>
+    implements IMetamodelCommandWriter<R> {
 
     /**
      * Constructs a new vertex type creation command.
@@ -29,15 +27,17 @@ abstract class AbstractMetamodelCommandWriter
 
     @Override
     public void execute(
-        JsonObject jsonCmdArgs, IMetamodelCommandSpi cmdFinisher
+        R record, IMetamodelCommandSpi<R> cmdFinisher
     ) {
 
         // Insert the new vertex type record and the command itself.
         try ( IConnection connection = this.dataSource.openConnection() ) {
 
-            connection.executeInTransaction( () -> this.writeCommand( connection, jsonCmdArgs ) );
+            connection.executeInTransaction(
+                () -> this.writeCommand( connection, record )
+            );
 
-            cmdFinisher.finish( jsonCmdArgs );
+            cmdFinisher.finish( record );
         }
 
         // TODO: handle database validation problems or connection problems
@@ -46,10 +46,10 @@ abstract class AbstractMetamodelCommandWriter
     /**
      * Performs the database inserts needed to save the command in the given connection.
      *
-     * @param connection  the database connection on which to write the new command.
-     * @param jsonCmdArgs the JSON for the command.
+     * @param connection the database connection on which to write the new command.
+     * @param record     the record of attributes for the command.
      */
-    protected abstract void writeCommand( IConnection connection, JsonObject jsonCmdArgs );
+    protected abstract void writeCommand( IConnection connection, R record );
 
     /** The data source for executions of this command. */
     private final IDataSource dataSource;

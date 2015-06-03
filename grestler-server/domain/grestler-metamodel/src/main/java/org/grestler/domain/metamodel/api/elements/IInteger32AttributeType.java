@@ -6,6 +6,7 @@
 package org.grestler.domain.metamodel.api.elements;
 
 import java.util.OptionalInt;
+import java.util.UUID;
 
 /**
  * Interface to 32-bit integer attribute types.
@@ -33,4 +34,29 @@ public interface IInteger32AttributeType
      */
     OptionalInt getMinValue();
 
+    class Record
+        extends IAttributeType.Record {
+
+        public Record(
+            UUID id,
+            UUID parentPackageId,
+            String name,
+            OptionalInt defaultValue,
+            OptionalInt minValue,
+            OptionalInt maxValue
+        ) {
+            super( id, parentPackageId, name, EDataType.INTEGER32 );
+
+            this.defaultValue = defaultValue;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
+
+        public final OptionalInt defaultValue;
+
+        public final OptionalInt maxValue;
+
+        public final OptionalInt minValue;
+
+    }
 }

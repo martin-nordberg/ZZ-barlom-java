@@ -13,7 +13,6 @@ import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.infrastructure.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
-import java.util.UUID;
 
 /**
  * Implementation class for vertex attribute declarations.
@@ -25,28 +24,20 @@ public final class VertexAttributeDecl
     /**
      * Constructs a new vertex attribute declaration.
      *
-     * @param id               the unique ID of the attribute declaration.
+     * @param record           the unique ID of the attribute declaration.
      * @param parentVertexType the parent vertex type.
-     * @param name             the name of the attribute.
      * @param type             the type of the attribute.
-     * @param optionality      whether this attribute is optionality.
-     * @param labelDefaulting  whether this is the default label for vertexes of the parent type.
      */
     public VertexAttributeDecl(
-        UUID id,
-        IVertexType parentVertexType,
-        String name,
-        IAttributeType type,
-        EAttributeOptionality optionality,
-        ELabelDefaulting labelDefaulting
+        IVertexAttributeDecl.Record record, IVertexType parentVertexType, IAttributeType type
     ) {
 
-        super( id, name );
+        super( record );
 
         this.parentVertexType = new V<>( parentVertexType );
         this.type = new V<>( type );
-        this.optionality = new V<>( optionality );
-        this.labelDefaulting = new V<>( labelDefaulting );
+        this.optionality = new V<>( record.optionality );
+        this.labelDefaulting = new V<>( record.labelDefaulting );
 
         ( (IVertexTypeUnderAssembly) parentVertexType ).addAttribute( this );
 

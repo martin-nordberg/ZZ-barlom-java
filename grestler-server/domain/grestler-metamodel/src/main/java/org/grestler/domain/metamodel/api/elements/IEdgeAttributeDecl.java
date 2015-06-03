@@ -5,6 +5,8 @@
 
 package org.grestler.domain.metamodel.api.elements;
 
+import java.util.UUID;
+
 /**
  * Interface to an edge attribute declaration.
  */
@@ -31,4 +33,22 @@ public interface IEdgeAttributeDecl
      */
     IAttributeType getType();
 
+    class Record
+        extends INamedElement.Record {
+
+        public Record( UUID id, String name, EAttributeOptionality optionality, UUID parentEdgeTypeId, UUID typeId ) {
+            super( id, name );
+
+            this.optionality = optionality;
+            this.parentEdgeTypeId = parentEdgeTypeId;
+            this.typeId = typeId;
+        }
+
+        public final EAttributeOptionality optionality;
+
+        public final UUID parentEdgeTypeId;
+
+        public final UUID typeId;
+
+    }
 }

@@ -8,8 +8,6 @@ package org.grestler.domain.metamodel.impl.elements;
 import org.grestler.domain.metamodel.api.elements.IPackage;
 import org.grestler.domain.metamodel.api.elements.IUuidAttributeType;
 
-import java.util.UUID;
-
 /**
  * Implementation of a UUID attribute type.
  */
@@ -20,14 +18,13 @@ public final class UuidAttributeType
     /**
      * Constructs a new UUID attribute type.
      *
-     * @param id            the unique ID of the attribute type.
+     * @param record        the attributes of the attribute type.
      * @param parentPackage the parent attribute type.
-     * @param name          the name of the attribute type.
      */
     public UuidAttributeType(
-        UUID id, IPackage parentPackage, String name
+        IUuidAttributeType.Record record, IPackage parentPackage
     ) {
-        super( id, parentPackage, name );
+        super( record, parentPackage );
     }
 
 }

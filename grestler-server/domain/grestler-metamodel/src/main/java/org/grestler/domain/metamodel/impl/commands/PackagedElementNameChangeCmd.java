@@ -8,16 +8,16 @@ package org.grestler.domain.metamodel.impl.commands;
 import org.grestler.domain.metamodel.api.elements.IPackagedElement;
 import org.grestler.domain.metamodel.impl.elements.NamedElement;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
+import org.grestler.domain.metamodel.spi.commands.NamedElementNameChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 
 import javax.json.JsonObject;
-import java.util.UUID;
 
 /**
  * Command to rename a packages element.
  */
 final class PackagedElementNameChangeCmd
-    extends AbstractMetamodelCommand {
+    extends AbstractMetamodelCommand<NamedElementNameChangeCmdRecord> {
 
     /**
      * Constructs a new command.
@@ -26,23 +26,24 @@ final class PackagedElementNameChangeCmd
      * @param cmdWriter           the command's persistence provider.
      */
     PackagedElementNameChangeCmd(
-        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter cmdWriter
+        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter<NamedElementNameChangeCmdRecord> cmdWriter
     ) {
         super( metamodelRepository, cmdWriter );
     }
 
     @Override
-    protected void writeChangesToMetamodel( JsonObject jsonCmdArgs ) {
+    protected NamedElementNameChangeCmdRecord parseJson( JsonObject jsonCmdArgs ) {
+        return new NamedElementNameChangeCmdRecord( jsonCmdArgs );
+    }
 
-        // Extract the package attributes from the command JSON.
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        String name = jsonCmdArgs.getString( "name" );
+    @Override
+    protected void writeChangesToMetamodel( NamedElementNameChangeCmdRecord record ) {
 
         // Look up the related parent package.
-        IPackagedElement element = this.getMetamodelRepository().findPackagedElementById( id );
+        IPackagedElement element = this.getMetamodelRepository().findPackagedElementById( record.id );
 
         // Change the name
-        ( (NamedElement) element ).setName( name );
+        ( (NamedElement) element ).setName( record.name );
 
     }
 

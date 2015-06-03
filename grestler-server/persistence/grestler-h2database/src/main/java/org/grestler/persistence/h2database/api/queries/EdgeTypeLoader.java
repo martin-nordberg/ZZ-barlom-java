@@ -18,14 +18,11 @@ import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
-import org.grestler.persistence.dbutilities.api.IResultSet;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.UUID;
 
 /**
  * Service for loading all edge types into a metamodel repository.
@@ -60,7 +57,7 @@ public class EdgeTypeLoader
      * @return the found or newly created edge type.
      */
     private IDirectedEdgeType findOrCreateDirectedEdgeType(
-        DirectedEdgeTypeRecord record, List<DirectedEdgeTypeRecord> records, IMetamodelRepositorySpi repository
+        IDirectedEdgeType.Record record, List<IDirectedEdgeType.Record> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the edge type already in the repository.
@@ -89,7 +86,7 @@ public class EdgeTypeLoader
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
             // ... recursively register the supertype.
-            for ( DirectedEdgeTypeRecord srecord : records ) {
+            for ( IDirectedEdgeType.Record srecord : records ) {
                 if ( srecord.id.equals( record.superTypeId ) ) {
                     superType = Optional.of( this.findOrCreateDirectedEdgeType( srecord, records, repository ) );
                 }
@@ -97,22 +94,11 @@ public class EdgeTypeLoader
         }
 
         return repository.loadDirectedEdgeType(
-            record.id,
+            record,
             parentPackage,
-            record.name,
             superType.get(),
-            record.abstractness,
-            record.cyclicity,
-            record.multiEdgedness,
-            record.selfLooping,
             tailVertexType,
-            headVertexType,
-            record.tailRoleName,
-            record.headRoleName,
-            record.minTailOutDegree,
-            record.maxTailOutDegree,
-            record.minHeadInDegree,
-            record.maxHeadInDegree
+            headVertexType
         );
 
     }
@@ -127,7 +113,7 @@ public class EdgeTypeLoader
      * @return the found or newly created edge type.
      */
     private IUndirectedEdgeType findOrCreateUndirectedEdgeType(
-        UndirectedEdgeTypeRecord record, List<UndirectedEdgeTypeRecord> records, IMetamodelRepositorySpi repository
+        IUndirectedEdgeType.Record record, List<IUndirectedEdgeType.Record> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the edge type already in the repository.
@@ -155,26 +141,14 @@ public class EdgeTypeLoader
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
             // ... recursively register the supertype.
-            for ( UndirectedEdgeTypeRecord srecord : records ) {
+            for ( IUndirectedEdgeType.Record srecord : records ) {
                 if ( srecord.id.equals( record.superTypeId ) ) {
                     superType = Optional.of( this.findOrCreateUndirectedEdgeType( srecord, records, repository ) );
                 }
             }
         }
 
-        return repository.loadUndirectedEdgeType(
-            record.id,
-            parentPackage,
-            record.name,
-            superType.get(),
-            record.abstractness,
-            record.cyclicity,
-            record.multiEdgedness,
-            record.selfLooping,
-            vertexType,
-            record.minDegree,
-            record.maxDegree
-        );
+        return repository.loadUndirectedEdgeType( record, parentPackage, superType.get(), vertexType );
 
     }
 
@@ -182,17 +156,36 @@ public class EdgeTypeLoader
 
         Configuration config = new Configuration( H2DatabaseModule.class );
 
-        List<DirectedEdgeTypeRecord> etRecords = new ArrayList<>();
+        List<IDirectedEdgeType.Record> etRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> etRecords.add( new DirectedEdgeTypeRecord( rs ) ), config.readString( "DirectedEdgeType.All" )
+                rs -> etRecords.add(
+                    new IDirectedEdgeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getUuid( "SUPER_TYPE_ID" ),
+                        rs.getString( "NAME" ),
+                        EAbstractness.fromBoolean( rs.getBoolean( "IS_ABSTRACT" ) ),
+                        ECyclicity.fromBoolean( rs.getOptionalBoolean( "IS_ACYCLIC" ) ),
+                        EMultiEdgedness.fromBoolean( rs.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) ),
+                        ESelfLooping.fromBoolean( rs.getOptionalBoolean( "IS_SELF_LOOP_ALLOWED" ) ),
+                        rs.getOptionalString( "HEAD_ROLE_NAME" ),
+                        rs.getUuid( "HEAD_VERTEX_TYPE_ID" ),
+                        rs.getOptionalInt( "MAX_HEAD_IN_DEGREE" ),
+                        rs.getOptionalInt( "MAX_TAIL_OUT_DEGREE" ),
+                        rs.getOptionalInt( "MIN_HEAD_IN_DEGREE" ),
+                        rs.getOptionalInt( "MIN_TAIL_OUT_DEGREE" ),
+                        rs.getOptionalString( "TAIL_ROLE_NAME" ),
+                        rs.getUuid( "TAIL_VERTEX_TYPE_ID" )
+                    )
+                ), config.readString( "DirectedEdgeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( DirectedEdgeTypeRecord etRecord : etRecords ) {
+        for ( IDirectedEdgeType.Record etRecord : etRecords ) {
             this.findOrCreateDirectedEdgeType( etRecord, etRecords, repository );
         }
 
@@ -202,17 +195,31 @@ public class EdgeTypeLoader
 
         Configuration config = new Configuration( H2DatabaseModule.class );
 
-        List<UndirectedEdgeTypeRecord> etRecords = new ArrayList<>();
+        List<IUndirectedEdgeType.Record> etRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> etRecords.add( new UndirectedEdgeTypeRecord( rs ) ), config.readString( "UndirectedEdgeType.All" )
+                rs -> etRecords.add(
+                    new IUndirectedEdgeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getUuid( "SUPER_TYPE_ID" ),
+                        rs.getString( "NAME" ),
+                        EAbstractness.fromBoolean( rs.getBoolean( "IS_ABSTRACT" ) ),
+                        ECyclicity.fromBoolean( rs.getOptionalBoolean( "IS_ACYCLIC" ) ),
+                        EMultiEdgedness.fromBoolean( rs.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) ),
+                        ESelfLooping.fromBoolean( rs.getOptionalBoolean( "IS_SELF_LOOP_ALLOWED" ) ),
+                        rs.getOptionalInt( "MIN_DEGREE" ),
+                        rs.getOptionalInt( "MAX_DEGREE" ),
+                        rs.getUuid( "VERTEX_TYPE_ID" )
+                    )
+                ), config.readString( "UndirectedEdgeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( UndirectedEdgeTypeRecord etRecord : etRecords ) {
+        for ( IUndirectedEdgeType.Record etRecord : etRecords ) {
             this.findOrCreateUndirectedEdgeType( etRecord, etRecords, repository );
         }
 
@@ -220,101 +227,5 @@ public class EdgeTypeLoader
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Data structure for directed edge type records.
-     */
-    private static final class DirectedEdgeTypeRecord
-        extends EdgeTypeRecord {
-
-        private DirectedEdgeTypeRecord( IResultSet resultSet ) {
-
-            super( resultSet );
-
-            this.tailVertexTypeId = resultSet.getUuid( "TAIL_VERTEX_TYPE_ID" );
-            this.headVertexTypeId = resultSet.getUuid( "HEAD_VERTEX_TYPE_ID" );
-            this.tailRoleName = resultSet.getOptionalString( "TAIL_ROLE_NAME" );
-            this.headRoleName = resultSet.getOptionalString( "HEAD_ROLE_NAME" );
-            this.minTailOutDegree = resultSet.getOptionalInt( "MIN_TAIL_OUT_DEGREE" );
-            this.maxTailOutDegree = resultSet.getOptionalInt( "MAX_TAIL_OUT_DEGREE" );
-            this.minHeadInDegree = resultSet.getOptionalInt( "MIN_HEAD_IN_DEGREE" );
-            this.maxHeadInDegree = resultSet.getOptionalInt( "MAX_HEAD_IN_DEGREE" );
-        }
-
-        public final Optional<String> headRoleName;
-
-        public final UUID headVertexTypeId;
-
-        public final OptionalInt maxHeadInDegree;
-
-        public final OptionalInt maxTailOutDegree;
-
-        public final OptionalInt minHeadInDegree;
-
-        public final OptionalInt minTailOutDegree;
-
-        public final Optional<String> tailRoleName;
-
-        public final UUID tailVertexTypeId;
-
-    }
-
-    /**
-     * Data structure for edge type records.
-     */
-    private static class EdgeTypeRecord {
-
-        protected EdgeTypeRecord( IResultSet resultSet ) {
-            this.id = resultSet.getUuid( "ID" );
-            this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
-            this.name = resultSet.getString( "NAME" );
-            this.superTypeId = resultSet.getUuid( "SUPER_TYPE_ID" );
-            this.abstractness = EAbstractness.fromBoolean( resultSet.getBoolean( "IS_ABSTRACT" ) );
-            this.cyclicity = ECyclicity.fromBoolean( resultSet.getOptionalBoolean( "IS_ACYCLIC" ) );
-            this.multiEdgedness = EMultiEdgedness.fromBoolean( resultSet.getOptionalBoolean( "IS_MULTI_EDGE_ALLOWED" ) );
-            this.selfLooping = ESelfLooping.fromBoolean( resultSet.getOptionalBoolean( "IS_SELF_LOOP_ALLOWED" ) );
-        }
-
-        public final EAbstractness abstractness;
-
-        public final ECyclicity cyclicity;
-
-        public final UUID id;
-
-        public final EMultiEdgedness multiEdgedness;
-
-        public final String name;
-
-        public final UUID parentPackageId;
-
-        public final ESelfLooping selfLooping;
-
-        public final UUID superTypeId;
-
-    }
-
-    /**
-     * Data structure for undirected edge type records.
-     */
-    private static final class UndirectedEdgeTypeRecord
-        extends EdgeTypeRecord {
-
-        private UndirectedEdgeTypeRecord( IResultSet resultSet ) {
-
-            super( resultSet );
-
-            this.vertexTypeId = resultSet.getUuid( "VERTEX_TYPE_ID" );
-            this.minDegree = resultSet.getOptionalInt( "MIN_DEGREE" );
-            this.maxDegree = resultSet.getOptionalInt( "MAX_DEGREE" );
-
-        }
-
-        public final OptionalInt maxDegree;
-
-        public final OptionalInt minDegree;
-
-        public final UUID vertexTypeId;
-
-    }
 
 }

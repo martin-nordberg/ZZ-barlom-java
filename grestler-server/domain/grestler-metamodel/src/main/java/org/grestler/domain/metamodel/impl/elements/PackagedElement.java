@@ -5,7 +5,6 @@ import org.grestler.domain.metamodel.api.elements.IPackagedElement;
 import org.grestler.infrastructure.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
-import java.util.UUID;
 
 /**
  * Implementation of abstract element.
@@ -17,13 +16,12 @@ public abstract class PackagedElement
     /**
      * Constructs a new element.
      *
-     * @param id            the unique ID of the element.
+     * @param record        the attributes of the element.
      * @param parentPackage the parent package.
-     * @param name          the name of the element.
      */
-    protected PackagedElement( UUID id, IPackage parentPackage, String name ) {
+    protected PackagedElement( IPackagedElement.Record record, IPackage parentPackage ) {
 
-        super( id, name );
+        super( record );
 
         this.parentPackage = new V<>( parentPackage );
 

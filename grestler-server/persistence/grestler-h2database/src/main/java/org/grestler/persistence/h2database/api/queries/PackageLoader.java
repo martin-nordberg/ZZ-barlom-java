@@ -11,13 +11,11 @@ import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
-import org.grestler.persistence.dbutilities.api.IResultSet;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Service for loading all packages into a metamodel repository.
@@ -39,17 +37,21 @@ public class PackageLoader
 
         Configuration config = new Configuration( H2DatabaseModule.class );
 
-        List<PackageRecord> pkgRecords = new ArrayList<>();
+        List<IPackage.Record> pkgRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> pkgRecords.add( new PackageRecord( rs ) ), config.readString( "Package.All" )
+                rs -> pkgRecords.add(
+                    new IPackage.Record(
+                        rs.getUuid( "ID" ), rs.getUuid( "PARENT_PACKAGE_ID" ), rs.getString( "NAME" )
+                    )
+                ), config.readString( "Package.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( PackageRecord pkgRecord : pkgRecords ) {
+        for ( IPackage.Record pkgRecord : pkgRecords ) {
             this.findOrCreatePackage( pkgRecord, pkgRecords, repository );
         }
 
@@ -65,7 +67,7 @@ public class PackageLoader
      * @return the found or newly created package.
      */
     private IPackage findOrCreatePackage(
-        PackageRecord record, List<PackageRecord> records, IMetamodelRepositorySpi repository
+        IPackage.Record record, List<IPackage.Record> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the package already in the repository.
@@ -87,37 +89,18 @@ public class PackageLoader
         // If parent package not already registered, ...
         if ( !parentPackage.isPresent() ) {
             // ... recursively register the parent package.
-            for ( PackageRecord srecord : records ) {
+            for ( IPackage.Record srecord : records ) {
                 if ( srecord.id.equals( record.parentPackageId ) ) {
                     parentPackage = Optional.of( this.findOrCreatePackage( srecord, records, repository ) );
                 }
             }
         }
 
-        return repository.loadPackage( record.id, parentPackage.get(), record.name );
+        return repository.loadPackage( record, parentPackage.get() );
 
     }
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Data structure for package records.
-     */
-    private static final class PackageRecord {
-
-        private PackageRecord( IResultSet resultSet ) {
-            this.id = resultSet.getUuid( "ID" );
-            this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
-            this.name = resultSet.getString( "NAME" );
-        }
-
-        public final UUID id;
-
-        public final String name;
-
-        public final UUID parentPackageId;
-
-    }
 
 }

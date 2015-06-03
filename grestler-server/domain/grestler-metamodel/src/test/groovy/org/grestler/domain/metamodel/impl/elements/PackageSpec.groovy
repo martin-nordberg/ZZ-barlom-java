@@ -45,9 +45,9 @@ class PackageSpec
 
         given:
         IPackage root = new RootPackage( id );
-        IPackage p1 = new Package( id, root, name );
-        IPackage p2 = new Package( id, p1, name );
-        IPackage r = new Package( id, root, name );
+        IPackage p1 = new Package( new IPackage.Record( id, root.id, name ), root );
+        IPackage p2 = new Package( new IPackage.Record( id, p1.id, name ), p1 );
+        IPackage r = new Package( new IPackage.Record( id, root.id, name ), root );
 
         expect:
         p1.parentPackage == root;

@@ -7,6 +7,7 @@ package org.grestler.persistence.h2database.api.commands;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.persistence.dbutilities.api.IDataSource;
@@ -28,7 +29,7 @@ public class MetamodelCommandWriterFactory
     }
 
     @Override
-    public IMetamodelCommandWriter makeCommandWriter( String commandTypeName ) {
+    public IMetamodelCommandWriter<? extends IMetamodelCommandSpi.CmdRecord> makeCommandWriter( String commandTypeName ) {
 
         switch ( commandTypeName.toLowerCase() ) {
             case "packagecreation":

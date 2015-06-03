@@ -16,14 +16,14 @@ import javax.json.JsonObject;
 /**
  * Partial implementation of IMetamodelCommand.
  */
-abstract class AbstractMetamodelCommand
-    implements IMetamodelCommand, IMetamodelCommandSpi {
+abstract class AbstractMetamodelCommand<R extends IMetamodelCommandSpi.CmdRecord>
+    implements IMetamodelCommand, IMetamodelCommandSpi<R> {
 
     /**
      * Constructs a new command.
      */
     protected AbstractMetamodelCommand(
-        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter cmdWriter
+        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter<R> cmdWriter
     ) {
         this.cmdWriter = cmdWriter;
         this.metamodelRepository = metamodelRepository;
@@ -31,12 +31,15 @@ abstract class AbstractMetamodelCommand
 
     @Override
     public void execute( JsonObject jsonCmdArgs ) {
-        this.cmdWriter.execute( jsonCmdArgs, this );
+
+        R record = this.parseJson( jsonCmdArgs );
+
+        this.cmdWriter.execute( record, this );
     }
 
     @Override
-    public void finish( JsonObject jsonCmdArgs ) {
-        StmTransactionContext.doInReadWriteTransaction( 1, () -> this.writeChangesToMetamodel( jsonCmdArgs ) );
+    public void finish( R record ) {
+        StmTransactionContext.doInReadWriteTransaction( 1, () -> this.writeChangesToMetamodel( record ) );
     }
 
     /**
@@ -47,14 +50,23 @@ abstract class AbstractMetamodelCommand
     }
 
     /**
+     * Parses the JSON into a concrete record for the command completion.
+     *
+     * @param jsonCmdArgs the raw JSON to parse.
+     *
+     * @return the record for use in the rest of the command.
+     */
+    protected abstract R parseJson( JsonObject jsonCmdArgs );
+
+    /**
      * Makes the in-memory changes needed to complete this command.
      *
-     * @param jsonCmdArgs the JSON for the changes.
+     * @param record the JSON for the changes.
      */
-    protected abstract void writeChangesToMetamodel( JsonObject jsonCmdArgs );
+    protected abstract void writeChangesToMetamodel( R record );
 
     /** The persistence provider for this command. */
-    private final IMetamodelCommandWriter cmdWriter;
+    private final IMetamodelCommandWriter<R> cmdWriter;
 
     /** The metamodel repository to be acted upon by this command. */
     private final IMetamodelRepositorySpi metamodelRepository;

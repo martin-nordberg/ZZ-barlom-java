@@ -15,7 +15,6 @@ import org.grestler.infrastructure.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Implementation class for vertex types.
@@ -27,20 +26,18 @@ public final class VertexType
     /**
      * Constructs a new vertex type.
      *
-     * @param id            the unique ID of the vertex type.
+     * @param record        the unique ID of the vertex type.
      * @param parentPackage the package containing the vertex type.
-     * @param name          the name of the vertex type.
      * @param superType     the super type.
-     * @param abstractness  whether the vertex type is abstract.
      */
     public VertexType(
-        UUID id, IPackage parentPackage, String name, IVertexType superType, EAbstractness abstractness
+        IVertexType.Record record, IPackage parentPackage, IVertexType superType
     ) {
 
-        super( id, parentPackage, name );
+        super( record, parentPackage );
 
         this.superType = new V<>( superType );
-        this.abstractness = new V<>( abstractness );
+        this.abstractness = new V<>( record.abstractness );
         this.attributes = new VArray<>();
 
         // TODO: track subtypes

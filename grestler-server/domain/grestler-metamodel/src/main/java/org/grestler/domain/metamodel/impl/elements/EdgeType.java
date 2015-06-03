@@ -17,7 +17,6 @@ import org.grestler.infrastructure.utilities.revisions.V;
 import org.grestler.infrastructure.utilities.revisions.VArray;
 
 import javax.json.stream.JsonGenerator;
-import java.util.UUID;
 
 /**
  * Implementation class for edge types.
@@ -29,30 +28,18 @@ abstract class EdgeType
     /**
      * Constructs a new edge type.
      *
-     * @param id             the unique ID of the edge type.
-     * @param parentPackage  the package containing the edge type.
-     * @param name           the name of the edge type.
-     * @param abstractness   whether the edge type is abstract or concrete.
-     * @param cyclicity      whether the edge type is constrained to be acyclic.
-     * @param multiEdgedness whether the edge type is constrained to disallow multiple edges between two given
-     *                       vertexes.
-     * @param selfLooping    whether the edge type disallows edges from a vertex to itself.
+     * @param record        the attributes of the edge type.
+     * @param parentPackage the package containing the edge type.
      */
     protected EdgeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        EAbstractness abstractness,
-        ECyclicity cyclicity,
-        EMultiEdgedness multiEdgedness,
-        ESelfLooping selfLooping
+        IEdgeType.Record record, IPackage parentPackage
     ) {
-        super( id, parentPackage, name );
+        super( record, parentPackage );
 
-        this.abstractness = new V<>( abstractness );
-        this.cyclicity = new V<>( cyclicity );
-        this.multiEdgedness = new V<>( multiEdgedness );
-        this.selfLooping = new V<>( selfLooping );
+        this.abstractness = new V<>( record.abstractness );
+        this.cyclicity = new V<>( record.cyclicity );
+        this.multiEdgedness = new V<>( record.multiEdgedness );
+        this.selfLooping = new V<>( record.selfLooping );
 
         this.attributes = new VArray<>();
 

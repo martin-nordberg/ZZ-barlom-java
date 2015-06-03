@@ -7,8 +7,8 @@ package org.grestler.persistence.h2database.api.commands
 
 import org.grestler.domain.metamodel.impl.queries.MetamodelRepository
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi
-import org.grestler.domain.metamodel.spi.commands.NamedElementNameChangeCmdRecord
-import org.grestler.domain.metamodel.spi.commands.PackageCreationCmdRecord
+import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord
+import org.grestler.domain.metamodel.spi.commands.VertexTypeSuperTypeChangeCmdRecord
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
 import org.grestler.persistence.h2database.api.queries.*
@@ -18,28 +18,30 @@ import spock.lang.Specification
 import javax.json.Json
 
 /**
- * Specification for packaged element renaming.
+ * Specification for vertex type abstractness changes.
  */
-class PackagedElementNameChangeCmdSpec
+class VertexTypeSuperTypeChangeCmdSpec
         extends Specification {
 
-    def "A packaged element name change command renames an element"() {
+    def "A vertex type super type change command revises a vertex type"() {
 
         given:
         StmTransactionContext.beginReadWriteTransaction();
 
-        def cmdIdA = "1234111A-7a26-11e4-a545-08002741a702";
-        def cmdIdB = "1234111B-7a26-11e4-a545-08002741a702";
-        def pkgId = "12341113-7a26-11e4-a545-08002741a702";
-        def json = '{"cmdId":"' + cmdIdA + '","id":"' + pkgId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"pkg1before"}';
+        def cmdIdA = "12341120-7a26-11e4-a545-08002741a702";
+        def cmdIdB = "12341121-7a26-11e4-a545-08002741a702";
+        def vtId = "12341122-7a26-11e4-a545-08002741a702";
+        def json = '{"cmdId":"' + cmdIdA + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"vt2","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
-        def cmd = new PackageCreationCmdWriter( dataSource );
-        def recordA = new PackageCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
+        def cmd = new VertexTypeCreationCmdWriter( dataSource );
+        def recordA = new VertexTypeCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
         cmd.execute( recordA, {} as IMetamodelCommandSpi );
 
-        json = '{"cmdId":"' + cmdIdB + '","id":"' + pkgId + '","name":"pkg1after"}';
-        cmd = new PackagedElementNameChangeCmdWriter( dataSource );
-        def recordB = new NamedElementNameChangeCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
+        json = '{"cmdId":"' + cmdIdB + '","id":"' + vtId + '","superTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
+        cmd = new VertexTypeSuperTypeChangeCmdWriter( dataSource );
+        def recordB = new VertexTypeSuperTypeChangeCmdRecord(
+                Json.createReader( new StringReader( json ) ).readObject()
+        );
         cmd.execute( recordB, {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
@@ -58,11 +60,11 @@ class PackagedElementNameChangeCmdSpec
                 adloader
         );
 
-        def pkg = m.findOptionalPackageById( UUID.fromString( pkgId ) );
+        def vt = m.findOptionalVertexTypeById( UUID.fromString( vtId ) );
 
         expect:
-        pkg.isPresent();
-        pkg.get().name == "pkg1after";
+        vt.isPresent();
+        vt.get().superType.get().id == UUID.fromString( "00000010-7a26-11e4-a545-08002741a702" );
 
         cleanup:
         StmTransactionContext.commitTransaction();

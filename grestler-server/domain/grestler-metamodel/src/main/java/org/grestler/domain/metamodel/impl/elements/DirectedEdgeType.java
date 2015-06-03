@@ -5,10 +5,6 @@
 
 package org.grestler.domain.metamodel.impl.elements;
 
-import org.grestler.domain.metamodel.api.elements.EAbstractness;
-import org.grestler.domain.metamodel.api.elements.ECyclicity;
-import org.grestler.domain.metamodel.api.elements.EMultiEdgedness;
-import org.grestler.domain.metamodel.api.elements.ESelfLooping;
 import org.grestler.domain.metamodel.api.elements.IDirectedEdgeType;
 import org.grestler.domain.metamodel.api.elements.IEdgeType;
 import org.grestler.domain.metamodel.api.elements.IPackage;
@@ -18,7 +14,6 @@ import org.grestler.infrastructure.utilities.revisions.V;
 import javax.json.stream.JsonGenerator;
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.UUID;
 
 /**
  * Implementation class for edge types.
@@ -30,53 +25,30 @@ public final class DirectedEdgeType
     /**
      * Constructs a new edge type.
      *
-     * @param id               the unique ID of the edge type.
-     * @param parentPackage    the package containing the edge type.
-     * @param name             the name of the edge type.
-     * @param superType        the super type.
-     * @param abstractness     whether the edge type is abstract or concrete.
-     * @param cyclicity        whether the edge type is constrained to be acyclic.
-     * @param multiEdgedness   whether the edge type is constrained to disallow multiple edges between two given
-     *                         vertexes.
-     * @param selfLooping      whether the edge type disallows edges from a vertex to itself.
-     * @param tailVertexType   the vertex type at the start of the edge type.
-     * @param headVertexType   the vertex type at the end of the edge type.
-     * @param tailRoleName     the role name for vertexes at the tail of this edge type
-     * @param headRoleName     the role name for vertexes at the head of this edge type
-     * @param minTailOutDegree the minimum out-degree for the tail vertex of an edge of this type.
-     * @param maxTailOutDegree the maximum out-degree for the tail vertex of an edge of this type.
-     * @param minHeadInDegree  the minimum in-degree for the head vertex of an edge of this type.
-     * @param maxHeadInDegree  the maximum in-degree for the head vertex of an edge of this type.
+     * @param record         the attributes of the edge type.
+     * @param parentPackage  the package containing the edge type.
+     * @param superType      the super type.
+     * @param tailVertexType the vertex type at the start of the edge type.
+     * @param headVertexType the vertex type at the end of the edge type.
      */
     public DirectedEdgeType(
-        UUID id,
+        IDirectedEdgeType.Record record,
         IPackage parentPackage,
-        String name,
         IDirectedEdgeType superType,
-        EAbstractness abstractness,
-        ECyclicity cyclicity,
-        EMultiEdgedness multiEdgedness,
-        ESelfLooping selfLooping,
         IVertexType tailVertexType,
-        IVertexType headVertexType,
-        Optional<String> tailRoleName,
-        Optional<String> headRoleName,
-        OptionalInt minTailOutDegree,
-        OptionalInt maxTailOutDegree,
-        OptionalInt minHeadInDegree,
-        OptionalInt maxHeadInDegree
+        IVertexType headVertexType
     ) {
-        super( id, parentPackage, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+        super( record, parentPackage );
 
         this.superType = new V<>( superType );
         this.tailVertexType = new V<>( tailVertexType );
         this.headVertexType = new V<>( headVertexType );
-        this.tailRoleName = new V<>( tailRoleName );
-        this.headRoleName = new V<>( headRoleName );
-        this.minTailOutDegree = new V<>( minTailOutDegree );
-        this.maxTailOutDegree = new V<>( maxTailOutDegree );
-        this.minHeadInDegree = new V<>( minHeadInDegree );
-        this.maxHeadInDegree = new V<>( maxHeadInDegree );
+        this.tailRoleName = new V<>( record.tailRoleName );
+        this.headRoleName = new V<>( record.headRoleName );
+        this.minTailOutDegree = new V<>( record.minTailOutDegree );
+        this.maxTailOutDegree = new V<>( record.maxTailOutDegree );
+        this.minHeadInDegree = new V<>( record.minHeadInDegree );
+        this.maxHeadInDegree = new V<>( record.maxHeadInDegree );
 
     }
 

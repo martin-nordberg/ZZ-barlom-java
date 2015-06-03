@@ -8,6 +8,7 @@ package org.grestler.domain.metamodel.api.elements;
 import org.grestler.infrastructure.utilities.collections.ISizedIterable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Top level interface to a vertex type.
@@ -40,4 +41,19 @@ public interface IVertexType
      */
     boolean isSubTypeOf( IVertexType vertexType );
 
+    class Record
+        extends IPackagedElement.Record {
+
+        public Record( UUID id, UUID parentPackageId, String name, EAbstractness abstractness, UUID superTypeId ) {
+            super( id, parentPackageId, name );
+
+            this.abstractness = abstractness;
+            this.superTypeId = superTypeId;
+        }
+
+        public final EAbstractness abstractness;
+
+        public final UUID superTypeId;
+
+    }
 }

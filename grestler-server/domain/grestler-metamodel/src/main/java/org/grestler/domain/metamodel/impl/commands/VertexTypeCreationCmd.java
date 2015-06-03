@@ -5,20 +5,19 @@
 
 package org.grestler.domain.metamodel.impl.commands;
 
-import org.grestler.domain.metamodel.api.elements.EAbstractness;
 import org.grestler.domain.metamodel.api.elements.IPackage;
 import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
+import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 
 import javax.json.JsonObject;
-import java.util.UUID;
 
 /**
  * Command to create a vertex type.
  */
 final class VertexTypeCreationCmd
-    extends AbstractMetamodelCommand {
+    extends AbstractMetamodelCommand<VertexTypeCreationCmdRecord> {
 
     /**
      * Constructs a new command.
@@ -27,27 +26,25 @@ final class VertexTypeCreationCmd
      * @param cmdWriter           the command's persistence provider.
      */
     VertexTypeCreationCmd(
-        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter cmdWriter
+        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter<VertexTypeCreationCmdRecord> cmdWriter
     ) {
         super( metamodelRepository, cmdWriter );
     }
 
     @Override
-    protected void writeChangesToMetamodel( JsonObject jsonCmdArgs ) {
+    protected VertexTypeCreationCmdRecord parseJson( JsonObject jsonCmdArgs ) {
+        return new VertexTypeCreationCmdRecord( jsonCmdArgs );
+    }
 
-        // Extract the vertex type attributes from the command JSON.
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        UUID parentPackageId = UUID.fromString( jsonCmdArgs.getString( "parentPackageId" ) );
-        String name = jsonCmdArgs.getString( "name" );
-        UUID superTypeId = UUID.fromString( jsonCmdArgs.getString( "superTypeId" ) );
-        EAbstractness abstractness = EAbstractness.valueOf( jsonCmdArgs.getString( "abstractness" ) );
+    @Override
+    protected void writeChangesToMetamodel( VertexTypeCreationCmdRecord record ) {
 
         // Find the related elements.
-        IPackage parentPackage = this.getMetamodelRepository().findPackageById( parentPackageId );
-        IVertexType superType = this.getMetamodelRepository().findVertexTypeById( superTypeId );
+        IPackage parentPackage = this.getMetamodelRepository().findPackageById( record.vt.parentPackageId );
+        IVertexType superType = this.getMetamodelRepository().findVertexTypeById( record.vt.superTypeId );
 
         // Create the new vertex type.
-        this.getMetamodelRepository().loadVertexType( id, parentPackage, name, superType, abstractness );
+        this.getMetamodelRepository().loadVertexType( record.vt, parentPackage, superType );
 
     }
 

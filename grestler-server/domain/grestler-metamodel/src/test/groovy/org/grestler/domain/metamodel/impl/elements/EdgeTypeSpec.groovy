@@ -49,61 +49,89 @@ class EdgeTypeSpec
         given:
         IPackage root = new RootPackage( id );
         IVertexType v0 = new RootVertexType( id, root );
-        IVertexType v1 = new VertexType( id, root, "v1", v0, EAbstractness.ABSTRACT );
+        IVertexType v1 = new VertexType(
+                new IVertexType.Record(
+                        id,
+                        root.id,
+                        "v1",
+                        EAbstractness.ABSTRACT,
+                        v0.id
+                ),
+                root,
+                v0
+        );
         IEdgeType e0 = new RootDirectedEdgeType( id, root, v0 );
         IEdgeType e1 = new DirectedEdgeType(
-                id,
+                new IDirectedEdgeType.Record(
+                        id,
+                        root.id,
+                        e0.id,
+                        name,
+                        EAbstractness.ABSTRACT,
+                        ECyclicity.UNCONSTRAINED,
+                        EMultiEdgedness.UNCONSTRAINED,
+                        ESelfLooping.UNCONSTRAINED,
+                        Optional.empty(),
+                        v0.id,
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        Optional.empty(),
+                        v1.id
+                ),
                 root,
-                name,
                 e0,
-                EAbstractness.ABSTRACT,
-                ECyclicity.UNCONSTRAINED,
-                EMultiEdgedness.UNCONSTRAINED,
-                ESelfLooping.UNCONSTRAINED,
                 v0,
-                v1,
-                Optional.empty(),
-                Optional.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty()
+                v1
         );
         IEdgeType e2 = new DirectedEdgeType(
-                id,
+                new IDirectedEdgeType.Record(
+                        id,
+                        root.id,
+                        e1.id,
+                        name,
+                        EAbstractness.ABSTRACT,
+                        ECyclicity.UNCONSTRAINED,
+                        EMultiEdgedness.UNCONSTRAINED,
+                        ESelfLooping.UNCONSTRAINED,
+                        Optional.empty(),
+                        v0.id,
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        Optional.empty(),
+                        v1.id
+                ),
                 root,
-                name,
                 e1,
-                EAbstractness.ABSTRACT,
-                ECyclicity.UNCONSTRAINED,
-                EMultiEdgedness.UNCONSTRAINED,
-                ESelfLooping.UNCONSTRAINED,
                 v0,
-                v1,
-                Optional.empty(),
-                Optional.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty()
+                v1
         );
         IEdgeType e3 = new DirectedEdgeType(
-                id,
+                new IDirectedEdgeType.Record(
+                        id,
+                        root.id,
+                        e0.id,
+                        name,
+                        EAbstractness.ABSTRACT,
+                        ECyclicity.UNCONSTRAINED,
+                        EMultiEdgedness.UNCONSTRAINED,
+                        ESelfLooping.UNCONSTRAINED,
+                        Optional.empty(),
+                        v0.id,
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        OptionalInt.empty(),
+                        Optional.empty(),
+                        v1.id
+                ),
                 root,
-                name,
                 e0,
-                EAbstractness.ABSTRACT,
-                ECyclicity.UNCONSTRAINED,
-                EMultiEdgedness.UNCONSTRAINED,
-                ESelfLooping.UNCONSTRAINED,
                 v0,
-                v1,
-                Optional.empty(),
-                Optional.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty(),
-                OptionalInt.empty()
+                v1
         );
 
         expect:

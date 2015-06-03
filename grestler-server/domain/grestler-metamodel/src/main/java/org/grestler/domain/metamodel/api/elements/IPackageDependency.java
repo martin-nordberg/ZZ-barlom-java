@@ -5,6 +5,8 @@
 
 package org.grestler.domain.metamodel.api.elements;
 
+import java.util.UUID;
+
 /**
  * Interface to a package dependency.
  */
@@ -26,4 +28,19 @@ public interface IPackageDependency
      */
     IPackage getSupplierPackage();
 
+    class Record
+        extends IDocumentedElement.Record {
+
+        public Record( UUID id, UUID clientPackageId, UUID supplierPackageId ) {
+            super( id );
+
+            this.clientPackageId = clientPackageId;
+            this.supplierPackageId = supplierPackageId;
+        }
+
+        public final UUID clientPackageId;
+
+        public final UUID supplierPackageId;
+
+    }
 }

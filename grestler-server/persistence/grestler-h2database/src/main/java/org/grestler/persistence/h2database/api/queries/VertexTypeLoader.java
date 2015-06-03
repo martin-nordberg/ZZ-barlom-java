@@ -13,13 +13,11 @@ import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
-import org.grestler.persistence.dbutilities.api.IResultSet;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Service for loading all vertex types into a metamodel repository.
@@ -41,17 +39,25 @@ public class VertexTypeLoader
 
         Configuration config = new Configuration( H2DatabaseModule.class );
 
-        List<VertexTypeRecord> vtRecords = new ArrayList<>();
+        List<IVertexType.Record> vtRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> vtRecords.add( new VertexTypeRecord( rs ) ), config.readString( "VertexType.All" )
+                rs -> vtRecords.add(
+                    new IVertexType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getString( "NAME" ),
+                        EAbstractness.fromBoolean( rs.getBoolean( "IS_ABSTRACT" ) ),
+                        rs.getUuid( "SUPER_TYPE_ID" )
+                    )
+                ), config.readString( "VertexType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( VertexTypeRecord vtRecord : vtRecords ) {
+        for ( IVertexType.Record vtRecord : vtRecords ) {
             this.findOrCreateVertexType( vtRecord, vtRecords, repository );
         }
 
@@ -67,7 +73,7 @@ public class VertexTypeLoader
      * @return the found or newly created vertex type.
      */
     private IVertexType findOrCreateVertexType(
-        VertexTypeRecord record, List<VertexTypeRecord> records, IMetamodelRepositorySpi repository
+        IVertexType.Record record, List<IVertexType.Record> records, IMetamodelRepositorySpi repository
     ) {
 
         // Look for the vertex type already in the repository.
@@ -92,43 +98,18 @@ public class VertexTypeLoader
         // If supertype not already registered, ...
         if ( !superType.isPresent() ) {
             // ... recursively register the supertype.
-            for ( VertexTypeRecord srecord : records ) {
+            for ( IVertexType.Record srecord : records ) {
                 if ( srecord.id.equals( record.superTypeId ) ) {
                     superType = Optional.of( this.findOrCreateVertexType( srecord, records, repository ) );
                 }
             }
         }
 
-        return repository.loadVertexType( record.id, parentPackage, record.name, superType.get(), record.abstractness );
+        return repository.loadVertexType( record, parentPackage, superType.get() );
 
     }
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Data structure for vertex type records.
-     */
-    private static final class VertexTypeRecord {
-
-        private VertexTypeRecord( IResultSet resultSet ) {
-            this.id = resultSet.getUuid( "ID" );
-            this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
-            this.name = resultSet.getString( "NAME" );
-            this.superTypeId = resultSet.getUuid( "SUPER_TYPE_ID" );
-            this.abstractness = EAbstractness.fromBoolean( resultSet.getBoolean( "IS_ABSTRACT" ) );
-        }
-
-        public final EAbstractness abstractness;
-
-        public final UUID id;
-
-        public final String name;
-
-        public final UUID parentPackageId;
-
-        public final UUID superTypeId;
-
-    }
 
 }

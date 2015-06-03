@@ -7,6 +7,7 @@ package org.grestler.persistence.h2database.api.commands
 
 import org.grestler.domain.metamodel.impl.queries.MetamodelRepository
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi
+import org.grestler.domain.metamodel.spi.commands.PackageCreationCmdRecord
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
 import org.grestler.persistence.h2database.api.queries.*
@@ -31,7 +32,8 @@ class PackageCreationCmdSpec
         def json = '{"cmdId":"' + cmdId + '","id":"' + pkgId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"pkg1"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new PackageCreationCmdWriter( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        def record = new PackageCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
+        cmd.execute( record, {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
         def pdloader = new PackageDependencyLoader( dataSource );

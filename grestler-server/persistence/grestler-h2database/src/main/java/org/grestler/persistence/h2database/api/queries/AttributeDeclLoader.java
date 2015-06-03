@@ -17,13 +17,11 @@ import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
-import org.grestler.persistence.dbutilities.api.IResultSet;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Service for loading all attribute declarations into a metamodel repository.
@@ -61,16 +59,14 @@ public class AttributeDeclLoader
      * @return the found or newly created attribute type.
      */
     private static IEdgeAttributeDecl findOrCreateEdgeAttributeDecl(
-        EdgeAttributeDeclRecord record, IMetamodelRepositorySpi repository
+        IEdgeAttributeDecl.Record record, IMetamodelRepositorySpi repository
     ) {
 
         // Find the edge type and the attribute type
         Optional<IEdgeType> parentEdgeType = repository.findOptionalEdgeTypeById( record.parentEdgeTypeId );
-        Optional<IAttributeType> attributeType = repository.findOptionalAttributeTypeById( record.attributeTypeId );
+        Optional<IAttributeType> attributeType = repository.findOptionalAttributeTypeById( record.typeId );
 
-        return repository.loadEdgeAttributeDecl(
-            record.id, parentEdgeType.get(), record.name, attributeType.get(), record.optionality
-        );
+        return repository.loadEdgeAttributeDecl( record, parentEdgeType.get(), attributeType.get() );
 
     }
 
@@ -83,21 +79,14 @@ public class AttributeDeclLoader
      * @return the found or newly created attribute type.
      */
     private static IVertexAttributeDecl findOrCreateVertexAttributeDecl(
-        VertexAttributeDeclRecord record, IMetamodelRepositorySpi repository
+        IVertexAttributeDecl.Record record, IMetamodelRepositorySpi repository
     ) {
 
         // Find the parent vertex type and the attribute type
         Optional<IVertexType> parentVertexType = repository.findOptionalVertexTypeById( record.parentVertexTypeId );
-        Optional<IAttributeType> attributeType = repository.findOptionalAttributeTypeById( record.attributeTypeId );
+        Optional<IAttributeType> attributeType = repository.findOptionalAttributeTypeById( record.typeId );
 
-        return repository.loadVertexAttributeDecl(
-            record.id,
-            parentVertexType.get(),
-            record.name,
-            attributeType.get(),
-            record.optionality,
-            record.labelDefaulting
-        );
+        return repository.loadVertexAttributeDecl( record, parentVertexType.get(), attributeType.get() );
 
     }
 
@@ -108,18 +97,25 @@ public class AttributeDeclLoader
      */
     private void loadAllEdgeAttributeDecls( IMetamodelRepositorySpi repository ) {
 
-        Collection<EdgeAttributeDeclRecord> atRecords = new ArrayList<>();
+        Collection<IEdgeAttributeDecl.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new EdgeAttributeDeclRecord( rs ) ),
-                this.config.readString( "EdgeAttributeDecl.All" )
+                rs -> atRecords.add(
+                    new IEdgeAttributeDecl.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getString( "NAME" ),
+                        EAttributeOptionality.fromBoolean( rs.getBoolean( "IS_REQUIRED" ) ),
+                        rs.getUuid( "PARENT_EDGE_TYPE_ID" ),
+                        rs.getUuid( "ATTRIBUTE_TYPE_ID" )
+                    )
+                ), this.config.readString( "EdgeAttributeDecl.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( EdgeAttributeDeclRecord atRecord : atRecords ) {
+        for ( IEdgeAttributeDecl.Record atRecord : atRecords ) {
             AttributeDeclLoader.findOrCreateEdgeAttributeDecl( atRecord, repository );
         }
 
@@ -132,18 +128,26 @@ public class AttributeDeclLoader
      */
     private void loadAllVertexAttributeDecls( IMetamodelRepositorySpi repository ) {
 
-        Collection<VertexAttributeDeclRecord> atRecords = new ArrayList<>();
+        Collection<IVertexAttributeDecl.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new VertexAttributeDeclRecord( rs ) ),
-                this.config.readString( "VertexAttributeDecl.All" )
+                rs -> atRecords.add(
+                    new IVertexAttributeDecl.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getString( "NAME" ),
+                        ELabelDefaulting.fromBoolean( rs.getBoolean( "IS_DEFAULT_LABEL" ) ),
+                        EAttributeOptionality.fromBoolean( rs.getBoolean( "IS_REQUIRED" ) ),
+                        rs.getUuid( "PARENT_VERTEX_TYPE_ID" ),
+                        rs.getUuid( "ATTRIBUTE_TYPE_ID" )
+                    )
+                ), this.config.readString( "VertexAttributeDecl.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( VertexAttributeDeclRecord atRecord : atRecords ) {
+        for ( IVertexAttributeDecl.Record atRecord : atRecords ) {
             AttributeDeclLoader.findOrCreateVertexAttributeDecl( atRecord, repository );
         }
 
@@ -154,61 +158,5 @@ public class AttributeDeclLoader
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Data structure for boolean attribute type records.
-     */
-    private static final class EdgeAttributeDeclRecord {
-
-        private EdgeAttributeDeclRecord( IResultSet resultSet ) {
-
-            this.id = resultSet.getUuid( "ID" );
-            this.parentEdgeTypeId = resultSet.getUuid( "PARENT_EDGE_TYPE_ID" );
-            this.name = resultSet.getString( "NAME" );
-            this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
-            this.optionality = EAttributeOptionality.fromBoolean( resultSet.getBoolean( "IS_REQUIRED" ) );
-        }
-
-        public final UUID attributeTypeId;
-
-        public final UUID id;
-
-        public final String name;
-
-        public final EAttributeOptionality optionality;
-
-        public final UUID parentEdgeTypeId;
-
-    }
-
-    /**
-     * Data structure for UUID attribute type records.
-     */
-    private static final class VertexAttributeDeclRecord {
-
-        private VertexAttributeDeclRecord( IResultSet resultSet ) {
-
-            this.id = resultSet.getUuid( "ID" );
-            this.parentVertexTypeId = resultSet.getUuid( "PARENT_VERTEX_TYPE_ID" );
-            this.name = resultSet.getString( "NAME" );
-            this.attributeTypeId = resultSet.getUuid( "ATTRIBUTE_TYPE_ID" );
-            this.optionality = EAttributeOptionality.fromBoolean( resultSet.getBoolean( "IS_REQUIRED" ) );
-            this.labelDefaulting = ELabelDefaulting.fromBoolean( resultSet.getBoolean( "IS_DEFAULT_LABEL" ) );
-
-        }
-
-        public final UUID attributeTypeId;
-
-        public final UUID id;
-
-        public final ELabelDefaulting labelDefaulting;
-
-        public final String name;
-
-        public final EAttributeOptionality optionality;
-
-        public final UUID parentVertexTypeId;
-
-    }
 
 }

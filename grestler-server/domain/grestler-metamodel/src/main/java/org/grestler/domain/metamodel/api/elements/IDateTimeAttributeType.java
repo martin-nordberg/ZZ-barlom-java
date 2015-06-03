@@ -7,6 +7,7 @@ package org.grestler.domain.metamodel.api.elements;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Interface to a date/time attribute type.
@@ -29,4 +30,23 @@ public interface IDateTimeAttributeType
      */
     Optional<Instant> getMinValue();
 
+    /**
+     * Attributes of a date/time attribute type.
+     */
+    class Record
+        extends IAttributeType.Record {
+
+        public Record(
+            UUID id, UUID parentPackageId, String name, Optional<Instant> minValue, Optional<Instant> maxValue
+        ) {
+            super( id, parentPackageId, name, EDataType.DATETIME );
+            this.maxValue = maxValue;
+            this.minValue = minValue;
+        }
+
+        public final Optional<Instant> maxValue;
+
+        public final Optional<Instant> minValue;
+
+    }
 }

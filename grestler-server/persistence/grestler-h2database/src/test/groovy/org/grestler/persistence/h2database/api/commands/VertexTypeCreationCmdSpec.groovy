@@ -7,6 +7,7 @@ package org.grestler.persistence.h2database.api.commands
 
 import org.grestler.domain.metamodel.impl.queries.MetamodelRepository
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi
+import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.exceptions.EValidationType
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
@@ -33,7 +34,8 @@ class VertexTypeCreationCmdSpec
         def json = '{"cmdId":"' + cmdId + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample1","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new VertexTypeCreationCmdWriter( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        def record = new VertexTypeCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
+        cmd.execute( record, {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
         def pdloader = new PackageDependencyLoader( dataSource );
@@ -71,10 +73,11 @@ class VertexTypeCreationCmdSpec
         def json = '{"cmdId":"' + cmdId + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"sample2","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new VertexTypeCreationCmdWriter( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        def record = new VertexTypeCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
+        cmd.execute( record, {} as IMetamodelCommandSpi );
 
         when:
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        cmd.execute( record, {} as IMetamodelCommandSpi );
 
         then:
         DatabaseException e = thrown();
@@ -91,9 +94,10 @@ class VertexTypeCreationCmdSpec
         def json = '{"cmdId":"' + cmdId + '","id":"' + vtId + '","parentPackageId":"99999999-7a26-11e4-a545-08002741a702","name":"sample3","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new VertexTypeCreationCmdWriter( dataSource );
+        def record = new VertexTypeCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
 
         when:
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        cmd.execute( record, {} as IMetamodelCommandSpi );
 
         then:
         DatabaseException e = thrown();

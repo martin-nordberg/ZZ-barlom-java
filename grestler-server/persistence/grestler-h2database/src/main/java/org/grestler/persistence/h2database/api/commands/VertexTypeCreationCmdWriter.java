@@ -5,23 +5,21 @@
 
 package org.grestler.persistence.h2database.api.commands;
 
-import org.grestler.domain.metamodel.api.elements.EAbstractness;
+import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
-import javax.json.JsonObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Command to create a vertex type.
  */
 final class VertexTypeCreationCmdWriter
-    extends AbstractMetamodelCommandWriter {
+    extends AbstractMetamodelCommandWriter<VertexTypeCreationCmdRecord> {
 
     /**
      * Constructs a new vertex type creation command.
@@ -33,27 +31,20 @@ final class VertexTypeCreationCmdWriter
     }
 
     @Override
-    protected void writeCommand( IConnection connection, JsonObject jsonCmdArgs ) {
-
-        // Parse the JSON arguments.
-        // TODO: handle input validation problems
-        UUID cmdId = UUID.fromString( jsonCmdArgs.getString( "cmdId" ) );
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        UUID parentPackageId = UUID.fromString( jsonCmdArgs.getString( "parentPackageId" ) );
-        String name = jsonCmdArgs.getString( "name" );
-        UUID superTypeId = UUID.fromString( jsonCmdArgs.getString( "superTypeId" ) );
-        EAbstractness abstractness = EAbstractness.valueOf( jsonCmdArgs.getString( "abstractness" ) );
+    protected void writeCommand(
+        IConnection connection, VertexTypeCreationCmdRecord record
+    ) {
 
         // Build a map of the arguments.
         Map<String, Object> args = new HashMap<>();
-        args.put( "id", id );
-        args.put( "parentPackageId", parentPackageId );
-        args.put( "name", name );
-        args.put( "superTypeId", superTypeId );
-        args.put( "isAbstract", abstractness.isAbstract() );
+        args.put( "id", record.vt.id );
+        args.put( "parentPackageId", record.vt.parentPackageId );
+        args.put( "name", record.vt.name );
+        args.put( "superTypeId", record.vt.superTypeId );
+        args.put( "isAbstract", record.vt.abstractness.isAbstract() );
 
-        args.put( "cmdId", cmdId );
-        args.put( "jsonCmdArgs", jsonCmdArgs.toString() );
+        args.put( "cmdId", record.cmdId );
+        args.put( "jsonCmdArgs", record.jsonCmdArgs );
 
         // Read the SQL commands.
         Configuration config = new Configuration( H2DatabaseModule.class );

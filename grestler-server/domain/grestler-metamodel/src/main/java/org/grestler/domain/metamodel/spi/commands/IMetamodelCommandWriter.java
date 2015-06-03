@@ -5,19 +5,18 @@
 
 package org.grestler.domain.metamodel.spi.commands;
 
-import javax.json.JsonObject;
-
 /**
  * Interface defining the persistence layer for a command.
  */
 @FunctionalInterface
-public interface IMetamodelCommandWriter {
+public interface IMetamodelCommandWriter<R extends IMetamodelCommandSpi.CmdRecord> {
 
     /**
      * Executes this command.
      *
-     * @param jsonCmdArgs the arguments for the command as a JSON object.
+     * @param record      the arguments for the command as a parametric record.
+     * @param cmdFinisher the command that will make the changes in memory.
      */
-    void execute( JsonObject jsonCmdArgs, IMetamodelCommandSpi cmdFinisher );
+    void execute( R record, IMetamodelCommandSpi<R> cmdFinisher );
 
 }

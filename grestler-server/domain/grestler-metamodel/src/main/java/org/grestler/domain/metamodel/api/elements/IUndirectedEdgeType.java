@@ -7,6 +7,7 @@ package org.grestler.domain.metamodel.api.elements;
 
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.UUID;
 
 /**
  * Top level interface to an undirected edge type.
@@ -48,4 +49,34 @@ public interface IUndirectedEdgeType
      */
     boolean isSubTypeOf( IUndirectedEdgeType edgeType );
 
+    class Record
+        extends IEdgeType.Record {
+
+        public Record(
+            UUID id,
+            UUID parentPackageId,
+            UUID superTypeId,
+            String name,
+            EAbstractness abstractness,
+            ECyclicity cyclicity,
+            EMultiEdgedness multiEdgedness,
+            ESelfLooping selfLooping,
+            OptionalInt maxDegree,
+            OptionalInt minDegree,
+            UUID vertexTypeId
+        ) {
+            super( id, parentPackageId, superTypeId, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+
+            this.maxDegree = maxDegree;
+            this.minDegree = minDegree;
+            this.vertexTypeId = vertexTypeId;
+        }
+
+        public final OptionalInt maxDegree;
+
+        public final OptionalInt minDegree;
+
+        public final UUID vertexTypeId;
+
+    }
 }

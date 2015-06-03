@@ -11,7 +11,6 @@ import org.grestler.infrastructure.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Implementation of a boolean attribute type.
@@ -23,16 +22,14 @@ public final class BooleanAttributeType
     /**
      * Constructs a new boolean attribute type.
      *
-     * @param id            the unique ID of the attribute type.
+     * @param record        the attributes of the attribute type.
      * @param parentPackage the parent attribute type.
-     * @param name          the name of the attribute type.
-     * @param defaultValue  the default value for attributes of this type.
      */
     public BooleanAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<Boolean> defaultValue
+        IBooleanAttributeType.Record record, IPackage parentPackage
     ) {
-        super( id, parentPackage, name );
-        this.defaultValue = new V<>( defaultValue );
+        super( record, parentPackage );
+        this.defaultValue = new V<>( record.defaultValue );
     }
 
     @Override

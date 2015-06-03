@@ -4,6 +4,9 @@
 //
 
 package org.grestler.domain.metamodel.impl.elements
+
+import org.grestler.domain.metamodel.api.elements.IInteger32AttributeType
+
 /**
  * Spec for core behavior of a 32-bit integer attribute type..
  */
@@ -22,12 +25,15 @@ class Integer32AttributeTypeSpec
 
         expect:
         new Integer32AttributeType(
-                id,
-                parentPackage,
-                name,
-                minValue,
-                maxValue,
-                defaultValue
+                new IInteger32AttributeType.Record(
+                        id,
+                        parentPackage.id,
+                        name,
+                        defaultValue,
+                        minValue,
+                        maxValue
+                ),
+                parentPackage
         ).toJson() == json;
 
         where:

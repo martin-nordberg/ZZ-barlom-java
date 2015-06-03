@@ -4,6 +4,9 @@
 //
 
 package org.grestler.domain.metamodel.impl.elements
+
+import org.grestler.domain.metamodel.api.elements.IStringAttributeType
+
 /**
  * Spec for core behavior of a string attribute type..
  */
@@ -24,12 +27,15 @@ class StringAttributeTypeSpec
 
         expect:
         new StringAttributeType(
-                id,
-                parentPackage,
-                name,
-                minLength,
-                maxLength,
-                regexPattern
+                new IStringAttributeType.Record(
+                        id,
+                        parentPackage.id,
+                        name,
+                        maxLength,
+                        minLength,
+                        regexPattern
+                ),
+                parentPackage
         ).toJson() == json;
 
         where:

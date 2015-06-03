@@ -1,21 +1,20 @@
 package org.grestler.persistence.h2database.api.commands;
 
+import org.grestler.domain.metamodel.spi.commands.VertexTypeSuperTypeChangeCmdRecord;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
-import javax.json.JsonObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Command writer for persisting a vertex type abstractness change.
  */
 public final class VertexTypeSuperTypeChangeCmdWriter
-    extends AbstractMetamodelCommandWriter {
+    extends AbstractMetamodelCommandWriter<VertexTypeSuperTypeChangeCmdRecord> {
 
     /**
      * Constructs a new abstractness change command.
@@ -27,21 +26,17 @@ public final class VertexTypeSuperTypeChangeCmdWriter
     }
 
     @Override
-    protected void writeCommand( IConnection connection, JsonObject jsonCmdArgs ) {
-
-        // Parse the JSON arguments.
-        // TODO: handle input validation problems
-        UUID cmdId = UUID.fromString( jsonCmdArgs.getString( "cmdId" ) );
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        String superTypeId = jsonCmdArgs.getString( "superTypeId" );
+    protected void writeCommand(
+        IConnection connection, VertexTypeSuperTypeChangeCmdRecord record
+    ) {
 
         // Build a map of the arguments.
         Map<String, Object> args = new HashMap<>();
-        args.put( "id", id );
-        args.put( "superTypeId", superTypeId );
+        args.put( "id", record.id );
+        args.put( "superTypeId", record.superTypeId );
 
-        args.put( "cmdId", cmdId );
-        args.put( "jsonCmdArgs", jsonCmdArgs.toString() );
+        args.put( "cmdId", record.cmdId );
+        args.put( "jsonCmdArgs", record.jsonCmdArgs );
 
         // Read the SQL commands.
         Configuration config = new Configuration( H2DatabaseModule.class );

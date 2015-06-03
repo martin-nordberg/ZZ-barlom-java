@@ -5,6 +5,8 @@
 
 package org.grestler.domain.metamodel.api.elements;
 
+import java.util.UUID;
+
 /**
  * Shared general interface for metadata elements that are direct children of packages.
  */
@@ -35,6 +37,21 @@ public interface IPackagedElement
         IPackage parentPkg = this.getParentPackage();
 
         return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
+
+    }
+
+    /**
+     * Data structure for packaged element records.
+     */
+    class Record
+        extends INamedElement.Record {
+
+        protected Record( UUID id, UUID parentPackageId, String name ) {
+            super( id, name );
+            this.parentPackageId = parentPackageId;
+        }
+
+        public final UUID parentPackageId;
 
     }
 

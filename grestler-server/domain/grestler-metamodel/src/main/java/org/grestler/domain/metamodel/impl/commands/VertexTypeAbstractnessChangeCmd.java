@@ -5,20 +5,19 @@
 
 package org.grestler.domain.metamodel.impl.commands;
 
-import org.grestler.domain.metamodel.api.elements.EAbstractness;
 import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.domain.metamodel.impl.elements.VertexType;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
+import org.grestler.domain.metamodel.spi.commands.VertexTypeAbstractnessChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 
 import javax.json.JsonObject;
-import java.util.UUID;
 
 /**
  * Command to change the abstractness of a vertex type.
  */
 final class VertexTypeAbstractnessChangeCmd
-    extends AbstractMetamodelCommand {
+    extends AbstractMetamodelCommand<VertexTypeAbstractnessChangeCmdRecord> {
 
     /**
      * Constructs a new command.
@@ -27,23 +26,25 @@ final class VertexTypeAbstractnessChangeCmd
      * @param cmdWriter           the command's persistence provider.
      */
     VertexTypeAbstractnessChangeCmd(
-        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter cmdWriter
+        IMetamodelRepositorySpi metamodelRepository,
+        IMetamodelCommandWriter<VertexTypeAbstractnessChangeCmdRecord> cmdWriter
     ) {
         super( metamodelRepository, cmdWriter );
     }
 
     @Override
-    protected void writeChangesToMetamodel( JsonObject jsonCmdArgs ) {
+    protected VertexTypeAbstractnessChangeCmdRecord parseJson( JsonObject jsonCmdArgs ) {
+        return new VertexTypeAbstractnessChangeCmdRecord( jsonCmdArgs );
+    }
 
-        // Extract the vertex type attributes from the command JSON.
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        EAbstractness abstractness = EAbstractness.valueOf( jsonCmdArgs.getString( "abstractness" ) );
+    @Override
+    protected void writeChangesToMetamodel( VertexTypeAbstractnessChangeCmdRecord record ) {
 
         // Look up the related parent package.
-        IVertexType element = this.getMetamodelRepository().findVertexTypeById( id );
+        IVertexType element = this.getMetamodelRepository().findVertexTypeById( record.id );
 
         // Change the name
-        ( (VertexType) element ).setAbstractness( abstractness );
+        ( (VertexType) element ).setAbstractness( record.abstractness );
 
     }
 

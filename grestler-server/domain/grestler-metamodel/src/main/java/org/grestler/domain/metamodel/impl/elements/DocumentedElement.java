@@ -17,11 +17,11 @@ import java.util.UUID;
 public abstract class DocumentedElement
     implements IDocumentedElement {
 
-    protected DocumentedElement( UUID id ) {
+    protected DocumentedElement( IDocumentedElement.Record record ) {
 
-        Objects.requireNonNull( id, "Missing ID" );
+        Objects.requireNonNull( record.id, "Missing ID" );
 
-        this.id = id;
+        this.id = record.id;
 
     }
 

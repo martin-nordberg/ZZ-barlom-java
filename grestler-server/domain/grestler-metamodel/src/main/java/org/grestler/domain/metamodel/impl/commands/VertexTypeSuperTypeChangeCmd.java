@@ -8,16 +8,16 @@ package org.grestler.domain.metamodel.impl.commands;
 import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.domain.metamodel.impl.elements.VertexType;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
+import org.grestler.domain.metamodel.spi.commands.VertexTypeSuperTypeChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 
 import javax.json.JsonObject;
-import java.util.UUID;
 
 /**
  * Command to change the super type of a vertex type.
  */
 final class VertexTypeSuperTypeChangeCmd
-    extends AbstractMetamodelCommand {
+    extends AbstractMetamodelCommand<VertexTypeSuperTypeChangeCmdRecord> {
 
     /**
      * Constructs a new command.
@@ -26,21 +26,23 @@ final class VertexTypeSuperTypeChangeCmd
      * @param cmdWriter           the command's persistence provider.
      */
     VertexTypeSuperTypeChangeCmd(
-        IMetamodelRepositorySpi metamodelRepository, IMetamodelCommandWriter cmdWriter
+        IMetamodelRepositorySpi metamodelRepository,
+        IMetamodelCommandWriter<VertexTypeSuperTypeChangeCmdRecord> cmdWriter
     ) {
         super( metamodelRepository, cmdWriter );
     }
 
     @Override
-    protected void writeChangesToMetamodel( JsonObject jsonCmdArgs ) {
+    protected VertexTypeSuperTypeChangeCmdRecord parseJson( JsonObject jsonCmdArgs ) {
+        return new VertexTypeSuperTypeChangeCmdRecord( jsonCmdArgs );
+    }
 
-        // Extract the vertex type attributes from the command JSON.
-        UUID id = UUID.fromString( jsonCmdArgs.getString( "id" ) );
-        UUID superTypeId = UUID.fromString( jsonCmdArgs.getString( "superTypeId" ) );
+    @Override
+    protected void writeChangesToMetamodel( VertexTypeSuperTypeChangeCmdRecord record ) {
 
         // Look up the elements.
-        IVertexType element = this.getMetamodelRepository().findVertexTypeById( id );
-        IVertexType superType = this.getMetamodelRepository().findVertexTypeById( superTypeId );
+        IVertexType element = this.getMetamodelRepository().findVertexTypeById( record.id );
+        IVertexType superType = this.getMetamodelRepository().findVertexTypeById( record.superTypeId );
 
         // Change the name
         ( (VertexType) element ).setSuperType( superType );

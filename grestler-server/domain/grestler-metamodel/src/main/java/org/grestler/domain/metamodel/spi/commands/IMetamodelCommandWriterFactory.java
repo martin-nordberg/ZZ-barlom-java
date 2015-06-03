@@ -16,6 +16,6 @@ public interface IMetamodelCommandWriterFactory {
      *
      * @param commandTypeName the name of a command type.
      */
-    IMetamodelCommandWriter makeCommandWriter( String commandTypeName );
+    IMetamodelCommandWriter<? extends IMetamodelCommandSpi.CmdRecord> makeCommandWriter( String commandTypeName );
 
 }

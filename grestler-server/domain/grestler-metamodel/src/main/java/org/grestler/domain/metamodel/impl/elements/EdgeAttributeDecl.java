@@ -12,7 +12,6 @@ import org.grestler.domain.metamodel.api.elements.IEdgeType;
 import org.grestler.infrastructure.utilities.revisions.V;
 
 import javax.json.stream.JsonGenerator;
-import java.util.UUID;
 
 /**
  * Implementation class for edge attribute declarations.
@@ -24,21 +23,19 @@ public final class EdgeAttributeDecl
     /**
      * Constructs a new edge attribute declaration.
      *
-     * @param id             the unique ID of the attribute declaration.
+     * @param record         the unique ID of the attribute declaration.
      * @param parentEdgeType the parent edge type.
-     * @param name           the name of the attribute.
      * @param type           the type of the attribute.
-     * @param optionality    whether this attribute is optionality.
      */
     public EdgeAttributeDecl(
-        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
+        IEdgeAttributeDecl.Record record, IEdgeType parentEdgeType, IAttributeType type
     ) {
 
-        super( id, name );
+        super( record );
 
         this.parentEdgeType = new V<>( parentEdgeType );
         this.type = new V<>( type );
-        this.optionality = new V<>( optionality );
+        this.optionality = new V<>( record.optionality );
 
         ( (IEdgeTypeUnderAssembly) parentEdgeType ).addAttribute( this );
 

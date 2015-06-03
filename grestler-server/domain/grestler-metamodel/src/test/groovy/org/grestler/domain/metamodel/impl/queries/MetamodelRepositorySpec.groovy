@@ -6,6 +6,7 @@
 package org.grestler.domain.metamodel.impl.queries
 
 import org.grestler.domain.metamodel.api.elements.EAbstractness
+import org.grestler.domain.metamodel.api.elements.IVertexType
 import org.grestler.domain.metamodel.spi.queries.*
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
 import org.grestler.infrastructure.utilities.uuids.Uuids
@@ -33,10 +34,44 @@ class MetamodelRepositorySpec
                 { r ->
                     def rootPkg = r.findRootPackage();
                     def rootVertexType = r.loadRootVertexType( Uuids.makeUuid(), rootPkg );
-                    r.loadVertexType( id1, rootPkg, "V1", rootVertexType, EAbstractness.ABSTRACT );
-                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V2", rootVertexType, EAbstractness.ABSTRACT );
-                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V3", rootVertexType, EAbstractness.ABSTRACT );
-                    r.loadVertexType( Uuids.makeUuid(), rootPkg, "V4", rootVertexType, EAbstractness.ABSTRACT );
+                    r.loadVertexType(
+                            new IVertexType.Record( id1, rootPkg.id, "V1", EAbstractness.ABSTRACT, rootVertexType.id ),
+                            rootPkg,
+                            rootVertexType
+                    );
+                    r.loadVertexType(
+                            new IVertexType.Record(
+                                    Uuids.makeUuid(),
+                                    rootPkg.id,
+                                    "V2",
+                                    EAbstractness.ABSTRACT,
+                                    rootVertexType.id
+                            ),
+                            rootPkg,
+                            rootVertexType
+                    );
+                    r.loadVertexType(
+                            new IVertexType.Record(
+                                    Uuids.makeUuid(),
+                                    rootPkg.id,
+                                    "V3",
+                                    EAbstractness.ABSTRACT,
+                                    rootVertexType.id
+                            ),
+                            rootPkg,
+                            rootVertexType
+                    );
+                    r.loadVertexType(
+                            new IVertexType.Record(
+                                    Uuids.makeUuid(),
+                                    rootPkg.id,
+                                    "V4",
+                                    EAbstractness.ABSTRACT,
+                                    rootVertexType.id
+                            ),
+                            rootPkg,
+                            rootVertexType
+                    );
                 } as IVertexTypeLoader,
                 { r -> } as IEdgeTypeLoader,
                 { r -> } as IAttributeDeclLoader

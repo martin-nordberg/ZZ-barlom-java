@@ -9,7 +9,6 @@ import org.grestler.domain.metamodel.api.elements.IPackage;
 import org.grestler.domain.metamodel.api.elements.IPackageDependency;
 
 import javax.json.stream.JsonGenerator;
-import java.util.UUID;
 
 /**
  * Implementation class for package dependencies.
@@ -21,15 +20,15 @@ public final class PackageDependency
     /**
      * Constructs a package dependency.
      *
-     * @param id              the unique ID of the package dependency.
+     * @param record          the attributes of the package dependency.
      * @param clientPackage   the package making use of the supplier package.
      * @param supplierPackage the package that is depended upon.
      */
     public PackageDependency(
-        UUID id, IPackage clientPackage, IPackage supplierPackage
+        IPackageDependency.Record record, IPackage clientPackage, IPackage supplierPackage
     ) {
 
-        super( id );
+        super( record );
 
         this.clientPackage = clientPackage;
         this.supplierPackage = supplierPackage;

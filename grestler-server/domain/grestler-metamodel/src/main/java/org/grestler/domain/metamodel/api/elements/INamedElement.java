@@ -5,6 +5,8 @@
 
 package org.grestler.domain.metamodel.api.elements;
 
+import java.util.UUID;
+
 /**
  * Shared base interface for metadata elements with names.
  */
@@ -28,6 +30,21 @@ public interface INamedElement
         }
 
         return this.getName();
+
+    }
+
+    /**
+     * Data structure for named element records.
+     */
+    class Record
+        extends IDocumentedElement.Record {
+
+        protected Record( UUID id, String name ) {
+            super( id );
+            this.name = name;
+        }
+
+        public final String name;
 
     }
 

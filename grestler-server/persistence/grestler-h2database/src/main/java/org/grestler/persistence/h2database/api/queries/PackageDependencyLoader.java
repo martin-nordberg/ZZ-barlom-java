@@ -12,12 +12,10 @@ import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
-import org.grestler.persistence.dbutilities.api.IResultSet;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Service for loading all package dependencies into a metamodel repository.
@@ -39,17 +37,21 @@ public class PackageDependencyLoader
 
         Configuration config = new Configuration( H2DatabaseModule.class );
 
-        Collection<PackageDependencyRecord> pkgRecords = new ArrayList<>();
+        Collection<IPackageDependency.Record> pkgRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> pkgRecords.add( new PackageDependencyRecord( rs ) ), config.readString( "PackageDependency.All" )
+                rs -> pkgRecords.add(
+                    new IPackageDependency.Record(
+                        rs.getUuid( "ID" ), rs.getUuid( "CLIENT_PACKAGE_ID" ), rs.getUuid( "SUPPLIER_PACKAGE_ID" )
+                    )
+                ), config.readString( "PackageDependency.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( PackageDependencyRecord pkgRecord : pkgRecords ) {
+        for ( IPackageDependency.Record pkgRecord : pkgRecords ) {
             PackageDependencyLoader.findOrCreatePackageDependency( pkgRecord, repository );
         }
 
@@ -64,37 +66,18 @@ public class PackageDependencyLoader
      * @return the found or newly created package.
      */
     private static IPackageDependency findOrCreatePackageDependency(
-        PackageDependencyRecord record, IMetamodelRepositorySpi repository
+        IPackageDependency.Record record, IMetamodelRepositorySpi repository
     ) {
 
         // Find the edge type and the attribute type
         IPackage clientPackage = repository.findPackageById( record.clientPackageId );
         IPackage supplierPackage = repository.findPackageById( record.supplierPackageId );
 
-        return repository.loadPackageDependency( record.id, clientPackage, supplierPackage );
+        return repository.loadPackageDependency( record, clientPackage, supplierPackage );
 
     }
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Data structure for package dependency records.
-     */
-    private static final class PackageDependencyRecord {
-
-        private PackageDependencyRecord( IResultSet resultSet ) {
-            this.id = resultSet.getUuid( "ID" );
-            this.clientPackageId = resultSet.getUuid( "CLIENT_PACKAGE_ID" );
-            this.supplierPackageId = resultSet.getUuid( "SUPPLIER_PACKAGE_ID" );
-        }
-
-        public final UUID clientPackageId;
-
-        public final UUID id;
-
-        public final UUID supplierPackageId;
-
-    }
 
 }

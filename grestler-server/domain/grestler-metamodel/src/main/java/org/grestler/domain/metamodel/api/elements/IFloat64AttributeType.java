@@ -6,6 +6,7 @@
 package org.grestler.domain.metamodel.api.elements;
 
 import java.util.OptionalDouble;
+import java.util.UUID;
 
 /**
  * Interface to 64-bit floating point attribute types.
@@ -33,4 +34,29 @@ public interface IFloat64AttributeType
      */
     OptionalDouble getMinValue();
 
+    class Record
+        extends IAttributeType.Record {
+
+        public Record(
+            UUID id,
+            UUID parentPackageId,
+            String name,
+            OptionalDouble defaultValue,
+            OptionalDouble minValue,
+            OptionalDouble maxValue
+        ) {
+            super( id, parentPackageId, name, EDataType.FLOAT64 );
+
+            this.defaultValue = defaultValue;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
+
+        public final OptionalDouble defaultValue;
+
+        public final OptionalDouble maxValue;
+
+        public final OptionalDouble minValue;
+
+    }
 }

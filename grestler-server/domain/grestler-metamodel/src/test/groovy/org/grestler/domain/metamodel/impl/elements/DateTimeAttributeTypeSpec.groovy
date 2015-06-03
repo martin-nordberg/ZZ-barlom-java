@@ -5,6 +5,8 @@
 
 package org.grestler.domain.metamodel.impl.elements
 
+import org.grestler.domain.metamodel.api.elements.IDateTimeAttributeType
+
 import java.time.Instant
 
 /**
@@ -21,11 +23,14 @@ class DateTimeAttributeTypeSpec
 
         expect:
         new DateTimeAttributeType(
-                id,
-                parentPackage,
-                name,
-                Optional.ofNullable( minValue ),
-                Optional.ofNullable( maxValue )
+                new IDateTimeAttributeType.Record(
+                        id,
+                        parentPackage.id,
+                        name,
+                        Optional.ofNullable( minValue ),
+                        Optional.ofNullable( maxValue )
+                ),
+                parentPackage
         ).toJson() == json;
 
         where:

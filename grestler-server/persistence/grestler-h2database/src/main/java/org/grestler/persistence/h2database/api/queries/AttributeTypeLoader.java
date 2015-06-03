@@ -6,22 +6,23 @@
 package org.grestler.persistence.h2database.api.queries;
 
 import org.grestler.domain.metamodel.api.elements.IAttributeType;
+import org.grestler.domain.metamodel.api.elements.IBooleanAttributeType;
+import org.grestler.domain.metamodel.api.elements.IDateTimeAttributeType;
+import org.grestler.domain.metamodel.api.elements.IFloat64AttributeType;
+import org.grestler.domain.metamodel.api.elements.IInteger32AttributeType;
 import org.grestler.domain.metamodel.api.elements.IPackage;
+import org.grestler.domain.metamodel.api.elements.IStringAttributeType;
+import org.grestler.domain.metamodel.api.elements.IUuidAttributeType;
 import org.grestler.domain.metamodel.spi.queries.IAttributeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.infrastructure.utilities.configuration.Configuration;
 import org.grestler.persistence.dbutilities.api.IConnection;
 import org.grestler.persistence.dbutilities.api.IDataSource;
-import org.grestler.persistence.dbutilities.api.IResultSet;
 import org.grestler.persistence.h2database.H2DatabaseModule;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.UUID;
 
 /**
  * Service for loading all attribute types into a metamodel repository.
@@ -63,7 +64,7 @@ public class AttributeTypeLoader
      * @return the found or newly created attribute type.
      */
     private static IAttributeType findOrCreateBooleanAttributeType(
-        BooleanAttributeTypeRecord record, IMetamodelRepositorySpi repository
+        IBooleanAttributeType.Record record, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
@@ -76,7 +77,7 @@ public class AttributeTypeLoader
         // Find the parent package
         IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadBooleanAttributeType( record.id, parentPackage, record.name, record.defaultValue );
+        return repository.loadBooleanAttributeType( record, parentPackage );
 
     }
 
@@ -89,7 +90,7 @@ public class AttributeTypeLoader
      * @return the found or newly created attribute type.
      */
     private static IAttributeType findOrCreateDateTimeAttributeType(
-        DateTimeAttributeTypeRecord record, IMetamodelRepositorySpi repository
+        IDateTimeAttributeType.Record record, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
@@ -102,9 +103,7 @@ public class AttributeTypeLoader
         // Find the parent package
         IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadDateTimeAttributeType(
-            record.id, parentPackage, record.name, record.minValue, record.maxValue
-        );
+        return repository.loadDateTimeAttributeType( record, parentPackage );
 
     }
 
@@ -117,7 +116,7 @@ public class AttributeTypeLoader
      * @return the found or newly created attribute type.
      */
     private static IAttributeType findOrCreateFloat64AttributeType(
-        Float64AttributeTypeRecord record, IMetamodelRepositorySpi repository
+        IFloat64AttributeType.Record record, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
@@ -130,9 +129,7 @@ public class AttributeTypeLoader
         // Find the parent package
         IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadFloat64AttributeType(
-            record.id, parentPackage, record.name, record.minValue, record.maxValue, record.defaultValue
-        );
+        return repository.loadFloat64AttributeType( record, parentPackage );
 
     }
 
@@ -145,7 +142,7 @@ public class AttributeTypeLoader
      * @return the found or newly created attribute type.
      */
     private static IAttributeType findOrCreateInteger32AttributeType(
-        Integer32AttributeTypeRecord record, IMetamodelRepositorySpi repository
+        IInteger32AttributeType.Record record, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
@@ -158,9 +155,7 @@ public class AttributeTypeLoader
         // Find the parent package
         IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadInteger32AttributeType(
-            record.id, parentPackage, record.name, record.minValue, record.maxValue, record.defaultValue
-        );
+        return repository.loadInteger32AttributeType( record, parentPackage );
 
     }
 
@@ -173,7 +168,7 @@ public class AttributeTypeLoader
      * @return the found or newly created attribute type.
      */
     private static IAttributeType findOrCreateStringAttributeType(
-        StringAttributeTypeRecord record, IMetamodelRepositorySpi repository
+        IStringAttributeType.Record record, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
@@ -186,9 +181,7 @@ public class AttributeTypeLoader
         // Find the parent package
         IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadStringAttributeType(
-            record.id, parentPackage, record.name, record.minLength, record.maxLength, record.regexPattern
-        );
+        return repository.loadStringAttributeType( record, parentPackage );
 
     }
 
@@ -201,7 +194,7 @@ public class AttributeTypeLoader
      * @return the found or newly created attribute type.
      */
     private static IAttributeType findOrCreateUuidAttributeType(
-        UuidAttributeTypeRecord record, IMetamodelRepositorySpi repository
+        IUuidAttributeType.Record record, IMetamodelRepositorySpi repository
     ) {
 
         Optional<IAttributeType> result = repository.findOptionalAttributeTypeById( record.id );
@@ -214,7 +207,7 @@ public class AttributeTypeLoader
         // Find the parent package
         IPackage parentPackage = repository.findPackageById( record.parentPackageId );
 
-        return repository.loadUuidAttributeType( record.id, parentPackage, record.name );
+        return repository.loadUuidAttributeType( record, parentPackage );
 
     }
 
@@ -225,18 +218,24 @@ public class AttributeTypeLoader
      */
     private void loadAllBooleanAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        Collection<BooleanAttributeTypeRecord> atRecords = new ArrayList<>();
+        Collection<IBooleanAttributeType.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new BooleanAttributeTypeRecord( rs ) ),
-                this.config.readString( "BooleanAttributeType.All" )
+                rs -> atRecords.add(
+                    new IBooleanAttributeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getString( "NAME" ),
+                        rs.getOptionalBoolean( "DEFAULT_VALUE" )
+                    )
+                ), this.config.readString( "BooleanAttributeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( BooleanAttributeTypeRecord atRecord : atRecords ) {
+        for ( IBooleanAttributeType.Record atRecord : atRecords ) {
             AttributeTypeLoader.findOrCreateBooleanAttributeType( atRecord, repository );
         }
 
@@ -249,18 +248,25 @@ public class AttributeTypeLoader
      */
     private void loadAllDateTimeAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        Collection<DateTimeAttributeTypeRecord> atRecords = new ArrayList<>();
+        Collection<IDateTimeAttributeType.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new DateTimeAttributeTypeRecord( rs ) ),
-                this.config.readString( "DateTimeAttributeType.All" )
+                rs -> atRecords.add(
+                    new IDateTimeAttributeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getString( "NAME" ),
+                        rs.getOptionalDateTime( "MIN_VALUE" ),
+                        rs.getOptionalDateTime( "MAX_VALUE" )
+                    )
+                ), this.config.readString( "DateTimeAttributeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( DateTimeAttributeTypeRecord atRecord : atRecords ) {
+        for ( IDateTimeAttributeType.Record atRecord : atRecords ) {
             AttributeTypeLoader.findOrCreateDateTimeAttributeType( atRecord, repository );
         }
 
@@ -273,18 +279,26 @@ public class AttributeTypeLoader
      */
     private void loadAllFloat64AttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        Collection<Float64AttributeTypeRecord> atRecords = new ArrayList<>();
+        Collection<IFloat64AttributeType.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new Float64AttributeTypeRecord( rs ) ),
-                this.config.readString( "Float64AttributeType.All" )
+                rs -> atRecords.add(
+                    new IFloat64AttributeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getString( "NAME" ),
+                        rs.getOptionalDouble( "DEFAULT_VALUE" ),
+                        rs.getOptionalDouble( "MIN_VALUE" ),
+                        rs.getOptionalDouble( "MAX_VALUE" )
+                    )
+                ), this.config.readString( "Float64AttributeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( Float64AttributeTypeRecord atRecord : atRecords ) {
+        for ( IFloat64AttributeType.Record atRecord : atRecords ) {
             AttributeTypeLoader.findOrCreateFloat64AttributeType( atRecord, repository );
         }
 
@@ -297,18 +311,26 @@ public class AttributeTypeLoader
      */
     private void loadAllInteger32AttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        Collection<Integer32AttributeTypeRecord> atRecords = new ArrayList<>();
+        Collection<IInteger32AttributeType.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new Integer32AttributeTypeRecord( rs ) ),
-                this.config.readString( "Integer32AttributeType.All" )
+                rs -> atRecords.add(
+                    new IInteger32AttributeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getString( "NAME" ),
+                        rs.getOptionalInt( "DEFAULT_VALUE" ),
+                        rs.getOptionalInt( "MIN_VALUE" ),
+                        rs.getOptionalInt( "MAX_VALUE" )
+                    )
+                ), this.config.readString( "Integer32AttributeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( Integer32AttributeTypeRecord atRecord : atRecords ) {
+        for ( IInteger32AttributeType.Record atRecord : atRecords ) {
             AttributeTypeLoader.findOrCreateInteger32AttributeType( atRecord, repository );
         }
 
@@ -321,18 +343,26 @@ public class AttributeTypeLoader
      */
     private void loadAllStringAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        Collection<StringAttributeTypeRecord> atRecords = new ArrayList<>();
+        Collection<IStringAttributeType.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new StringAttributeTypeRecord( rs ) ),
-                this.config.readString( "StringAttributeType.All" )
+                rs -> atRecords.add(
+                    new IStringAttributeType.Record(
+                        rs.getUuid( "ID" ),
+                        rs.getUuid( "PARENT_PACKAGE_ID" ),
+                        rs.getString( "NAME" ),
+                        rs.getInt( "MAX_LENGTH" ),
+                        rs.getOptionalInt( "MIN_LENGTH" ),
+                        rs.getOptionalString( "REGEX_PATTERN" )
+                    )
+                ), this.config.readString( "StringAttributeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( StringAttributeTypeRecord atRecord : atRecords ) {
+        for ( IStringAttributeType.Record atRecord : atRecords ) {
             AttributeTypeLoader.findOrCreateStringAttributeType( atRecord, repository );
         }
 
@@ -345,18 +375,21 @@ public class AttributeTypeLoader
      */
     private void loadAllUuidAttributeTypes( IMetamodelRepositorySpi repository ) {
 
-        Collection<UuidAttributeTypeRecord> atRecords = new ArrayList<>();
+        Collection<IUuidAttributeType.Record> atRecords = new ArrayList<>();
 
         // Perform the database query, accumulating the records found.
         try ( IConnection connection = this.dataSource.openConnection() ) {
             connection.executeQuery(
-                rs -> atRecords.add( new UuidAttributeTypeRecord( rs ) ),
-                this.config.readString( "UuidAttributeType.All" )
+                rs -> atRecords.add(
+                    new IUuidAttributeType.Record(
+                        rs.getUuid( "ID" ), rs.getUuid( "PARENT_PACKAGE_ID" ), rs.getString( "NAME" )
+                    )
+                ), this.config.readString( "UuidAttributeType.All" )
             );
         }
 
         // Copy the results into the repository.
-        for ( UuidAttributeTypeRecord atRecord : atRecords ) {
+        for ( IUuidAttributeType.Record atRecord : atRecords ) {
             AttributeTypeLoader.findOrCreateUuidAttributeType( atRecord, repository );
         }
 
@@ -367,143 +400,5 @@ public class AttributeTypeLoader
 
     /** The data source for queries. */
     private final IDataSource dataSource;
-
-    /**
-     * Data structure for boolean attribute type records.
-     */
-    private static class AttributeTypeRecord {
-
-        AttributeTypeRecord( IResultSet resultSet ) {
-            this.id = resultSet.getUuid( "ID" );
-            this.parentPackageId = resultSet.getUuid( "PARENT_PACKAGE_ID" );
-            this.name = resultSet.getString( "NAME" );
-        }
-
-        public final UUID id;
-
-        public final String name;
-
-        public final UUID parentPackageId;
-
-    }
-
-    /**
-     * Data structure for UUID attribute type records.
-     */
-    private static class BooleanAttributeTypeRecord
-        extends AttributeTypeRecord {
-
-        BooleanAttributeTypeRecord( IResultSet resultSet ) {
-            super( resultSet );
-
-            this.defaultValue = resultSet.getOptionalBoolean( "DEFAULT_VALUE" );
-        }
-
-        public final Optional<Boolean> defaultValue;
-
-    }
-
-    /**
-     * Data structure for date/time attribute type records.
-     */
-    private static class DateTimeAttributeTypeRecord
-        extends AttributeTypeRecord {
-
-        DateTimeAttributeTypeRecord( IResultSet resultSet ) {
-
-            super( resultSet );
-
-            this.minValue = resultSet.getOptionalDateTime( "MIN_VALUE" );
-            this.maxValue = resultSet.getOptionalDateTime( "MAX_VALUE" );
-
-        }
-
-        public final Optional<Instant> maxValue;
-
-        public final Optional<Instant> minValue;
-    }
-
-    /**
-     * Data structure for 64-bit floating point attribute type records.
-     */
-    private static class Float64AttributeTypeRecord
-        extends AttributeTypeRecord {
-
-        Float64AttributeTypeRecord( IResultSet resultSet ) {
-
-            super( resultSet );
-
-            this.minValue = resultSet.getOptionalDouble( "MIN_VALUE" );
-            this.maxValue = resultSet.getOptionalDouble( "MAX_VALUE" );
-            this.defaultValue = resultSet.getOptionalDouble( "DEFAULT_VALUE" );
-
-        }
-
-        public final OptionalDouble defaultValue;
-
-        public final OptionalDouble maxValue;
-
-        public final OptionalDouble minValue;
-
-    }
-
-    /**
-     * Data structure for 32-bit integer attribute type records.
-     */
-    private static class Integer32AttributeTypeRecord
-        extends AttributeTypeRecord {
-
-        Integer32AttributeTypeRecord( IResultSet resultSet ) {
-
-            super( resultSet );
-
-            this.minValue = resultSet.getOptionalInt( "MIN_VALUE" );
-            this.maxValue = resultSet.getOptionalInt( "MAX_VALUE" );
-            this.defaultValue = resultSet.getOptionalInt( "DEFAULT_VALUE" );
-
-        }
-
-        public final OptionalInt defaultValue;
-
-        public final OptionalInt maxValue;
-
-        public final OptionalInt minValue;
-
-    }
-
-    /**
-     * Data structure for 32-bit integer attribute type records.
-     */
-    private static class StringAttributeTypeRecord
-        extends AttributeTypeRecord {
-
-        StringAttributeTypeRecord( IResultSet resultSet ) {
-
-            super( resultSet );
-
-            this.minLength = resultSet.getOptionalInt( "MIN_LENGTH" );
-            this.maxLength = resultSet.getInt( "MAX_LENGTH" );
-            this.regexPattern = resultSet.getOptionalString( "REGEX_PATTERN" );
-
-        }
-
-        public final int maxLength;
-
-        public final OptionalInt minLength;
-
-        public final Optional<String> regexPattern;
-    }
-
-    /**
-     * Data structure for boolean attribute type records.
-     */
-    private static class UuidAttributeTypeRecord
-        extends AttributeTypeRecord {
-
-        UuidAttributeTypeRecord( IResultSet resultSet ) {
-            super( resultSet );
-        }
-
-    }
 
 }

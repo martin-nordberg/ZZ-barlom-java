@@ -59,4 +59,17 @@ public interface IDocumentedElement {
 
     }
 
+    /**
+     * Data structure for documented element records.
+     */
+    class Record {
+
+        protected Record( UUID id ) {
+            this.id = id;
+        }
+
+        public final UUID id;
+
+    }
+
 }

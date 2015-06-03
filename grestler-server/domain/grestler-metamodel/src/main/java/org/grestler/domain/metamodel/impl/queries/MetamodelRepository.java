@@ -28,13 +28,10 @@ import org.grestler.infrastructure.utilities.revisions.VArray;
 import org.grestler.infrastructure.utilities.revisions.VHashMap;
 
 import javax.inject.Inject;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.UUID;
 
 /**
@@ -430,14 +427,14 @@ public final class MetamodelRepository
 
     @Override
     public IBooleanAttributeType loadBooleanAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<Boolean> defaultValue
+        IBooleanAttributeType.Record record, IPackage parentPackage
     ) {
 
-        IBooleanAttributeType result = new BooleanAttributeType( id, parentPackage, name, defaultValue );
+        IBooleanAttributeType result = new BooleanAttributeType( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.attributeTypes.add( result );
-        this.attributeTypesById.put( id, result );
+        this.attributeTypesById.put( record.id, result );
 
         return result;
 
@@ -445,14 +442,14 @@ public final class MetamodelRepository
 
     @Override
     public IDateTimeAttributeType loadDateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<Instant> minValue, Optional<Instant> maxValue
+        IDateTimeAttributeType.Record record, IPackage parentPackage
     ) {
 
-        IDateTimeAttributeType result = new DateTimeAttributeType( id, parentPackage, name, minValue, maxValue );
+        IDateTimeAttributeType result = new DateTimeAttributeType( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.attributeTypes.add( result );
-        this.attributeTypesById.put( id, result );
+        this.attributeTypesById.put( record.id, result );
 
         return result;
 
@@ -460,48 +457,22 @@ public final class MetamodelRepository
 
     @Override
     public IDirectedEdgeType loadDirectedEdgeType(
-        UUID id,
+        IDirectedEdgeType.Record record,
         IPackage parentPackage,
-        String name,
         IDirectedEdgeType superType,
-        EAbstractness abstractness,
-        ECyclicity cyclicity,
-        EMultiEdgedness multiEdgedness,
-        ESelfLooping selfLooping,
         IVertexType tailVertexType,
-        IVertexType headVertexType,
-        Optional<String> tailRoleName,
-        Optional<String> headRoleName,
-        OptionalInt minTailOutDegree,
-        OptionalInt maxTailOutDegree,
-        OptionalInt minHeadInDegree,
-        OptionalInt maxHeadInDegree
+        IVertexType headVertexType
     ) {
 
         IDirectedEdgeType result = new DirectedEdgeType(
-            id,
-            parentPackage,
-            name,
-            superType,
-            abstractness,
-            cyclicity,
-            multiEdgedness,
-            selfLooping,
-            tailVertexType,
-            headVertexType,
-            tailRoleName,
-            headRoleName,
-            minTailOutDegree,
-            maxTailOutDegree,
-            minHeadInDegree,
-            maxHeadInDegree
+            record, parentPackage, superType, tailVertexType, headVertexType
         );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.edgeTypes.add( result );
-        this.edgeTypesById.put( id, result );
+        this.edgeTypesById.put( record.id, result );
         this.directedEdgeTypes.add( result );
-        this.directedEdgeTypesById.put( id, result );
+        this.directedEdgeTypesById.put( record.id, result );
 
         return result;
 
@@ -509,59 +480,45 @@ public final class MetamodelRepository
 
     @Override
     public IEdgeAttributeDecl loadEdgeAttributeDecl(
-        UUID id, IEdgeType parentEdgeType, String name, IAttributeType type, EAttributeOptionality optionality
+        IEdgeAttributeDecl.Record record, IEdgeType parentEdgeType, IAttributeType type
     ) {
-        return new EdgeAttributeDecl( id, parentEdgeType, name, type, optionality );
+        return new EdgeAttributeDecl( record, parentEdgeType, type );
     }
 
     @Override
     public IFloat64AttributeType loadFloat64AttributeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        OptionalDouble minValue,
-        OptionalDouble maxValue,
-        OptionalDouble defaultValue
+        IFloat64AttributeType.Record record, IPackage parentPackage
     ) {
-        IFloat64AttributeType result = new Float64AttributeType(
-            id, parentPackage, name, minValue, maxValue, defaultValue
-        );
+        IFloat64AttributeType result = new Float64AttributeType( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.attributeTypes.add( result );
-        this.attributeTypesById.put( id, result );
+        this.attributeTypesById.put( record.id, result );
 
         return result;
     }
 
     @Override
     public IInteger32AttributeType loadInteger32AttributeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        OptionalInt minValue,
-        OptionalInt maxValue,
-        OptionalInt defaultValue
+        IInteger32AttributeType.Record record, IPackage parentPackage
     ) {
-        IInteger32AttributeType result = new Integer32AttributeType(
-            id, parentPackage, name, minValue, maxValue, defaultValue
-        );
+        IInteger32AttributeType result = new Integer32AttributeType( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.attributeTypes.add( result );
-        this.attributeTypesById.put( id, result );
+        this.attributeTypesById.put( record.id, result );
 
         return result;
     }
 
     @Override
-    public IPackage loadPackage( UUID id, IPackage parentPackage, String name ) {
+    public IPackage loadPackage( IPackage.Record record, IPackage parentPackage ) {
 
-        IPackage result = new Package( id, parentPackage, name );
+        IPackage result = new Package( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.packages.add( result );
-        this.packagesById.put( id, result );
+        this.packagesById.put( record.id, result );
 
         return result;
 
@@ -569,9 +526,9 @@ public final class MetamodelRepository
 
     @Override
     public IPackageDependency loadPackageDependency(
-        UUID id, IPackage clientPackage, IPackage supplierPackage
+        IPackageDependency.Record record, IPackage clientPackage, IPackage supplierPackage
     ) {
-        return new PackageDependency( id, clientPackage, supplierPackage );
+        return new PackageDependency( record, clientPackage, supplierPackage );
     }
 
     @Override
@@ -638,58 +595,31 @@ public final class MetamodelRepository
 
     @Override
     public IStringAttributeType loadStringAttributeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        OptionalInt minLength,
-        int maxLength,
-        Optional<String> regexPattern
+        IStringAttributeType.Record record, IPackage parentPackage
     ) {
-        IStringAttributeType result = new StringAttributeType(
-            id, parentPackage, name, minLength, maxLength, regexPattern
-        );
+        IStringAttributeType result = new StringAttributeType( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.attributeTypes.add( result );
-        this.attributeTypesById.put( id, result );
+        this.attributeTypesById.put( record.id, result );
 
         return result;
     }
 
     @Override
     public IUndirectedEdgeType loadUndirectedEdgeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        IUndirectedEdgeType superType,
-        EAbstractness abstractness,
-        ECyclicity cyclicity,
-        EMultiEdgedness multiEdgedness,
-        ESelfLooping selfLooping,
-        IVertexType vertexType,
-        OptionalInt minDegree,
-        OptionalInt maxDegree
+        IUndirectedEdgeType.Record record, IPackage parentPackage, IUndirectedEdgeType superType, IVertexType vertexType
     ) {
 
         IUndirectedEdgeType result = new UndirectedEdgeType(
-            id,
-            parentPackage,
-            name,
-            superType,
-            abstractness,
-            cyclicity,
-            multiEdgedness,
-            selfLooping,
-            vertexType,
-            minDegree,
-            maxDegree
+            record, parentPackage, superType, vertexType
         );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.edgeTypes.add( result );
-        this.edgeTypesById.put( id, result );
+        this.edgeTypesById.put( record.id, result );
         this.undirectedEdgeTypes.add( result );
-        this.undirectedEdgeTypesById.put( id, result );
+        this.undirectedEdgeTypesById.put( record.id, result );
 
         return result;
 
@@ -697,39 +627,34 @@ public final class MetamodelRepository
 
     @Override
     public IUuidAttributeType loadUuidAttributeType(
-        UUID id, IPackage parentPackage, String name
+        IUuidAttributeType.Record record, IPackage parentPackage
     ) {
-        IUuidAttributeType result = new UuidAttributeType( id, parentPackage, name );
+        IUuidAttributeType result = new UuidAttributeType( record, parentPackage );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.attributeTypes.add( result );
-        this.attributeTypesById.put( id, result );
+        this.attributeTypesById.put( record.id, result );
 
         return result;
     }
 
     @Override
     public IVertexAttributeDecl loadVertexAttributeDecl(
-        UUID id,
-        IVertexType parentVertexType,
-        String name,
-        IAttributeType type,
-        EAttributeOptionality optionality,
-        ELabelDefaulting labelDefaulting
+        IVertexAttributeDecl.Record record, IVertexType parentVertexType, IAttributeType type
     ) {
-        return new VertexAttributeDecl( id, parentVertexType, name, type, optionality, labelDefaulting );
+        return new VertexAttributeDecl( record, parentVertexType, type );
     }
 
     @Override
     public IVertexType loadVertexType(
-        UUID id, IPackage parentPackage, String name, IVertexType superType, EAbstractness abstractness
+        IVertexType.Record record, IPackage parentPackage, IVertexType superType
     ) {
 
-        IVertexType result = new VertexType( id, parentPackage, name, superType, abstractness );
+        IVertexType result = new VertexType( record, parentPackage, superType );
 
-        this.packagedElementsById.put( id, result );
+        this.packagedElementsById.put( record.id, result );
         this.vertexTypes.add( result );
-        this.vertexTypesById.put( id, result );
+        this.vertexTypesById.put( record.id, result );
 
         return result;
 

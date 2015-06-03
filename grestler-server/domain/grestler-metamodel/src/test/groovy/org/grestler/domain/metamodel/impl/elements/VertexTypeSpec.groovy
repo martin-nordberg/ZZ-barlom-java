@@ -48,9 +48,21 @@ class VertexTypeSpec
         given:
         IPackage root = new RootPackage( id );
         IVertexType v = new RootVertexType( id, root );
-        IVertexType v1 = new VertexType( id, root, name, v, EAbstractness.ABSTRACT );
-        IVertexType v2 = new VertexType( id, root, name, v1, EAbstractness.ABSTRACT );
-        IVertexType w = new VertexType( id, root, name, v, EAbstractness.ABSTRACT );
+        IVertexType v1 = new VertexType(
+                new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v.id ),
+                root,
+                v
+        );
+        IVertexType v2 = new VertexType(
+                new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v1.id ),
+                root,
+                v1
+        );
+        IVertexType w = new VertexType(
+                new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v.id ),
+                root,
+                v
+        );
 
         expect:
         v1.superType.get() == v;

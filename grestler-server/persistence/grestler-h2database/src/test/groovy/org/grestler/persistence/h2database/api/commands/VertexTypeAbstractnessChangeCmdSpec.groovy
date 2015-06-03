@@ -8,6 +8,8 @@ package org.grestler.persistence.h2database.api.commands
 import org.grestler.domain.metamodel.api.elements.EAbstractness
 import org.grestler.domain.metamodel.impl.queries.MetamodelRepository
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi
+import org.grestler.domain.metamodel.spi.commands.VertexTypeAbstractnessChangeCmdRecord
+import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
 import org.grestler.persistence.h2database.api.queries.*
@@ -33,11 +35,15 @@ class VertexTypeAbstractnessChangeCmdSpec
         def json = '{"cmdId":"' + cmdIdA + '","id":"' + vtId + '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702","name":"vt1","superTypeId":"00000010-7a26-11e4-a545-08002741a702","abstractness":"ABSTRACT"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new VertexTypeCreationCmdWriter( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        def recordA = new VertexTypeCreationCmdRecord( Json.createReader( new StringReader( json ) ).readObject() );
+        cmd.execute( recordA, {} as IMetamodelCommandSpi );
 
         json = '{"cmdId":"' + cmdIdB + '","id":"' + vtId + '","abstractness":"CONCRETE"}';
         cmd = new VertexTypeAbstractnessChangeCmdWriter( dataSource );
-        cmd.execute( Json.createReader( new StringReader( json ) ).readObject(), {} as IMetamodelCommandSpi );
+        def recordB = new VertexTypeAbstractnessChangeCmdRecord(
+                Json.createReader( new StringReader( json ) ).readObject()
+        );
+        cmd.execute( recordB, {} as IMetamodelCommandSpi );
 
         def ploader = new PackageLoader( dataSource );
         def pdloader = new PackageDependencyLoader( dataSource );

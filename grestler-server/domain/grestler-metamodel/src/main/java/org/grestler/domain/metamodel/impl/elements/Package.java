@@ -14,8 +14,6 @@ import org.grestler.domain.metamodel.api.elements.IPackagedElement;
 import org.grestler.domain.metamodel.api.elements.IVertexType;
 import org.grestler.infrastructure.utilities.collections.ISizedIterable;
 
-import java.util.UUID;
-
 /**
  * Implementation class for Grestler packages.
  */
@@ -26,13 +24,12 @@ public final class Package
     /**
      * Constructs a new package.
      *
-     * @param id            the unique ID of the package.
+     * @param record        the attributes of the package.
      * @param parentPackage the parent package.
-     * @param name          the name of the package.
      */
-    public Package( UUID id, IPackage parentPackage, String name ) {
+    public Package( IPackage.Record record, IPackage parentPackage ) {
 
-        super( id, parentPackage, name );
+        super( record, parentPackage );
 
         this.packageDependencies = new PackageDependencies( this );
         this.packageContents = new PackageContents( this );

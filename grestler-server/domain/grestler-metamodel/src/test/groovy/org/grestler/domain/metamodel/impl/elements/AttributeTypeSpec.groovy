@@ -38,8 +38,8 @@ class AttributeTypeSpec
     def setupSpec() {
         StmTransactionContext.doInReadWriteTransaction( 1 ) {
             root = new RootPackage( rootId );
-            pkg1 = new Package( pkgId1, root, 'pkg1' );
-            pkg2 = new Package( pkgId2, pkg1, 'pkg2' );
+            pkg1 = new Package( new IPackage.Record( pkgId1, root.id, 'pkg1' ), root );
+            pkg2 = new Package( new IPackage.Record( pkgId2, pkg1.id, 'pkg2' ), pkg1 );
         }
     }
 

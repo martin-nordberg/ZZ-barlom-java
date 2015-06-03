@@ -13,7 +13,6 @@ import org.grestler.infrastructure.utilities.revisions.VInt;
 import javax.json.stream.JsonGenerator;
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -24,30 +23,21 @@ public final class StringAttributeType
     implements IStringAttributeType {
 
     /**
-     * Constructs a new integer attribute type.
+     * Constructs a new string attribute type.
      *
-     * @param id            the unique ID of the attribute type.
-     * @param parentPackage the parent attribute type.
-     * @param name          the name of the attribute type.
-     * @param minLength     the minimum length for values with this attribute type.
-     * @param maxLength     the maximum length for values with this attribute type.
-     * @param regexPattern  a regular expression that must be matched by values with this attribute type.
+     * @param record        the attributes of the attribute type.
+     * @param parentPackage the parent of the attribute type.
      */
     public StringAttributeType(
-        UUID id,
-        IPackage parentPackage,
-        String name,
-        OptionalInt minLength,
-        int maxLength,
-        Optional<String> regexPattern
+        IStringAttributeType.Record record, IPackage parentPackage
     ) {
-        super( id, parentPackage, name );
+        super( record, parentPackage );
 
-        this.minLength = new V<>( minLength );
-        this.maxLength = new VInt( maxLength );
+        this.minLength = new V<>( record.minLength );
+        this.maxLength = new VInt( record.maxLength );
 
-        if ( regexPattern.isPresent() ) {
-            this.regexPattern = new V<>( Optional.of( Pattern.compile( regexPattern.get() ) ) );
+        if ( record.regexPattern.isPresent() ) {
+            this.regexPattern = new V<>( Optional.of( Pattern.compile( record.regexPattern.get() ) ) );
         }
         else {
             this.regexPattern = new V<>( Optional.empty() );

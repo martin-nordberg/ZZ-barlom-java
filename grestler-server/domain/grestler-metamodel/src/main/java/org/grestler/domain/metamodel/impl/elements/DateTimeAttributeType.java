@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Date/time attribute type implementation.
@@ -26,20 +25,17 @@ public final class DateTimeAttributeType
     /**
      * Constructs a new date/time attribute type.
      *
-     * @param id            the unique ID of the attribute type.
+     * @param record        the attributes of the attribute type.
      * @param parentPackage the parent attribute type.
-     * @param name          the name of the attribute type.
-     * @param minValue      the minimum value for attributes of this type.
-     * @param maxValue      the minimum value for attributes of this type.
      */
     public DateTimeAttributeType(
-        UUID id, IPackage parentPackage, String name, Optional<Instant> minValue, Optional<Instant> maxValue
+        IDateTimeAttributeType.Record record, IPackage parentPackage
     ) {
 
-        super( id, parentPackage, name );
+        super( record, parentPackage );
 
-        this.maxValue = new V<>( maxValue );
-        this.minValue = new V<>( minValue );
+        this.maxValue = new V<>( record.maxValue );
+        this.minValue = new V<>( record.minValue );
 
     }
 
