@@ -637,7 +637,9 @@ class PackageContents {
 
         this._attributeTypes = [];
         this._childPackages = [];
+        this._directedEdgeTypes = [];
         this._edgeTypes = [];
+        this._undirectedEdgeTypes = [];
         this._vertexTypes = [];
 
     }
@@ -653,8 +655,13 @@ class PackageContents {
         else if ( packagedElement.typeName.match( /VertexType$/ ) ) {
             this._vertexTypes.push( <api_elements.IVertexType> packagedElement );
         }
-        else if ( packagedElement.typeName.match( /EdgeType$/ ) ) {
+        else if ( packagedElement.typeName.match( /DirectedEdgeType$/ ) ) {
             this._edgeTypes.push( <api_elements.IEdgeType> packagedElement );
+            this._directedEdgeTypes.push( <api_elements.IDirectedEdgeType> packagedElement );
+        }
+        else if ( packagedElement.typeName.match( /UndirectedEdgeType$/ ) ) {
+            this._edgeTypes.push( <api_elements.IEdgeType> packagedElement );
+            this._undirectedEdgeTypes.push( <api_elements.IUndirectedEdgeType> packagedElement );
         }
         else {
             throw new Error( "Unknown package element: " + packagedElement.typeName );
@@ -680,8 +687,16 @@ class PackageContents {
         );
     }
 
+    get directedEdgeTypes() : api_elements.IDirectedEdgeType[] {
+        return this._directedEdgeTypes;
+    }
+
     get edgeTypes() : api_elements.IEdgeType[] {
         return this._edgeTypes;
+    }
+
+    get undirectedEdgeTypes() : api_elements.IUndirectedEdgeType[] {
+        return this._undirectedEdgeTypes;
     }
 
     findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
@@ -746,14 +761,21 @@ class PackageContents {
     /** The sub-packages of this package. */
     private _childPackages : api_elements.IPackage[];
 
+    /** The directed edge types within this package. */
+    private _directedEdgeTypes : api_elements.IDirectedEdgeType[];
+
     /** The edge types within this package. */
     private _edgeTypes : api_elements.IEdgeType[];
 
     /** The package using this helper object. */
     private _ownerPkg : api_elements.IPackage;
 
+    /** The undirected edge types within this package. */
+    private _undirectedEdgeTypes : api_elements.IUndirectedEdgeType[];
+
     /** The vertex types within this package. */
     private _vertexTypes : api_elements.IVertexType[];
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -953,12 +975,20 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
         return this._packageDependencies.getClientPackages( dependencyDepth );
     }
 
+    public get directedEdgeTypes() : api_elements.IDirectedEdgeType[] {
+        return this._packageContents.directedEdgeTypes;
+    }
+
     public get edgeTypes() : api_elements.IEdgeType[] {
         return this._packageContents.edgeTypes;
     }
 
     public getSupplierPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
         return this._packageDependencies.getSupplierPackages( dependencyDepth );
+    }
+
+    public get undirectedEdgeTypes() : api_elements.IUndirectedEdgeType[] {
+        return this._packageContents.undirectedEdgeTypes;
     }
 
     public get vertexTypes() : api_elements.IVertexType[] {
@@ -2087,6 +2117,10 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
         return this._packageContents.childPackages;
     }
 
+    public get directedEdgeTypes() : api_elements.IDirectedEdgeType[] {
+        return this._packageContents.directedEdgeTypes;
+    }
+
     public get edgeTypes() : api_elements.IEdgeType[] {
         return this._packageContents.edgeTypes;
     }
@@ -2141,6 +2175,10 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
 
     public getSupplierPackages( dependencyDepth : api_elements.EDependencyDepth ) : api_elements.IPackage[] {
         return this._packageDependencies.getSupplierPackages( dependencyDepth );
+    }
+
+    public get undirectedEdgeTypes() : api_elements.IUndirectedEdgeType[] {
+        return this._packageContents.undirectedEdgeTypes;
     }
 
     public get vertexTypes() : api_elements.IVertexType[] {

@@ -389,110 +389,6 @@ export const ATTRIBUTE_TYPE = 'AttributeType';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Interface to a package dependency.
- */
-export interface IPackageDependency extends IDocumentedElement {
-
-    /**
-     * @return the package that makes use of the supplier package.
-     */
-    clientPackage : IPackage;
-
-
-    /**
-     * @return the package that is depended upon.
-     */
-    supplierPackage : IPackage;
-
-}
-
-/**
- * Type name for package dependencies.
- * @type {string}
- */
-export const PACKAGE_DEPENDENCY = 'PackageDependency';
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export interface IPackage extends IPackagedElement {
-
-    /**
-     * @return the attribute types that are children of this package.
-     */
-    attributeTypes : IAttributeType[];
-
-    /**
-     * @return the packages that are children of this one.
-     */
-    childPackages : IPackage[];
-
-    /**
-     * @return the edge types that are children of this package.
-     */
-    edgeTypes : IEdgeType[];
-
-    /**
-     * @return the vertex types that are children of this package.
-     */
-    vertexTypes : IVertexType[];
-
-    /**
-     * Finds the child package with given name (or null if not found).
-     * @param name
-     */
-    findOptionalChildPackageByName( name : string ) : IPackage;
-
-    /**
-     * Finds the vertex type with given name (or null if not found).
-     * @param name
-     */
-    findOptionalVertexTypeByName( name : string ) : IVertexType;
-
-    /**
-     * Determines the packages that depend upon this one.
-     *
-     * @param dependencyDepth whether to include indirect clients.
-     *
-     * @return the packages that depend upon this package.
-     */
-    getClientPackages( dependencyDepth : EDependencyDepth ) : IPackage[];
-
-    /**
-     * Determines the packages that this package depends upon.
-     *
-     * @param dependencyDepth whether to include indirect dependencies.
-     *
-     * @return the packages that this package depends upon.
-     */
-    getSupplierPackages( dependencyDepth : EDependencyDepth ) : IPackage[];
-
-    /**
-     * Whether this package depends upon the given one (directly or indirectly).
-     *
-     * @param pkg             the package to check.
-     * @param dependencyDepth whether to consider indirect suppliers.
-     *
-     * @return true if this package depends upon the given one.
-     */
-    hasSupplierPackage( pkg : IPackage, dependencyDepth : EDependencyDepth ) : boolean;
-
-}
-
-/**
- * Type name for packages.
- * @type {string}
- */
-export const PACKAGE = 'Package';
-
-/**
- * Type name for root packages.
- * @type {string}
- */
-export const ROOT_PACKAGE = 'RootPackage';
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
  * Top level interface to a directed edge type.
  */
 export interface IDirectedEdgeType extends IEdgeType {
@@ -628,6 +524,120 @@ export const UNDIRECTED_EDGE_TYPE = 'UndirectedEdgeType';
  * @type {string}
  */
 export const ROOT_UNDIRECTED_EDGE_TYPE = 'RootUndirectedEdgeType';
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface to a package dependency.
+ */
+export interface IPackageDependency extends IDocumentedElement {
+
+    /**
+     * @return the package that makes use of the supplier package.
+     */
+    clientPackage : IPackage;
+
+
+    /**
+     * @return the package that is depended upon.
+     */
+    supplierPackage : IPackage;
+
+}
+
+/**
+ * Type name for package dependencies.
+ * @type {string}
+ */
+export const PACKAGE_DEPENDENCY = 'PackageDependency';
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export interface IPackage extends IPackagedElement {
+
+    /**
+     * @return the attribute types that are children of this package.
+     */
+    attributeTypes : IAttributeType[];
+
+    /**
+     * @return the packages that are children of this one.
+     */
+    childPackages : IPackage[];
+
+    /**
+     * @return the directed edge types that are children of this package.
+     */
+    directedEdgeTypes: IDirectedEdgeType[];
+
+    /**
+     * @return the edge types that are children of this package.
+     */
+    edgeTypes : IEdgeType[];
+
+    /**
+     * @return the undirected edge types that are children of this package.
+     */
+    undirectedEdgeTypes: IUndirectedEdgeType[];
+
+    /**
+     * @return the vertex types that are children of this package.
+     */
+    vertexTypes : IVertexType[];
+
+    /**
+     * Finds the child package with given name (or null if not found).
+     * @param name
+     */
+    findOptionalChildPackageByName( name : string ) : IPackage;
+
+    /**
+     * Finds the vertex type with given name (or null if not found).
+     * @param name
+     */
+    findOptionalVertexTypeByName( name : string ) : IVertexType;
+
+    /**
+     * Determines the packages that depend upon this one.
+     *
+     * @param dependencyDepth whether to include indirect clients.
+     *
+     * @return the packages that depend upon this package.
+     */
+    getClientPackages( dependencyDepth : EDependencyDepth ) : IPackage[];
+
+    /**
+     * Determines the packages that this package depends upon.
+     *
+     * @param dependencyDepth whether to include indirect dependencies.
+     *
+     * @return the packages that this package depends upon.
+     */
+    getSupplierPackages( dependencyDepth : EDependencyDepth ) : IPackage[];
+
+    /**
+     * Whether this package depends upon the given one (directly or indirectly).
+     *
+     * @param pkg             the package to check.
+     * @param dependencyDepth whether to consider indirect suppliers.
+     *
+     * @return true if this package depends upon the given one.
+     */
+    hasSupplierPackage( pkg : IPackage, dependencyDepth : EDependencyDepth ) : boolean;
+
+}
+
+/**
+ * Type name for packages.
+ * @type {string}
+ */
+export const PACKAGE = 'Package';
+
+/**
+ * Type name for root packages.
+ * @type {string}
+ */
+export const ROOT_PACKAGE = 'RootPackage';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

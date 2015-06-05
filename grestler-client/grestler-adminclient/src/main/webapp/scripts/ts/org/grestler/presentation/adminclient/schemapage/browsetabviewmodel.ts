@@ -166,6 +166,8 @@ export class BrowseTabEntries {
 
             addBrowseSection( "Sub-Packages", [{cls: 'Package', text: "Add a package"}], pkg.childPackages );
             addBrowseSection( "Vertex Types", [{cls: 'VertexType', text: "Add a vertex type"}], pkg.vertexTypes );
+            addBrowseSection( "Directed Edge Types", [{cls: 'DirectedEdgeType', text: "Add a directed edge type"}], pkg.directedEdgeTypes );
+            addBrowseSection( "Undirected Edge Types", [{cls: 'UndirectedEdgeType', text: "Add an undirected edge type"}], pkg.undirectedEdgeTypes );
         }
 
     }
