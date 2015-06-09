@@ -66,6 +66,76 @@ class AbstractMetamodelCommand implements api_commands.IMetamodelCommand, spi_co
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to create a directed edge type.
+ */
+class DirectedEdgeTypeCreationCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the package attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var parentPackageId : string = jsonCmdArgs.parentPackageId;
+        var name : string = jsonCmdArgs.name;
+        var superTypeId : string = jsonCmdArgs.superTypeId;
+        var abstractness = api_elements.abstractnessFromString( jsonCmdArgs.abstractness );
+        var cyclicity = api_elements.cyclicityFromString( jsonCmdArgs.cyclicity );
+        var multiEdgedness = api_elements.multiEdgednessFromString( jsonCmdArgs.multiEdgedness );
+        var selfLooping = api_elements.selfLoopingFromString( jsonCmdArgs.selfLooping );
+        var tailVertexTypeId : string = jsonCmdArgs.tailVertexTypeId;
+        var headVertexTypeId : string = jsonCmdArgs.headVertexTypeId;
+        var tailRoleName : string = jsonCmdArgs.tailRoleName;
+        var headRoleName : string = jsonCmdArgs.headRoleName;
+        var minTailOutDegree : number = jsonCmdArgs.minTailOutDegree;
+        var maxTailOutDegree : number = jsonCmdArgs.maxTailOutDegree;
+        var minHeadInDegree : number = jsonCmdArgs.minHeadInDegree;
+        var maxHeadInDegree : number = jsonCmdArgs.maxHeadInDegree;
+
+        // Look up the related parent package.
+        var parentPackage : api_elements.IPackage = this.metamodelRepository.findPackageById( parentPackageId );
+        var superType : api_elements.IDirectedEdgeType = this.metamodelRepository.findDirectedEdgeTypeById( superTypeId );
+        var tailVertexType : api_elements.IVertexType = this.metamodelRepository.findVertexTypeById( tailVertexTypeId );
+        var headVertexType : api_elements.IVertexType = this.metamodelRepository.findVertexTypeById( headVertexTypeId );
+
+        // Create the new package.
+        this.metamodelRepository.loadDirectedEdgeType(
+            id,
+            parentPackage,
+            name,
+            superType,
+            abstractness,
+            cyclicity,
+            multiEdgedness,
+            selfLooping,
+            tailVertexType,
+            headVertexType,
+            tailRoleName,
+            headRoleName,
+            minTailOutDegree,
+            maxTailOutDegree,
+            minHeadInDegree,
+            maxHeadInDegree
+        )
+        ;
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmd extends AbstractMetamodelCommand {
@@ -126,6 +196,64 @@ class PackagedElementNameChangeCmd extends AbstractMetamodelCommand {
 
         // Change the name.
         this.metamodelRepository.findPackagedElementById( id ).name = name;
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Command to create an undirected edge type.
+ */
+class UndirectedEdgeTypeCreationCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the edge type attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var parentPackageId : string = jsonCmdArgs.parentPackageId;
+        var name : string = jsonCmdArgs.name;
+        var superTypeId : string = jsonCmdArgs.superTypeId;
+        var abstractness = api_elements.abstractnessFromString( jsonCmdArgs.abstractness );
+        var cyclicity = api_elements.cyclicityFromString( jsonCmdArgs.cyclicity );
+        var multiEdgedness = api_elements.multiEdgednessFromString( jsonCmdArgs.multiEdgedness );
+        var selfLooping = api_elements.selfLoopingFromString( jsonCmdArgs.selfLooping );
+        var vertexTypeId : string = jsonCmdArgs.vertexTypeId;
+        var minDegree : number = jsonCmdArgs.minDegree;
+        var maxDegree : number = jsonCmdArgs.maxDegree;
+
+        // Look up the related elements.
+        var parentPackage : api_elements.IPackage = this.metamodelRepository.findPackageById( parentPackageId );
+        var superType : api_elements.IUndirectedEdgeType = this.metamodelRepository.findUndirectedEdgeTypeById( superTypeId );
+        var vertexType : api_elements.IVertexType = this.metamodelRepository.findVertexTypeById( vertexTypeId );
+
+        // Create the new edge type.
+        this.metamodelRepository.loadUndirectedEdgeType(
+            id,
+            parentPackage,
+            name,
+            superType,
+            abstractness,
+            cyclicity,
+            multiEdgedness,
+            selfLooping,
+            vertexType,
+            minDegree,
+            maxDegree
+        );
 
     }
 
@@ -263,10 +391,14 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
         );
 
         switch ( commandTypeName.toLowerCase() ) {
+            case "directededgetypecreation":
+                return new DirectedEdgeTypeCreationCmd( this._metamodelRepository, cmdWriter );
             case "packagecreation":
                 return new PackageCreationCmd( this._metamodelRepository, cmdWriter );
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmd( this._metamodelRepository, cmdWriter );
+            case "undirectededgetypecreation":
+                return new UndirectedEdgeTypeCreationCmd( this._metamodelRepository, cmdWriter );
             case "vertextypeabstractnesschange":
                 return new VertexTypeAbstractnessChangeCmd( this._metamodelRepository, cmdWriter );
             case "vertextypecreation":

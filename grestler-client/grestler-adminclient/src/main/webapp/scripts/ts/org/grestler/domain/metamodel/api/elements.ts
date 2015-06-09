@@ -65,7 +65,7 @@ export enum EAttributeOptionality {
  */
 export enum ECyclicity {
 
-    /** Cyclicity of an edge type is unconstrained by an edge type. */
+    /** Cyclicity of an edge type is unconstrained by an abstract edge type. */
     UNCONSTRAINED,
 
     /** Edges of a given edge type are constrained to be acyclic. */
@@ -73,6 +73,30 @@ export enum ECyclicity {
 
     /** Edges of a given edge type are expected to be cyclic. */
     POTENTIALLY_CYCLIC
+
+}
+
+/**
+ * Converts a string value to a cyclicity.
+ * @param cyclicity the string - should be "UNCONSTRAINED", "ACYCLIC", or "POTENTIALLY_CYCLIC".
+ * @returns {*} the corresponding cyclicity enum value.
+ */
+export function cyclicityFromString( cyclicity : string ) {
+
+    if ( cyclicity == null ) {
+        return null;
+    }
+    if ( "UNCONSTRAINED" === cyclicity.toUpperCase().trim() ) {
+        return ECyclicity.UNCONSTRAINED;
+    }
+    if ( "ACYCLIC" === cyclicity.toUpperCase().trim() ) {
+        return ECyclicity.ACYCLIC;
+    }
+    if ( "POTENTIALLY_CYCLIC" === cyclicity.toUpperCase().trim() ) {
+        return ECyclicity.POTENTIALLY_CYCLIC;
+    }
+
+    throw new Error( "Undefined cyclicity: '" + cyclicity + "'." );
 
 }
 
@@ -129,7 +153,7 @@ export enum ELabelDefaulting {
  */
 export enum EMultiEdgedness {
 
-    /** An edge type does not constrain the multi-edgedness of its edges. */
+    /** An abstract edge type does not constrain the multi-edgedness of its edges. */
     UNCONSTRAINED,
 
     /** An edge type allows multiple edges between two given vertexes. */
@@ -137,6 +161,30 @@ export enum EMultiEdgedness {
 
     /** An edge type disallows multiple edges between two given vertexes. */
     MULTI_EDGES_NOT_ALLOWED
+
+}
+
+/**
+ * Converts a string value to a multi-edgedness.
+ * @param multiEdgedness the string - should be "UNCONSTRAINED", "MULTI_EDGES_ALLOWED", or "MULTI_EDGES_NOT_ALLOWED".
+ * @returns {*} the corresponding cyclicity enum value.
+ */
+export function multiEdgednessFromString( multiEdgedness : string ) {
+
+    if ( multiEdgedness == null ) {
+        return null;
+    }
+    if ( "UNCONSTRAINED" === multiEdgedness.toUpperCase().trim() ) {
+        return EMultiEdgedness.UNCONSTRAINED;
+    }
+    if ( "MULTI_EDGES_ALLOWED" === multiEdgedness.toUpperCase().trim() ) {
+        return EMultiEdgedness.MULTI_EDGES_ALLOWED;
+    }
+    if ( "MULTI_EDGES_NOT_ALLOWED" === multiEdgedness.toUpperCase().trim() ) {
+        return EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED;
+    }
+
+    throw new Error( "Undefined multiEdgedness: '" + multiEdgedness + "'." );
 
 }
 
@@ -155,6 +203,30 @@ export enum ESelfLooping {
 
     /** Self loops are disallowed by an edge type. */
     SELF_LOOPS_NOT_ALLOWED
+
+}
+
+/**
+ * Converts a string value to a self-looping value.
+ * @param selfLooping the string - should be "UNCONSTRAINED", "SELF_LOOPS_ALLOWED", or "SELF_LOOPS_NOT_ALLOWED".
+ * @returns {*} the corresponding cyclicity enum value.
+ */
+export function selfLoopingFromString( selfLooping : string ) {
+
+    if ( selfLooping == null ) {
+        return null;
+    }
+    if ( "UNCONSTRAINED" === selfLooping.toUpperCase().trim() ) {
+        return ESelfLooping.UNCONSTRAINED;
+    }
+    if ( "SELF_LOOPS_ALLOWED" === selfLooping.toUpperCase().trim() ) {
+        return ESelfLooping.SELF_LOOPS_ALLOWED;
+    }
+    if ( "SELF_LOOPS_NOT_ALLOWED" === selfLooping.toUpperCase().trim() ) {
+        return ESelfLooping.SELF_LOOPS_NOT_ALLOWED;
+    }
+
+    throw new Error( "Undefined selfLooping: '" + selfLooping + "'." );
 
 }
 
@@ -590,6 +662,24 @@ export interface IPackage extends IPackagedElement {
      * @param name
      */
     findOptionalChildPackageByName( name : string ) : IPackage;
+
+    /**
+     * Finds the directed edge type with given name (or null if not found).
+     * @param name
+     */
+    findOptionalDirectedEdgeTypeByName( name : string ) : IDirectedEdgeType;
+
+    /**
+     * Finds the packaged element with given name (or null if not found).
+     * @param name
+     */
+    findOptionalPackagedElementByName( name : string ) : IPackagedElement;
+
+    /**
+     * Finds the undirected edge type with given name (or null if not found).
+     * @param name
+     */
+    findOptionalUndirectedEdgeTypeByName( name : string ) : IUndirectedEdgeType;
 
     /**
      * Finds the vertex type with given name (or null if not found).

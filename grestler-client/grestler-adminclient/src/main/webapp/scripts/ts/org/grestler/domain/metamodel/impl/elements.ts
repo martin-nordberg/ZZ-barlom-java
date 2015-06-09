@@ -708,6 +708,31 @@ class PackageContents {
         return null;
     }
 
+    findOptionalDirectedEdgeTypeByName( name : string ) : api_elements.IDirectedEdgeType {
+        for ( var i = 0; i < this._directedEdgeTypes.length; i += 1 ) {
+            if ( this._directedEdgeTypes[i].name == name ) {
+                return this._directedEdgeTypes[i];
+            }
+        }
+        return null;
+    }
+
+    findOptionalPackagedElementByName( name : string ) : api_elements.IPackagedElement {
+        return this.findOptionalChildPackageByName( name ) ||
+                this.findOptionalVertexTypeByName( name ) ||
+                this.findOptionalDirectedEdgeTypeByName( name ) ||
+                this.findOptionalUndirectedEdgeTypeByName( name );
+    }
+
+    findOptionalUndirectedEdgeTypeByName( name : string ) : api_elements.IUndirectedEdgeType {
+        for ( var i = 0; i < this._undirectedEdgeTypes.length; i += 1 ) {
+            if ( this._undirectedEdgeTypes[i].name == name ) {
+                return this._undirectedEdgeTypes[i];
+            }
+        }
+        return null;
+    }
+
     findOptionalVertexTypeByName( name : string ) : api_elements.IVertexType {
         for ( var i = 0; i < this._vertexTypes.length; i += 1 ) {
             if ( this._vertexTypes[i].name == name ) {
@@ -965,6 +990,18 @@ export class Package extends PackagedElement implements api_elements.IPackage, I
 
     public findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
         return this._packageContents.findOptionalChildPackageByName( name );
+    }
+
+    public findOptionalDirectedEdgeTypeByName( name : string ) : api_elements.IDirectedEdgeType {
+        return this._packageContents.findOptionalDirectedEdgeTypeByName( name );
+    }
+
+    public findOptionalPackagedElementByName( name : string ) : api_elements.IPackagedElement {
+        return this._packageContents.findOptionalPackagedElementByName( name );
+    }
+
+    public findOptionalUndirectedEdgeTypeByName( name : string ) : api_elements.IUndirectedEdgeType {
+        return this._packageContents.findOptionalUndirectedEdgeTypeByName( name );
     }
 
     public findOptionalVertexTypeByName( name : string ) : api_elements.IVertexType {
@@ -2127,6 +2164,18 @@ export class RootPackage implements api_elements.IPackage, IPackageUnderAssembly
 
     public findOptionalChildPackageByName( name : string ) : api_elements.IPackage {
         return this._packageContents.findOptionalChildPackageByName( name );
+    }
+
+    public findOptionalDirectedEdgeTypeByName( name : string ) : api_elements.IDirectedEdgeType {
+        return this._packageContents.findOptionalDirectedEdgeTypeByName( name );
+    }
+
+    public findOptionalPackagedElementByName( name : string ) : api_elements.IPackagedElement {
+        return this._packageContents.findOptionalPackagedElementByName( name );
+    }
+
+    public findOptionalUndirectedEdgeTypeByName( name : string ) : api_elements.IUndirectedEdgeType {
+        return this._packageContents.findOptionalUndirectedEdgeTypeByName( name );
     }
 
     public findOptionalVertexTypeByName( name : string ) : api_elements.IVertexType {

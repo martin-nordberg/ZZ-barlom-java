@@ -43,8 +43,14 @@ export class BrowseTabController {
      */
     public onAddClicked( event : any ) : void {
 
-        if ( event.node.classList.contains( "Package" ) ) {
+        if ( event.node.classList.contains( "DirectedEdgeType" ) ) {
+            this._onAddDirectedEdgeTypeClicked( event );
+        }
+        else if ( event.node.classList.contains( "Package" ) ) {
             this._onAddPackageClicked( event );
+        }
+        else if ( event.node.classList.contains( "UndirectedEdgeType" ) ) {
+            this._onAddUndirectedEdgeTypeClicked( event );
         }
         else if ( event.node.classList.contains( "VertexType" ) ) {
             this._onAddVertexTypeClicked( event );
@@ -56,10 +62,63 @@ export class BrowseTabController {
     }
 
     /**
+     * Responds to clicking an "Add a directed edge type" link.
+     * @param event
+     */
+    private _onAddDirectedEdgeTypeClicked( event : any ) : void {
+
+        // TODO: UUIDs from server
+        var cmdId = uuids.makeUuid();
+        var pkgId = uuids.makeUuid();
+        var parentPkg = <api_elements.IPackage> this._elementSelection.elementSelection;
+        var parentPkgId = parentPkg.id;
+        var superTypeId = this._metamodelRepository.findRootDirectedEdgeType().id;
+        var tailVertexTypeId = this._metamodelRepository.findRootVertexType().id;
+        var headVertexTypeId = this._metamodelRepository.findRootVertexType().id;
+
+        var etName = "Edge Type";
+        for ( var counter = 1; counter < 1000; counter += 1 ) {
+            if ( !parentPkg.findOptionalPackagedElementByName( etName ) ) {
+                break;
+            }
+            etName = "Edge Type " + counter;
+        }
+
+        var etJson = {
+            cmdId: cmdId,
+            id: pkgId,
+            parentPackageId: parentPkgId,
+            name: etName,
+            superTypeId: superTypeId,
+            abstractness: "CONCRETE",
+            cyclicity: "POTENTIALLY_CYCLIC",
+            multiEdgedness: "MULTI_EDGES_NOT_ALLOWED",
+            selfLooping: "SELF_LOOPS_NOT_ALLOWED",
+            tailVertexTypeId: tailVertexTypeId,
+            headVertexTypeId : headVertexTypeId,
+            tailRoleName: null,
+            headRoleName: null,
+            minTailOutDegree: null,
+            maxTailOutDegree: null,
+            minHeadInDegree: null,
+            maxHeadInDegree: null
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "directededgetypecreation" );
+
+        cmd.execute( etJson ).then(
+            ( nothing : values.ENothing ) => {
+                this._elementSelection.elementSelection = parentPkg.findOptionalDirectedEdgeTypeByName( etName );
+            }
+        );
+
+    }
+
+    /**
      * Responds to clicking an "Add a package" link.
      * @param event
      */
-    public _onAddPackageClicked( event : any ) : void {
+    private _onAddPackageClicked( event : any ) : void {
 
         // TODO: UUIDs from server
         var cmdId = uuids.makeUuid();
@@ -69,7 +128,7 @@ export class BrowseTabController {
 
         var pkgName = "package";
         for ( var counter = 1; counter < 1000; counter += 1 ) {
-            if ( !parentPkg.findOptionalChildPackageByName( pkgName ) ) {
+            if ( !parentPkg.findOptionalPackagedElementByName( pkgName ) ) {
                 break;
             }
             pkgName = "package" + counter;
@@ -93,10 +152,57 @@ export class BrowseTabController {
     }
 
     /**
+     * Responds to clicking an "Add an undirected edge type" link.
+     * @param event
+     */
+    private _onAddUndirectedEdgeTypeClicked( event : any ) : void {
+
+        // TODO: UUIDs from server
+        var cmdId = uuids.makeUuid();
+        var pkgId = uuids.makeUuid();
+        var parentPkg = <api_elements.IPackage> this._elementSelection.elementSelection;
+        var parentPkgId = parentPkg.id;
+        var superTypeId = this._metamodelRepository.findRootUndirectedEdgeType().id;
+        var vertexTypeId = this._metamodelRepository.findRootVertexType().id;
+
+        var etName = "Edge Type";
+        for ( var counter = 1; counter < 1000; counter += 1 ) {
+            if ( !parentPkg.findOptionalPackagedElementByName( etName ) ) {
+                break;
+            }
+            etName = "Edge Type " + counter;
+        }
+
+        var etJson = {
+            cmdId: cmdId,
+            id: pkgId,
+            parentPackageId: parentPkgId,
+            name: etName,
+            superTypeId: superTypeId,
+            abstractness: "CONCRETE",
+            cyclicity: "POTENTIALLY_CYCLIC",
+            multiEdgedness: "MULTI_EDGES_NOT_ALLOWED",
+            selfLooping: "SELF_LOOPS_NOT_ALLOWED",
+            vertexTypeId: vertexTypeId,
+            minDegree: null,
+            maxDegree: null
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "undirectededgetypecreation" );
+
+        cmd.execute( etJson ).then(
+            ( nothing : values.ENothing ) => {
+                this._elementSelection.elementSelection = parentPkg.findOptionalUndirectedEdgeTypeByName( etName );
+            }
+        );
+
+    }
+
+    /**
      * Responds to clicking an "Add a vertex type" link.
      * @param event
      */
-    public _onAddVertexTypeClicked( event : any ) : void {
+    private _onAddVertexTypeClicked( event : any ) : void {
 
         // TODO: UUIDs from server
         var cmdId = uuids.makeUuid();
@@ -107,7 +213,7 @@ export class BrowseTabController {
 
         var vtName = "Vertex Type";
         for ( var counter = 1; counter < 1000; counter += 1 ) {
-            if ( !parentPkg.findOptionalVertexTypeByName( vtName ) ) {
+            if ( !parentPkg.findOptionalPackagedElementByName( vtName ) ) {
                 break;
             }
             vtName = "Vertex Type " + counter;
