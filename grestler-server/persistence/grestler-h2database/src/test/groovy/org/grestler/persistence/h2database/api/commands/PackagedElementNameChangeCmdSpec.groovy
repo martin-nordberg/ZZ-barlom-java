@@ -46,7 +46,8 @@ class PackagedElementNameChangeCmdSpec
         def pdloader = new PackageDependencyLoader( dataSource );
         def atloader = new AttributeTypeLoader( dataSource );
         def vtloader = new VertexTypeLoader( dataSource );
-        def etloader = new EdgeTypeLoader( dataSource )
+        def detloader = new DirectedEdgeTypeLoader( dataSource )
+        def uetloader = new UndirectedEdgeTypeLoader( dataSource )
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
@@ -54,7 +55,8 @@ class PackagedElementNameChangeCmdSpec
                 pdloader,
                 atloader,
                 vtloader,
-                etloader,
+                detloader,
+                uetloader,
                 adloader
         );
 

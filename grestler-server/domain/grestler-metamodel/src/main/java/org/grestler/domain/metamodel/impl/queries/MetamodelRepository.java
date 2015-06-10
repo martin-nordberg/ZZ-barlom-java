@@ -13,10 +13,11 @@ import org.grestler.domain.metamodel.impl.elements.*;
 import org.grestler.domain.metamodel.impl.elements.Package;
 import org.grestler.domain.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.domain.metamodel.spi.queries.IAttributeTypeLoader;
-import org.grestler.domain.metamodel.spi.queries.IEdgeTypeLoader;
+import org.grestler.domain.metamodel.spi.queries.IDirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
+import org.grestler.domain.metamodel.spi.queries.IUndirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 import org.grestler.infrastructure.utilities.collections.ISizedIterable;
@@ -47,7 +48,8 @@ public final class MetamodelRepository
      * @param packageLoader       the loader used to initialize the packages into the metamodel repository.
      * @param attributeTypeLoader the loader used to initialize the attribute types into the metamodel repository.
      * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
-     * @param edgeTypeLoader      the loader used to initialize the edge types into the metamodel repository.
+     * @param directedEdgeTypeLoader      the loader used to initialize the directed edge types into the metamodel repository.
+     * @param undirectedEdgeTypeLoader      the loader used to initialize the undirected edge types into the metamodel repository.
      * @param attributeDeclLoader the loader used to initialize attribute declarations into the metamodel repository.
      */
     @Inject
@@ -56,7 +58,8 @@ public final class MetamodelRepository
         IPackageDependencyLoader packageDependencyLoader,
         IAttributeTypeLoader attributeTypeLoader,
         IVertexTypeLoader vertexTypeLoader,
-        IEdgeTypeLoader edgeTypeLoader,
+        IDirectedEdgeTypeLoader directedEdgeTypeLoader,
+        IUndirectedEdgeTypeLoader undirectedEdgeTypeLoader,
         IAttributeDeclLoader attributeDeclLoader
     ) {
 
@@ -87,7 +90,8 @@ public final class MetamodelRepository
                 packageDependencyLoader.loadAllPackageDependencies( this );
                 attributeTypeLoader.loadAllAttributeTypes( this );
                 vertexTypeLoader.loadAllVertexTypes( this );
-                edgeTypeLoader.loadAllEdgeTypes( this );
+                directedEdgeTypeLoader.loadAllDirectedEdgeTypes( this );
+                undirectedEdgeTypeLoader.loadAllUndirectedEdgeTypes( this );
                 attributeDeclLoader.loadAllAttributeDecls( this );
 
                 opTimeLogger.noop();

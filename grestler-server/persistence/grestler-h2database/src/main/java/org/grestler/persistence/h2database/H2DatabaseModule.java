@@ -10,7 +10,8 @@ import dagger.Provides;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.domain.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.domain.metamodel.spi.queries.IAttributeTypeLoader;
-import org.grestler.domain.metamodel.spi.queries.IEdgeTypeLoader;
+import org.grestler.domain.metamodel.spi.queries.IDirectedEdgeTypeLoader;
+import org.grestler.domain.metamodel.spi.queries.IUndirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
 import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
@@ -18,7 +19,8 @@ import org.grestler.persistence.dbutilities.api.IDataSource;
 import org.grestler.persistence.h2database.api.commands.MetamodelCommandWriterFactory;
 import org.grestler.persistence.h2database.api.queries.AttributeDeclLoader;
 import org.grestler.persistence.h2database.api.queries.AttributeTypeLoader;
-import org.grestler.persistence.h2database.api.queries.EdgeTypeLoader;
+import org.grestler.persistence.h2database.api.queries.DirectedEdgeTypeLoader;
+import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader;
 import org.grestler.persistence.h2database.api.queries.PackageDependencyLoader;
 import org.grestler.persistence.h2database.api.queries.PackageLoader;
 import org.grestler.persistence.h2database.api.queries.VertexTypeLoader;
@@ -67,15 +69,27 @@ public class H2DatabaseModule {
     }
 
     /**
-     * Provides a edge type loader for H2.
+     * Provides a directed edge type loader for H2.
      *
      * @param dataSource the H2 data source.
      *
      * @return the constructed edge type loader.
      */
     @Provides
-    public IEdgeTypeLoader provideEdgeTypeLoader( IDataSource dataSource ) {
-        return new EdgeTypeLoader( dataSource );
+    public IDirectedEdgeTypeLoader provideDirectedEdgeTypeLoader( IDataSource dataSource ) {
+        return new DirectedEdgeTypeLoader( dataSource );
+    }
+
+    /**
+     * Provides an undirected edge type loader for H2.
+     *
+     * @param dataSource the H2 data source.
+     *
+     * @return the constructed edge type loader.
+     */
+    @Provides
+    public IUndirectedEdgeTypeLoader provideUndirectedEdgeTypeLoader( IDataSource dataSource ) {
+        return new UndirectedEdgeTypeLoader( dataSource );
     }
 
     /**

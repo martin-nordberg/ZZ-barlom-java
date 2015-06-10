@@ -73,7 +73,8 @@ class MetamodelRepositorySpec
                             rootVertexType
                     );
                 } as IVertexTypeLoader,
-                { r -> } as IEdgeTypeLoader,
+                { r -> } as IDirectedEdgeTypeLoader,
+                { r -> } as IUndirectedEdgeTypeLoader,
                 { r -> } as IAttributeDeclLoader
         );
 

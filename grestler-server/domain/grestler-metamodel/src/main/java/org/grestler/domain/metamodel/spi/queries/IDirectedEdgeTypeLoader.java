@@ -9,13 +9,13 @@ package org.grestler.domain.metamodel.spi.queries;
  * Interface defining edge type queries.
  */
 @FunctionalInterface
-public interface IEdgeTypeLoader {
+public interface IDirectedEdgeTypeLoader {
 
     /**
-     * Loads all edge types into the metamodel repository.
+     * Loads all directed edge types into the metamodel repository.
      *
      * @param repository the repository to be loaded.
      */
-    void loadAllEdgeTypes( IMetamodelRepositorySpi repository );
+    void loadAllDirectedEdgeTypes( IMetamodelRepositorySpi repository );
 
 }

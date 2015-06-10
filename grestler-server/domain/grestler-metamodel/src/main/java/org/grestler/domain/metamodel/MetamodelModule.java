@@ -14,10 +14,11 @@ import org.grestler.domain.metamodel.impl.queries.MetamodelRepository;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.domain.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.domain.metamodel.spi.queries.IAttributeTypeLoader;
-import org.grestler.domain.metamodel.spi.queries.IEdgeTypeLoader;
+import org.grestler.domain.metamodel.spi.queries.IDirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
+import org.grestler.domain.metamodel.spi.queries.IUndirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
 
 import javax.inject.Singleton;
@@ -38,7 +39,8 @@ public class MetamodelModule {
      * @param packageDependencyLoader the source for loading package dependencies.
      * @param attributeTypeLoader     the source for loading attribute types.
      * @param vertexTypeLoader        the source for loading vertex types.
-     * @param edgeTypeLoader          the source for loading edge types.
+     * @param directedEdgeTypeLoader  the source for loading directed edge types.
+     * @param undirectedEdgeTypeLoader  the source for loading undirected edge types.
      * @param attributeDeclLoader     the source for loading attribute declarations.
      *
      * @return the newly created repository.
@@ -50,7 +52,8 @@ public class MetamodelModule {
         IPackageDependencyLoader packageDependencyLoader,
         IAttributeTypeLoader attributeTypeLoader,
         IVertexTypeLoader vertexTypeLoader,
-        IEdgeTypeLoader edgeTypeLoader,
+        IDirectedEdgeTypeLoader directedEdgeTypeLoader,
+        IUndirectedEdgeTypeLoader undirectedEdgeTypeLoader,
         IAttributeDeclLoader attributeDeclLoader
     ) {
         return new MetamodelRepository(
@@ -58,7 +61,8 @@ public class MetamodelModule {
             packageDependencyLoader,
             attributeTypeLoader,
             vertexTypeLoader,
-            edgeTypeLoader,
+            directedEdgeTypeLoader,
+            undirectedEdgeTypeLoader,
             attributeDeclLoader
         );
     }
