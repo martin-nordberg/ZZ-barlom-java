@@ -60,7 +60,7 @@ public class UndirectedEdgeTypeQueries {
         JsonGenerator json = this.jsonGeneratorFactory.createGenerator( result );
 
         json.writeStartObject();
-        json.writeStartArray( "edgeTypes" );
+        json.writeStartArray( "undirectedEdgeTypes" );
 
         StmTransactionContext.doInReadOnlyTransaction(
             () -> {

@@ -31,10 +31,10 @@ export var restserverApiModule = {
     },
 
     /**
-     * Service for loading all edge types into a metamodel repository.
+     * Service for loading all directed edge types into a metamodel repository.
      */
-    provideEdgeTypeLoader: function provideEdgeTypeLoader() : spi_queries.IEdgeTypeLoader {
-        return new restserver_api_queries.EdgeTypeLoader();
+    provideDirectedEdgeTypeLoader: function provideDirectedEdgeTypeLoader() : spi_queries.IDirectedEdgeTypeLoader {
+        return new restserver_api_queries.DirectedEdgeTypeLoader();
     },
 
     /**
@@ -56,6 +56,13 @@ export var restserverApiModule = {
      */
     providePackageLoader: function providePackageLoader() : spi_queries.IPackageLoader {
         return new restserver_api_queries.PackageLoader();
+    },
+
+    /**
+     * Service for loading all undirected edge types into a metamodel repository.
+     */
+    provideUndirectedEdgeTypeLoader: function provideUndirectedEdgeTypeLoader() : spi_queries.IUndirectedEdgeTypeLoader {
+        return new restserver_api_queries.UndirectedEdgeTypeLoader();
     },
 
     /**

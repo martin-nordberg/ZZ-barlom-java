@@ -24,19 +24,21 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
      * Constructs a new metamodel repository. Loads it with packages, attribute types, vertex types, and edge types from
      * the given sources.
      *
-     * @param packageLoader       the loader used to initialize the packages into the metamodel repository.
-     * @param packageDependencyLoader the loader for package dependencies.
-     * @param attributeTypeLoader the loader used to initialize the attribute types into the metamodel repository.
-     * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
-     * @param edgeTypeLoader      the loader used to initialize the edge types into the metamodel repository.
-     * @param attributeDeclLoader the loader used to initialize attribute declarations into the metamodel repository.
+     * @param packageLoader            the loader used to initialize the packages into the metamodel repository.
+     * @param packageDependencyLoader  the loader for package dependencies.
+     * @param attributeTypeLoader      the loader used to initialize the attribute types into the metamodel repository.
+     * @param vertexTypeLoader         the loader used to initialize the vertex types into the metamodel repository.
+     * @param directedEdgeTypeLoader   the loader used to initialize the directed edge types into the metamodel repository.
+     * @param undirectedEdgeTypeLoader the loader used to initialize the undirected edge types into the metamodel repository.
+     * @param attributeDeclLoader      the loader used to initialize attribute declarations into the metamodel repository.
      */
     constructor(
         packageLoader : spi_queries.IPackageLoader,
         packageDependencyLoader : spi_queries.IPackageDependencyLoader,
         attributeTypeLoader : spi_queries.IAttributeTypeLoader,
         vertexTypeLoader : spi_queries.IVertexTypeLoader,
-        edgeTypeLoader : spi_queries.IEdgeTypeLoader,
+        directedEdgeTypeLoader : spi_queries.IDirectedEdgeTypeLoader,
+        undirectedEdgeTypeLoader : spi_queries.IUndirectedEdgeTypeLoader,
         attributeDeclLoader : spi_queries.IAttributeDeclLoader
     ) {
 
@@ -76,7 +78,10 @@ export class MetamodelRepository implements spi_queries.IMetamodelRepositorySpi 
             ( _ : values.ENothing ) => vertexTypeLoader.loadAllVertexTypes( this )
         );
         this._loaded = this._loaded.then(
-            ( _ : values.ENothing ) => edgeTypeLoader.loadAllEdgeTypes( this )
+            ( _ : values.ENothing ) => directedEdgeTypeLoader.loadAllDirectedEdgeTypes( this )
+        );
+        this._loaded = this._loaded.then(
+            ( _ : values.ENothing ) => undirectedEdgeTypeLoader.loadAllUndirectedEdgeTypes( this )
         );
         this._loaded = this._loaded.then(
             ( _ : values.ENothing ) => attributeDeclLoader.loadAllAttributeDecls( this )

@@ -10,7 +10,6 @@ import dagger.Provides;
 import org.grestler.application.restserver.services.commands.MetamodelCommands;
 import org.grestler.application.restserver.services.queries.AttributeTypeQueries;
 import org.grestler.application.restserver.services.queries.DirectedEdgeTypeQueries;
-import org.grestler.application.restserver.services.queries.EdgeTypeQueries;
 import org.grestler.application.restserver.services.queries.PackageQueries;
 import org.grestler.application.restserver.services.queries.UndirectedEdgeTypeQueries;
 import org.grestler.application.restserver.services.queries.VertexTypeQueries;
@@ -47,13 +46,6 @@ public class RestServerModule {
         IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
     ) {
         return new DirectedEdgeTypeQueries( metamodelRepository, jsonGeneratorFactory );
-    }
-
-    @Provides
-    public EdgeTypeQueries provideEdgeTypeQueries(
-        IMetamodelRepository metamodelRepository, JsonGeneratorFactory jsonGeneratorFactory
-    ) {
-        return new EdgeTypeQueries( metamodelRepository, jsonGeneratorFactory );
     }
 
     @Provides

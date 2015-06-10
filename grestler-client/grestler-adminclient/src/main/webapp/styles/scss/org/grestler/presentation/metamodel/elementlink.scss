@@ -6,6 +6,7 @@
 
 /* Element icons by element type */
 div.element-icon {
+
   display: inline-block;
   height: 16px;
   width: 16px;
@@ -17,6 +18,15 @@ div.element-icon {
   &.RootVertexType, &.VertexType {
     background: url('../../../../../../images/org/grestler/presentation/metamodel/elementicons.png') 0px -16px no-repeat;
   }
+
+  &.RootDirectedEdgeType, &.DirectedEdgeType {
+    background: url('../../../../../../images/org/grestler/presentation/metamodel/elementicons.png') 0px -32px no-repeat;
+  }
+
+  &.RootUndirectedEdgeType, &.UndirectedEdgeType {
+    background: url('../../../../../../images/org/grestler/presentation/metamodel/elementicons.png') 0px -48px no-repeat;
+  }
+
 }
 
 

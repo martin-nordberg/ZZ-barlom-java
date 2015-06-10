@@ -360,16 +360,16 @@ export interface IAttributeTypeLoader {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Interface defining edge type queries.
+ * Interface defining directed edge type queries.
  */
-export interface IEdgeTypeLoader {
+export interface IDirectedEdgeTypeLoader {
 
     /**
-     * Loads all edge types into the metamodel repository.
+     * Loads all directed edge types into the metamodel repository.
      *
      * @param repository the repository to be loaded.
      */
-    loadAllEdgeTypes( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
+    loadAllDirectedEdgeTypes( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 
@@ -402,6 +402,22 @@ export interface IPackageLoader {
      * @param repository the repository to be loaded.
      */
     loadAllPackages( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Interface defining undirected edge type queries.
+ */
+export interface IUndirectedEdgeTypeLoader {
+
+    /**
+     * Loads all undirected edge types into the metamodel repository.
+     *
+     * @param repository the repository to be loaded.
+     */
+    loadAllUndirectedEdgeTypes( repository : IMetamodelRepositorySpi ) : Promise<values.ENothing>;
 
 }
 

@@ -127,18 +127,106 @@ export class AttributeTypeLoader implements spi_queries.IAttributeTypeLoader {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Service for loading all edge types into a metamodel repository.
+ * Service for loading all directed edge types into a metamodel repository.
  */
-export class EdgeTypeLoader implements spi_queries.IEdgeTypeLoader {
+export class DirectedEdgeTypeLoader implements spi_queries.IDirectedEdgeTypeLoader {
 
-    loadAllEdgeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
-        return new Promise<values.ENothing>(
-            function ( resolve : ( value? : values.ENothing ) => void, reject : ( error? : any ) => void ) {
-                resolve( values.nothing );  // TODO
+    loadAllDirectedEdgeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+
+        // TODO: externally configured host & port
+        const url = "http://localhost:8080/grestlerdata/metadata/directededgetypes";
+
+        /**
+         * Loads one directed edge type from its JSON representation.
+         * @param etJson parsed JSON for the edge type.
+         */
+        var loadDirectedEdgeType = function ( etJson : any ) : api_elements.IDirectedEdgeType {
+
+            var parentPackage = repository.findPackageById( etJson.parentPackageId );
+            var superTypeId = etJson.superTypeId;
+            var abstractness = api_elements.abstractnessFromString( etJson.abstractness );
+            var cyclicity = api_elements.cyclicityFromString( etJson.cyclicity );
+            var multiEdgedness = api_elements.multiEdgednessFromString( etJson.multiEdgedness );
+            var selfLooping = api_elements.selfLoopingFromString( etJson.selfLooping );
+
+            if ( superTypeId ) {
+                var superType = repository.findOptionalDirectedEdgeTypeById( superTypeId );
+
+                if ( superType ) {
+                    var tailVertexType = repository.findVertexTypeById( etJson.tailVertexTypeId );
+                    var headVertexType = repository.findVertexTypeById( etJson.headVertexTypeId );
+
+                    return repository.loadDirectedEdgeType(
+                        etJson.id,
+                        parentPackage,
+                        etJson.name,
+                        superType,
+                        abstractness,
+                        cyclicity,
+                        multiEdgedness,
+                        selfLooping,
+                        tailVertexType,
+                        headVertexType,
+                        etJson.tailRoleName,
+                        etJson.headRoleName,
+                        etJson.minTailOutDegree,
+                        etJson.maxTailOutDegree,
+                        etJson.minHeadInDegree,
+                        etJson.maxHeadInDegree
+                    );
+                }
+                else {
+                    return null;
+                }
             }
-        );
-    }
+            else {
+                return repository.loadRootDirectedEdgeType( etJson.id, parentPackage );
+            }
 
+        };
+
+        /**
+         * Loads all directed edge types from their representation as a JSON object.
+         * @param etsJson parsed JSON for an array of edge types.
+         */
+        var loadDirectedEdgeTypes = function ( etsJson : any ) : values.ENothing {
+
+            // Keep track of edge types that fail to create on this round becasue their parents are later in the list.
+            var etsJsonToDo = {
+                directedEdgeTypes: []
+            };
+
+            // Create each edge type from the JSON
+            etsJson.directedEdgeTypes.forEach(
+                function ( etJson : any ) : void {
+                    var et = loadDirectedEdgeType( etJson );
+
+                    // If not created, try again in next round (super type presumably later in the list).
+                    if ( et == null ) {
+                        etsJsonToDo.directedEdgeTypes.push( etJson );
+                    }
+                }
+            );
+
+            // Done when all edge types created.
+            if ( etsJsonToDo.directedEdgeTypes.length == 0 ) {
+                return values.nothing;
+            }
+
+            // Error if no progress
+            if ( etsJsonToDo.directedEdgeTypes.length === etsJson.directedEdgeTypes.length ) {
+                throw new Error( "Failed to load all directed edge types." );
+            }
+
+            // Recursively create whatever edge types remain.
+            return loadDirectedEdgeTypes( etsJsonToDo );
+
+        };
+
+        // Perform the AJAX call and handle the response.
+        return ajax.httpGet( url ).then( JSON.parse ).then( loadDirectedEdgeTypes );
+
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +335,106 @@ export class PackageLoader implements spi_queries.IPackageLoader {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Service for loading all undirected edge types into a metamodel repository.
+ */
+export class UndirectedEdgeTypeLoader implements spi_queries.IUndirectedEdgeTypeLoader {
+
+    loadAllUndirectedEdgeTypes( repository : spi_queries.IMetamodelRepositorySpi ) : Promise<values.ENothing> {
+
+        // TODO: externally configured host & port
+        const url = "http://localhost:8080/grestlerdata/metadata/undirectededgetypes";
+
+        /**
+         * Loads one undirected edge type from its JSON representation.
+         * @param etJson parsed JSON for the edge type.
+         */
+        var loadUndirectedEdgeType = function ( etJson : any ) : api_elements.IUndirectedEdgeType {
+
+            var parentPackage = repository.findPackageById( etJson.parentPackageId );
+            var superTypeId = etJson.superTypeId;
+            var abstractness = api_elements.abstractnessFromString( etJson.abstractness );
+            var cyclicity = api_elements.cyclicityFromString( etJson.cyclicity );
+            var multiEdgedness = api_elements.multiEdgednessFromString( etJson.multiEdgedness );
+            var selfLooping = api_elements.selfLoopingFromString( etJson.selfLooping );
+
+            if ( superTypeId ) {
+                var superType = repository.findOptionalUndirectedEdgeTypeById( superTypeId );
+
+                if ( superType ) {
+                    var vertexType = repository.findVertexTypeById( etJson.vertexTypeId );
+
+                    return repository.loadUndirectedEdgeType(
+                        etJson.id,
+                        parentPackage,
+                        etJson.name,
+                        superType,
+                        abstractness,
+                        cyclicity,
+                        multiEdgedness,
+                        selfLooping,
+                        vertexType,
+                        etJson.minDegree,
+                        etJson.maxDegree
+                    );
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return repository.loadRootUndirectedEdgeType( etJson.id, parentPackage );
+            }
+
+        };
+
+        /**
+         * Loads all undirected edge types from their representation as a JSON object.
+         * @param etsJson parsed JSON for an array of edge types.
+         */
+        var loadUndirectedEdgeTypes = function ( etsJson : any ) : values.ENothing {
+
+            // Keep track of edge types that fail to create on this round becasue their parents are later in the list.
+            var etsJsonToDo = {
+                undirectedEdgeTypes: []
+            };
+
+            // Create each edge type from the JSON
+            etsJson.undirectedEdgeTypes.forEach(
+                function ( etJson : any ) : void {
+                    var et = loadUndirectedEdgeType( etJson );
+
+                    // If not created, try again in next round (super type presumably later in the list).
+                    if ( et == null ) {
+                        etsJsonToDo.undirectedEdgeTypes.push( etJson );
+                    }
+                }
+            );
+
+            // Done when all vertex types created.
+            if ( etsJsonToDo.undirectedEdgeTypes.length == 0 ) {
+                return values.nothing;
+            }
+
+            // Error if no progress
+            if ( etsJsonToDo.undirectedEdgeTypes.length === etsJson.undirectedEdgeTypes.length ) {
+                throw new Error( "Failed to load all undirected edge types." );
+            }
+
+            // Recursively create whatever vertex types remain.
+            return loadUndirectedEdgeTypes( etsJsonToDo );
+
+        };
+
+        // Perform the AJAX call and handle the response.
+        return ajax.httpGet( url ).then( JSON.parse ).then( loadUndirectedEdgeTypes );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Service for loading all vertex types into a metamodel repository.
  */
 export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
@@ -295,12 +483,12 @@ export class VertexTypeLoader implements spi_queries.IVertexTypeLoader {
 
             // Create each vertex type from the JSON
             vtsJson.vertexTypes.forEach(
-                function ( pkgJson : any ) : void {
-                    var pkg = loadVertexType( pkgJson );
+                function ( vtJson : any ) : void {
+                    var vt = loadVertexType( vtJson );
 
                     // If not created, try again in next round (super type presumably later in the list).
-                    if ( pkg == null ) {
-                        vtsJsonToDo.vertexTypes.push( pkgJson );
+                    if ( vt == null ) {
+                        vtsJsonToDo.vertexTypes.push( vtJson );
                     }
                 }
             );

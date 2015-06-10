@@ -58,7 +58,8 @@ export var metamodelImplModule = {
         packageDependencyLoader : spi_queries.IPackageDependencyLoader,
         attributeTypeLoader : spi_queries.IAttributeTypeLoader,
         vertexTypeLoader : spi_queries.IVertexTypeLoader,
-        edgeTypeLoader : spi_queries.IEdgeTypeLoader,
+        directedEdgeTypeLoader : spi_queries.IDirectedEdgeTypeLoader,
+        undirectedEdgeTypeLoader : spi_queries.IUndirectedEdgeTypeLoader,
         attributeDeclLoader : spi_queries.IAttributeDeclLoader
     ) : api_queries.IMetamodelRepository {
 
@@ -67,7 +68,8 @@ export var metamodelImplModule = {
             packageDependencyLoader,
             attributeTypeLoader,
             vertexTypeLoader,
-            edgeTypeLoader,
+            directedEdgeTypeLoader,
+            undirectedEdgeTypeLoader,
             attributeDeclLoader
         );
 
