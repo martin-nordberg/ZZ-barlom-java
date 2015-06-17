@@ -32,10 +32,14 @@ public class MetamodelCommandWriterFactory
     public IMetamodelCommandWriter<? extends IMetamodelCommandSpi.CmdRecord> makeCommandWriter( String commandTypeName ) {
 
         switch ( commandTypeName.toLowerCase() ) {
+            case "directededgetypecreation":
+                return new DirectedEdgeTypeCreationCmdWriter( this.dataSource );
             case "packagecreation":
                 return new PackageCreationCmdWriter( this.dataSource );
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmdWriter( this.dataSource );
+            case "undirectededgetypecreation":
+                return new UndirectedEdgeTypeCreationCmdWriter( this.dataSource );
             case "vertextypeabstractnesschange":
                 return new VertexTypeAbstractnessChangeCmdWriter( this.dataSource );
             case "vertextypecreation":

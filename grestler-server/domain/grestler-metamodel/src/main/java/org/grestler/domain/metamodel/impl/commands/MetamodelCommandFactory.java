@@ -10,11 +10,13 @@ import org.apache.logging.log4j.Logger;
 import org.grestler.domain.metamodel.api.commands.IMetamodelCommand;
 import org.grestler.domain.metamodel.api.commands.IMetamodelCommandFactory;
 import org.grestler.domain.metamodel.api.exceptions.MetamodelException;
+import org.grestler.domain.metamodel.spi.commands.DirectedEdgeTypeCreationCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory;
 import org.grestler.domain.metamodel.spi.commands.NamedElementNameChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.PackageCreationCmdRecord;
+import org.grestler.domain.metamodel.spi.commands.UndirectedEdgeTypeCreationCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.VertexTypeAbstractnessChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.VertexTypeSuperTypeChangeCmdRecord;
@@ -47,6 +49,10 @@ public class MetamodelCommandFactory
         );
 
         switch ( commandTypeName.toLowerCase() ) {
+            case "directededgetypecreation":
+                return new DirectedEdgeTypeCreationCmd(
+                    this.metamodelRepository, (IMetamodelCommandWriter<DirectedEdgeTypeCreationCmdRecord>) cmdWriter
+                );
             case "packagecreation":
                 return new PackageCreationCmd(
                     this.metamodelRepository, (IMetamodelCommandWriter<PackageCreationCmdRecord>) cmdWriter
@@ -54,6 +60,10 @@ public class MetamodelCommandFactory
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmd(
                     this.metamodelRepository, (IMetamodelCommandWriter<NamedElementNameChangeCmdRecord>) cmdWriter
+                );
+            case "undirectededgetypecreation":
+                return new UndirectedEdgeTypeCreationCmd(
+                    this.metamodelRepository, (IMetamodelCommandWriter<UndirectedEdgeTypeCreationCmdRecord>) cmdWriter
                 );
             case "vertextypeabstractnesschange":
                 return new VertexTypeAbstractnessChangeCmd(

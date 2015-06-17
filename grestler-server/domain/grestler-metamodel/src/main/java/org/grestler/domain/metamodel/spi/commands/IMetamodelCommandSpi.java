@@ -26,9 +26,21 @@ public interface IMetamodelCommandSpi<R extends IMetamodelCommandSpi.CmdRecord> 
      */
     class CmdRecord {
 
-        protected CmdRecord( JsonObject jsonCmdArgs ) {
-            this.cmdId = UUID.fromString( jsonCmdArgs.getString( "cmdId" ) );
-            this.jsonCmdArgs = jsonCmdArgs.toString();
+        protected CmdRecord( JsonObject jsonCmdArgsObj ) {
+            this.cmdId = UUID.fromString( jsonCmdArgsObj.getString( "cmdId" ) );
+            this.jsonCmdArgs = jsonCmdArgsObj.toString();
+        }
+
+        /**
+         * Tests whether a JSON attribute has a value.
+         *
+         * @param jsonCmdArgsObj the JSON object to check.
+         * @param key            the key to look for.
+         *
+         * @return true if there is a non-null value for the key.
+         */
+        protected boolean hasNoValue( JsonObject jsonCmdArgsObj, String key ) {
+            return !jsonCmdArgsObj.containsKey( key ) || jsonCmdArgsObj.isNull( key );
         }
 
         public final UUID cmdId;

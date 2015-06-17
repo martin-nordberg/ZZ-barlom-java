@@ -54,6 +54,40 @@ class AbstractMetamodelCommandWriter implements spi_commands.IMetamodelCommandWr
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to create a directed edge type.
+ */
+class DirectedEdgeTypeCreationCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new directed edge type creation command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        var content = JSON.stringify( jsonCmdArgs );
+
+        // TODO: either a generic name-parameterized command that passes its JSON through like above or else specific commands that do data validation first
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/directededgetypecreation",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
@@ -129,6 +163,38 @@ class PackagedElementNameChangeCmdWriter extends AbstractMetamodelCommandWriter 
 
         return ajax.httpPost(
             "http://localhost:8080/grestlerdata/metadata/commands/packagedelementnamechange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Command to create an undirected edge type.
+ */
+class UndirectedEdgeTypeCreationCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new undirected edge type creation command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        var content = JSON.stringify( jsonCmdArgs );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/undirectededgetypecreation",
             "application/json",
             content
         ).then(
@@ -296,10 +362,14 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
     public makeCommandWriter( commandTypeName : string ) : spi_commands.IMetamodelCommandWriter {
 
         switch ( commandTypeName.toLowerCase() ) {
+            case "directededgetypecreation":
+                return new DirectedEdgeTypeCreationCmdWriter();
             case "packagecreation":
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":
                 return new PackagedElementNameChangeCmdWriter();
+            case "undirectededgetypecreation":
+                return new UndirectedEdgeTypeCreationCmdWriter();
             case "vertextypeabstractnesschange":
                 return new VertexTypeAbstractnessChangeCmdWriter();
             case "vertextypecreation":
