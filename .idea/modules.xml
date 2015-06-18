@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/grestler-server/application/grestler-apputilities/grestler-apputilities.iml" filepath="$PROJECT_DIR$/grestler-server/application/grestler-apputilities/grestler-apputilities.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/persistence/grestler-dbutilities/grestler-dbutilities.iml" filepath="$PROJECT_DIR$/grestler-server/persistence/grestler-dbutilities/grestler-dbutilities.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/persistence/grestler-h2database/grestler-h2database.iml" filepath="$PROJECT_DIR$/grestler-server/persistence/grestler-h2database/grestler-h2database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grestler-server/domain/grestler-javamodel/grestler-javamodel.iml" filepath="$PROJECT_DIR$/grestler-server/domain/grestler-javamodel/grestler-javamodel.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/presentation/grestler-main/grestler-main.iml" filepath="$PROJECT_DIR$/grestler-server/presentation/grestler-main/grestler-main.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/domain/grestler-metamodel/grestler-metamodel.iml" filepath="$PROJECT_DIR$/grestler-server/domain/grestler-metamodel/grestler-metamodel.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-server/application/grestler-restserver/grestler-restserver.iml" filepath="$PROJECT_DIR$/grestler-server/application/grestler-restserver/grestler-restserver.iml" />

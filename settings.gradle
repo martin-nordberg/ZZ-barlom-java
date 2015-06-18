@@ -22,6 +22,9 @@ rootProject.children.find { it.name == 'grestler-server/application/grestler-app
 
 
 // Domain
+include 'grestler-server/domain/grestler-javamodel'
+rootProject.children.find { it.name == 'grestler-server/domain/grestler-javamodel' }.name = 'grestler-javamodel'
+
 include 'grestler-server/domain/grestler-metamodel'
 rootProject.children.find { it.name == 'grestler-server/domain/grestler-metamodel' }.name = 'grestler-metamodel'
 

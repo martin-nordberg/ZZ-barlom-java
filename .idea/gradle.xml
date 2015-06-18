@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/grestler-server/application/grestler-apputilities" />
             <option value="$PROJECT_DIR$/grestler-server/application/grestler-restserver" />
+            <option value="$PROJECT_DIR$/grestler-server/domain/grestler-javamodel" />
             <option value="$PROJECT_DIR$/grestler-server/domain/grestler-metamodel" />
             <option value="$PROJECT_DIR$/grestler-server/infrastructure/grestler-utilities" />
             <option value="$PROJECT_DIR$/grestler-server/persistence/grestler-dbutilities" />
