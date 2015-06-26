@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":grestler-restserver" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="grestler" external.system.module.version="0.1.0-alpha" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../build/application/grestler-restserver/classes/main" />
-    <output-test url="file://$MODULE_DIR$/../../build/application/grestler-restserver/classes/test" />
+    <output url="file://$MODULE_DIR$/../../../build/grestler-server/application/grestler-restserver/classes/main" />
+    <output-test url="file://$MODULE_DIR$/../../../build/grestler-server/application/grestler-restserver/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/groovy" isTestSource="false" />

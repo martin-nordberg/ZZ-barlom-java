@@ -1,4 +1,4 @@
-buildDir = '../../build/presentation/grestler-adminserver'
+buildDir = '../../../build/grestler-server/presentation/grestler-adminserver'
 
 dependencies {
 

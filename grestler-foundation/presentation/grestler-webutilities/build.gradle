@@ -1,4 +1,4 @@
-buildDir = '../../build/presentation/grestler-webutilities'
+buildDir = '../../../build/grestler-foundation/presentation/grestler-webutilities'
 
 dependencies {
 

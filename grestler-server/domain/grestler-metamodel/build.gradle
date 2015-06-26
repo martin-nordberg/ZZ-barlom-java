@@ -1,4 +1,4 @@
-buildDir = '../../build/domain/grestler-metamodel'
+buildDir = '../../../build/grestler-server/domain/grestler-metamodel'
 
 configurations {
     provided

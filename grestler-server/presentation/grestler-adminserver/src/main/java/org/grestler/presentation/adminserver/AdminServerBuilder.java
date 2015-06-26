@@ -62,7 +62,12 @@ public final class AdminServerBuilder {
         result.setContextPath( "/grestleradmin" );
 
         // Add a shutdown servlet for the dynamic content.
-        ServletHolder servletHolder = new ServletHolder( new ShutdownServlet( webServer ) );
+        ServletHolder servletHolder = new ServletHolder(
+            new ShutdownServlet(
+                webServer,
+                "Grestler application server stopping..."
+            )
+        );
         result.addServlet( servletHolder, "/exit" );
 
         // TBD: Any other stuff needed for admin ...

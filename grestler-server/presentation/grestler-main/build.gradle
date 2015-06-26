@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-buildDir = '../../build/presentation/grestler-main'
+buildDir = '../../../build/grestler-server/presentation/grestler-main'
 
 configurations {
     provided

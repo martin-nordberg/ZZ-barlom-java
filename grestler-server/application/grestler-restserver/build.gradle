@@ -1,4 +1,4 @@
-buildDir = '../../build/application/grestler-restserver'
+buildDir = '../../../build/grestler-server/application/grestler-restserver'
 
 configurations {
     provided

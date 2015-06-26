@@ -20,10 +20,12 @@ public class ShutdownServlet
     /**
      * Constructs a new shutdown servlet.
      *
-     * @param webServer the web server to be shut down when this servlet executes.
+     * @param webServer The web server to be shut down when this servlet executes.
+     * @param message The message to display in the final screen of output.
      */
-    public ShutdownServlet( AutoCloseable webServer ) {
+    public ShutdownServlet( AutoCloseable webServer, String message ) {
         this.webServer = webServer;
+        this.message = message;
     }
 
     @Override
@@ -38,13 +40,16 @@ public class ShutdownServlet
         }
 
         // Respond with a simple output.
-        resp.getOutputStream().println( "Grestler application server stopping..." );
+        resp.getOutputStream().println( this.message );
         resp.setStatus( HttpServletResponse.SC_OK );
 
     }
 
     /** Serialization version. */
     private static final long serialVersionUID = 1L;
+
+    /** The message to display in the final screen of output. */
+    private final String message;
 
     /** The web server to shutdown when this servlet executes. */
     private final AutoCloseable webServer;

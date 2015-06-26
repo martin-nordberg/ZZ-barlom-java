@@ -10,16 +10,16 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/grestler-server/application/grestler-apputilities" />
+            <option value="$PROJECT_DIR$/grestler-foundation/application/grestler-apputilities" />
+            <option value="$PROJECT_DIR$/grestler-foundation/domain/grestler-javamodel" />
+            <option value="$PROJECT_DIR$/grestler-foundation/infrastructure/grestler-utilities" />
+            <option value="$PROJECT_DIR$/grestler-foundation/persistence/grestler-dbutilities" />
+            <option value="$PROJECT_DIR$/grestler-foundation/presentation/grestler-webutilities" />
             <option value="$PROJECT_DIR$/grestler-server/application/grestler-restserver" />
-            <option value="$PROJECT_DIR$/grestler-server/domain/grestler-javamodel" />
             <option value="$PROJECT_DIR$/grestler-server/domain/grestler-metamodel" />
-            <option value="$PROJECT_DIR$/grestler-server/infrastructure/grestler-utilities" />
-            <option value="$PROJECT_DIR$/grestler-server/persistence/grestler-dbutilities" />
             <option value="$PROJECT_DIR$/grestler-server/persistence/grestler-h2database" />
             <option value="$PROJECT_DIR$/grestler-server/presentation/grestler-adminserver" />
             <option value="$PROJECT_DIR$/grestler-server/presentation/grestler-main" />
-            <option value="$PROJECT_DIR$/grestler-server/presentation/grestler-webutilities" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,4 +1,4 @@
-buildDir = '../../build/persistence/grestler-dbutilities'
+buildDir = '../../../build/grestler-foundation/persistence/grestler-dbutilities'
 
 dependencies {
 
