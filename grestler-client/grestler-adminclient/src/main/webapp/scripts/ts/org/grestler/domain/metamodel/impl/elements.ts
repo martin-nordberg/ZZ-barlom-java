@@ -719,9 +719,9 @@ class PackageContents {
 
     findOptionalPackagedElementByName( name : string ) : api_elements.IPackagedElement {
         return this.findOptionalChildPackageByName( name ) ||
-                this.findOptionalVertexTypeByName( name ) ||
-                this.findOptionalDirectedEdgeTypeByName( name ) ||
-                this.findOptionalUndirectedEdgeTypeByName( name );
+            this.findOptionalVertexTypeByName( name ) ||
+            this.findOptionalDirectedEdgeTypeByName( name ) ||
+            this.findOptionalUndirectedEdgeTypeByName( name );
     }
 
     findOptionalUndirectedEdgeTypeByName( name : string ) : api_elements.IUndirectedEdgeType {
@@ -2322,7 +2322,7 @@ export class RootVertexType implements api_elements.IVertexType, IVertexTypeUnde
     }
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
-        return [ this._parentPackage ];
+        return [this._parentPackage];
     }
 
     public get parentPackage() : api_elements.IPackage {
@@ -2477,7 +2477,7 @@ export class RootDirectedEdgeType implements api_elements.IDirectedEdgeType, IEd
     }
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
-        return [ this._parentPackage ];
+        return [this._parentPackage];
     }
 
     public get path() : string {
@@ -2619,7 +2619,7 @@ export class RootUndirectedEdgeType implements api_elements.IUndirectedEdgeType,
     }
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
-        return [ this._parentPackage ];
+        return [this._parentPackage];
     }
 
     public get path() : string {

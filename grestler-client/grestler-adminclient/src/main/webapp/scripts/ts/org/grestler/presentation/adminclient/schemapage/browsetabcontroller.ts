@@ -95,7 +95,7 @@ export class BrowseTabController {
             multiEdgedness: "MULTI_EDGES_NOT_ALLOWED",
             selfLooping: "SELF_LOOPS_NOT_ALLOWED",
             tailVertexTypeId: tailVertexTypeId,
-            headVertexTypeId : headVertexTypeId,
+            headVertexTypeId: headVertexTypeId,
             tailRoleName: null,
             headRoleName: null,
             minTailOutDegree: null,

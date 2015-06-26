@@ -935,7 +935,7 @@ export interface IVertexAttributeDecl extends INamedElement {
     parentVertexType : IVertexType;
 
     /**
-     * @return the typeof this attribute.
+     * @return the type of this attribute.
      */
     type : IAttributeType;
 
