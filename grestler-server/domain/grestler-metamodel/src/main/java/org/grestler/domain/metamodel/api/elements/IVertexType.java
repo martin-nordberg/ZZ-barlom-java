@@ -16,6 +16,22 @@ import java.util.UUID;
 public interface IVertexType
     extends IPackagedElement {
 
+    class Record
+        extends IPackagedElement.Record {
+
+        public Record( UUID id, UUID parentPackageId, String name, EAbstractness abstractness, UUID superTypeId ) {
+            super( id, parentPackageId, name );
+
+            this.abstractness = abstractness;
+            this.superTypeId = superTypeId;
+        }
+
+        public final EAbstractness abstractness;
+
+        public final UUID superTypeId;
+
+    }
+
     /**
      * @return the abstractness of this vertex type
      */
@@ -40,20 +56,4 @@ public interface IVertexType
      * type.
      */
     boolean isSubTypeOf( IVertexType vertexType );
-
-    class Record
-        extends IPackagedElement.Record {
-
-        public Record( UUID id, UUID parentPackageId, String name, EAbstractness abstractness, UUID superTypeId ) {
-            super( id, parentPackageId, name );
-
-            this.abstractness = abstractness;
-            this.superTypeId = superTypeId;
-        }
-
-        public final EAbstractness abstractness;
-
-        public final UUID superTypeId;
-
-    }
 }

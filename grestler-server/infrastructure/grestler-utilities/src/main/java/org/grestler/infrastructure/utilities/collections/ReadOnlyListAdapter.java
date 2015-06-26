@@ -9,29 +9,6 @@ import java.util.List;
 public class ReadOnlyListAdapter<T>
     implements IIndexable<T> {
 
-    @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
-    public ReadOnlyListAdapter( List<T> list ) {
-        this.list = list;
-    }
-
-    @Override
-    public T getAt( int index ) {
-        return this.list.get( index );
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new ReadOnlyIterator<>( this.list.iterator() );
-    }
-
-    @Override
-    public int size() {
-        return this.list.size();
-    }
-
-    private final List<T> list;
-
-
     /**
      * Class providing a read-only iterator that delegates to an arbitrary iterator.
      */
@@ -61,4 +38,26 @@ public class ReadOnlyListAdapter<T>
         private final Iterator<T> iterator;
 
     }
+
+    @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
+    public ReadOnlyListAdapter( List<T> list ) {
+        this.list = list;
+    }
+
+    @Override
+    public T getAt( int index ) {
+        return this.list.get( index );
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ReadOnlyIterator<>( this.list.iterator() );
+    }
+
+    @Override
+    public int size() {
+        return this.list.size();
+    }
+
+    private final List<T> list;
 }

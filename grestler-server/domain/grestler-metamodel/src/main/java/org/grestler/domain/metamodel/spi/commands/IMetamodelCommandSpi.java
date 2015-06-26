@@ -15,13 +15,6 @@ import java.util.UUID;
 public interface IMetamodelCommandSpi<R extends IMetamodelCommandSpi.CmdRecord> {
 
     /**
-     * Write the command's changes into the metamodel repository.
-     *
-     * @param record the JSON for the command's changes.
-     */
-    void finish( R record );
-
-    /**
      * Minimal record for the attributes used by a command.
      */
     class CmdRecord {
@@ -47,5 +40,12 @@ public interface IMetamodelCommandSpi<R extends IMetamodelCommandSpi.CmdRecord> 
 
         public final String jsonCmdArgs;
     }
+
+    /**
+     * Write the command's changes into the metamodel repository.
+     *
+     * @param record the JSON for the command's changes.
+     */
+    void finish( R record );
 
 }

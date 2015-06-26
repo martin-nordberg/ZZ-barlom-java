@@ -82,11 +82,11 @@ public final class JavaClass
         this.baseClass = baseClass;
     }
 
+    private IJavaClass baseClass;
+
     private final boolean isAbstract;
 
     private final boolean isFinal;
 
     private final boolean isTestCode;
-
-    private IJavaClass baseClass;
 }

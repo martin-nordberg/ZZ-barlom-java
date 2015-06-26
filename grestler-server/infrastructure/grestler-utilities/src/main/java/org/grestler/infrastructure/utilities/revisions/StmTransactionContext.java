@@ -142,23 +142,6 @@ public final class StmTransactionContext {
     }
 
     /**
-     * @return the transaction that has been established for the currently running thread
-     */
-    static IStmTransaction getTransactionOfCurrentThread() {
-
-        // Get the thread-local transaction.
-        IStmTransaction result = StmTransactionContext.transactionOfCurrentThread.get();
-
-        // If there is none, then it's a programming error.
-        if ( result == null ) {
-            throw new IllegalStateException( "Attempted to complete a transactional operation without a transaction." );
-        }
-
-        return result;
-
-    }
-
-    /**
      * Creates a new read-only transaction. The lifecycle of the transaction must be managed by the client, which is
      * responsible for calling either commit or abort on the result.
      */
@@ -252,6 +235,23 @@ public final class StmTransactionContext {
             // Restore the thread priority after any retries.
             Thread.currentThread().setPriority( Thread.NORM_PRIORITY );
         }
+
+    }
+
+    /**
+     * @return the transaction that has been established for the currently running thread
+     */
+    static IStmTransaction getTransactionOfCurrentThread() {
+
+        // Get the thread-local transaction.
+        IStmTransaction result = StmTransactionContext.transactionOfCurrentThread.get();
+
+        // If there is none, then it's a programming error.
+        if ( result == null ) {
+            throw new IllegalStateException( "Attempted to complete a transactional operation without a transaction." );
+        }
+
+        return result;
 
     }
 

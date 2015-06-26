@@ -15,6 +15,23 @@ final class SqlNamedParameterParser {
     }
 
     /**
+     * Pair of results from a parse.
+     */
+    static final class ParseResult {
+
+        @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
+        ParseResult( String sql, List<Object> arguments ) {
+            this.sql = sql;
+            this.arguments = arguments;
+        }
+
+        public final List<Object> arguments;
+
+        public final String sql;
+
+    }
+
+    /**
      * Parses a SQL query with named parameters. Returns a revised query ready for JDBC plus the arguments in order of
      * substitution.
      *
@@ -50,22 +67,5 @@ final class SqlNamedParameterParser {
 
     /** Regeular expression for matching SQL statement named parameters. */
     private static final Pattern SQL_PARAM_REGEX = Pattern.compile( "\\{\\{([a-zA-Z0-9]*)\\}\\}" );
-
-    /**
-     * Pair of results from a parse.
-     */
-    static final class ParseResult {
-
-        @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
-        ParseResult( String sql, List<Object> arguments ) {
-            this.sql = sql;
-            this.arguments = arguments;
-        }
-
-        public final List<Object> arguments;
-
-        public final String sql;
-
-    }
 
 }

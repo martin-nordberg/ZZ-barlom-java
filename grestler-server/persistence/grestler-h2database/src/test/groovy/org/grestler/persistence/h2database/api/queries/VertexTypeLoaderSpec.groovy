@@ -15,7 +15,7 @@ import spock.lang.Specification
  * Specification for vertex type loading.
  */
 class VertexTypeLoaderSpec
-        extends Specification {
+    extends Specification {
 
     def "A vertex type loader retrieves the top level base vertex type"() {
 
@@ -33,13 +33,13 @@ class VertexTypeLoaderSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         def rootVertexType = m.findRootVertexType();

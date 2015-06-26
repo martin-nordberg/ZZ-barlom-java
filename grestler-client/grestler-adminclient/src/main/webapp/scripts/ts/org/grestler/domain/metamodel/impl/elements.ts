@@ -2322,7 +2322,7 @@ export class RootVertexType implements api_elements.IVertexType, IVertexTypeUnde
     }
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
-        return [];
+        return [ this._parentPackage ];
     }
 
     public get parentPackage() : api_elements.IPackage {
@@ -2477,7 +2477,7 @@ export class RootDirectedEdgeType implements api_elements.IDirectedEdgeType, IEd
     }
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
-        return [];
+        return [ this._parentPackage ];
     }
 
     public get path() : string {
@@ -2619,7 +2619,7 @@ export class RootUndirectedEdgeType implements api_elements.IUndirectedEdgeType,
     }
 
     public get parentsInPath() : api_elements.IDocumentedElement[] {
-        return [];
+        return [ this._parentPackage ];
     }
 
     public get path() : string {

@@ -11,7 +11,13 @@ import org.grestler.domain.metamodel.spi.commands.VertexTypeCreationCmdRecord
 import org.grestler.domain.metamodel.spi.commands.VertexTypeSuperTypeChangeCmdRecord
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
-import org.grestler.persistence.h2database.api.queries.*
+import org.grestler.persistence.h2database.api.queries.AttributeDeclLoader
+import org.grestler.persistence.h2database.api.queries.AttributeTypeLoader
+import org.grestler.persistence.h2database.api.queries.DirectedEdgeTypeLoader
+import org.grestler.persistence.h2database.api.queries.PackageDependencyLoader
+import org.grestler.persistence.h2database.api.queries.PackageLoader
+import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader
+import org.grestler.persistence.h2database.api.queries.VertexTypeLoader
 import org.grestler.persistence.h2database.impl.H2DataSource
 import spock.lang.Specification
 
@@ -21,7 +27,7 @@ import javax.json.Json
  * Specification for vertex type abstractness changes.
  */
 class VertexTypeSuperTypeChangeCmdSpec
-        extends Specification {
+    extends Specification {
 
     def "A vertex type super type change command revises a vertex type"() {
 
@@ -40,7 +46,7 @@ class VertexTypeSuperTypeChangeCmdSpec
         json = '{"cmdId":"' + cmdIdB + '","id":"' + vtId + '","superTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
         cmd = new VertexTypeSuperTypeChangeCmdWriter( dataSource );
         def recordB = new VertexTypeSuperTypeChangeCmdRecord(
-                Json.createReader( new StringReader( json ) ).readObject()
+            Json.createReader( new StringReader( json ) ).readObject()
         );
         cmd.execute( recordB, {} as IMetamodelCommandSpi );
 
@@ -53,13 +59,13 @@ class VertexTypeSuperTypeChangeCmdSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         def vt = m.findOptionalVertexTypeById( UUID.fromString( vtId ) );

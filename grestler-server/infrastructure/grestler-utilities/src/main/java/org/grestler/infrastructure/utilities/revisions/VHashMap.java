@@ -9,11 +9,27 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Versioned hash map.
- * <p>
- * TODO: currently there is no resizing of the hash table as it fills up.
+ * Versioned hash map. <p> TODO: currently there is no resizing of the hash table as it fills up.
  */
 public class VHashMap<K, V> {
+
+    /**
+     * One entry in a list of entries by hash code.
+     *
+     * @param <K>
+     * @param <V>
+     */
+    public static class KeyValue<K, V> {
+
+        public KeyValue( K key, V value ) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public final K key;
+
+        public final V value;
+    }
 
     /**
      * Constructs a new versioned hash map.
@@ -186,23 +202,5 @@ public class VHashMap<K, V> {
 
     /** The number of entries in this map. */
     private final VInt size;
-
-    /**
-     * One entry in a list of entries by hash code.
-     *
-     * @param <K>
-     * @param <V>
-     */
-    public static class KeyValue<K, V> {
-
-        public KeyValue( K key, V value ) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public final K key;
-
-        public final V value;
-    }
 
 }

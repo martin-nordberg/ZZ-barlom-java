@@ -61,9 +61,11 @@ public final class V<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision<T> revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -113,9 +115,11 @@ public final class V<T>
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions ...
-        for ( Revision<T> revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision<T> revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -152,6 +156,36 @@ public final class V<T>
 
     }
 
+    /**
+     * Internal record structure for revisions in the linked list of revisions.
+     *
+     * @param <T> the type of the value that is managed through its revisions.
+     */
+    private static class Revision<T> {
+
+        Revision( T value, AtomicLong revisionNumber, Revision<T> priorRevision ) {
+            this.priorRevision = new AtomicReference<>( priorRevision );
+            this.revisionNumber = revisionNumber;
+            this.value = value;
+        }
+
+        /**
+         * A reference to the previous revision of the versioned item.
+         */
+        public final AtomicReference<Revision<T>> priorRevision;
+
+        /**
+         * The revision number of this revision (uniquely from the transaction that wrote it).
+         */
+        public final AtomicLong revisionNumber;
+
+        /**
+         * The value of the versioned item at this revision.
+         */
+        public T value;
+
+    }
+
     @Override
     void ensureNotWrittenByOtherTransaction() {
 
@@ -161,9 +195,11 @@ public final class V<T>
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
         // Loop through the revisions ...
-        for ( Revision<T> revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision<T> revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -223,9 +259,11 @@ public final class V<T>
     void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
-        for ( Revision<T> revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision<T> revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -244,35 +282,5 @@ public final class V<T>
      * of the list.
      */
     private final AtomicReference<Revision<T>> latestRevision;
-
-    /**
-     * Internal record structure for revisions in the linked list of revisions.
-     *
-     * @param <T> the type of the value that is managed through its revisions.
-     */
-    private static class Revision<T> {
-
-        Revision( T value, AtomicLong revisionNumber, Revision<T> priorRevision ) {
-            this.priorRevision = new AtomicReference<>( priorRevision );
-            this.revisionNumber = revisionNumber;
-            this.value = value;
-        }
-
-        /**
-         * A reference to the previous revision of the versioned item.
-         */
-        public final AtomicReference<Revision<T>> priorRevision;
-
-        /**
-         * The revision number of this revision (uniquely from the transaction that wrote it).
-         */
-        public final AtomicLong revisionNumber;
-
-        /**
-         * The value of the versioned item at this revision.
-         */
-        public T value;
-
-    }
 
 }

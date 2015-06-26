@@ -16,6 +16,18 @@ public interface IPackage
     extends IPackagedElement {
 
     /**
+     * Data structure for package records.
+     */
+    final class Record
+        extends IPackagedElement.Record {
+
+        public Record( UUID id, UUID parentPackageId, String name ) {
+            super( id, parentPackageId, name );
+        }
+
+    }
+
+    /**
      * @return the attribute types that are children of this package.
      */
     ISizedIterable<IAttributeType> getAttributeTypes();
@@ -62,17 +74,5 @@ public interface IPackage
      * @return true if this package depends upon the given one.
      */
     boolean hasSupplierPackage( IPackage pkg, EDependencyDepth dependencyDepth );
-
-    /**
-     * Data structure for package records.
-     */
-    final class Record
-        extends IPackagedElement.Record {
-
-        public Record( UUID id, UUID parentPackageId, String name ) {
-            super( id, parentPackageId, name );
-        }
-
-    }
 
 }

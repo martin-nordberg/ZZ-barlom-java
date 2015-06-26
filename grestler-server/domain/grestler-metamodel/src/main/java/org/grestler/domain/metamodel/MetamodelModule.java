@@ -35,13 +35,13 @@ public class MetamodelModule {
     /**
      * Constructs a new metamodel repository.
      *
-     * @param packageLoader           the source for loading packages.
-     * @param packageDependencyLoader the source for loading package dependencies.
-     * @param attributeTypeLoader     the source for loading attribute types.
-     * @param vertexTypeLoader        the source for loading vertex types.
-     * @param directedEdgeTypeLoader  the source for loading directed edge types.
-     * @param undirectedEdgeTypeLoader  the source for loading undirected edge types.
-     * @param attributeDeclLoader     the source for loading attribute declarations.
+     * @param packageLoader            the source for loading packages.
+     * @param packageDependencyLoader  the source for loading package dependencies.
+     * @param attributeTypeLoader      the source for loading attribute types.
+     * @param vertexTypeLoader         the source for loading vertex types.
+     * @param directedEdgeTypeLoader   the source for loading directed edge types.
+     * @param undirectedEdgeTypeLoader the source for loading undirected edge types.
+     * @param attributeDeclLoader      the source for loading attribute declarations.
      *
      * @return the newly created repository.
      */

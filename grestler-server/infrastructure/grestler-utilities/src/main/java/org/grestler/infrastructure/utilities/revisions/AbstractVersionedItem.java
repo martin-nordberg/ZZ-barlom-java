@@ -8,10 +8,9 @@ package org.grestler.infrastructure.utilities.revisions;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Interface to a versioned value that supports clean up of obsolete or aborted versions.
- * <p>
- * TODO: make versioned items observable: void subscribe( boolean insideTransaction, Subscriber subscriber ); void
- * unsubscribe( Subscriber subscriber );
+ * Interface to a versioned value that supports clean up of obsolete or aborted versions. <p> TODO: make versioned items
+ * observable: void subscribe( boolean insideTransaction, Subscriber subscriber ); void unsubscribe( Subscriber
+ * subscriber );
  */
 abstract class AbstractVersionedItem {
 

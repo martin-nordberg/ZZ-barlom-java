@@ -14,6 +14,21 @@ public interface INamedElement
     extends IDocumentedElement {
 
     /**
+     * Data structure for named element records.
+     */
+    class Record
+        extends IDocumentedElement.Record {
+
+        protected Record( UUID id, String name ) {
+            super( id );
+            this.name = name;
+        }
+
+        public final String name;
+
+    }
+
+    /**
      * @return the name of this element.
      */
     String getName();
@@ -30,21 +45,6 @@ public interface INamedElement
         }
 
         return this.getName();
-
-    }
-
-    /**
-     * Data structure for named element records.
-     */
-    class Record
-        extends IDocumentedElement.Record {
-
-        protected Record( UUID id, String name ) {
-            super( id );
-            this.name = name;
-        }
-
-        public final String name;
 
     }
 

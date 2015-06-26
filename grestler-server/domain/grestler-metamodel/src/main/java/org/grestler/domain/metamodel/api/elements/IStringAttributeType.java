@@ -16,26 +16,6 @@ import java.util.regex.Pattern;
 public interface IStringAttributeType
     extends IAttributeType {
 
-    @Override
-    default EDataType getDataType() {
-        return EDataType.STRING;
-    }
-
-    /**
-     * @return the maximum allowed length for attributes of this type.
-     */
-    int getMaxLength();
-
-    /**
-     * @return the minimum allowed length for attributes of this type.
-     */
-    OptionalInt getMinLength();
-
-    /**
-     * @return a regular expression that must be matched by values of this attribute type.
-     */
-    Optional<Pattern> getRegexPattern();
-
     class Record
         extends IAttributeType.Record {
 
@@ -61,5 +41,25 @@ public interface IStringAttributeType
         public final Optional<String> regexPattern;
 
     }
+
+    @Override
+    default EDataType getDataType() {
+        return EDataType.STRING;
+    }
+
+    /**
+     * @return the maximum allowed length for attributes of this type.
+     */
+    int getMaxLength();
+
+    /**
+     * @return the minimum allowed length for attributes of this type.
+     */
+    OptionalInt getMinLength();
+
+    /**
+     * @return a regular expression that must be matched by values of this attribute type.
+     */
+    Optional<Pattern> getRegexPattern();
 
 }

@@ -1,4 +1,3 @@
-
 buildDir = '../../build/application/grestler-webutilities'
 
 dependencies {

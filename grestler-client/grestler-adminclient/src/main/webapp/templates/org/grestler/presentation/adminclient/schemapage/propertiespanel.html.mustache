@@ -25,20 +25,20 @@
                     <td>
 
                         {{#if isText}}
-                            <input id="field-{{name}}" type="text" name="{{name}}" on-change="textChanged" value="{{value}}">
+                            <input id="field-{{name}}" type="text" name="{{name}}" on-change="textChanged" value="{{value}}" {{#if readOnly}}disabled{{/if}}>
                         {{/if}}
 
                         {{#if isRadioGroup}}
                             {{#each radioButtons:index}}
                                 <label for="field-{{name}}-{{index}}">
-                                    <input id="field-{{name}}-{{index}}" type="radio" name="{{name}}" on-change="radioChanged" checked="{{checked}}" value="{{value}}">
+                                    <input id="field-{{name}}-{{index}}" type="radio" name="{{name}}" on-change="radioChanged" checked="{{checked}}" value="{{value}}" {{#if readOnly}}disabled{{/if}}>
                                     {{label}}
                                 </label>
                             {{/each}}
                         {{/if}}
 
                         {{#if isDropDown}}
-                            <select id="field-{{name}}" name="{{name}}" on-change="dropDownChanged">
+                            <select id="field-{{name}}" name="{{name}}" on-change="dropDownChanged" {{#if readOnly}}disabled{{/if}}>
                                 {{#each selections}}
                                     <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
                                 {{/each}}

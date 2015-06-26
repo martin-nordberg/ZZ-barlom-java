@@ -11,18 +11,18 @@ import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory
 import org.grestler.domain.metamodel.spi.queries.IAttributeDeclLoader;
 import org.grestler.domain.metamodel.spi.queries.IAttributeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IDirectedEdgeTypeLoader;
-import org.grestler.domain.metamodel.spi.queries.IUndirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
+import org.grestler.domain.metamodel.spi.queries.IUndirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
 import org.grestler.persistence.dbutilities.api.IDataSource;
 import org.grestler.persistence.h2database.api.commands.MetamodelCommandWriterFactory;
 import org.grestler.persistence.h2database.api.queries.AttributeDeclLoader;
 import org.grestler.persistence.h2database.api.queries.AttributeTypeLoader;
 import org.grestler.persistence.h2database.api.queries.DirectedEdgeTypeLoader;
-import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader;
 import org.grestler.persistence.h2database.api.queries.PackageDependencyLoader;
 import org.grestler.persistence.h2database.api.queries.PackageLoader;
+import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader;
 import org.grestler.persistence.h2database.api.queries.VertexTypeLoader;
 import org.grestler.persistence.h2database.impl.H2DataSource;
 
@@ -81,18 +81,6 @@ public class H2DatabaseModule {
     }
 
     /**
-     * Provides an undirected edge type loader for H2.
-     *
-     * @param dataSource the H2 data source.
-     *
-     * @return the constructed edge type loader.
-     */
-    @Provides
-    public IUndirectedEdgeTypeLoader provideUndirectedEdgeTypeLoader( IDataSource dataSource ) {
-        return new UndirectedEdgeTypeLoader( dataSource );
-    }
-
-    /**
      * Provides a factory for command writers.
      *
      * @param dataSource the data source to write to.
@@ -126,6 +114,18 @@ public class H2DatabaseModule {
     @Provides
     public IPackageLoader providePackageLoader( IDataSource dataSource ) {
         return new PackageLoader( dataSource );
+    }
+
+    /**
+     * Provides an undirected edge type loader for H2.
+     *
+     * @param dataSource the H2 data source.
+     *
+     * @return the constructed edge type loader.
+     */
+    @Provides
+    public IUndirectedEdgeTypeLoader provideUndirectedEdgeTypeLoader( IDataSource dataSource ) {
+        return new UndirectedEdgeTypeLoader( dataSource );
     }
 
     /**

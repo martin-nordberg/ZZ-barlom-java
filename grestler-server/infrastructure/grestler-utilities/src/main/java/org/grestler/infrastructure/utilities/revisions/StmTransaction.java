@@ -305,6 +305,12 @@ final class StmTransaction
     private static Queue<Long> sourceRevisionsInUse = new PriorityBlockingQueue<>();
 
     /**
+     * A newer revision number seen during reading will cause a write conflict if anything writes through this
+     * transaction.
+     */
+    private boolean newerRevisionSeen;
+
+    /**
      * The next transaction in a linked list of transactions awaiting clean up.
      */
     private final AtomicReference<StmTransaction> nextTransactionAwaitingCleanUp;
@@ -334,11 +340,5 @@ final class StmTransaction
      * Whether this transaction is allowed to write changes.
      */
     private final ETransactionWriteability writeability;
-
-    /**
-     * A newer revision number seen during reading will cause a write conflict if anything writes through this
-     * transaction.
-     */
-    private boolean newerRevisionSeen;
 
 }

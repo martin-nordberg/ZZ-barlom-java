@@ -15,7 +15,7 @@ import spock.lang.Specification
  * Specification for edge type loading.
  */
 class EdgeTypeLoaderSpec
-        extends Specification {
+    extends Specification {
 
     def "An edge type loader retrieves the top level base edge type"() {
 
@@ -33,13 +33,13 @@ class EdgeTypeLoaderSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         def rootEdgeType = m.findRootDirectedEdgeType();

@@ -15,7 +15,7 @@ import spock.lang.Specification
  * Specification for package loading.
  */
 class PackageLoaderSpec
-        extends Specification {
+    extends Specification {
 
     def "A package loader retrieves the top level root package"() {
 
@@ -33,13 +33,13 @@ class PackageLoaderSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         def rootPkg = m.findRootPackage();

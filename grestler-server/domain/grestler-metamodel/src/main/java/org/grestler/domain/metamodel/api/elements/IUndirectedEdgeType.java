@@ -15,6 +15,37 @@ import java.util.UUID;
 public interface IUndirectedEdgeType
     extends IEdgeType {
 
+    class Record
+        extends IEdgeType.Record {
+
+        public Record(
+            UUID id,
+            UUID parentPackageId,
+            UUID superTypeId,
+            String name,
+            EAbstractness abstractness,
+            ECyclicity cyclicity,
+            EMultiEdgedness multiEdgedness,
+            ESelfLooping selfLooping,
+            OptionalInt maxDegree,
+            OptionalInt minDegree,
+            UUID vertexTypeId
+        ) {
+            super( id, parentPackageId, superTypeId, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+
+            this.maxDegree = maxDegree;
+            this.minDegree = minDegree;
+            this.vertexTypeId = vertexTypeId;
+        }
+
+        public final OptionalInt maxDegree;
+
+        public final OptionalInt minDegree;
+
+        public final UUID vertexTypeId;
+
+    }
+
     /**
      * The maximum number of edges connected to any vertex for an edge of this type.
      *
@@ -48,35 +79,4 @@ public interface IUndirectedEdgeType
      * type.
      */
     boolean isSubTypeOf( IUndirectedEdgeType edgeType );
-
-    class Record
-        extends IEdgeType.Record {
-
-        public Record(
-            UUID id,
-            UUID parentPackageId,
-            UUID superTypeId,
-            String name,
-            EAbstractness abstractness,
-            ECyclicity cyclicity,
-            EMultiEdgedness multiEdgedness,
-            ESelfLooping selfLooping,
-            OptionalInt maxDegree,
-            OptionalInt minDegree,
-            UUID vertexTypeId
-        ) {
-            super( id, parentPackageId, superTypeId, name, abstractness, cyclicity, multiEdgedness, selfLooping );
-
-            this.maxDegree = maxDegree;
-            this.minDegree = minDegree;
-            this.vertexTypeId = vertexTypeId;
-        }
-
-        public final OptionalInt maxDegree;
-
-        public final OptionalInt minDegree;
-
-        public final UUID vertexTypeId;
-
-    }
 }

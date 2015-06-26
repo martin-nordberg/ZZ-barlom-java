@@ -6,7 +6,7 @@ import spock.lang.Specification
  * Specification for org.grestler.infrastructure.utilities.uuids.Uuids
  */
 class UuidsSpec
-        extends Specification {
+    extends Specification {
 
     def "Makes a single UUID in correct format"() {
 

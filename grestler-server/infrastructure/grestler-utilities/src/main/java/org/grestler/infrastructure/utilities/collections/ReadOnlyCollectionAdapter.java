@@ -9,24 +9,6 @@ import java.util.Iterator;
 public class ReadOnlyCollectionAdapter<T>
     implements ISizedIterable<T> {
 
-    @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
-    public ReadOnlyCollectionAdapter( Collection<T> collection ) {
-        this.collection = collection;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new ReadOnlyIterator<>( this.collection.iterator() );
-    }
-
-    @Override
-    public int size() {
-        return this.collection.size();
-    }
-
-    private final Collection<T> collection;
-
-
     /**
      * Class providing a read-only iterator that delegates to an arbitrary iterator.
      */
@@ -56,4 +38,21 @@ public class ReadOnlyCollectionAdapter<T>
         private final Iterator<T> iterator;
 
     }
+
+    @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
+    public ReadOnlyCollectionAdapter( Collection<T> collection ) {
+        this.collection = collection;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ReadOnlyIterator<>( this.collection.iterator() );
+    }
+
+    @Override
+    public int size() {
+        return this.collection.size();
+    }
+
+    private final Collection<T> collection;
 }

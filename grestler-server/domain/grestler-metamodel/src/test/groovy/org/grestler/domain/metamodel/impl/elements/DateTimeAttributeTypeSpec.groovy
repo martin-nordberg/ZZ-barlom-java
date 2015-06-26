@@ -13,7 +13,7 @@ import java.time.Instant
  * Spec for core behavior of a date/time attribute type..
  */
 class DateTimeAttributeTypeSpec
-        extends AttributeTypeSpec {
+    extends AttributeTypeSpec {
 
     static def dt1 = Instant.parse( '2015-02-01T05:15:40.000Z' );
 
@@ -23,14 +23,14 @@ class DateTimeAttributeTypeSpec
 
         expect:
         new DateTimeAttributeType(
-                new IDateTimeAttributeType.Record(
-                        id,
-                        parentPackage.id,
-                        name,
-                        Optional.ofNullable( minValue ),
-                        Optional.ofNullable( maxValue )
-                ),
-                parentPackage
+            new IDateTimeAttributeType.Record(
+                id,
+                parentPackage.id,
+                name,
+                Optional.ofNullable( minValue ),
+                Optional.ofNullable( maxValue )
+            ),
+            parentPackage
         ).toJson() == json;
 
         where:

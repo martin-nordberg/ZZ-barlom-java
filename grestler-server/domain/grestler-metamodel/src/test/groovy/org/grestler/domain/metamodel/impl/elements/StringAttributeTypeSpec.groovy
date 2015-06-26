@@ -11,7 +11,7 @@ import org.grestler.domain.metamodel.api.elements.IStringAttributeType
  * Spec for core behavior of a string attribute type..
  */
 class StringAttributeTypeSpec
-        extends AttributeTypeSpec {
+    extends AttributeTypeSpec {
 
     static def empty = OptionalInt.empty();
 
@@ -27,15 +27,15 @@ class StringAttributeTypeSpec
 
         expect:
         new StringAttributeType(
-                new IStringAttributeType.Record(
-                        id,
-                        parentPackage.id,
-                        name,
-                        maxLength,
-                        minLength,
-                        regexPattern
-                ),
-                parentPackage
+            new IStringAttributeType.Record(
+                id,
+                parentPackage.id,
+                name,
+                maxLength,
+                minLength,
+                regexPattern
+            ),
+            parentPackage
         ).toJson() == json;
 
         where:

@@ -58,6 +58,22 @@ public class H2DatabaseException
     }
 
     /**
+     * Class combining the attributes of a validation error.
+     */
+    private static final class ValidationError {
+
+        private ValidationError( EValidationType validationType, String validationMessage ) {
+            this.validationType = validationType;
+            this.validationMessage = validationMessage;
+        }
+
+        public final String validationMessage;
+
+        public final EValidationType validationType;
+
+    }
+
+    /**
      * Determines a more useful determination of a validation error by parsing fragments of the SQL exception message.
      *
      * @param cause the SQL exception to look at.
@@ -114,19 +130,8 @@ public class H2DatabaseException
     /** Mapped fragments for duplicate entity problems. */
     private static final Map<String, String> DUPLICATE_ENTITY_FRAGMENTS = new HashMap<>();
 
-    static {
-        H2DatabaseException.DUPLICATE_ENTITY_FRAGMENTS.put( "PK_GRESTLER_PACKAGE", "package" );
-        H2DatabaseException.DUPLICATE_ENTITY_FRAGMENTS.put( "PK_GRESTLER_VERTEX_TYPE", "vertex type" );
-        // TODO: more entries ...
-    }
-
     /** Mapped fragments for missing related entity problems. */
     private static final Map<String, String> RELATED_ENTITY_FRAGMENTS = new HashMap<>();
-
-    static {
-        H2DatabaseException.RELATED_ENTITY_FRAGMENTS.put( "__PARENT_PACKAGE", "package" );
-        // TODO: more entries ...
-    }
 
     /** Serialization version. */
     private static final long serialVersionUID = 1L;
@@ -134,20 +139,15 @@ public class H2DatabaseException
     /** The underlying validation error represented by this exception. */
     private final ValidationError validationError;
 
-    /**
-     * Class combining the attributes of a validation error.
-     */
-    private static final class ValidationError {
+    static {
+        H2DatabaseException.DUPLICATE_ENTITY_FRAGMENTS.put( "PK_GRESTLER_PACKAGE", "package" );
+        H2DatabaseException.DUPLICATE_ENTITY_FRAGMENTS.put( "PK_GRESTLER_VERTEX_TYPE", "vertex type" );
+        // TODO: more entries ...
+    }
 
-        private ValidationError( EValidationType validationType, String validationMessage ) {
-            this.validationType = validationType;
-            this.validationMessage = validationMessage;
-        }
-
-        public final String validationMessage;
-
-        public final EValidationType validationType;
-
+    static {
+        H2DatabaseException.RELATED_ENTITY_FRAGMENTS.put( "__PARENT_PACKAGE", "package" );
+        // TODO: more entries ...
     }
 
 }

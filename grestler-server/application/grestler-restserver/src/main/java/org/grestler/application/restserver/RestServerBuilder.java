@@ -8,8 +8,8 @@ package org.grestler.application.restserver;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.grestler.application.restserver.logging.Log4j2RestEasyLogger;
 import org.grestler.application.apputilities.filters.ThreadNameFilter;
+import org.grestler.application.restserver.logging.Log4j2RestEasyLogger;
 import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 

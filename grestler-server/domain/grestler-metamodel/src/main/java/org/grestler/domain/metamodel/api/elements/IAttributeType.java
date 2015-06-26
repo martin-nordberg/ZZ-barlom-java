@@ -14,11 +14,6 @@ public interface IAttributeType
     extends IPackagedElement {
 
     /**
-     * @return the fundamental data type for attributes of this type.
-     */
-    EDataType getDataType();
-
-    /**
      * Data structure for the attributes of an attribute type.
      */
     class Record
@@ -32,4 +27,9 @@ public interface IAttributeType
         public final EDataType dataType;
 
     }
+
+    /**
+     * @return the fundamental data type for attributes of this type.
+     */
+    EDataType getDataType();
 }

@@ -6,7 +6,7 @@ import spock.lang.Specification
  * Specification for started and ending transactions.
  */
 class StmTransactionContextSpec
-        extends Specification {
+    extends Specification {
 
     def "A read-only transaction can be started and committed"() {
         given:

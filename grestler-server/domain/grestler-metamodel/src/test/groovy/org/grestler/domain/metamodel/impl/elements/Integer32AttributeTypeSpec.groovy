@@ -11,7 +11,7 @@ import org.grestler.domain.metamodel.api.elements.IInteger32AttributeType
  * Spec for core behavior of a 32-bit integer attribute type..
  */
 class Integer32AttributeTypeSpec
-        extends AttributeTypeSpec {
+    extends AttributeTypeSpec {
 
     static def empty = OptionalInt.empty();
 
@@ -25,15 +25,15 @@ class Integer32AttributeTypeSpec
 
         expect:
         new Integer32AttributeType(
-                new IInteger32AttributeType.Record(
-                        id,
-                        parentPackage.id,
-                        name,
-                        defaultValue,
-                        minValue,
-                        maxValue
-                ),
-                parentPackage
+            new IInteger32AttributeType.Record(
+                id,
+                parentPackage.id,
+                name,
+                defaultValue,
+                minValue,
+                maxValue
+            ),
+            parentPackage
         ).toJson() == json;
 
         where:

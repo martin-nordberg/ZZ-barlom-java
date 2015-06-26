@@ -12,7 +12,13 @@ import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.exceptions.EValidationType
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
 import org.grestler.persistence.dbutilities.api.DatabaseException
-import org.grestler.persistence.h2database.api.queries.*
+import org.grestler.persistence.h2database.api.queries.AttributeDeclLoader
+import org.grestler.persistence.h2database.api.queries.AttributeTypeLoader
+import org.grestler.persistence.h2database.api.queries.DirectedEdgeTypeLoader
+import org.grestler.persistence.h2database.api.queries.PackageDependencyLoader
+import org.grestler.persistence.h2database.api.queries.PackageLoader
+import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader
+import org.grestler.persistence.h2database.api.queries.VertexTypeLoader
 import org.grestler.persistence.h2database.impl.H2DataSource
 import spock.lang.Specification
 
@@ -22,7 +28,7 @@ import javax.json.Json
  * Specification for vertex type creation.
  */
 class VertexTypeCreationCmdSpec
-        extends Specification {
+    extends Specification {
 
     def "A vertex type creation command creates a vertex type"() {
 
@@ -46,13 +52,13 @@ class VertexTypeCreationCmdSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         def vertexType = m.findOptionalVertexTypeById( UUID.fromString( vtId ) );

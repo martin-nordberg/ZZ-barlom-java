@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Specification for versioned arrays.
  */
 class VArraySpec
-        extends Specification {
+    extends Specification {
 
     def "Transactions allow a versioned list to be created and changed"() {
 

@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Specification for versioned boxes.
  */
 class VSpec
-        extends Specification {
+    extends Specification {
 
     def "Transactions allow a versioned item to be created and changed"() {
 

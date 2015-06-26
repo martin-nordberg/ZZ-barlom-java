@@ -13,11 +13,6 @@ import java.util.UUID;
 public interface IUuidAttributeType
     extends IAttributeType {
 
-    @Override
-    default EDataType getDataType() {
-        return EDataType.UUID;
-    }
-
     class Record
         extends IAttributeType.Record {
 
@@ -27,5 +22,10 @@ public interface IUuidAttributeType
             super( id, parentPackageId, name, EDataType.UUID );
         }
 
+    }
+
+    @Override
+    default EDataType getDataType() {
+        return EDataType.UUID;
     }
 }

@@ -45,12 +45,15 @@ public final class MetamodelRepository
      * Constructs a new metamodel repository. Loads it with packages, attribute types, vertex types, and edge types from
      * the given sources.
      *
-     * @param packageLoader       the loader used to initialize the packages into the metamodel repository.
-     * @param attributeTypeLoader the loader used to initialize the attribute types into the metamodel repository.
-     * @param vertexTypeLoader    the loader used to initialize the vertex types into the metamodel repository.
-     * @param directedEdgeTypeLoader      the loader used to initialize the directed edge types into the metamodel repository.
-     * @param undirectedEdgeTypeLoader      the loader used to initialize the undirected edge types into the metamodel repository.
-     * @param attributeDeclLoader the loader used to initialize attribute declarations into the metamodel repository.
+     * @param packageLoader            the loader used to initialize the packages into the metamodel repository.
+     * @param attributeTypeLoader      the loader used to initialize the attribute types into the metamodel repository.
+     * @param vertexTypeLoader         the loader used to initialize the vertex types into the metamodel repository.
+     * @param directedEdgeTypeLoader   the loader used to initialize the directed edge types into the metamodel
+     *                                 repository.
+     * @param undirectedEdgeTypeLoader the loader used to initialize the undirected edge types into the metamodel
+     *                                 repository.
+     * @param attributeDeclLoader      the loader used to initialize attribute declarations into the metamodel
+     *                                 repository.
      */
     @Inject
     public MetamodelRepository(
@@ -684,14 +687,6 @@ public final class MetamodelRepository
 
     private final VHashMap<UUID, IPackage> packagesById;
 
-    private final VArray<IUndirectedEdgeType> undirectedEdgeTypes;
-
-    private final VHashMap<UUID, IUndirectedEdgeType> undirectedEdgeTypesById;
-
-    private final VArray<IVertexType> vertexTypes;
-
-    private final VHashMap<UUID, IVertexType> vertexTypesById;
-
     private V<IDirectedEdgeType> rootDirectedEdgeType = null;
 
     private V<IPackage> rootPackage = null;
@@ -699,5 +694,13 @@ public final class MetamodelRepository
     private V<IUndirectedEdgeType> rootUndirectedEdgeType = null;
 
     private V<IVertexType> rootVertexType = null;
+
+    private final VArray<IUndirectedEdgeType> undirectedEdgeTypes;
+
+    private final VHashMap<UUID, IUndirectedEdgeType> undirectedEdgeTypesById;
+
+    private final VArray<IVertexType> vertexTypes;
+
+    private final VHashMap<UUID, IVertexType> vertexTypesById;
 
 }

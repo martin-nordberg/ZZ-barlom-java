@@ -16,7 +16,7 @@ import spock.lang.Specification
  * Specification for vertex types.
  */
 class VertexTypeSpec
-        extends Specification {
+    extends Specification {
 
     UUID id = Uuids.makeUuid();
 
@@ -49,19 +49,19 @@ class VertexTypeSpec
         IPackage root = new RootPackage( id );
         IVertexType v = new RootVertexType( id, root );
         IVertexType v1 = new VertexType(
-                new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v.id ),
-                root,
-                v
+            new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v.id ),
+            root,
+            v
         );
         IVertexType v2 = new VertexType(
-                new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v1.id ),
-                root,
-                v1
+            new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v1.id ),
+            root,
+            v1
         );
         IVertexType w = new VertexType(
-                new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v.id ),
-                root,
-                v
+            new IVertexType.Record( id, root.id, name, EAbstractness.ABSTRACT, v.id ),
+            root,
+            v
         );
 
         expect:

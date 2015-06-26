@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Specification for VHashMap.
  */
 class VHashMapSpec
-        extends Specification {
+    extends Specification {
 
     def "Transactions allow a versioned map to be created and changed"() {
 

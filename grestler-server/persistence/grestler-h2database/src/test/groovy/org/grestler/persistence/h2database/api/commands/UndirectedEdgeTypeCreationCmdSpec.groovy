@@ -12,7 +12,13 @@ import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi
 import org.grestler.infrastructure.utilities.exceptions.EValidationType
 import org.grestler.infrastructure.utilities.revisions.StmTransactionContext
 import org.grestler.persistence.dbutilities.api.DatabaseException
-import org.grestler.persistence.h2database.api.queries.*
+import org.grestler.persistence.h2database.api.queries.AttributeDeclLoader
+import org.grestler.persistence.h2database.api.queries.AttributeTypeLoader
+import org.grestler.persistence.h2database.api.queries.DirectedEdgeTypeLoader
+import org.grestler.persistence.h2database.api.queries.PackageDependencyLoader
+import org.grestler.persistence.h2database.api.queries.PackageLoader
+import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader
+import org.grestler.persistence.h2database.api.queries.VertexTypeLoader
 import org.grestler.persistence.h2database.impl.H2DataSource
 import spock.lang.Specification
 
@@ -22,7 +28,7 @@ import javax.json.Json
  * Specification for directed edge type creation.
  */
 class UndirectedEdgeTypeCreationCmdSpec
-        extends Specification {
+    extends Specification {
 
     def "An undirected edge type creation command creates an undirected edge type"() {
 
@@ -32,14 +38,14 @@ class UndirectedEdgeTypeCreationCmdSpec
         def cmdId = "12343111-7a26-11e4-a545-08002741a702";
         def etId = "12343112-7a26-11e4-a545-08002741a702";
         def json = '{"cmdId":"' + cmdId + '","id":"' + etId +
-                '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702",' +
-                '"name":"undiredge1","superTypeId":"00000030-7a26-11e4-a545-08002741a702",' +
-                '"abstractness":"ABSTRACT", "cyclicity":"UNCONSTRAINED", "multiEdgedness":"MULTI_EDGES_ALLOWED",' +
-                '"selfLooping":"SELF_LOOPS_NOT_ALLOWED","vertexTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
+            '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702",' +
+            '"name":"undiredge1","superTypeId":"00000030-7a26-11e4-a545-08002741a702",' +
+            '"abstractness":"ABSTRACT", "cyclicity":"UNCONSTRAINED", "multiEdgedness":"MULTI_EDGES_ALLOWED",' +
+            '"selfLooping":"SELF_LOOPS_NOT_ALLOWED","vertexTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new UndirectedEdgeTypeCreationCmdWriter( dataSource );
         def record = new UndirectedEdgeTypeCreationCmdRecord(
-                Json.createReader( new StringReader( json ) ).readObject()
+            Json.createReader( new StringReader( json ) ).readObject()
         );
         cmd.execute( record, {} as IMetamodelCommandSpi );
 
@@ -52,13 +58,13 @@ class UndirectedEdgeTypeCreationCmdSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         def edgeType = m.findOptionalUndirectedEdgeTypeById( UUID.fromString( etId ) );
@@ -79,14 +85,14 @@ class UndirectedEdgeTypeCreationCmdSpec
         def cmdId = "12343113-7a26-11e4-a545-08002741a702";
         def etId = "12343114-7a26-11e4-a545-08002741a702";
         def json = '{"cmdId":"' + cmdId + '","id":"' + etId +
-                '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702",' +
-                '"name":"undiredge2","superTypeId":"00000030-7a26-11e4-a545-08002741a702",' +
-                '"abstractness":"ABSTRACT", "cyclicity":"ACYCLIC", "multiEdgedness":"MULTI_EDGES_NOT_ALLOWED",' +
-                '"selfLooping":"UNCONSTRAINED","vertexTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
+            '","parentPackageId":"00000000-7a26-11e4-a545-08002741a702",' +
+            '"name":"undiredge2","superTypeId":"00000030-7a26-11e4-a545-08002741a702",' +
+            '"abstractness":"ABSTRACT", "cyclicity":"ACYCLIC", "multiEdgedness":"MULTI_EDGES_NOT_ALLOWED",' +
+            '"selfLooping":"UNCONSTRAINED","vertexTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new UndirectedEdgeTypeCreationCmdWriter( dataSource );
         def record = new UndirectedEdgeTypeCreationCmdRecord(
-                Json.createReader( new StringReader( json ) ).readObject()
+            Json.createReader( new StringReader( json ) ).readObject()
         );
         cmd.execute( record, {} as IMetamodelCommandSpi );
 
@@ -106,14 +112,14 @@ class UndirectedEdgeTypeCreationCmdSpec
         def cmdId = "12343115-7a26-11e4-a545-08002741a702";
         def etId = "23453116-7a26-11e4-a545-08002741a702";
         def json = '{"cmdId":"' + cmdId + '","id":"' + etId +
-                '","parentPackageId":"99999999-7a26-11e4-a545-08002741a702",' +
-                '"name":"undiredge3","superTypeId":"00000030-7a26-11e4-a545-08002741a702",' +
-                '"abstractness":"CONCRETE", "cyclicity":"ACYCLIC", "multiEdgedness":"MULTI_EDGES_NOT_ALLOWED",' +
-                '"selfLooping":"UNCONSTRAINED","vertexTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
+            '","parentPackageId":"99999999-7a26-11e4-a545-08002741a702",' +
+            '"name":"undiredge3","superTypeId":"00000030-7a26-11e4-a545-08002741a702",' +
+            '"abstractness":"CONCRETE", "cyclicity":"ACYCLIC", "multiEdgedness":"MULTI_EDGES_NOT_ALLOWED",' +
+            '"selfLooping":"UNCONSTRAINED","vertexTypeId":"00000010-7a26-11e4-a545-08002741a702"}';
         def dataSource = new H2DataSource( "test2" );
         def cmd = new UndirectedEdgeTypeCreationCmdWriter( dataSource );
         def record = new UndirectedEdgeTypeCreationCmdRecord(
-                Json.createReader( new StringReader( json ) ).readObject()
+            Json.createReader( new StringReader( json ) ).readObject()
         );
 
         when:

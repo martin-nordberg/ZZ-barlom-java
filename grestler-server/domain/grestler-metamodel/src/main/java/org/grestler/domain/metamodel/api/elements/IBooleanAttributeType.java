@@ -14,18 +14,6 @@ import java.util.UUID;
 public interface IBooleanAttributeType
     extends IAttributeType {
 
-    @Override
-    default EDataType getDataType() {
-        return EDataType.BOOLEAN;
-    }
-
-    /**
-     * The default value for attributes of this type.
-     *
-     * @return the default value.
-     */
-    Optional<Boolean> getDefaultValue();
-
     /**
      * Data structure for the attributes of a boolean attribute type.
      */
@@ -42,5 +30,17 @@ public interface IBooleanAttributeType
         public final Optional<Boolean> defaultValue;
 
     }
+
+    @Override
+    default EDataType getDataType() {
+        return EDataType.BOOLEAN;
+    }
+
+    /**
+     * The default value for attributes of this type.
+     *
+     * @return the default value.
+     */
+    Optional<Boolean> getDefaultValue();
 
 }

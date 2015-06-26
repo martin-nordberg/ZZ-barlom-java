@@ -13,6 +13,25 @@ import java.util.UUID;
 public interface IEdgeAttributeDecl
     extends INamedElement {
 
+    class Record
+        extends INamedElement.Record {
+
+        public Record( UUID id, String name, EAttributeOptionality optionality, UUID parentEdgeTypeId, UUID typeId ) {
+            super( id, name );
+
+            this.optionality = optionality;
+            this.parentEdgeTypeId = parentEdgeTypeId;
+            this.typeId = typeId;
+        }
+
+        public final EAttributeOptionality optionality;
+
+        public final UUID parentEdgeTypeId;
+
+        public final UUID typeId;
+
+    }
+
     /**
      * @return whether this is a required attribute.
      */
@@ -32,23 +51,4 @@ public interface IEdgeAttributeDecl
      * @return the type of this attribute.
      */
     IAttributeType getType();
-
-    class Record
-        extends INamedElement.Record {
-
-        public Record( UUID id, String name, EAttributeOptionality optionality, UUID parentEdgeTypeId, UUID typeId ) {
-            super( id, name );
-
-            this.optionality = optionality;
-            this.parentEdgeTypeId = parentEdgeTypeId;
-            this.typeId = typeId;
-        }
-
-        public final EAttributeOptionality optionality;
-
-        public final UUID parentEdgeTypeId;
-
-        public final UUID typeId;
-
-    }
 }

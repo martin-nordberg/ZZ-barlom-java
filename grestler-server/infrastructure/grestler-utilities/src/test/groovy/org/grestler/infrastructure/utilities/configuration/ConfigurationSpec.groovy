@@ -6,7 +6,7 @@ import spock.lang.Specification
  * Specification for org.grestler.infrastructure.utilities.configuration.Configuration.
  */
 class ConfigurationSpec
-        extends Specification {
+    extends Specification {
 
     def "Sample properties can be read"() {
 

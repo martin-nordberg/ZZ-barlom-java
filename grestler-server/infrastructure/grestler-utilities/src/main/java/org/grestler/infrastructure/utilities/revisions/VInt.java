@@ -66,9 +66,11 @@ public final class VInt
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions.
-        for ( Revision revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -125,9 +127,11 @@ public final class VInt
         long targetRevisionNumber = currentTransaction.getTargetRevisionNumber().get();
 
         // Loop through the revisions ...
-        for ( Revision revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -164,6 +168,34 @@ public final class VInt
 
     }
 
+    /**
+     * Internal record structure for revisions in the linked list of revisions.
+     */
+    private static class Revision {
+
+        Revision( int value, AtomicLong revisionNumber, Revision priorRevision ) {
+            this.priorRevision = new AtomicReference<>( priorRevision );
+            this.revisionNumber = revisionNumber;
+            this.value = value;
+        }
+
+        /**
+         * A reference to the previous revision of the versioned item.
+         */
+        public final AtomicReference<Revision> priorRevision;
+
+        /**
+         * The revision number of this revision (uniquely from the transaction that wrote it).
+         */
+        public final AtomicLong revisionNumber;
+
+        /**
+         * The value of the versioned item at this revision.
+         */
+        public int value;
+
+    }
+
     @Override
     void ensureNotWrittenByOtherTransaction() {
 
@@ -173,9 +205,11 @@ public final class VInt
         long sourceRevisionNumber = currentTransaction.getSourceRevisionNumber();
 
         // Loop through the revisions ...
-        for ( Revision revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -235,9 +269,11 @@ public final class VInt
     void removeUnusedRevisions( long oldestUsableRevisionNumber ) {
 
         // Loop through the revisions.
-        for ( Revision revision = this.latestRevision.get();
-              revision != null;
-              revision = revision.priorRevision.get() ) {
+        for (
+            Revision revision = this.latestRevision.get();
+            revision != null;
+            revision = revision.priorRevision.get()
+            ) {
 
             final long revisionNumber = revision.revisionNumber.get();
 
@@ -256,33 +292,5 @@ public final class VInt
      * of the list.
      */
     private final AtomicReference<Revision> latestRevision;
-
-    /**
-     * Internal record structure for revisions in the linked list of revisions.
-     */
-    private static class Revision {
-
-        Revision( int value, AtomicLong revisionNumber, Revision priorRevision ) {
-            this.priorRevision = new AtomicReference<>( priorRevision );
-            this.revisionNumber = revisionNumber;
-            this.value = value;
-        }
-
-        /**
-         * A reference to the previous revision of the versioned item.
-         */
-        public final AtomicReference<Revision> priorRevision;
-
-        /**
-         * The revision number of this revision (uniquely from the transaction that wrote it).
-         */
-        public final AtomicLong revisionNumber;
-
-        /**
-         * The value of the versioned item at this revision.
-         */
-        public int value;
-
-    }
 
 }

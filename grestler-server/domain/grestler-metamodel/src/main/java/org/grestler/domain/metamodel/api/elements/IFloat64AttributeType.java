@@ -14,26 +14,6 @@ import java.util.UUID;
 public interface IFloat64AttributeType
     extends IAttributeType {
 
-    @Override
-    default EDataType getDataType() {
-        return EDataType.FLOAT64;
-    }
-
-    /**
-     * @return the default value for attributes of this type.
-     */
-    OptionalDouble getDefaultValue();
-
-    /**
-     * @return the minimum possible value (inclusive) for attributes of this type.
-     */
-    OptionalDouble getMaxValue();
-
-    /**
-     * @return the maximum possible value (inclusive) for attributes of this type.
-     */
-    OptionalDouble getMinValue();
-
     class Record
         extends IAttributeType.Record {
 
@@ -59,4 +39,24 @@ public interface IFloat64AttributeType
         public final OptionalDouble minValue;
 
     }
+
+    @Override
+    default EDataType getDataType() {
+        return EDataType.FLOAT64;
+    }
+
+    /**
+     * @return the default value for attributes of this type.
+     */
+    OptionalDouble getDefaultValue();
+
+    /**
+     * @return the minimum possible value (inclusive) for attributes of this type.
+     */
+    OptionalDouble getMaxValue();
+
+    /**
+     * @return the maximum possible value (inclusive) for attributes of this type.
+     */
+    OptionalDouble getMinValue();
 }

@@ -1,6 +1,4 @@
-
-
-apply plugin:'application'
+apply plugin: 'application'
 
 buildDir = '../../build/presentation/grestler-main'
 

@@ -14,6 +14,38 @@ public interface IConnection
     extends AutoCloseable {
 
     /**
+     * Interface for query result callbacks.
+     */
+    @FunctionalInterface
+    interface IQueryCallback {
+
+        /**
+         * Callback receiving the result set for each row of a query.
+         *
+         * @param resultSet the result set on a given row.
+         *
+         * @throws DatabaseException if reading the result fails.
+         */
+        void handleRecord( IResultSet resultSet );
+
+    }
+
+    /**
+     * Interface for transactional callbacks.
+     */
+    @FunctionalInterface
+    interface ITransactionalCallback {
+
+        /**
+         * Callback occurring with a transaction open.
+         *
+         * @throws DatabaseException if the transactional task fails.
+         */
+        void execute();
+
+    }
+
+    /**
      * Closes this connection.
      *
      * @throws DatabaseException if closing fails (overriding AutoCloseable's Exception).
@@ -59,37 +91,5 @@ public interface IConnection
      * @throws DatabaseException if the query process fails.
      */
     void executeQuery( IQueryCallback queryCallback, String sqlQuery );
-
-    /**
-     * Interface for query result callbacks.
-     */
-    @FunctionalInterface
-    interface IQueryCallback {
-
-        /**
-         * Callback receiving the result set for each row of a query.
-         *
-         * @param resultSet the result set on a given row.
-         *
-         * @throws DatabaseException if reading the result fails.
-         */
-        void handleRecord( IResultSet resultSet );
-
-    }
-
-    /**
-     * Interface for transactional callbacks.
-     */
-    @FunctionalInterface
-    interface ITransactionalCallback {
-
-        /**
-         * Callback occurring with a transaction open.
-         *
-         * @throws DatabaseException if the transactional task fails.
-         */
-        void execute();
-
-    }
 
 }

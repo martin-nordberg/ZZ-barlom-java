@@ -13,13 +13,19 @@ import java.util.List;
 public interface IJavaNamedModelElement
     extends IJavaModelElement, Comparable<IJavaNamedModelElement> {
 
-    /** @return the children of this model element. */
+    /**
+     * @return The children of this model element.
+     */
     List<IJavaModelElement> getChildren();
 
-    /** @return the name of this element for Java code purposes. */
+    /**
+     * @return The name of this element for Java code purposes.
+     */
     String getJavaName();
 
-    /** @return the name. */
+    /**
+     * @return The name of this element.
+     */
     String getName();
 
 }

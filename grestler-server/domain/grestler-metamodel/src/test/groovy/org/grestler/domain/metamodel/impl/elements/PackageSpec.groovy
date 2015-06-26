@@ -14,7 +14,7 @@ import spock.lang.Specification
  * Specification for packages.
  */
 class PackageSpec
-        extends Specification {
+    extends Specification {
 
     UUID id = Uuids.makeUuid();
 

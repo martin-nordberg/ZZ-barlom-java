@@ -18,7 +18,7 @@ import spock.lang.Specification
  * Spec for the genealogy schema; exercises metamodel repository loading.
  */
 class GenealogyModelSpec
-        extends Specification {
+    extends Specification {
 
     def "The genealogy schema loads correctly"() {
 
@@ -36,13 +36,13 @@ class GenealogyModelSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         expect:
@@ -86,7 +86,7 @@ class GenealogyModelSpec
         // edge types
         def rootEdgeType = m.findRootDirectedEdgeType();
         IDirectedEdgeType etHasFather = m.findEdgeTypeById(
-                UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" )
+            UUID.fromString( "e4c4a702-a294-11e4-b20d-08002751500b" )
         ) as IDirectedEdgeType;
         etHasFather.parentPackage == genealogyPkg;
         etHasFather.name == "Has Father";
@@ -96,7 +96,7 @@ class GenealogyModelSpec
         etHasFather.attributes.size() == 0;
 
         IDirectedEdgeType etHasMother = m.findEdgeTypeById(
-                UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" )
+            UUID.fromString( "e4c4a703-a294-11e4-b20d-08002751500b" )
         ) as IDirectedEdgeType;
         etHasMother.parentPackage == genealogyPkg;
         etHasMother.name == "Has Mother";

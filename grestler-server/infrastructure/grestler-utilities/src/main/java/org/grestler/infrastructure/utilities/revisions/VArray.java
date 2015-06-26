@@ -12,15 +12,61 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * A versioned item that is an array of items.
- * <p>
- * This class works something like ArrayList. Newly added values always go on the end of the list and increment a size
- * field that is itself versioned, so prior revisions are not affected by such additions so long as they honor their own
- * size value. When the array is filled, the new revision allocates for itself a new array double the size of the prior
- * revision's (like ArrayList except that prior revisions will hold on to the old data as long as they are live.
+ * A versioned item that is an array of items. <p> This class works something like ArrayList. Newly added values always
+ * go on the end of the list and increment a size field that is itself versioned, so prior revisions are not affected by
+ * such additions so long as they honor their own size value. When the array is filled, the new revision allocates for
+ * itself a new array double the size of the prior revision's (like ArrayList except that prior revisions will hold on
+ * to the old data as long as they are live.
  */
 public final class VArray<T>
     implements IIndexable<T> {
+
+    /**
+     * Class providing a read-only iterator over a version of the array.
+     */
+    public static class VArrayIterator<T>
+        implements Iterator<T> {
+
+        /**
+         * Constructs a new iterator given the array data from the parent VArray.
+         *
+         * @param size the size of the versioned array.
+         * @param data the data to iterate over.
+         */
+        @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
+        VArrayIterator( int size, Object[] data ) {
+            this.iterSize = size;
+            this.iterData = data;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.position < this.iterSize;
+        }
+
+        @SuppressWarnings( "unchecked" )
+        @Override
+        public T next() {
+            if ( this.hasNext() ) {
+                T result = (T) this.iterData[this.position];
+                this.position += 1;
+                return result;
+            }
+            else {
+                throw new NoSuchElementException();
+            }
+        }
+
+        /** The array version to iterate over. */
+        private final Object[] iterData;
+
+        /** The size of the data as of the iterated version. */
+        private final int iterSize;
+
+        /** The position of the iterator in the array. */
+        private int position = 0;
+
+    }
 
     /**
      * Constructs a new empty versioned array with given starting value for the current transaction's revision.
@@ -168,7 +214,7 @@ public final class VArray<T>
     }
 
     /** Empty starting point for all arrays. */
-    private static final Object[] EMPTY = { };
+    private static final Object[] EMPTY = {};
 
     /** The minimum size for a non-empty array. */
     private static final int INITIAL_CAPACITY = 8;
@@ -178,51 +224,4 @@ public final class VArray<T>
 
     /** The versioned size of the array. */
     private final VInt size;
-
-    /**
-     * Class providing a read-only iterator over a version of the array.
-     */
-    public static class VArrayIterator<T>
-        implements Iterator<T> {
-
-        /**
-         * Constructs a new iterator given the array data from the parent VArray.
-         *
-         * @param size the size of the versioned array.
-         * @param data the data to iterate over.
-         */
-        @SuppressWarnings( "AssignmentToCollectionOrArrayFieldFromParameter" )
-        VArrayIterator( int size, Object[] data ) {
-            this.iterSize = size;
-            this.iterData = data;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return this.position < this.iterSize;
-        }
-
-        @SuppressWarnings( "unchecked" )
-        @Override
-        public T next() {
-            if ( this.hasNext() ) {
-                T result = (T) this.iterData[this.position];
-                this.position += 1;
-                return result;
-            }
-            else {
-                throw new NoSuchElementException();
-            }
-        }
-
-        /** The array version to iterate over. */
-        private final Object[] iterData;
-
-        /** The size of the data as of the iterated version. */
-        private final int iterSize;
-
-        /** The position of the iterator in the array. */
-        private int position = 0;
-
-    }
 }

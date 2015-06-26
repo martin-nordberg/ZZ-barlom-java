@@ -11,10 +11,14 @@ package org.grestler.domain.javamodel.api.elements;
 @SuppressWarnings( "ClassReferencesSubclass" )
 public interface IJavaModelElement {
 
-    /** Returns the description. */
+    /**
+     * @return The description of this model element.
+     */
     String getDescription();
 
-    /** Returns the parent. */
+    /**
+     * @return The parent of this model element.
+     */
     IJavaNamedModelElement getParent();
 
     /**

@@ -13,7 +13,7 @@ import spock.lang.Specification
  * Specification for isolated boolean attribute type behavior.
  */
 class AttributeTypeSpec
-        extends Specification {
+    extends Specification {
 
     static UUID rootId = UUID.fromString( '00000000-0000-0000-0000-000000000000' );
 

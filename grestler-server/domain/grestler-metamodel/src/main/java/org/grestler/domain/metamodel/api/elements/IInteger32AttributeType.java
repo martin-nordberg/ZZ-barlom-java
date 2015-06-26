@@ -14,26 +14,6 @@ import java.util.UUID;
 public interface IInteger32AttributeType
     extends IAttributeType {
 
-    @Override
-    default EDataType getDataType() {
-        return EDataType.INTEGER32;
-    }
-
-    /**
-     * @return the default value for attributes of this type.
-     */
-    OptionalInt getDefaultValue();
-
-    /**
-     * @return the minimum possible value (inclusive) for attributes of this type.
-     */
-    OptionalInt getMaxValue();
-
-    /**
-     * @return the maximum possible value (inclusive) for attributes of this type.
-     */
-    OptionalInt getMinValue();
-
     class Record
         extends IAttributeType.Record {
 
@@ -59,4 +39,24 @@ public interface IInteger32AttributeType
         public final OptionalInt minValue;
 
     }
+
+    @Override
+    default EDataType getDataType() {
+        return EDataType.INTEGER32;
+    }
+
+    /**
+     * @return the default value for attributes of this type.
+     */
+    OptionalInt getDefaultValue();
+
+    /**
+     * @return the minimum possible value (inclusive) for attributes of this type.
+     */
+    OptionalInt getMaxValue();
+
+    /**
+     * @return the maximum possible value (inclusive) for attributes of this type.
+     */
+    OptionalInt getMinValue();
 }

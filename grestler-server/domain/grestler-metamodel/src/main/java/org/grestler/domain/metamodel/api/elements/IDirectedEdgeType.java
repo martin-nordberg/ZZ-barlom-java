@@ -16,6 +16,60 @@ public interface IDirectedEdgeType
     extends IEdgeType {
 
     /**
+     * Data structure holding the attributes of a directed edge type.
+     */
+    class Record
+        extends IEdgeType.Record {
+
+        public Record(
+            UUID id,
+            UUID parentPackageId,
+            UUID superTypeId,
+            String name,
+            EAbstractness abstractness,
+            ECyclicity cyclicity,
+            EMultiEdgedness multiEdgedness,
+            ESelfLooping selfLooping,
+            Optional<String> headRoleName,
+            UUID headVertexTypeId,
+            OptionalInt maxHeadInDegree,
+            OptionalInt maxTailOutDegree,
+            OptionalInt minHeadInDegree,
+            OptionalInt minTailOutDegree,
+            Optional<String> tailRoleName,
+            UUID tailVertexTypeId
+        ) {
+            super( id, parentPackageId, superTypeId, name, abstractness, cyclicity, multiEdgedness, selfLooping );
+
+            this.headRoleName = headRoleName;
+            this.headVertexTypeId = headVertexTypeId;
+            this.maxHeadInDegree = maxHeadInDegree;
+            this.maxTailOutDegree = maxTailOutDegree;
+            this.minHeadInDegree = minHeadInDegree;
+            this.minTailOutDegree = minTailOutDegree;
+            this.tailRoleName = tailRoleName;
+            this.tailVertexTypeId = tailVertexTypeId;
+        }
+
+        public final Optional<String> headRoleName;
+
+        public final UUID headVertexTypeId;
+
+        public final OptionalInt maxHeadInDegree;
+
+        public final OptionalInt maxTailOutDegree;
+
+        public final OptionalInt minHeadInDegree;
+
+        public final OptionalInt minTailOutDegree;
+
+        public final Optional<String> tailRoleName;
+
+        public final UUID tailVertexTypeId;
+
+    }
+
+    /**
      * @return the name of the role for the vertex at the head of edges of this type.
      */
     Optional<String> getHeadRoleName();
@@ -77,59 +131,5 @@ public interface IDirectedEdgeType
      * type.
      */
     boolean isSubTypeOf( IDirectedEdgeType edgeType );
-
-    /**
-     * Data structure holding the attributes of a directed edge type.
-     */
-    class Record
-        extends IEdgeType.Record {
-
-        public Record(
-            UUID id,
-            UUID parentPackageId,
-            UUID superTypeId,
-            String name,
-            EAbstractness abstractness,
-            ECyclicity cyclicity,
-            EMultiEdgedness multiEdgedness,
-            ESelfLooping selfLooping,
-            Optional<String> headRoleName,
-            UUID headVertexTypeId,
-            OptionalInt maxHeadInDegree,
-            OptionalInt maxTailOutDegree,
-            OptionalInt minHeadInDegree,
-            OptionalInt minTailOutDegree,
-            Optional<String> tailRoleName,
-            UUID tailVertexTypeId
-        ) {
-            super( id, parentPackageId, superTypeId, name, abstractness, cyclicity, multiEdgedness, selfLooping );
-
-            this.headRoleName = headRoleName;
-            this.headVertexTypeId = headVertexTypeId;
-            this.maxHeadInDegree = maxHeadInDegree;
-            this.maxTailOutDegree = maxTailOutDegree;
-            this.minHeadInDegree = minHeadInDegree;
-            this.minTailOutDegree = minTailOutDegree;
-            this.tailRoleName = tailRoleName;
-            this.tailVertexTypeId = tailVertexTypeId;
-        }
-
-        public final Optional<String> headRoleName;
-
-        public final UUID headVertexTypeId;
-
-        public final OptionalInt maxHeadInDegree;
-
-        public final OptionalInt maxTailOutDegree;
-
-        public final OptionalInt minHeadInDegree;
-
-        public final OptionalInt minTailOutDegree;
-
-        public final Optional<String> tailRoleName;
-
-        public final UUID tailVertexTypeId;
-
-    }
 
 }

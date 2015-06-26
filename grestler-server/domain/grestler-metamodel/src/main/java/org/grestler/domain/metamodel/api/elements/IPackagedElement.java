@@ -13,6 +13,21 @@ import java.util.UUID;
 public interface IPackagedElement
     extends INamedElement {
 
+    /**
+     * Data structure for packaged element records.
+     */
+    class Record
+        extends INamedElement.Record {
+
+        protected Record( UUID id, UUID parentPackageId, String name ) {
+            super( id, name );
+            this.parentPackageId = parentPackageId;
+        }
+
+        public final UUID parentPackageId;
+
+    }
+
     @Override
     default INamedElement getParent() {
         return this.getParentPackage();
@@ -37,21 +52,6 @@ public interface IPackagedElement
         IPackage parentPkg = this.getParentPackage();
 
         return parentPkg == parentPackage || parentPkg.isChildOf( parentPackage );
-
-    }
-
-    /**
-     * Data structure for packaged element records.
-     */
-    class Record
-        extends INamedElement.Record {
-
-        protected Record( UUID id, UUID parentPackageId, String name ) {
-            super( id, name );
-            this.parentPackageId = parentPackageId;
-        }
-
-        public final UUID parentPackageId;
 
     }
 

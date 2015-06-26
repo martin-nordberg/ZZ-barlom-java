@@ -16,7 +16,7 @@ import spock.lang.Specification
  * Specification for attribute type loading.
  */
 class AttributeTypeLoaderSpec
-        extends Specification {
+    extends Specification {
 
     def "An attribute type loader retrieves nothing (for starters)"() {
 
@@ -34,13 +34,13 @@ class AttributeTypeLoaderSpec
         def adloader = new AttributeDeclLoader( dataSource );
 
         IMetamodelRepositorySpi m = new MetamodelRepository(
-                ploader,
-                pdloader,
-                atloader,
-                vtloader,
-                detloader,
-                uetloader,
-                adloader
+            ploader,
+            pdloader,
+            atloader,
+            vtloader,
+            detloader,
+            uetloader,
+            adloader
         );
 
         expect:

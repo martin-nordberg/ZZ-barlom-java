@@ -13,31 +13,6 @@ import java.util.UUID;
 public interface IVertexAttributeDecl
     extends INamedElement {
 
-    /**
-     * @return whether this is the default label for the vertex.
-     */
-    ELabelDefaulting getLabelDefaulting();
-
-    /**
-     * @return whether this is a required attribute.
-     */
-    EAttributeOptionality getOptionality();
-
-    @Override
-    default INamedElement getParent() {
-        return this.getParentVertexType();
-    }
-
-    /**
-     * @return the parent of this attribute.
-     */
-    IVertexType getParentVertexType();
-
-    /**
-     * @return the typeof this attribute.
-     */
-    IAttributeType getType();
-
     class Record
         extends INamedElement.Record {
 
@@ -66,4 +41,29 @@ public interface IVertexAttributeDecl
         public final UUID typeId;
 
     }
+
+    /**
+     * @return whether this is the default label for the vertex.
+     */
+    ELabelDefaulting getLabelDefaulting();
+
+    /**
+     * @return whether this is a required attribute.
+     */
+    EAttributeOptionality getOptionality();
+
+    @Override
+    default INamedElement getParent() {
+        return this.getParentVertexType();
+    }
+
+    /**
+     * @return the parent of this attribute.
+     */
+    IVertexType getParentVertexType();
+
+    /**
+     * @return the typeof this attribute.
+     */
+    IAttributeType getType();
 }

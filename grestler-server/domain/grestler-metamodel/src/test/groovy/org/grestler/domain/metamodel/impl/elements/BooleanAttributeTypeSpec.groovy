@@ -11,19 +11,19 @@ import org.grestler.domain.metamodel.api.elements.IBooleanAttributeType
  * Specification for isolated boolean attribute type behavior.
  */
 class BooleanAttributeTypeSpec
-        extends AttributeTypeSpec {
+    extends AttributeTypeSpec {
 
     def "A boolean attribute type generates correct JSON"() {
 
         expect:
         new BooleanAttributeType(
-                new IBooleanAttributeType.Record(
-                        id,
-                        parentPackage.id,
-                        name,
-                        Optional.ofNullable( defaultValue )
-                ),
-                parentPackage
+            new IBooleanAttributeType.Record(
+                id,
+                parentPackage.id,
+                name,
+                Optional.ofNullable( defaultValue )
+            ),
+            parentPackage
         ).toJson() == json;
 
         where:

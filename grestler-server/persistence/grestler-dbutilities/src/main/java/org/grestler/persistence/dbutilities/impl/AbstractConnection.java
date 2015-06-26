@@ -139,25 +139,6 @@ public abstract class AbstractConnection
     protected abstract IResultSetSpi makeResultSet( ResultSet resultSet );
 
     /**
-     * Throws an exception with no underlying database exception.
-     *
-     * @param message the message for the exception.
-     *
-     * @throws DatabaseException always thrown by this method.
-     */
-    protected abstract void throwException( String message ) throws DatabaseException;
-
-    /**
-     * Throws an exception wrapping the underlying SQLException from JDBC.
-     *
-     * @param message the message for the exception.
-     * @param cause   the internal exception causing the problem.
-     *
-     * @throws DatabaseException always thrown by this method.
-     */
-    protected abstract void throwException( String message, Throwable cause ) throws DatabaseException;
-
-    /**
      * Creates a prepared statement
      *
      * @param sqlQuery the query with named parameters.
@@ -184,8 +165,6 @@ public abstract class AbstractConnection
 
         return result;
     }
-
-    // TODO: executeQuery with (named) parameters
 
     /**
      * Rolls back a transaction after an error.
@@ -214,6 +193,27 @@ public abstract class AbstractConnection
         }
 
     }
+
+    // TODO: executeQuery with (named) parameters
+
+    /**
+     * Throws an exception wrapping the underlying SQLException from JDBC.
+     *
+     * @param message the message for the exception.
+     * @param cause   the internal exception causing the problem.
+     *
+     * @throws DatabaseException always thrown by this method.
+     */
+    protected abstract void throwException( String message, Throwable cause ) throws DatabaseException;
+
+    /**
+     * Throws an exception with no underlying database exception.
+     *
+     * @param message the message for the exception.
+     *
+     * @throws DatabaseException always thrown by this method.
+     */
+    protected abstract void throwException( String message ) throws DatabaseException;
 
     /** The logger for this class. */
     private static final Logger LOG = LogManager.getLogger();

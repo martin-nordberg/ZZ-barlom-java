@@ -13,21 +13,6 @@ import java.util.UUID;
 public interface IPackageDependency
     extends IDocumentedElement {
 
-    /**
-     * @return the package that makes use of the supplier package.
-     */
-    IPackage getClientPackage();
-
-    @Override
-    default INamedElement getParent() {
-        return this.getClientPackage();
-    }
-
-    /**
-     * @return the package that is depended upon.
-     */
-    IPackage getSupplierPackage();
-
     class Record
         extends IDocumentedElement.Record {
 
@@ -43,4 +28,19 @@ public interface IPackageDependency
         public final UUID supplierPackageId;
 
     }
+
+    /**
+     * @return the package that makes use of the supplier package.
+     */
+    IPackage getClientPackage();
+
+    @Override
+    default INamedElement getParent() {
+        return this.getClientPackage();
+    }
+
+    /**
+     * @return the package that is depended upon.
+     */
+    IPackage getSupplierPackage();
 }

@@ -11,12 +11,12 @@ import spock.lang.Specification
  * Spec for SQL named parameter substitution.
  */
 class SqlNamedParameterParserSpec
-        extends Specification {
+    extends Specification {
 
     def "SQL named parameter parsing replaces named parameters with question marks"() {
 
         given:
-        def params = [:];
+        def params = [ : ];
 
         expect:
         SqlNamedParameterParser.parseSqlParameters( namedSql, params ).sql == questSql;
@@ -31,7 +31,7 @@ class SqlNamedParameterParserSpec
 
     def "SQL named parameter parsing stages arguments in order"() {
         given:
-        def params = [x: 1, y: 2, z: "three"];
+        def params = [ x: 1, y: 2, z: "three" ];
         def sql = "INSERT INTO X (A,B,C) VALUES ({{z}}, {{x}}, {{y}})";
         def args = SqlNamedParameterParser.parseSqlParameters( sql, params ).arguments;
 

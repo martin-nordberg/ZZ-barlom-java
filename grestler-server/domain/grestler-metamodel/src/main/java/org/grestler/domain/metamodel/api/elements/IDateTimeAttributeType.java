@@ -15,21 +15,6 @@ import java.util.UUID;
 public interface IDateTimeAttributeType
     extends IAttributeType {
 
-    @Override
-    default EDataType getDataType() {
-        return EDataType.DATETIME;
-    }
-
-    /**
-     * @return the minimum possible value (inclusive) for attributes of this type.
-     */
-    Optional<Instant> getMaxValue();
-
-    /**
-     * @return the maximum possible value (inclusive) for attributes of this type.
-     */
-    Optional<Instant> getMinValue();
-
     /**
      * Attributes of a date/time attribute type.
      */
@@ -49,4 +34,19 @@ public interface IDateTimeAttributeType
         public final Optional<Instant> minValue;
 
     }
+
+    @Override
+    default EDataType getDataType() {
+        return EDataType.DATETIME;
+    }
+
+    /**
+     * @return the minimum possible value (inclusive) for attributes of this type.
+     */
+    Optional<Instant> getMaxValue();
+
+    /**
+     * @return the maximum possible value (inclusive) for attributes of this type.
+     */
+    Optional<Instant> getMinValue();
 }

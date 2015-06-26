@@ -62,9 +62,7 @@ interface IStmTransaction {
     long getSourceRevisionNumber();
 
     /**
-     * Determines the status of this transaction from its target revision number.
-     * <p>
-     * TBD: this seems to have no use
+     * Determines the status of this transaction from its target revision number. <p> TBD: this seems to have no use
      *
      * @return the transaction status (IN_PROGRESS, COMMITTED, or ABORTED).
      */

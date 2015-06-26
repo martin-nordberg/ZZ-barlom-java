@@ -63,14 +63,14 @@ public final class DatabaseMigration {
     }
 
     /**
-     * The base classpath locations for defining the schema.
-     */
-    public static final String SCHEMA_MIGRATION_CLASSPATHS = "classpath:db/migration";
-
-    /**
      * The logger for this class.
      */
     private static final Logger LOG = LogManager.getLogger();
+
+    /**
+     * The base classpath locations for defining the schema.
+     */
+    public static final String SCHEMA_MIGRATION_CLASSPATHS = "classpath:db/migration";
 
     /**
      * The data source for the database to migrate.

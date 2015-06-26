@@ -144,6 +144,10 @@ export class PropertiesPanelFields {
             return;
         }
 
+        // Built-in elements are read-only.
+        this.readOnly = element.isA( api_elements.ROOT_PACKAGE ) || element.isA( api_elements.ROOT_VERTEX_TYPE ) ||
+            element.isA( api_elements.ROOT_DIRECTED_EDGE_TYPE ) || element.isA( api_elements.ROOT_UNDIRECTED_EDGE_TYPE );
+
         // Named Element
         if ( element.isA( api_elements.NAMED_ELEMENT ) ) {
 
@@ -216,6 +220,9 @@ export class PropertiesPanelFields {
 
     /* The currently selected model element. */
     private element : api_elements.IDocumentedElement;
+
+    /** Whether the element is read-only. */
+    public readOnly : boolean;
 
     /** Metadata for the fields to display in the form. */
     public fields : any;

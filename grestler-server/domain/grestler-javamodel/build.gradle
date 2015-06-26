@@ -1,4 +1,3 @@
-
 buildDir = '../../build/domain/grestler-javamodel'
 
 configurations {
