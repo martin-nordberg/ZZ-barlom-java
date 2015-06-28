@@ -9,13 +9,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * An anotatable model element.
+ * An annotatable model element.
  */
 @SuppressWarnings( "ClassReferencesSubclass" )
 public interface IJavaAnnotatableModelElement
     extends IJavaNamedModelElement {
 
-    /** Creates an annotation for this named model element. */
+    /**
+     * Creates an annotation for this named model element.
+     * @param description a description of the annotation.
+     * @param annotationInterface the annotation type.
+     * @param parametersCode textual code for the parameters of the annotation.
+     * @return the newly added annotation.
+     */
     IJavaAnnotation addAnnotation(
         String description, IJavaAnnotationInterface annotationInterface, String parametersCode
     );
@@ -26,7 +32,10 @@ public interface IJavaAnnotatableModelElement
     /** @return the types needed to be imported by this component. */
     Set<IJavaType> getImports();
 
-    /** Adds a type that must be imported for textual code to work. */
+    /**
+     * Adds a type that must be imported for textual code to work.
+     * @param importedElement the element needing an import.
+     */
     void importForCode( IJavaTyped importedElement );
 
 }

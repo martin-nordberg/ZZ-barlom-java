@@ -20,10 +20,13 @@ public interface IJavaClass
     /** @return whether this is a final class. */
     boolean isFinal();
 
-    /** Returns the isTestCode. */
+    /** @return whether this is a test class. */
     boolean isTestCode();
 
-    /** Sets the base class. */
+    /**
+     * Sets the base class.
+     * @param baseClass the base class for this class.
+     */
     void setBaseClass( IJavaClass baseClass );
 
 }

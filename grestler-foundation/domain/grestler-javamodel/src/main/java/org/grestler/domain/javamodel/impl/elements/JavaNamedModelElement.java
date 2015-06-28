@@ -50,19 +50,16 @@ public abstract class JavaNamedModelElement
         return this.name.equals( that.name ) && this.getParent().equals( that.getParent() );
     }
 
-    /** @return the children of this model element. */
     @Override
     public List<IJavaModelElement> getChildren() {
         return this.children;
     }
 
-    /** @return the name of this element for Java code purposes. */
     @Override
     public String getJavaName() {
         return JavaNamedModelElement.makeJavaName( this.name );
     }
 
-    /** @return the name. */
     @Override
     public String getName() {
         return this.name;

@@ -17,6 +17,9 @@ rootProject.children.find { it.name == 'grestler-foundation/application/grestler
 include 'grestler-foundation/domain/grestler-javamodel'
 rootProject.children.find { it.name == 'grestler-foundation/domain/grestler-javamodel' }.name = 'grestler-javamodel'
 
+include 'grestler-foundation/domain/grestler-sqlmodel'
+rootProject.children.find { it.name == 'grestler-foundation/domain/grestler-sqlmodel' }.name = 'grestler-sqlmodel'
+
 // Persistence
 include 'grestler-foundation/persistence/grestler-dbutilities'
 rootProject.children.find { it.name == 'grestler-foundation/persistence/grestler-dbutilities' }.name = 'grestler-dbutilities'
