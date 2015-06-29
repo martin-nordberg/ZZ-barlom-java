@@ -19,7 +19,7 @@ public interface ISqlNamedModelElement
     /** @return the name. */
     String getName();
 
-    /** @return the name f this element for SQL purposes. */
+    /** @return the name of this element for SQL purposes. */
     String getSqlName();
 
 }

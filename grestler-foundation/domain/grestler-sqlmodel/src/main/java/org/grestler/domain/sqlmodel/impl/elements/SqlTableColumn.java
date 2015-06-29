@@ -6,6 +6,7 @@
 package org.grestler.domain.sqlmodel.impl.elements;
 
 import org.grestler.domain.sqlmodel.api.elements.ESqlDataType;
+import org.grestler.domain.sqlmodel.api.elements.ISqlTable;
 import org.grestler.domain.sqlmodel.api.elements.ISqlTableColumn;
 
 /**
@@ -41,6 +42,11 @@ public abstract class SqlTableColumn
     @Override
     public Object getDefaultValue() {
         return this.defaultValue;
+    }
+
+    @Override
+    public ISqlTable getParent() {
+        return (ISqlTable) super.getParent();
     }
 
     @Override

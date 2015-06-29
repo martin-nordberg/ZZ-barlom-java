@@ -13,13 +13,13 @@ import java.util.Map;
 public interface ISqlRecord
     extends ISqlModelElement {
 
-    /** Returns the columnValues. */
+    /** @return the columnValues. */
     Object getColumnValue( String key );
 
-    /** Returns the columnValues. */
+    /** @return the columnValues. */
     Map<String, Object> getColumnValues();
 
-    /** Returns whether this record is for unit testing (as opposed to reference data). */
+    /** @return whether this record is for unit testing (as opposed to reference data). */
     boolean isUnitTestValue();
 
 }

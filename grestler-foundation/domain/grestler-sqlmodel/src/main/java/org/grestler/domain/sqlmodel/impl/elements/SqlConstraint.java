@@ -69,4 +69,5 @@ public abstract class SqlConstraint
     }
 
     private final List<ISqlTableColumn> constrainedColumns;
+
 }

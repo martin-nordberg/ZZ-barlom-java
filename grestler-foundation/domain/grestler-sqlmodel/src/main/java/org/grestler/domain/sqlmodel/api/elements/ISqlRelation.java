@@ -13,14 +13,13 @@ import java.util.List;
 public interface ISqlRelation
     extends ISqlNamedModelElement {
 
-    /** Returns the columnsByName. */
+    /** @return the columnsByName. */
     ISqlColumn getColumnByName( String name );
 
-    /** Returns the columns. */
+    /** @return the columns. */
     List<ISqlColumn> getColumns();
 
-    /** @return the parent domain of this relation. */
     @Override
-    ISqlDomain getParent();
+    ISqlSchema getParent();
 
 }

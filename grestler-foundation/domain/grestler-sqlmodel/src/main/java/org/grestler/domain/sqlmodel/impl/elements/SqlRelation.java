@@ -6,8 +6,8 @@
 package org.grestler.domain.sqlmodel.impl.elements;
 
 import org.grestler.domain.sqlmodel.api.elements.ISqlColumn;
-import org.grestler.domain.sqlmodel.api.elements.ISqlDomain;
 import org.grestler.domain.sqlmodel.api.elements.ISqlRelation;
+import org.grestler.domain.sqlmodel.api.elements.ISqlSchema;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public abstract class SqlRelation
      * Constructs a new table or view.
      */
     @SuppressWarnings( "TypeMayBeWeakened" )
-    SqlRelation( ISqlDomain parent, String name, String description ) {
+    SqlRelation( SqlSchema parent, String name, String description ) {
         super( parent, name, description );
 
         this.columns = new ArrayList<>();
@@ -43,8 +43,8 @@ public abstract class SqlRelation
     }
 
     @Override
-    public ISqlDomain getParent() {
-        return (ISqlDomain) super.getParent();
+    public ISqlSchema getParent() {
+        return (ISqlSchema) super.getParent();
     }
 
     /**
@@ -76,4 +76,5 @@ public abstract class SqlRelation
     private final List<ISqlColumn> columns;
 
     private final Map<String, ISqlColumn> columnsByName;
+
 }

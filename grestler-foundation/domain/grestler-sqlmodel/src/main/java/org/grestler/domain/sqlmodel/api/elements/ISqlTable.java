@@ -7,6 +7,7 @@ package org.grestler.domain.sqlmodel.api.elements;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A database table.
@@ -30,13 +31,9 @@ public interface ISqlTable
     );
 
     /**
-     * Creates the primary key column within this table.
-     */
-    ISqlColumn addDiscriminatorColumn( String defaultValue );
-
-    /**
      * Creates a foreign key within this table.
      */
+    @SuppressWarnings( "BooleanParameter" )
     ISqlForeignKeyColumn addForeignKeyColumn(
         String name,
         String relationshipName,
@@ -53,6 +50,7 @@ public interface ISqlTable
      *
      * @return The newly added constraint
      */
+    @SuppressWarnings( "BooleanParameter" )
     ISqlForeignKeyConstraint addForeignKeyConstraint(
         String name,
         String description,
@@ -105,34 +103,31 @@ public interface ISqlTable
         List<ISqlTableColumn> uniqueColumns
     );
 
-    /** Returns the attributeColumns. */
+    /** @return the attributeColumns. */
     List<ISqlAttributeColumn> getAttributeColumns();
 
     @Override
     ISqlTableColumn getColumnByName( String name );
 
-    /** Returns the discriminatorColumn. */
-    ISqlDiscriminatorColumn getDiscriminatorColumn();
-
-    /** Returns the foreignKeyColumns. */
+    /** @return the foreignKeyColumns. */
     List<ISqlForeignKeyColumn> getForeignKeyColumns();
 
-    /** Returns the foreign key constraints. */
+    /** @return the foreign key constraints. */
     List<ISqlForeignKeyConstraint> getForeignKeyConstraints();
 
-    /** Returns the indexes. */
+    /** @return the indexes. */
     List<ISqlIndex> getIndexes();
 
-    /** Returns the primaryKeyColumn. */
-    ISqlPrimaryKeyColumn getPrimaryKeyColumn();
+    /** @return the primaryKeyColumn. */
+    Optional<ISqlPrimaryKeyColumn> getPrimaryKeyColumn();
 
-    /** Returns the primaryKeyConstraint. */
-    ISqlPrimaryKeyConstraint getPrimaryKeyConstraint();
+    /** @return the primaryKeyConstraint. */
+    Optional<ISqlPrimaryKeyConstraint> getPrimaryKeyConstraint();
 
-    /** Returns the records. */
+    /** @return the records. */
     List<ISqlRecord> getRecords();
 
-    /** Returns the uniqueness constraints. */
+    /** @return the uniqueness constraints. */
     List<ISqlUniquenessConstraint> getUniquenessConstraints();
 
 }

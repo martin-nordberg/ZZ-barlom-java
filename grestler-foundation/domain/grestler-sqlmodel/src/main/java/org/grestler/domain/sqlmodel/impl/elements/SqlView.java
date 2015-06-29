@@ -20,7 +20,7 @@ public class SqlView
      * @param parent the parent domain.
      * @param name   the name of the new view.
      */
-    SqlView( SqlDomain parent, String name, String description ) {
+    SqlView( SqlSchema parent, String name, String description ) {
         super( parent, name, description );
 
         parent.onAddChild( this );

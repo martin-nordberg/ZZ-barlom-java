@@ -11,7 +11,4 @@ package org.grestler.domain.sqlmodel.api.elements;
 public interface ISqlPrimaryKeyColumn
     extends ISqlTableColumn {
 
-    @Override
-    ISqlTable getParent();
-
 }

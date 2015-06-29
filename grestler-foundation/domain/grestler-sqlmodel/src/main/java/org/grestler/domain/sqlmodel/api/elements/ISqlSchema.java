@@ -15,24 +15,25 @@ public interface ISqlSchema
     extends ISqlNamedModelElement {
 
     /**
-     * Creates a new domain within this schema.
+     * Creates a new table within this schema.
      */
-    ISqlDomain addDomain(
-        String name,
-        String description,
-        boolean hasSqlCustomizations
-    );
+    ISqlTable addTable( String name, String description );
 
-    /** Returns the domain within this schema with given name. */
-    ISqlDomain getDomainByName( String name );
+    /**
+     * Creates a new view within this schema.
+     */
+    ISqlView addView( String name, String description );
 
-    /** Returns the domains within this schema. */
-    List<ISqlDomain> getDomains();
-
-    /** Returns the table or view within this schema with given name. */
+    /** @return the table or view within this schema with given name. */
     Optional<ISqlRelation> getRelationByName( String name );
 
-    /** Returns the table or view within this schema with given name. */
+    /** @return the table or view within this schema with given name. */
     Optional<ISqlTable> getTableByName( String name );
+
+    /** @return the tables. */
+    List<ISqlTable> getTables();
+
+    /** @return the views. */
+    List<ISqlView> getViews();
 
 }

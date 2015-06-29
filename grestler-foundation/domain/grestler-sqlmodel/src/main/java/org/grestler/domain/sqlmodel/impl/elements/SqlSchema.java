@@ -5,10 +5,10 @@
 
 package org.grestler.domain.sqlmodel.impl.elements;
 
-import org.grestler.domain.sqlmodel.api.elements.ISqlDomain;
 import org.grestler.domain.sqlmodel.api.elements.ISqlRelation;
 import org.grestler.domain.sqlmodel.api.elements.ISqlSchema;
 import org.grestler.domain.sqlmodel.api.elements.ISqlTable;
+import org.grestler.domain.sqlmodel.api.elements.ISqlView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,32 +29,27 @@ public class SqlSchema
     public SqlSchema( String name, String description ) {
         super( null, name, description );
 
-        this.domainsByName = new HashMap<>();
-        this.domains = new ArrayList<>();
         this.relationsByName = new HashMap<>();
+        this.tables = new ArrayList<>();
+        this.views = new ArrayList<>();
+    }
+
+    @Override
+    public ISqlTable addTable( String name, String description ) {
+        return new SqlTable( this, name, description );
+    }
+
+    @Override
+    public ISqlView addView( String name, String description ) {
+        return new SqlView( this, name, description );
     }
 
     /**
-     * Creates a new domain within this schema.
+     * Returns the modelDomain.
      */
-    @SuppressWarnings( "BooleanParameter" )
     @Override
-    public ISqlDomain addDomain(
-        String name,
-        String description,
-        boolean hasSqlCustomizations
-    ) {
-        return new SqlDomain( this, name, description, hasSqlCustomizations );
-    }
-
-    @Override
-    public ISqlDomain getDomainByName( String name ) {
-        return this.domainsByName.get( name );
-    }
-
-    @Override
-    public List<ISqlDomain> getDomains() {
-        return this.domains;
+    public SqlSchema getParent() {
+        return (SqlSchema) super.getParent();
     }
 
     /** Returns the table or view within this schema with given name. */
@@ -85,17 +80,40 @@ public class SqlSchema
         return Optional.empty();
     }
 
-    /** Register the addition of a domain to this schema. */
-    void onAddChild( ISqlDomain domain ) {
-        String domainName = domain.getName();
+    @Override
+    public List<ISqlTable> getTables() {
+        return this.tables;
+    }
 
-        assert this.domainsByName.get( domainName ) == null : "Duplicate domain name: "
-            + domainName;
+    @Override
+    public List<ISqlView> getViews() {
+        return this.views;
+    }
 
-        super.onAddChild( domain );
+    /** Registers the addition of a table to this domain. */
+    void onAddChild( ISqlTable table ) {
+        String tableName = table.getSqlName();
 
-        this.domainsByName.put( domainName, domain );
-        this.domains.add( domain );
+        assert this.getParent().getRelationByName( tableName ) == null : "Duplicate table/view name: "
+            + tableName;
+
+        super.onAddChild( table );
+
+        this.getParent().putRelationByName( tableName, table );
+        this.tables.add( table );
+    }
+
+    /** Registers the addition of a view to this domain. */
+    void onAddChild( ISqlView view ) {
+        String viewName = view.getSqlName();
+
+        assert this.getParent().getRelationByName( viewName ) == null : "Duplicate table/view name: "
+            + viewName;
+
+        super.onAddChild( view );
+
+        this.getParent().putRelationByName( viewName, view );
+        this.views.add( view );
     }
 
     /** Sets the table or view within this schema with given name. */
@@ -103,10 +121,10 @@ public class SqlSchema
         this.relationsByName.put( SqlNamedModelElement.makeSqlName( name ), relation );
     }
 
-    private final List<ISqlDomain> domains;
-
-    private final Map<String, ISqlDomain> domainsByName;
-
     private final Map<String, ISqlRelation> relationsByName;
+
+    private final List<ISqlTable> tables;
+
+    private final List<ISqlView> views;
 
 }

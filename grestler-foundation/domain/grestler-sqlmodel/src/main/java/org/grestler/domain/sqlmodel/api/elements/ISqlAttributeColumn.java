@@ -11,7 +11,7 @@ package org.grestler.domain.sqlmodel.api.elements;
 public interface ISqlAttributeColumn
     extends ISqlTableColumn {
 
-    /** Returns the attribute name. */
+    /** @return the attribute name. */
     String getAttributeName();
 
 }

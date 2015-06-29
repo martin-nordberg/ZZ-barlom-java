@@ -11,19 +11,22 @@ package org.grestler.domain.sqlmodel.api.elements;
 public interface ISqlTableColumn
     extends ISqlColumn {
 
-    /** Returns the defaultValue. */
+    /** @return the defaultValue. */
     Object getDefaultValue();
 
-    /** Returns the precision. */
+    @Override
+    ISqlTable getParent();
+
+    /** @return the precision. */
     int getPrecision();
 
-    /** Returns the size. */
+    /** @return the size. */
     int getSize();
 
-    /** Returns the type. */
+    /** @return the type. */
     ESqlDataType getType();
 
-    /** Returns the whether the column allows nulls. */
+    /** @return the whether the column allows nulls. */
     boolean isNullable();
 
 }

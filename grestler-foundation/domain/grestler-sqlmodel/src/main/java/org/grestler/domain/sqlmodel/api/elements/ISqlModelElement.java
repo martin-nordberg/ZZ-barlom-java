@@ -10,13 +10,15 @@ package org.grestler.domain.sqlmodel.api.elements;
  */
 public interface ISqlModelElement {
 
-    /** Returns the description. */
+    /** @return the description. */
     String getDescription();
 
-    /** Returns the parent. */
+    /** @return the parent. */
+    @SuppressWarnings( "ClassReferencesSubclass" )
     ISqlNamedModelElement getParent();
 
-    /** Returns the schema (top level parent). */
+    /** @return the schema (top level parent). */
+    @SuppressWarnings( "ClassReferencesSubclass" )
     ISqlSchema getSchema();
 
 }

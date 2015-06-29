@@ -50,8 +50,10 @@ public abstract class SqlNamedModelElement
 
         // convert to upper case with underscores
         String result = identifier.toUpperCase();
-        result = result.replaceAll( " ", "_" );
-        result = result.replaceAll( "-", "_" );
+
+        // convert dashes and spaces to underscores
+        result = SqlNamedModelElement.SPACE_PATTERN.matcher( result ).replaceAll( "_" );
+        result = SqlNamedModelElement.DASH_PATTERN.matcher( result ).replaceAll( "_" );
 
         // done if identifier is short enough
         if ( result.length() <= 30 ) {
@@ -59,10 +61,9 @@ public abstract class SqlNamedModelElement
         }
 
         // remove vowels from the end so long as they are not word-leading and not "ID"
-        Pattern vowelPattern = Pattern.compile( "(.*[^_])[AEIOU]([^D].*)" );
         while ( result.length() > 30 ) {
 
-            Matcher matcher = vowelPattern.matcher( result );
+            Matcher matcher = SqlNamedModelElement.VOWEL_PATTERN.matcher( result );
 
             if ( !matcher.matches() ) {
                 break;
@@ -72,10 +73,9 @@ public abstract class SqlNamedModelElement
         }
 
         // remove underscores, starting from the end
-        Pattern underscorePattern = Pattern.compile( "(.*)_(.*)" );
         while ( result.length() > 30 ) {
 
-            Matcher matcher = underscorePattern.matcher( result );
+            Matcher matcher = SqlNamedModelElement.UNDERSCORE_PATTERN.matcher( result );
 
             if ( !matcher.matches() ) {
                 break;
@@ -97,24 +97,37 @@ public abstract class SqlNamedModelElement
 
     /** Returns the SQL name of this element with a suffix appended. */
     protected static String makeSqlName( String fragment1, String fragment2 ) {
-        assert fragment1 != null && fragment1.length() > 0 : "SQL fragment should not be empty.";
-        assert fragment2 != null && fragment2.length() > 0 : "SQL fragment should not be empty.";
+
+        assert fragment1 != null && !fragment1.isEmpty() : "SQL fragment should not be empty.";
+        assert fragment2 != null && !fragment2.isEmpty() : "SQL fragment should not be empty.";
+
         return SqlNamedModelElement.makeSqlName( fragment1 + "_" + fragment2 );
+
     }
 
     /** Returns the SQL name of this element with both a prefix and suffix appended. */
     protected static String makeSqlName( String fragment1, String fragment2, String fragment3 ) {
-        assert fragment1 != null && fragment1.length() > 0 : "SQL fragment should not be empty.";
-        assert fragment2 != null && fragment2.length() > 0 : "SQL fragment should not be empty.";
-        assert fragment3 != null && fragment3.length() > 0 : "SQL fragment should not be empty.";
+
+        assert fragment1 != null && !fragment1.isEmpty() : "SQL fragment should not be empty.";
+        assert fragment2 != null && !fragment2.isEmpty() : "SQL fragment should not be empty.";
+        assert fragment3 != null && !fragment3.isEmpty() : "SQL fragment should not be empty.";
 
         return SqlNamedModelElement.makeSqlName( fragment1 + "_" + fragment2 + "_" + fragment3 );
+
     }
 
     /** Responds to the event of adding a child to this model element. */
     void onAddChild( ISqlModelElement child ) {
         this.children.add( child );
     }
+
+    private static final Pattern DASH_PATTERN = Pattern.compile( "-" );
+
+    private static final Pattern SPACE_PATTERN = Pattern.compile( " " );
+
+    private static final Pattern UNDERSCORE_PATTERN = Pattern.compile( "(.*)_(.*)" );
+
+    private static final Pattern VOWEL_PATTERN = Pattern.compile( "(.*[^_])[AEIOU]([^D].*)" );
 
     private final List<ISqlModelElement> children;
 

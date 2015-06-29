@@ -17,10 +17,7 @@ public interface ISqlForeignKeyColumn
     /** @return the related table. */
     ISqlTable getRelatedTable();
 
-    /** Returns the relationshipName. */
+    /** @return the relationshipName. */
     String getRelationshipName();
-
-    @Override
-    String getSqlName();
 
 }

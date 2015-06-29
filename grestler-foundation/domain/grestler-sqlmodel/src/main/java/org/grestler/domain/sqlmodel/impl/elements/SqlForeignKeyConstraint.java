@@ -60,4 +60,5 @@ public class SqlForeignKeyConstraint
     private final boolean isCascadeDelete;
 
     private final ISqlTable relatedTable;
+
 }

@@ -8,7 +8,6 @@ package org.grestler.domain.sqlmodel.impl.elements;
 import org.grestler.domain.sqlmodel.api.elements.ESqlDataType;
 import org.grestler.domain.sqlmodel.api.elements.ISqlAttributeColumn;
 import org.grestler.domain.sqlmodel.api.elements.ISqlColumn;
-import org.grestler.domain.sqlmodel.api.elements.ISqlDiscriminatorColumn;
 import org.grestler.domain.sqlmodel.api.elements.ISqlForeignKeyColumn;
 import org.grestler.domain.sqlmodel.api.elements.ISqlForeignKeyConstraint;
 import org.grestler.domain.sqlmodel.api.elements.ISqlIndex;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A database table.
@@ -32,7 +32,7 @@ public class SqlTable
     implements ISqlTable {
 
     /** Constructs a new table. */
-    SqlTable( SqlDomain parent, String name, String description ) {
+    SqlTable( SqlSchema parent, String name, String description ) {
         super( parent, name, description );
 
         this.attributeColumns = new ArrayList<>();
@@ -40,15 +40,16 @@ public class SqlTable
         this.foreignKeyConstraints = new ArrayList<>();
         this.indexes = new ArrayList<>();
         this.indexesByName = new HashMap<>();
+        this.primaryKeyColumn = Optional.empty();
+        this.primaryKeyConstraint = Optional.empty();
         this.records = new ArrayList<>();
         this.uniquenessConstraints = new ArrayList<>();
 
         parent.onAddChild( this );
     }
 
-    /**
-     * Creates an attribute column within this table.
-     */
+    @SuppressWarnings( "BooleanParameter" )
+    @Override
     public ISqlAttributeColumn addAttributeColumn(
         String name,
         String attributeName,
@@ -70,11 +71,6 @@ public class SqlTable
             isNullable,
             defaultValue
         );
-    }
-
-    @Override
-    public ISqlColumn addDiscriminatorColumn( String defaultValue ) {
-        return new SqlDiscriminatorColumn( this, defaultValue );
     }
 
     @SuppressWarnings( "BooleanParameter" )
@@ -119,7 +115,7 @@ public class SqlTable
 
     @Override
     public ISqlPrimaryKeyConstraint addPrimaryKeyConstraint( String name ) {
-        return new SqlPrimaryKeyConstraint( this, name, "Primary key", this.primaryKeyColumn );
+        return new SqlPrimaryKeyConstraint( this, name, "Primary key", this.primaryKeyColumn.get() );
     }
 
     @Override
@@ -174,11 +170,6 @@ public class SqlTable
     }
 
     @Override
-    public ISqlDiscriminatorColumn getDiscriminatorColumn() {
-        return this.discriminatorColumn;
-    }
-
-    @Override
     public List<ISqlForeignKeyColumn> getForeignKeyColumns() {
         return this.foreignKeyColumns;
     }
@@ -194,12 +185,12 @@ public class SqlTable
     }
 
     @Override
-    public ISqlPrimaryKeyColumn getPrimaryKeyColumn() {
+    public Optional<ISqlPrimaryKeyColumn> getPrimaryKeyColumn() {
         return this.primaryKeyColumn;
     }
 
     @Override
-    public ISqlPrimaryKeyConstraint getPrimaryKeyConstraint() {
+    public Optional<ISqlPrimaryKeyConstraint> getPrimaryKeyConstraint() {
         return this.primaryKeyConstraint;
     }
 
@@ -225,17 +216,6 @@ public class SqlTable
         super.onAddChild( column );
 
         this.attributeColumns.add( column );
-    }
-
-    /**
-     * Creates the primary key column within this table.
-     */
-    void onAddChild( ISqlDiscriminatorColumn discriminatorCol ) {
-        assert this.discriminatorColumn == null;
-
-        super.onAddChild( discriminatorCol );
-
-        this.discriminatorColumn = discriminatorCol;
     }
 
     /**
@@ -278,7 +258,7 @@ public class SqlTable
 
         super.onAddChild( primaryKeyCol );
 
-        this.primaryKeyColumn = primaryKeyCol;
+        this.primaryKeyColumn = Optional.of( primaryKeyCol );
     }
 
     /**
@@ -289,7 +269,7 @@ public class SqlTable
 
         super.onAddChild( primaryKeyCon );
 
-        this.primaryKeyConstraint = primaryKeyCon;
+        this.primaryKeyConstraint = Optional.of( primaryKeyCon );
     }
 
     /**
@@ -312,8 +292,6 @@ public class SqlTable
 
     private final List<ISqlAttributeColumn> attributeColumns;
 
-    private ISqlDiscriminatorColumn discriminatorColumn;
-
     private final List<ISqlForeignKeyColumn> foreignKeyColumns;
 
     private final List<ISqlForeignKeyConstraint> foreignKeyConstraints;
@@ -322,9 +300,9 @@ public class SqlTable
 
     private final Map<String, ISqlIndex> indexesByName;
 
-    private ISqlPrimaryKeyColumn primaryKeyColumn;
+    private Optional<ISqlPrimaryKeyColumn> primaryKeyColumn;
 
-    private ISqlPrimaryKeyConstraint primaryKeyConstraint;
+    private Optional<ISqlPrimaryKeyConstraint> primaryKeyConstraint;
 
     private final List<ISqlRecord> records;
 

@@ -11,10 +11,10 @@ package org.grestler.domain.sqlmodel.api.elements;
 public interface ISqlForeignKeyConstraint
     extends ISqlConstraint {
 
-    /** Returns the relatedTable. */
+    /** @return the relatedTable. */
     ISqlTable getRelatedTable();
 
-    /** Returns whether the child record should be cascase deleted with the parent. */
+    /** @return whether the child record should be cascase deleted with the parent. */
     boolean isCascadeDelete();
 
 }

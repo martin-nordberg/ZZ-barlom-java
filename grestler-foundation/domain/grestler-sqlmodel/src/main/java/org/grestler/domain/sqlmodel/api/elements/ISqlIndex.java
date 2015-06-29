@@ -11,7 +11,7 @@ package org.grestler.domain.sqlmodel.api.elements;
 public interface ISqlIndex
     extends ISqlNamedModelElement {
 
-    /** Returns the column. */
+    /** @return the column. */
     ISqlColumn getColumn();
 
     /**
