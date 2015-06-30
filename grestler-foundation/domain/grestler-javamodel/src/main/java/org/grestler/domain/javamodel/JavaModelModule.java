@@ -16,9 +16,7 @@ import javax.inject.Singleton;
  * Dagger dependency injection module.
  */
 @SuppressWarnings( "ClassNamePrefixedWithPackageName" )
-@Module(
-    library = true
-)
+@Module( library = true )
 public class JavaModelModule {
 
     /**

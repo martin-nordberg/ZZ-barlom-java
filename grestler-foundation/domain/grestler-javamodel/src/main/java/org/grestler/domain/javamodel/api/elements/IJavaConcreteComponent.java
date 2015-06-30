@@ -5,7 +5,7 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 /**
  * A concrete component.
@@ -34,12 +34,12 @@ public interface IJavaConcreteComponent
     IJavaStaticInitialization addStaticInitialization( String description, String code );
 
     /** @return the constructors within this class. */
-    List<IJavaConstructor> getConstructors();
+    IIndexable<IJavaConstructor> getConstructors();
 
     /** @return the fields within this class. */
-    List<IJavaField> getFields();
+    IIndexable<IJavaField> getFields();
 
     /** @return the static initializations within this class. */
-    List<IJavaStaticInitialization> getStaticInitializations();
+    IIndexable<IJavaStaticInitialization> getStaticInitializations();
 
 }

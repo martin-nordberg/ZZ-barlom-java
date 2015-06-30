@@ -5,10 +5,13 @@
 
 package org.grestler.domain.sqlmodel.impl.elements;
 
+import org.grestler.domain.sqlmodel.api.elements.ISqlDataModel;
 import org.grestler.domain.sqlmodel.api.elements.ISqlRelation;
 import org.grestler.domain.sqlmodel.api.elements.ISqlSchema;
 import org.grestler.domain.sqlmodel.api.elements.ISqlTable;
 import org.grestler.domain.sqlmodel.api.elements.ISqlView;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +29,14 @@ public class SqlSchema
     /**
      * Constructs a new schema.
      */
-    public SqlSchema( String name, String description ) {
-        super( null, name, description );
+    SqlSchema( SqlDataModel parent, String name, String description ) {
+        super( parent, name, description );
 
         this.relationsByName = new HashMap<>();
         this.tables = new ArrayList<>();
         this.views = new ArrayList<>();
+
+        parent.onAddChild( this );
     }
 
     @Override
@@ -44,15 +49,21 @@ public class SqlSchema
         return new SqlView( this, name, description );
     }
 
-    /**
-     * Returns the modelDomain.
-     */
     @Override
-    public SqlSchema getParent() {
-        return (SqlSchema) super.getParent();
+    public ISqlDataModel getParent() {
+        return (ISqlDataModel) super.getParent();
     }
 
-    /** Returns the table or view within this schema with given name. */
+    @Override
+    public String getPath() {
+        return "";
+    }
+
+    @Override
+    public String getPathWithSchema() {
+        return this.getSqlName();
+    }
+
     @Override
     public Optional<ISqlRelation> getRelationByName( String name ) {
         return Optional.ofNullable( this.relationsByName.get( SqlNamedModelElement.makeSqlName( name ) ) );
@@ -68,7 +79,6 @@ public class SqlSchema
         return SqlNamedModelElement.makeSqlName( this.getName() );
     }
 
-    /** Returns the table or view within this schema with given name. */
     @Override
     public Optional<ISqlTable> getTableByName( String name ) {
         Optional<ISqlRelation> result = this.getRelationByName( name );
@@ -81,44 +91,39 @@ public class SqlSchema
     }
 
     @Override
-    public List<ISqlTable> getTables() {
-        return this.tables;
+    public IIndexable<ISqlTable> getTables() {
+        return new ReadOnlyListAdapter<>( this.tables );
     }
 
     @Override
-    public List<ISqlView> getViews() {
-        return this.views;
+    public IIndexable<ISqlView> getViews() {
+        return new ReadOnlyListAdapter<>( this.views );
     }
 
-    /** Registers the addition of a table to this domain. */
+    /** Registers the addition of a table to this schema. */
     void onAddChild( ISqlTable table ) {
-        String tableName = table.getSqlName();
 
-        assert this.getParent().getRelationByName( tableName ) == null : "Duplicate table/view name: "
-            + tableName;
+        assert this.getRelationByName( table.getSqlName() ) == null : "Duplicate table/view name: "
+            + table.getSqlName();
 
         super.onAddChild( table );
 
-        this.getParent().putRelationByName( tableName, table );
+        this.relationsByName.put( table.getSqlName(), table );
         this.tables.add( table );
+
     }
 
-    /** Registers the addition of a view to this domain. */
+    /** Registers the addition of a view to this schema. */
     void onAddChild( ISqlView view ) {
-        String viewName = view.getSqlName();
 
-        assert this.getParent().getRelationByName( viewName ) == null : "Duplicate table/view name: "
-            + viewName;
+        assert this.getRelationByName( view.getSqlName() ) == null : "Duplicate table/view name: "
+            + view.getSqlName();
 
         super.onAddChild( view );
 
-        this.getParent().putRelationByName( viewName, view );
+        this.relationsByName.put( view.getSqlName(), view );
         this.views.add( view );
-    }
 
-    /** Sets the table or view within this schema with given name. */
-    void putRelationByName( String name, ISqlRelation relation ) {
-        this.relationsByName.put( SqlNamedModelElement.makeSqlName( name ), relation );
     }
 
     private final Map<String, ISqlRelation> relationsByName;

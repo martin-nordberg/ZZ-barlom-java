@@ -5,7 +5,8 @@
 
 package org.grestler.domain.sqlmodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+
 import java.util.Optional;
 
 /**
@@ -24,6 +25,9 @@ public interface ISqlSchema
      */
     ISqlView addView( String name, String description );
 
+    @Override
+    ISqlDataModel getParent();
+
     /** @return the table or view within this schema with given name. */
     Optional<ISqlRelation> getRelationByName( String name );
 
@@ -31,9 +35,9 @@ public interface ISqlSchema
     Optional<ISqlTable> getTableByName( String name );
 
     /** @return the tables. */
-    List<ISqlTable> getTables();
+    IIndexable<ISqlTable> getTables();
 
     /** @return the views. */
-    List<ISqlView> getViews();
+    IIndexable<ISqlView> getViews();
 
 }

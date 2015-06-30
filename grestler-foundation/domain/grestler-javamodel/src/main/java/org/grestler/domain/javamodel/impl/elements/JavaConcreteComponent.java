@@ -12,6 +12,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaField;
 import org.grestler.domain.javamodel.api.elements.IJavaMember;
 import org.grestler.domain.javamodel.api.elements.IJavaStaticInitialization;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,13 +73,13 @@ public abstract class JavaConcreteComponent
 
     /** @return the constructors within this class. */
     @Override
-    public List<IJavaConstructor> getConstructors() {
-        return this.constructors;
+    public IIndexable<IJavaConstructor> getConstructors() {
+        return new ReadOnlyListAdapter<>( this.constructors );
     }
 
     /** @return the fields within this class. */
     @Override
-    public List<IJavaField> getFields() {
+    public IIndexable<IJavaField> getFields() {
         List<IJavaField> result = new ArrayList<>( this.fields );
         Collections.sort(
             result, ( IJavaMember f1, IJavaMember f2 ) -> {
@@ -91,7 +93,7 @@ public abstract class JavaConcreteComponent
                 return cresult;
             }
         );
-        return result;
+        return new ReadOnlyListAdapter<>( result );
     }
 
     @Override
@@ -107,8 +109,8 @@ public abstract class JavaConcreteComponent
 
     /** @return the static initializations within this class. */
     @Override
-    public List<IJavaStaticInitialization> getStaticInitializations() {
-        return this.staticInitializations;
+    public IIndexable<IJavaStaticInitialization> getStaticInitializations() {
+        return new ReadOnlyListAdapter<>( this.staticInitializations );
     }
 
     /** Responds to the event of adding a child to this model element. */

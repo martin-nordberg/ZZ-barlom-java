@@ -5,7 +5,7 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 /**
  * An interface, enum, or class.
@@ -41,10 +41,10 @@ public interface IJavaComponent
     String getFullyQualifiedJavaName();
 
     /** @return the interfaces implemented by this component. */
-    List<IJavaImplementedInterface> getImplementedInterfaces();
+    IIndexable<IJavaImplementedInterface> getImplementedInterfaces();
 
     /** @return the methods within this component. */
-    List<IJavaMethod> getMethods();
+    IIndexable<IJavaMethod> getMethods();
 
     /** @return the parent of this package. */
     @Override

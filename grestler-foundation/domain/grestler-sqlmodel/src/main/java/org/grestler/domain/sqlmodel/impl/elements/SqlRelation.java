@@ -8,11 +8,14 @@ package org.grestler.domain.sqlmodel.impl.elements;
 import org.grestler.domain.sqlmodel.api.elements.ISqlColumn;
 import org.grestler.domain.sqlmodel.api.elements.ISqlRelation;
 import org.grestler.domain.sqlmodel.api.elements.ISqlSchema;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * An abstract relation (table, view, etc.).
@@ -33,13 +36,13 @@ public abstract class SqlRelation
     }
 
     @Override
-    public ISqlColumn getColumnByName( String name ) {
-        return this.columnsByName.get( SqlNamedModelElement.makeSqlName( name ) );
+    public Optional<? extends ISqlColumn> getColumnByName( String name ) {
+        return Optional.ofNullable( this.columnsByName.get( SqlNamedModelElement.makeSqlName( name ) ) );
     }
 
     @Override
-    public List<ISqlColumn> getColumns() {
-        return this.columns;
+    public IIndexable<ISqlColumn> getColumns() {
+        return new ReadOnlyListAdapter<>( this.columns );
     }
 
     @Override

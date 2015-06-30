@@ -17,6 +17,8 @@ import org.grestler.domain.sqlmodel.api.elements.ISqlRecord;
 import org.grestler.domain.sqlmodel.api.elements.ISqlTable;
 import org.grestler.domain.sqlmodel.api.elements.ISqlTableColumn;
 import org.grestler.domain.sqlmodel.api.elements.ISqlUniquenessConstraint;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,8 +121,8 @@ public class SqlTable
     }
 
     @Override
-    public ISqlRecord addRecord( Map<String, Object> values, Boolean isUnitTestValue ) {
-        return new SqlRecord( this, values, isUnitTestValue );
+    public ISqlRecord addRecord( Map<String, Object> values ) {
+        return new SqlRecord( this, values );
     }
 
     @Override
@@ -142,8 +144,7 @@ public class SqlTable
         ISqlTableColumn uniqueColumn1,
         ISqlTableColumn uniqueColumn2
     ) {
-        return new SqlUniquenessConstraint(
-            this,
+        return this.addUniquenessConstraint(
             name,
             description,
             SqlConstraint.makeListOfTwoColumns( uniqueColumn1, uniqueColumn2 )
@@ -154,34 +155,34 @@ public class SqlTable
     public ISqlUniquenessConstraint addUniquenessConstraint(
         String name,
         String description,
-        List<ISqlTableColumn> uniqueColumns
+        IIndexable<ISqlTableColumn> uniqueColumns
     ) {
         return new SqlUniquenessConstraint( this, name, description, uniqueColumns );
     }
 
     @Override
-    public List<ISqlAttributeColumn> getAttributeColumns() {
-        return this.attributeColumns;
+    public IIndexable<ISqlAttributeColumn> getAttributeColumns() {
+        return new ReadOnlyListAdapter<>( this.attributeColumns );
     }
 
     @Override
-    public ISqlTableColumn getColumnByName( String name ) {
-        return (ISqlTableColumn) super.getColumnByName( name );
+    public Optional<ISqlTableColumn> getColumnByName( String name ) {
+        return super.getColumnByName( name ).map( col -> (ISqlTableColumn) col );
     }
 
     @Override
-    public List<ISqlForeignKeyColumn> getForeignKeyColumns() {
-        return this.foreignKeyColumns;
+    public IIndexable<ISqlForeignKeyColumn> getForeignKeyColumns() {
+        return new ReadOnlyListAdapter<>( this.foreignKeyColumns );
     }
 
     @Override
-    public List<ISqlForeignKeyConstraint> getForeignKeyConstraints() {
-        return this.foreignKeyConstraints;
+    public IIndexable<ISqlForeignKeyConstraint> getForeignKeyConstraints() {
+        return new ReadOnlyListAdapter<>( this.foreignKeyConstraints );
     }
 
     @Override
-    public List<ISqlIndex> getIndexes() {
-        return this.indexes;
+    public IIndexable<ISqlIndex> getIndexes() {
+        return new ReadOnlyListAdapter<>( this.indexes );
     }
 
     @Override
@@ -195,8 +196,8 @@ public class SqlTable
     }
 
     @Override
-    public List<ISqlRecord> getRecords() {
-        return this.records;
+    public IIndexable<ISqlRecord> getRecords() {
+        return new ReadOnlyListAdapter<>( this.records );
     }
 
     @Override
@@ -205,8 +206,8 @@ public class SqlTable
     }
 
     @Override
-    public List<ISqlUniquenessConstraint> getUniquenessConstraints() {
-        return this.uniquenessConstraints;
+    public IIndexable<ISqlUniquenessConstraint> getUniquenessConstraints() {
+        return new ReadOnlyListAdapter<>( this.uniquenessConstraints );
     }
 
     /**

@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.impl.elements;
 
 import org.grestler.domain.javamodel.api.elements.IJavaEnumConstant;
 import org.grestler.domain.javamodel.api.elements.IJavaEnumeration;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +41,8 @@ public class JavaEnumeration
 
     /** @return the enum constants within this enumeration. */
     @Override
-    public List<IJavaEnumConstant> getEnumConstants() {
-        return this.enumConstants;
+    public IIndexable<IJavaEnumConstant> getEnumConstants() {
+        return new ReadOnlyListAdapter<>( this.enumConstants );
     }
 
     /** Responds to the event of adding a child to this model element. */

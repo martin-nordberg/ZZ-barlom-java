@@ -7,8 +7,7 @@ package org.grestler.domain.sqlmodel.impl.elements;
 
 import org.grestler.domain.sqlmodel.api.elements.ISqlTableColumn;
 import org.grestler.domain.sqlmodel.api.elements.ISqlUniquenessConstraint;
-
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 /**
  * A constraint enforcing column uniqueness.
@@ -24,7 +23,7 @@ public class SqlUniquenessConstraint
         SqlTable parent,
         String name,
         String description,
-        List<ISqlTableColumn> uniqueColumns
+        IIndexable<ISqlTableColumn> uniqueColumns
     ) {
         super( parent, name, description, uniqueColumns );
 

@@ -7,6 +7,8 @@ package org.grestler.domain.sqlmodel.impl.elements;
 
 import org.grestler.domain.sqlmodel.api.elements.ISqlModelElement;
 import org.grestler.domain.sqlmodel.api.elements.ISqlNamedModelElement;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +38,31 @@ public abstract class SqlNamedModelElement
     }
 
     @Override
-    public List<ISqlModelElement> getChildren() {
-        return this.children;
+    public IIndexable<ISqlModelElement> getChildren() {
+        return new ReadOnlyListAdapter<>( this.children );
     }
 
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getPath() {
+        String result = this.getParent().getPath();
+        if ( !result.isEmpty() ) {
+            result += ".";
+        }
+        return result + this.getSqlName();
+    }
+
+    @Override
+    public String getPathWithSchema() {
+        String result = this.getParent().getPathWithSchema();
+        if ( !result.isEmpty() ) {
+            result += ".";
+        }
+        return result + this.getSqlName();
     }
 
     /** Ensures that a given identifier is short enough to be a valid SQL identifier (<= 30 chars). */

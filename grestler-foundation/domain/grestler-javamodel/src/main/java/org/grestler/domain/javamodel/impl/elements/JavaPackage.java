@@ -11,6 +11,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaEnumeration;
 import org.grestler.domain.javamodel.api.elements.IJavaInterface;
 import org.grestler.domain.javamodel.api.elements.IJavaPackage;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,32 +126,32 @@ public final class JavaPackage
 
     /** Returns the annotation interfaces within this package. */
     @Override
-    public List<IJavaAnnotationInterface> getAnnotationInterfaces() {
-        return this.annotationInterfaces;
+    public IIndexable<IJavaAnnotationInterface> getAnnotationInterfaces() {
+        return new ReadOnlyListAdapter<>( this.annotationInterfaces );
     }
 
     /** Returns the classes within this package. */
     @Override
-    public List<IJavaClass> getClasses() {
-        return this.classes;
+    public IIndexable<IJavaClass> getClasses() {
+        return new ReadOnlyListAdapter<>( this.classes );
     }
 
     /** Returns the components within this package. */
     @Override
-    public List<IJavaComponent> getComponents() {
-        return this.components;
+    public IIndexable<IJavaComponent> getComponents() {
+        return new ReadOnlyListAdapter<>( this.components );
     }
 
     /** Returns the enumerations within this package. */
     @Override
-    public List<IJavaEnumeration> getEnumerations() {
-        return this.enumerations;
+    public IIndexable<IJavaEnumeration> getEnumerations() {
+        return new ReadOnlyListAdapter<>( this.enumerations );
     }
 
     /** Returns the interfaces within this package. */
     @Override
-    public List<IJavaInterface> getInterfaces() {
-        return this.interfaces;
+    public IIndexable<IJavaInterface> getInterfaces() {
+        return new ReadOnlyListAdapter<>( this.interfaces );
     }
 
     /** Returns the isImplicitlyImported. */

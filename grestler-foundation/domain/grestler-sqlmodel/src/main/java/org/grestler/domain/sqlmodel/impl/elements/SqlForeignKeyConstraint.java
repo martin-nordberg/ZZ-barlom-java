@@ -25,7 +25,7 @@ public class SqlForeignKeyConstraint
         String description,
         ISqlTableColumn foreignKeyColumn,
         ISqlTable relatedTable,
-        Boolean isCascadeDelete
+        boolean isCascadeDelete
     ) {
         super( parent, name, description, SqlConstraint.makeListOfOneColumn( foreignKeyColumn ) );
 

@@ -5,7 +5,8 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+
 import java.util.Set;
 
 /**
@@ -27,7 +28,7 @@ public interface IJavaAnnotatableModelElement
     );
 
     /** @return the annotations of this named model element. */
-    List<IJavaAnnotation> getAnnotations();
+    IIndexable<IJavaAnnotation> getAnnotations();
 
     /** @return the types needed to be imported by this component. */
     Set<IJavaType> getImports();

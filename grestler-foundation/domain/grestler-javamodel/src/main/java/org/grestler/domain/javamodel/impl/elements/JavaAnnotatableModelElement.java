@@ -11,6 +11,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaAnnotationInterface;
 import org.grestler.domain.javamodel.api.elements.IJavaNamedModelElement;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 import org.grestler.domain.javamodel.api.elements.IJavaTyped;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,8 +52,8 @@ public abstract class JavaAnnotatableModelElement
 
     /** @return the annotations of this named model element. */
     @Override
-    public List<IJavaAnnotation> getAnnotations() {
-        return this.annotations;
+    public IIndexable<IJavaAnnotation> getAnnotations() {
+        return new ReadOnlyListAdapter<>( this.annotations );
     }
 
     /** @return the types needed to be imported by this component. */

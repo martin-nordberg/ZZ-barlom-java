@@ -5,7 +5,9 @@
 
 package org.grestler.domain.sqlmodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+
+import java.util.Optional;
 
 /**
  * An abstract relation (table, view, etc.).
@@ -14,10 +16,10 @@ public interface ISqlRelation
     extends ISqlNamedModelElement {
 
     /** @return the columnsByName. */
-    ISqlColumn getColumnByName( String name );
+    Optional<? extends ISqlColumn> getColumnByName( String name );
 
     /** @return the columns. */
-    List<ISqlColumn> getColumns();
+    IIndexable<ISqlColumn> getColumns();
 
     @Override
     ISqlSchema getParent();

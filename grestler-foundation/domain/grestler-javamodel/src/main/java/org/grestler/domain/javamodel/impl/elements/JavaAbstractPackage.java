@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaAbstractPackage;
 import org.grestler.domain.javamodel.api.elements.IJavaAnnotationInterface;
 import org.grestler.domain.javamodel.api.elements.IJavaComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaPackage;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,8 +118,8 @@ public abstract class JavaAbstractPackage
 
     /** Returns the packages within this package. */
     @Override
-    public List<IJavaPackage> getPackages() {
-        return this.packages;
+    public IIndexable<IJavaPackage> getPackages() {
+        return new ReadOnlyListAdapter<>( this.packages );
     }
 
     /** @return the parent of this package. */

@@ -5,6 +5,8 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ public interface IJavaNamedModelElement
     /**
      * @return The children of this model element.
      */
-    List<IJavaModelElement> getChildren();
+    IIndexable<IJavaModelElement> getChildren();
 
     /**
      * @return The name of this element for Java code purposes.

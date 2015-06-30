@@ -5,7 +5,7 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 /**
  * An enumeration.
@@ -19,6 +19,6 @@ public interface IJavaEnumeration
     );
 
     /** @return the enum constants within this enumeration. */
-    List<IJavaEnumConstant> getEnumConstants();
+    IIndexable<IJavaEnumConstant> getEnumConstants();
 
 }

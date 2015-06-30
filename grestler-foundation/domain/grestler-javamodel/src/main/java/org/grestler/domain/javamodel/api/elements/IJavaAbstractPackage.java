@@ -5,7 +5,8 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+
 import java.util.Optional;
 
 /**
@@ -50,7 +51,7 @@ public interface IJavaAbstractPackage
     String getFullyQualifiedJavaName();
 
     /** @return the packages within this package. */
-    List<IJavaPackage> getPackages();
+    IIndexable<IJavaPackage> getPackages();
 
     @Override
     IJavaAbstractPackage getParent();

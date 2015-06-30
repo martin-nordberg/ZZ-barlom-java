@@ -5,7 +5,7 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 /**
  * A package.
@@ -61,27 +61,27 @@ public interface IJavaPackage
     /**
      * Returns the annotation interfaces within this package.
      */
-    List<IJavaAnnotationInterface> getAnnotationInterfaces();
+    IIndexable<IJavaAnnotationInterface> getAnnotationInterfaces();
 
     /**
      * Returns the classes within this package.
      */
-    List<IJavaClass> getClasses();
+    IIndexable<IJavaClass> getClasses();
 
     /**
      * Returns the components within this package.
      */
-    List<IJavaComponent> getComponents();
+    IIndexable<IJavaComponent> getComponents();
 
     /**
      * Returns the enumerations within this package.
      */
-    List<IJavaEnumeration> getEnumerations();
+    IIndexable<IJavaEnumeration> getEnumerations();
 
     /**
      * Returns the interfaces within this package.
      */
-    List<IJavaInterface> getInterfaces();
+    IIndexable<IJavaInterface> getInterfaces();
 
     /**
      * Returns the isImplicitlyImported.

@@ -2,6 +2,8 @@ package org.grestler.domain.javamodel.impl.elements;
 
 import org.grestler.domain.javamodel.api.elements.IJavaModelElement;
 import org.grestler.domain.javamodel.api.elements.IJavaNamedModelElement;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +53,8 @@ public abstract class JavaNamedModelElement
     }
 
     @Override
-    public List<IJavaModelElement> getChildren() {
-        return this.children;
+    public IIndexable<IJavaModelElement> getChildren() {
+        return new ReadOnlyListAdapter<>( this.children );
     }
 
     @Override

@@ -19,7 +19,4 @@ public interface ISqlRecord
     /** @return the columnValues. */
     Map<String, Object> getColumnValues();
 
-    /** @return whether this record is for unit testing (as opposed to reference data). */
-    boolean isUnitTestValue();
-
 }

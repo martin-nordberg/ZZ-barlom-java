@@ -5,7 +5,8 @@
 
 package org.grestler.domain.sqlmodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -77,7 +78,7 @@ public interface ISqlTable
     /**
      * Creates a pre-defined record within this table.
      */
-    ISqlRecord addRecord( Map<String, Object> values, Boolean isUnitTestValue );
+    ISqlRecord addRecord( Map<String, Object> values );
 
     /**
      * Creates a foreign key within this table.
@@ -100,23 +101,24 @@ public interface ISqlTable
     ISqlUniquenessConstraint addUniquenessConstraint(
         String name,
         String description,
-        List<ISqlTableColumn> uniqueColumns
+        IIndexable<ISqlTableColumn> uniqueColumns
     );
 
     /** @return the attributeColumns. */
-    List<ISqlAttributeColumn> getAttributeColumns();
+    IIndexable<ISqlAttributeColumn> getAttributeColumns();
 
+    /** @return the table column with given name. */
     @Override
-    ISqlTableColumn getColumnByName( String name );
+    Optional<ISqlTableColumn> getColumnByName( String name );
 
     /** @return the foreignKeyColumns. */
-    List<ISqlForeignKeyColumn> getForeignKeyColumns();
+    IIndexable<ISqlForeignKeyColumn> getForeignKeyColumns();
 
     /** @return the foreign key constraints. */
-    List<ISqlForeignKeyConstraint> getForeignKeyConstraints();
+    IIndexable<ISqlForeignKeyConstraint> getForeignKeyConstraints();
 
     /** @return the indexes. */
-    List<ISqlIndex> getIndexes();
+    IIndexable<ISqlIndex> getIndexes();
 
     /** @return the primaryKeyColumn. */
     Optional<ISqlPrimaryKeyColumn> getPrimaryKeyColumn();
@@ -125,9 +127,9 @@ public interface ISqlTable
     Optional<ISqlPrimaryKeyConstraint> getPrimaryKeyConstraint();
 
     /** @return the records. */
-    List<ISqlRecord> getRecords();
+    IIndexable<ISqlRecord> getRecords();
 
     /** @return the uniqueness constraints. */
-    List<ISqlUniquenessConstraint> getUniquenessConstraints();
+    IIndexable<ISqlUniquenessConstraint> getUniquenessConstraints();
 
 }

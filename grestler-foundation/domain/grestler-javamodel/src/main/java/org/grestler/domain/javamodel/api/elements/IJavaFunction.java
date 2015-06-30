@@ -5,7 +5,7 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
-import java.util.List;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 /**
  * A Java function (constructor or member).
@@ -20,7 +20,7 @@ public interface IJavaFunction
     String getCode();
 
     /** @return the parameters within this method. */
-    List<IJavaParameter> getParameters();
+    IIndexable<IJavaParameter> getParameters();
 
     /** @return the return type of this method. */
     IJavaType getReturnType();

@@ -4,7 +4,7 @@
 //
 
 /**
- * Package implementing the elements of a metamodel for SQL code.
+ * Package defining the elements of a metamodel for SQL code.
  */
 
 package org.grestler.domain.sqlmodel.api.elements;

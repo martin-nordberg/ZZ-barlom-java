@@ -9,6 +9,7 @@ import org.grestler.domain.sqlmodel.api.elements.ISqlRecord;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Representation of a single table record in the database.
@@ -22,22 +23,20 @@ public class SqlRecord
      *
      * @param parent The table the record is part of.
      */
-    SqlRecord( SqlTable parent, Map<String, Object> columnValues, Boolean isUnitTestValue ) {
+    SqlRecord( SqlTable parent, Map<String, Object> columnValues ) {
         super( parent, null );
 
         this.columnValues = new HashMap<>( columnValues );
-        this.isUnitTestValue = isUnitTestValue;
 
         parent.onAddChild( this );
     }
 
-    @SuppressWarnings( "DynamicRegexReplaceableByCompiledPattern" )
     @Override
     public Object getColumnValue( String key ) {
 
         String simplifiedKey = key.toUpperCase();
-        simplifiedKey = simplifiedKey.replaceAll( " ", "" );
-        simplifiedKey = simplifiedKey.replaceAll( "_", "" );
+        simplifiedKey = SqlRecord.SPACE_PATTERN.matcher( simplifiedKey ).replaceAll( "" );
+        simplifiedKey = SqlRecord.UNDERSCORE_PATTERN.matcher( simplifiedKey ).replaceAll( "" );
 
         return this.columnValues.get( simplifiedKey );
     }
@@ -48,19 +47,15 @@ public class SqlRecord
     }
 
     @Override
-    public boolean isUnitTestValue() {
-        return this.isUnitTestValue;
+    public String toString() {
+        return "[columnValues=" + this.columnValues + "]";
     }
 
-    @Override
-    public String toString() {
-        return "[columnValues=" + this.columnValues + ", isUnitTestValue=" + this.isUnitTestValue
-            + "]";
-    }
+    private static final Pattern SPACE_PATTERN = Pattern.compile( " " );
+
+    private static final Pattern UNDERSCORE_PATTERN = Pattern.compile( "_" );
 
     /** Mapping from column name to SQL-formatted value. */
     private final Map<String, Object> columnValues;
-
-    private final Boolean isUnitTestValue;
 
 }

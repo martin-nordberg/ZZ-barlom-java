@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.EJavaAccessibility;
 import org.grestler.domain.javamodel.api.elements.IJavaFunction;
 import org.grestler.domain.javamodel.api.elements.IJavaParameter;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +70,8 @@ public abstract class JavaFunction
 
     /** @return the parameters within this method. */
     @Override
-    public List<IJavaParameter> getParameters() {
-        return this.parameters;
+    public IIndexable<IJavaParameter> getParameters() {
+        return new ReadOnlyListAdapter<>( this.parameters );
     }
 
     /** @return the return type of this method. */

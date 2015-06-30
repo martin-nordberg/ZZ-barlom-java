@@ -15,6 +15,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaNamedModelElement;
 import org.grestler.domain.javamodel.api.elements.IJavaPackage;
 import org.grestler.domain.javamodel.api.elements.IJavaReferenceType;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
+import org.grestler.infrastructure.utilities.collections.IIndexable;
+import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,8 +71,8 @@ public abstract class JavaComponent
 
     /** @return the interfaces implemented by this component. */
     @Override
-    public List<IJavaImplementedInterface> getImplementedInterfaces() {
-        return this.implementedInterfaces;
+    public IIndexable<IJavaImplementedInterface> getImplementedInterfaces() {
+        return new ReadOnlyListAdapter<>( this.implementedInterfaces );
     }
 
     /** @return the types needed to be imported by this component. */
@@ -91,7 +93,7 @@ public abstract class JavaComponent
 
     /** @return the methods within this component. */
     @Override
-    public List<IJavaMethod> getMethods() {
+    public IIndexable<IJavaMethod> getMethods() {
         List<IJavaMethod> result = new ArrayList<>( this.methods );
         Collections.sort(
             result, ( IJavaFunction m1, IJavaFunction m2 ) -> {
@@ -108,7 +110,7 @@ public abstract class JavaComponent
                 return cresult;
             }
         );
-        return result;
+        return new ReadOnlyListAdapter<>( result );
     }
 
     /** @return the parent of this package. */
