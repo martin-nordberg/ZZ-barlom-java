@@ -14,6 +14,9 @@ include 'grestler-foundation/application/grestler-apputilities'
 rootProject.children.find { it.name == 'grestler-foundation/application/grestler-apputilities' }.name = 'grestler-apputilities'
 
 // Domain
+include 'grestler-foundation/domain/grestler-javacodegen'
+rootProject.children.find { it.name == 'grestler-foundation/domain/grestler-javacodegen' }.name = 'grestler-javacodegen'
+
 include 'grestler-foundation/domain/grestler-javamodel'
 rootProject.children.find { it.name == 'grestler-foundation/domain/grestler-javamodel' }.name = 'grestler-javamodel'
 
@@ -23,6 +26,9 @@ rootProject.children.find { it.name == 'grestler-foundation/domain/grestler-sqlm
 // Persistence
 include 'grestler-foundation/persistence/grestler-dbutilities'
 rootProject.children.find { it.name == 'grestler-foundation/persistence/grestler-dbutilities' }.name = 'grestler-dbutilities'
+
+include 'grestler-foundation/persistence/grestler-ioutilities'
+rootProject.children.find { it.name == 'grestler-foundation/persistence/grestler-ioutilities' }.name = 'grestler-ioutilities'
 
 // Infrastructure
 include 'grestler-foundation/infrastructure/grestler-utilities'

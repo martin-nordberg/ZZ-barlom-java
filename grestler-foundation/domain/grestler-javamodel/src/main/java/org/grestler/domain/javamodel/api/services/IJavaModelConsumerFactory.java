@@ -13,6 +13,6 @@ public interface IJavaModelConsumerFactory<T> {
      * @param elementType the type of Java model element.
      * @return the consumer service.
      */
-    IJavaModelConsumerService<T> build( Class<? extends IJavaModelElement> elementType );
+    <E extends IJavaModelElement> IJavaModelConsumerService<E,T> build( Class<? extends IJavaModelElement> elementType );
 
 }
