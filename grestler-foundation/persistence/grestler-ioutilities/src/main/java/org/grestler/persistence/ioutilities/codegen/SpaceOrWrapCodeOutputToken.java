@@ -11,6 +11,9 @@ package org.grestler.persistence.ioutilities.codegen;
 class SpaceOrWrapCodeOutputToken
     extends AbstractCodeOutputToken {
 
+    SpaceOrWrapCodeOutputToken() {
+    }
+
     @Override
     public int writeText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
 
@@ -25,10 +28,12 @@ class SpaceOrWrapCodeOutputToken
     @Override
     public int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
 
-        output.append( System.getProperty( "line.separator" ) );
+        output.append( SpaceOrWrapCodeOutputToken.LINE_SEPARATOR );
 
         return startingIndent;
 
     }
+
+    static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
 
 }

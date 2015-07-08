@@ -9,10 +9,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for writing code.
  */
+@SuppressWarnings( "HardcodedLineSeparator" )
 public class CodeWriter
     implements AutoCloseable {
 
@@ -58,8 +60,13 @@ public class CodeWriter
     }
 
     @Override
-    public void close() throws Exception {
-        this.writer.close();
+    public void close() {
+        try {
+            this.writer.close();
+        }
+        catch ( IOException e ) {
+            throw new RuntimeException( "Failed to close code writer.", e );
+        }
     }
 
     /**
@@ -78,6 +85,7 @@ public class CodeWriter
      *
      * @return this code writer for method chaining.
      */
+    @SuppressWarnings( "ImplicitNumericConversion" )
     public CodeWriter newLine() {
 
         int indent = this.indentForCurrLine;
@@ -88,8 +96,14 @@ public class CodeWriter
             indent = token.writeText( line, indent, this.config.spacesPerIndent );
         }
 
+        // Ignore trailing spaces.
+        int lineLength = line.length();
+        while ( lineLength > 0 && line.charAt( lineLength - 1 ) == ' ' ) {
+            lineLength -= 1;
+        }
+
         // If the line is too long, rewrite it with intermediate wrapping.
-        if ( line.length() > this.config.maxLineLength ) {
+        if ( lineLength > this.config.maxLineLength ) {
 
             line = new StringBuilder();
             for ( ICodeOutputToken token : this.tokensOnCurrLine ) {
@@ -99,11 +113,17 @@ public class CodeWriter
         }
 
         // Output the final line ending character(s).
-        line.append( System.getProperty( "line.separator" ) );
+        line.append( SpaceOrWrapCodeOutputToken.LINE_SEPARATOR );
 
         // Write through to the underlying writer.
         try {
-            this.writer.write( line.toString() );
+            String lineStr = line.toString();
+
+            // Remove trailing spaces.
+            lineStr = CodeWriter.SPACE_LF.matcher( lineStr ).replaceAll( "\n" );
+            lineStr = CodeWriter.SPACE_CR_LF.matcher( lineStr ).replaceAll( "\r\n" );
+
+            this.writer.write( lineStr );
         }
         catch ( IOException e ) {
             throw new RuntimeException( "Failed to write through code writer.", e );
@@ -146,7 +166,7 @@ public class CodeWriter
      * @return this code writer for method chaining.
      */
     public CodeWriter spaceOrWrapUnindent() {
-        return this.unindent().spaceOrWrap();
+        return this.spaceOrWrap().unindent();
     }
 
     /**
@@ -158,6 +178,12 @@ public class CodeWriter
         this.tokensOnCurrLine.add( new UnindentCodeOutputToken() );
         return this;
     }
+
+    /** Pattern for removing line ending spaces. */
+    private static final Pattern SPACE_CR_LF = Pattern.compile( " \\r\\n" );
+
+    /** Pattern for removing line ending spaces. */
+    private static final Pattern SPACE_LF = Pattern.compile( " \\n" );
 
     /** The configuration of the code writer. */
     private final CodeWriterConfig config;

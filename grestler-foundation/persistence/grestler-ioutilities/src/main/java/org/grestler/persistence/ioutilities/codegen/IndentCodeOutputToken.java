@@ -11,6 +11,9 @@ package org.grestler.persistence.ioutilities.codegen;
 class IndentCodeOutputToken
     extends AbstractCodeOutputToken {
 
+    IndentCodeOutputToken() {
+    }
+
     @Override
     public int writeText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
         return startingIndent + 1;

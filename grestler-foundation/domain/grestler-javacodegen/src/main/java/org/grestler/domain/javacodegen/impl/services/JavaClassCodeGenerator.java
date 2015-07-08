@@ -13,7 +13,6 @@ public final class JavaClassCodeGenerator
     implements IJavaModelConsumerService<IJavaClass, CodeWriter> {
 
     private JavaClassCodeGenerator() {
-
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )

@@ -13,17 +13,25 @@ import java.util.Map;
 /**
  * Java model extension service for generating Java source code.
  */
-public final class JavaCodeGenerator implements IJavaModelConsumerFactory<CodeWriter> {
+public final class JavaCodeGenerator
+    implements IJavaModelConsumerFactory<CodeWriter> {
 
+    /**
+     * Constructs a new code generator.
+     */
     private JavaCodeGenerator() {
+
         this.consumers = new HashMap<>();
 
+        // Map all the concrete classes to individual code generators.
         this.consumers.put( "JavaClass", JavaClassCodeGenerator.INSTANCE );
         this.consumers.put( "JavaField", JavaFieldCodeGenerator.INSTANCE );
+
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
-    public <E extends IJavaModelElement> IJavaModelConsumerService<E,CodeWriter> build( Class<? extends IJavaModelElement> elementType ) {
+    public <E extends IJavaModelElement> IJavaModelConsumerService<E, CodeWriter> build( Class<? extends IJavaModelElement> elementType ) {
 
         String elementTypeName = elementType.getSimpleName();
 
@@ -35,8 +43,14 @@ public final class JavaCodeGenerator implements IJavaModelConsumerFactory<CodeWr
 
     }
 
+    /**
+     * The one and only Java code generator (factory).
+     */
     public static final JavaCodeGenerator INSTANCE = new JavaCodeGenerator();
 
-    private final Map<String,IJavaModelConsumerService<? extends IJavaModelElement,CodeWriter>> consumers;
+    /**
+     * Map of code generators by concrete class name.
+     */
+    private final Map<String, IJavaModelConsumerService<? extends IJavaModelElement, CodeWriter>> consumers;
 
 }

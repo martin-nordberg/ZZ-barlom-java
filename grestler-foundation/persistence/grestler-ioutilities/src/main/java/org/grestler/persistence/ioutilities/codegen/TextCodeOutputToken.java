@@ -16,20 +16,16 @@ class TextCodeOutputToken
      *
      * @param text the text of the token.
      */
-    public TextCodeOutputToken( String text ) {
+    TextCodeOutputToken( String text ) {
         this.text = text;
     }
 
     @Override
     public int writeText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
 
-        if ( !this.text.isEmpty() ) {
+        this.appendIndentSpacesIfNeeded( output, startingIndent, spacesPerIndent );
 
-            this.appendIndentSpacesIfNeeded( output, startingIndent, spacesPerIndent );
-
-            output.append( this.text );
-
-        }
+        output.append( this.text );
 
         return startingIndent;
 

@@ -27,9 +27,10 @@ abstract class AbstractCodeOutputToken
      * @param startingIndent  the indent level needed.
      * @param spacesPerIndent the number of space characters per indent level.
      */
+    @SuppressWarnings( { "HardcodedLineSeparator", "ImplicitNumericConversion" } )
     protected void appendIndentSpacesIfNeeded( StringBuilder output, int startingIndent, int spacesPerIndent ) {
 
-        if ( output.length() == 0 ) {
+        if ( output.length() == 0 || output.charAt( output.length() - 1 ) == '\n' ) {
             int spaces = Math.min( startingIndent * spacesPerIndent, AbstractCodeOutputToken.SPACES.length() );
             output.append( AbstractCodeOutputToken.SPACES.substring( 0, spaces ) );
         }
