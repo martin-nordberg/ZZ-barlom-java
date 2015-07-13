@@ -10,6 +10,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaConcreteComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaField;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 
+import java.util.Optional;
+
 /**
  * A Java field.
  */
@@ -28,7 +30,7 @@ public final class JavaField
         boolean isStatic,
         boolean isFinal,
         IJavaType type,
-        String initialValueCode
+        Optional<String> initialValueCode
     ) {
         super( parent, name, description, accessibility, isStatic, isFinal, type );
 
@@ -39,7 +41,7 @@ public final class JavaField
 
     /** Returns the initialValueCode. */
     @Override
-    public String getInitialValueCode() {
+    public Optional<String> getInitialValueCode() {
         return this.initialValueCode;
     }
 
@@ -48,6 +50,6 @@ public final class JavaField
         return (IJavaConcreteComponent) super.getParent();
     }
 
-    private final String initialValueCode;
+    private final Optional<String> initialValueCode;
 
 }

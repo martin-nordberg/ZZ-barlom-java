@@ -1,5 +1,6 @@
 package org.grestler.domain.javacodegen.impl.services;
 
+import org.grestler.domain.javacodegen.api.services.JavaCodeGenerator;
 import org.grestler.domain.javamodel.api.elements.IJavaField;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.grestler.persistence.ioutilities.codegen.CodeWriter;
@@ -18,19 +19,32 @@ public final class JavaFieldCodeGenerator implements IJavaModelConsumerService<I
     public void consume(
         IJavaField field, CodeWriter writer
     ) {
+
         writer.append( "// TODO: javadoc ... " )
               .newLine();
 
+        // TODO: annotations
+
         writer.append( field.getAccessibility().getKeyWord() )
-              .append( " " )
-              .appendIf( field.isStatic(), "static " )
-              .appendIf( field.isFinal(), "final " )
-              .append( "/*TODO: Type*/ " )
-              .append( field.getJavaName() )
-              // TODO: initializer
-              .append( ";" )
+              .appendIf( field.isStatic(), " static" )
+              .appendIf( field.isFinal(), " final" )
+              .spaceOrWrap();
+
+        field.getType().consume( JavaCodeGenerator.INSTANCE, writer );
+
+        writer.spaceOrWrap()
+              .append( field.getJavaName() );
+
+        if ( field.getInitialValueCode().isPresent() ) {
+            writer.append( " =" )
+                  .spaceOrWrap()
+                  .append( field.getInitialValueCode().get() );
+        }
+
+        writer.append( ";" )
               .newLine()
               .newLine();
+
     }
 
     public static final JavaFieldCodeGenerator INSTANCE = new JavaFieldCodeGenerator();

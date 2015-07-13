@@ -5,6 +5,8 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
+import java.util.Optional;
+
 /**
  * A Java field.
  */
@@ -12,7 +14,7 @@ public interface IJavaField
     extends IJavaMember {
 
     /** Returns the initialValueCode. */
-    String getInitialValueCode();
+    Optional<String> getInitialValueCode();
 
     @Override
     IJavaConcreteComponent getParent();

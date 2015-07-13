@@ -18,6 +18,7 @@ import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -58,10 +59,10 @@ public abstract class JavaConcreteComponent
         boolean isStatic,
         boolean isFinalField,
         IJavaType type,
-        String code
+        Optional<String> initialValueCode
     ) {
         return new JavaField(
-            this, name, description, accessibility, isStatic, isFinalField, type, code
+            this, name, description, accessibility, isStatic, isFinalField, type, initialValueCode
         );
     }
 

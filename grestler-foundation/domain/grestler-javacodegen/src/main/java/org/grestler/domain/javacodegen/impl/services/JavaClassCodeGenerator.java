@@ -40,6 +40,7 @@ public final class JavaClassCodeGenerator
               .appendIf( klass.isAbstract(), "abstract " )
               .append( "class " )
               .append( klass.getName() )
+              // TODO: type args
               .append( " {" )
               .newLine()
               .indent();

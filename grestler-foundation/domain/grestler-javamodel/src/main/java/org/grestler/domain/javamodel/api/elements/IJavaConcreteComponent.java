@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.api.elements;
 
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 
+import java.util.Optional;
+
 /**
  * A concrete component.
  */
@@ -27,7 +29,7 @@ public interface IJavaConcreteComponent
         boolean isStatic,
         boolean isFinalField,
         IJavaType type,
-        String code
+        Optional<String> initialValueCode
     );
 
     /** Creates a static initialization within this class. */
