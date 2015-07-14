@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.impl.elements;
 
 import org.grestler.domain.javamodel.api.elements.IJavaInterface;
 
+import java.util.Optional;
+
 /**
  * An interface.
  */
@@ -17,7 +19,7 @@ public class JavaInterface
     /**
      * Constructs a new class.
      */
-    JavaInterface( JavaPackage parent, String name, String description, boolean isExternal ) {
+    JavaInterface( JavaPackage parent, String name, Optional<String> description, boolean isExternal ) {
         super( parent, name, description, isExternal );
 
         parent.onAddChild( this );

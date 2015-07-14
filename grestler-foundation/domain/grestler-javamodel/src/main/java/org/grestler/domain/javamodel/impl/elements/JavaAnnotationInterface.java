@@ -8,6 +8,8 @@ package org.grestler.domain.javamodel.impl.elements;
 import org.grestler.domain.javamodel.api.elements.IJavaAnnotationInterface;
 import org.grestler.domain.javamodel.api.elements.IJavaPackage;
 
+import java.util.Optional;
+
 /**
  * An annotation definition
  */
@@ -18,13 +20,12 @@ public class JavaAnnotationInterface
     /**
      * Constructs a new annotation
      */
-    JavaAnnotationInterface( JavaPackage parent, String name, String description ) {
+    JavaAnnotationInterface( JavaPackage parent, String name, Optional<String> description ) {
         super( parent, name, description );
 
         parent.onAddChild( this );
     }
 
-    /** @return the fully qualified name of this component. */
     @Override
     public String getFullyQualifiedJavaName() {
         return this.getParent().getFullyQualifiedJavaName() + "." + this.getJavaName();
@@ -35,9 +36,8 @@ public class JavaAnnotationInterface
         return (IJavaPackage) super.getParent();
     }
 
-    /** @return a type referencing this component. */
     @Override
-    public JavaType makeJavaType() {
+    public JavaType getType() {
         return new JavaAnnotationType( this );
     }
 

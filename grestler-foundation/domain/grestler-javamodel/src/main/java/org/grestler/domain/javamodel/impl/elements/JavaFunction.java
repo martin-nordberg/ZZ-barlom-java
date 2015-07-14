@@ -14,6 +14,7 @@ import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -29,7 +30,7 @@ public abstract class JavaFunction
     protected JavaFunction(
         JavaComponent parent,
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isStatic,
         boolean isFinal,
@@ -45,13 +46,11 @@ public abstract class JavaFunction
         parent.onAddChild( this );
     }
 
-    /** Creates a parameter for this method. */
     @Override
-    public IJavaParameter addParameter( String name, String description, IJavaType type ) {
+    public IJavaParameter addParameter( String name, Optional<String> description, IJavaType type ) {
         return new JavaParameter( this, name, description, type );
     }
 
-    /** @return the code of this method. */
     @Override
     public String getCode() {
         return this.code;
@@ -68,13 +67,11 @@ public abstract class JavaFunction
         return result;
     }
 
-    /** @return the parameters within this method. */
     @Override
     public IIndexable<IJavaParameter> getParameters() {
         return new ReadOnlyListAdapter<>( this.parameters );
     }
 
-    /** @return the return type of this method. */
     @Override
     public IJavaType getReturnType() {
         return this.getType();

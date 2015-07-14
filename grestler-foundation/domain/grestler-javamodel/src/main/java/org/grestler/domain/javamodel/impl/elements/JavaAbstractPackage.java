@@ -27,20 +27,18 @@ public abstract class JavaAbstractPackage
      * Constructs a new abstract Java package (package or root package).
      */
     @SuppressWarnings( "TypeMayBeWeakened" )
-    protected JavaAbstractPackage( IJavaAbstractPackage parent, String name, String description ) {
+    protected JavaAbstractPackage( IJavaAbstractPackage parent, String name, Optional<String> description ) {
         super( parent, name, description );
 
         this.packages = new ArrayList<>();
     }
 
-    /** Creates a package within this one. */
     @SuppressWarnings( "BooleanParameter" )
     @Override
-    public IJavaPackage addPackage( String name, String description, boolean isImplicitlyImported ) {
+    public IJavaPackage addPackage( String name, Optional<String> description, boolean isImplicitlyImported ) {
         return new JavaPackage( this, name, description, isImplicitlyImported );
     }
 
-    /** Given a qualified name relative to this package, find the needed component. */
     @Override
     public Optional<IJavaAnnotationInterface> findAnnotationInterface( String relativeQualifiedName ) {
 
@@ -57,7 +55,6 @@ public abstract class JavaAbstractPackage
         return Optional.empty();
     }
 
-    /** Given a qualified name relative to this package, find the needed component. */
     @Override
     public Optional<IJavaComponent> findComponent( String relativeQualifiedName ) {
 
@@ -74,7 +71,6 @@ public abstract class JavaAbstractPackage
         return Optional.empty();
     }
 
-    /** Given a qualified name relative to this package, find or create the needed subpackages. */
     @Override
     public IJavaPackage findOrCreatePackage( String relativeQualifiedName ) {
 
@@ -97,7 +93,7 @@ public abstract class JavaAbstractPackage
         }
 
         // not found - create a new sub-package
-        IJavaPackage newPackage = this.addPackage( packageNames[0], "", false );
+        IJavaPackage newPackage = this.addPackage( packageNames[0], Optional.empty(), false );
 
         if ( packageNames.length == 1 ) {
             return newPackage;
@@ -105,7 +101,6 @@ public abstract class JavaAbstractPackage
         return newPackage.findOrCreatePackage( packageNames[1] );
     }
 
-    /** Returns the fully qualified name of this package. */
     @Override
     public String getFullyQualifiedJavaName() {
         String result = this.getParent().getFullyQualifiedJavaName();
@@ -116,13 +111,11 @@ public abstract class JavaAbstractPackage
         return result;
     }
 
-    /** Returns the packages within this package. */
     @Override
     public IIndexable<IJavaPackage> getPackages() {
         return new ReadOnlyListAdapter<>( this.packages );
     }
 
-    /** @return the parent of this package. */
     @Override
     public IJavaAbstractPackage getParent() {
         return (IJavaAbstractPackage) super.getParent();

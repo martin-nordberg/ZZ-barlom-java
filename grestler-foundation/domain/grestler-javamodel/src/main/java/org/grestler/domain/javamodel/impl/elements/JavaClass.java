@@ -8,6 +8,7 @@ package org.grestler.domain.javamodel.impl.elements;
 import org.grestler.domain.javamodel.api.elements.IJavaClass;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -23,7 +24,7 @@ public final class JavaClass
     JavaClass(
         JavaPackage parent,
         String name,
-        String description,
+        Optional<String> description,
         boolean isExternal,
         boolean isAbstract,
         boolean isFinal,
@@ -40,7 +41,6 @@ public final class JavaClass
         parent.onAddChild( this );
     }
 
-    /** @return the baseClass. */
     @Override
     public IJavaClass getBaseClass() {
         return this.baseClass;
@@ -51,31 +51,27 @@ public final class JavaClass
         Set<IJavaType> result = super.getImports();
 
         if ( this.baseClass != null ) {
-            result.add( this.baseClass.makeJavaType() );
+            result.add( this.baseClass.getType() );
         }
 
         return result;
     }
 
-    /** @return whether this is an abstract class. */
     @Override
     public boolean isAbstract() {
         return this.isAbstract;
     }
 
-    /** @return whether this is a final class. */
     @Override
     public boolean isFinal() {
         return this.isFinal;
     }
 
-    /** Returns the isTestCode. */
     @Override
     public boolean isTestCode() {
         return this.isTestCode;
     }
 
-    /** Sets the base class. */
     @Override
     public void setBaseClass( IJavaClass baseClass ) {
         assert this.baseClass == null;

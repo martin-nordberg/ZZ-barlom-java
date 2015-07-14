@@ -8,6 +8,8 @@ package org.grestler.domain.javamodel.api.elements;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerFactory;
 import org.grestler.domain.javamodel.api.services.IJavaModelSupplierFactory;
 
+import java.util.Optional;
+
 /**
  * Top level Java element.
  */
@@ -26,12 +28,12 @@ public interface IJavaModelElement {
     /**
      * @return The description of this model element.
      */
-    String getDescription();
+    Optional<String> getDescription();
 
     /**
      * @return The parent of this model element.
      */
-    IJavaNamedModelElement getParent();
+    IJavaModelElement getParent();
 
     /**
      * @return The highest root package containing this model element.

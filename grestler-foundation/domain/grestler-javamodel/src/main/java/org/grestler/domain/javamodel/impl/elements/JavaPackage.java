@@ -29,7 +29,7 @@ public final class JavaPackage
      * Constructs a new Java package.
      */
     JavaPackage(
-        JavaAbstractPackage parent, String name, String description, boolean isImplicitlyImported
+        JavaAbstractPackage parent, String name, Optional<String> description, boolean isImplicitlyImported
     ) {
         super( parent, name, description );
 
@@ -44,49 +44,47 @@ public final class JavaPackage
         parent.onAddChild( this );
     }
 
-    /** Creates an annotation interface within this package. */
     @Override
-    public IJavaAnnotationInterface addAnnotationInterface( String name, String description ) {
+    public IJavaAnnotationInterface addAnnotationInterface( String name, Optional<String> description ) {
         return new JavaAnnotationInterface( this, name, description );
     }
 
-    /** Creates a class within this package. */
     @SuppressWarnings( "BooleanParameter" )
     @Override
     public IJavaClass addClass(
-        String name, String description, boolean isAbstract, boolean isFinal, IJavaClass baseClass, boolean isTestCode
+        String name,
+        Optional<String> description,
+        boolean isAbstract,
+        boolean isFinal,
+        IJavaClass baseClass,
+        boolean isTestCode
     ) {
         return new JavaClass(
             this, name, description, false, isAbstract, isFinal, baseClass, isTestCode
         );
     }
 
-    /** Creates an enumeration within this package. */
     @SuppressWarnings( "BooleanParameter" )
     @Override
-    public IJavaEnumeration addEnumeration( String name, String description, boolean isExternal ) {
+    public IJavaEnumeration addEnumeration( String name, Optional<String> description, boolean isExternal ) {
         return new JavaEnumeration( this, name, description, isExternal );
     }
 
-    /** Creates a class within this package only for reference by other classes. */
     @Override
     public IJavaClass addExternalClass( String name ) {
-        return new JavaClass( this, name, "", true, false, false, null, false );
+        return new JavaClass( this, name, Optional.empty(), true, false, false, null, false );
     }
 
-    /** Creates an interface within this package. */
     @Override
     public IJavaInterface addExternalInterface( String name ) {
-        return new JavaInterface( this, name, "", true );
+        return new JavaInterface( this, name, Optional.empty(), true );
     }
 
-    /** Creates an interface within this package. */
     @Override
-    public IJavaInterface addInterface( String name, String description ) {
+    public IJavaInterface addInterface( String name, Optional<String> description ) {
         return new JavaInterface( this, name, description, false );
     }
 
-    /** Given a qualified name relative to this package, find the needed component. */
     @Override
     public Optional<IJavaAnnotationInterface> findAnnotationInterface( String relativeQualifiedName ) {
 
@@ -105,7 +103,6 @@ public final class JavaPackage
         return Optional.empty();
     }
 
-    /** Given a qualified name relative to this package, find the needed component. */
     @Override
     public Optional<IJavaComponent> findComponent( String relativeQualifiedName ) {
 
@@ -124,37 +121,31 @@ public final class JavaPackage
         return Optional.empty();
     }
 
-    /** Returns the annotation interfaces within this package. */
     @Override
     public IIndexable<IJavaAnnotationInterface> getAnnotationInterfaces() {
         return new ReadOnlyListAdapter<>( this.annotationInterfaces );
     }
 
-    /** Returns the classes within this package. */
     @Override
     public IIndexable<IJavaClass> getClasses() {
         return new ReadOnlyListAdapter<>( this.classes );
     }
 
-    /** Returns the components within this package. */
     @Override
     public IIndexable<IJavaComponent> getComponents() {
         return new ReadOnlyListAdapter<>( this.components );
     }
 
-    /** Returns the enumerations within this package. */
     @Override
     public IIndexable<IJavaEnumeration> getEnumerations() {
         return new ReadOnlyListAdapter<>( this.enumerations );
     }
 
-    /** Returns the interfaces within this package. */
     @Override
     public IIndexable<IJavaInterface> getInterfaces() {
         return new ReadOnlyListAdapter<>( this.interfaces );
     }
 
-    /** Returns the isImplicitlyImported. */
     @Override
     public boolean isImplicitlyImported() {
         return this.isImplicitlyImported;

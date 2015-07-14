@@ -17,14 +17,14 @@ public interface IJavaConcreteComponent
 
     /** Creates a constructor within this class. */
     IJavaConstructor addConstructor(
-        String description, EJavaAccessibility accessibility, String code
+        Optional<String> description, EJavaAccessibility accessibility, String code
     );
 
     /** Creates a field within this class. */
     @SuppressWarnings( "BooleanParameter" )
     IJavaField addField(
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isStatic,
         boolean isFinalField,
@@ -33,7 +33,7 @@ public interface IJavaConcreteComponent
     );
 
     /** Creates a static initialization within this class. */
-    IJavaStaticInitialization addStaticInitialization( String description, String code );
+    IJavaStaticInitialization addStaticInitialization( Optional<String> description );
 
     /** @return the constructors within this class. */
     IIndexable<IJavaConstructor> getConstructors();

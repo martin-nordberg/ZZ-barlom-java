@@ -25,7 +25,7 @@ public final class JavaField
     JavaField(
         JavaConcreteComponent parent,
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isStatic,
         boolean isFinal,
@@ -39,7 +39,6 @@ public final class JavaField
         parent.onAddChild( this );
     }
 
-    /** Returns the initialValueCode. */
     @Override
     public Optional<String> getInitialValueCode() {
         return this.initialValueCode;

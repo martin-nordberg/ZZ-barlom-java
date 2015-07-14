@@ -31,7 +31,7 @@ public abstract class JavaConcreteComponent
     /**
      * Constructs a new concrete component.
      */
-    JavaConcreteComponent( JavaPackage parent, String name, String description, boolean isExternal ) {
+    JavaConcreteComponent( JavaPackage parent, String name, Optional<String> description, boolean isExternal ) {
         super( parent, name, description, isExternal );
 
         this.constructors = new ArrayList<>();
@@ -41,20 +41,18 @@ public abstract class JavaConcreteComponent
         parent.onAddChild( this );
     }
 
-    /** Creates a constructor within this class. */
     @Override
     public IJavaConstructor addConstructor(
-        String description, EJavaAccessibility accessibility, String code
+        Optional<String> description, EJavaAccessibility accessibility, String code
     ) {
         return new JavaConstructor( this, description, accessibility, code );
     }
 
-    /** Creates a field within this class. */
     @SuppressWarnings( "BooleanParameter" )
     @Override
     public IJavaField addField(
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isStatic,
         boolean isFinalField,
@@ -66,19 +64,16 @@ public abstract class JavaConcreteComponent
         );
     }
 
-    /** Creates a static initialization within this class. */
     @Override
-    public IJavaStaticInitialization addStaticInitialization( String description, String code ) {
-        return new JavaStaticInitialization( this, description, code );
+    public IJavaStaticInitialization addStaticInitialization( Optional<String> description ) {
+        return new JavaStaticInitialization( this, description );
     }
 
-    /** @return the constructors within this class. */
     @Override
     public IIndexable<IJavaConstructor> getConstructors() {
         return new ReadOnlyListAdapter<>( this.constructors );
     }
 
-    /** @return the fields within this class. */
     @Override
     public IIndexable<IJavaField> getFields() {
         List<IJavaField> result = new ArrayList<>( this.fields );
@@ -108,7 +103,6 @@ public abstract class JavaConcreteComponent
         return result;
     }
 
-    /** @return the static initializations within this class. */
     @Override
     public IIndexable<IJavaStaticInitialization> getStaticInitializations() {
         return new ReadOnlyListAdapter<>( this.staticInitializations );

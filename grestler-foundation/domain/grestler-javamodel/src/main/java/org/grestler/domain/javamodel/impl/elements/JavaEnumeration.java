@@ -12,6 +12,7 @@ import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An enumeration.
@@ -23,7 +24,7 @@ public class JavaEnumeration
     /**
      * Constructs a new class.
      */
-    JavaEnumeration( JavaPackage parent, String name, String description, boolean isExternal ) {
+    JavaEnumeration( JavaPackage parent, String name, Optional<String> description, boolean isExternal ) {
         super( parent, name, description, isExternal );
 
         this.enumConstants = new ArrayList<>();
@@ -31,15 +32,13 @@ public class JavaEnumeration
         parent.onAddChild( this );
     }
 
-    /** Creates an new enum constant within this enumeration. */
     @Override
     public IJavaEnumConstant addEnumConstant(
-        String name, String description, Integer uniqueId, String parametersCode, String referencePrefix
+        String name, Optional<String> description, Integer uniqueId, String parametersCode, String referencePrefix
     ) {
         return new JavaEnumConstant( this, name, description, uniqueId, parametersCode, referencePrefix );
     }
 
-    /** @return the enum constants within this enumeration. */
     @Override
     public IIndexable<IJavaEnumConstant> getEnumConstants() {
         return new ReadOnlyListAdapter<>( this.enumConstants );

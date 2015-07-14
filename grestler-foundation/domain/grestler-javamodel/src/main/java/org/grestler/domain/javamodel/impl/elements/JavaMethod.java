@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.EJavaAccessibility;
 import org.grestler.domain.javamodel.api.elements.IJavaMethod;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 
+import java.util.Optional;
+
 /**
  * A method.
  */
@@ -22,7 +24,7 @@ public final class JavaMethod
     JavaMethod(
         JavaComponent parent,
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isAbstract,
         boolean isStatic,
@@ -37,7 +39,6 @@ public final class JavaMethod
         parent.onAddChild( this );
     }
 
-    /** @return whether this is an abstract method. */
     @Override
     public boolean isAbstract() {
         return this.isAbstract;

@@ -8,6 +8,8 @@ package org.grestler.domain.javamodel.impl.elements;
 import org.grestler.domain.javamodel.api.elements.IJavaBuiltinType;
 import org.grestler.domain.javamodel.api.elements.IJavaRootPackage;
 
+import java.util.Optional;
+
 /**
  * The root package for Java code.
  */
@@ -19,7 +21,7 @@ public final class JavaRootPackage
      * Constructs a new Java package.
      */
     public JavaRootPackage() {
-        super( null, "$", "(Top level Java package)" );
+        super( null, "$", Optional.of( "(Top level Java package)" ) );
 
         this.builtinBoolean = new JavaBuiltinType( "boolean" );
         this.builtinDouble = new JavaBuiltinType( "double" );
@@ -69,9 +71,6 @@ public final class JavaRootPackage
         return "";
     }
 
-    /**
-     * @return The highest root package containing this model element.
-     */
     @Override
     public JavaRootPackage getRootPackage() {
         return this;

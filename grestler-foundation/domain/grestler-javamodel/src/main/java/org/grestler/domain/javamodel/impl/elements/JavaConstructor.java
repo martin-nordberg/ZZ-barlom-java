@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.EJavaAccessibility;
 import org.grestler.domain.javamodel.api.elements.IJavaConcreteComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaConstructor;
 
+import java.util.Optional;
+
 /**
  * A constructor
  */
@@ -20,7 +22,7 @@ public class JavaConstructor
      * Constructs a new constructor.
      */
     JavaConstructor(
-        JavaConcreteComponent parent, String description, EJavaAccessibility accessibility, String code
+        JavaConcreteComponent parent, Optional<String> description, EJavaAccessibility accessibility, String code
     ) {
         super(
             parent,

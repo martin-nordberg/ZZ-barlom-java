@@ -17,6 +17,7 @@ import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -34,7 +35,7 @@ public abstract class JavaAnnotatableModelElement
      * @param description A description of the element
      */
     protected JavaAnnotatableModelElement(
-        IJavaNamedModelElement parent, String name, String description
+        IJavaNamedModelElement parent, String name, Optional<String> description
     ) {
         super( parent, name, description );
 
@@ -42,37 +43,33 @@ public abstract class JavaAnnotatableModelElement
         this.importedElements = new HashSet<>();
     }
 
-    /** Creates an annotation for this named model element. */
     @Override
     public IJavaAnnotation addAnnotation(
-        String description, IJavaAnnotationInterface annotationInterface, String parametersCode
+        Optional<String> description, IJavaAnnotationInterface annotationInterface, String parametersCode
     ) {
         return new JavaAnnotation( this, description, annotationInterface, parametersCode );
     }
 
-    /** @return the annotations of this named model element. */
     @Override
     public IIndexable<IJavaAnnotation> getAnnotations() {
         return new ReadOnlyListAdapter<>( this.annotations );
     }
 
-    /** @return the types needed to be imported by this component. */
     @Override
     public Set<IJavaType> getImports() {
         Set<IJavaType> result = new ImportedJavaTypesSet();
 
         for ( IJavaTyped importedElement : this.importedElements ) {
-            result.add( importedElement.makeJavaType() );
+            result.add( importedElement.getType() );
         }
 
         for ( IJavaAnnotation method : this.annotations ) {
-            result.add( method.getAnnotationInterface().makeJavaType() );
+            result.add( method.getAnnotationInterface().getType() );
         }
 
         return result;
     }
 
-    /** Adds a type that must be imported for textual code to work. */
     @Override
     public void importForCode( IJavaTyped importedElement ) {
         assert importedElement != null;

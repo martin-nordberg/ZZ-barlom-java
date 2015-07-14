@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.api.elements;
 
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 
+import java.util.Optional;
+
 /**
  * A package.
  */
@@ -21,7 +23,7 @@ public interface IJavaPackage
      */
     IJavaAnnotationInterface addAnnotationInterface(
         String name,
-        String description
+        Optional<String> description
     );
 
     /**
@@ -30,7 +32,7 @@ public interface IJavaPackage
     @SuppressWarnings( "BooleanParameter" )
     IJavaClass addClass(
         String name,
-        String description,
+        Optional<String> description,
         boolean isAbstract,
         boolean isFinal,
         IJavaClass baseClass,
@@ -41,7 +43,7 @@ public interface IJavaPackage
      * Creates an enumeration within this package.
      */
     @SuppressWarnings( "BooleanParameter" )
-    IJavaEnumeration addEnumeration( String name, String description, boolean isExternal );
+    IJavaEnumeration addEnumeration( String name, Optional<String> description, boolean isExternal );
 
     /**
      * Creates a class within this package only for reference by other classes.
@@ -56,7 +58,7 @@ public interface IJavaPackage
     /**
      * Creates an interface within this package.
      */
-    IJavaInterface addInterface( String name, String description );
+    IJavaInterface addInterface( String name, Optional<String> description );
 
     /**
      * Returns the annotation interfaces within this package.

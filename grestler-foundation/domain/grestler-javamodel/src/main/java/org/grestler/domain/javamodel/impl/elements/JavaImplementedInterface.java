@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaImplementedInterface;
 import org.grestler.domain.javamodel.api.elements.IJavaInterface;
 
+import java.util.Optional;
+
 /**
  * An implements clause.
  */
@@ -20,14 +22,13 @@ public final class JavaImplementedInterface
      * Constructs a new base interface (extends/implements)
      */
     JavaImplementedInterface( JavaComponent parent, IJavaInterface implementedInterface ) {
-        super( parent, "" );
+        super( parent, Optional.empty() );
 
         this.implementedInterface = implementedInterface;
 
         parent.onAddChild( this );
     }
 
-    /** Returns the implementedInterface. */
     @Override
     public IJavaInterface getImplementedInterface() {
         return this.implementedInterface;

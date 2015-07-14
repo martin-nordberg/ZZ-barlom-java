@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.api.elements;
 
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 
+import java.util.Optional;
+
 /**
  * An enumeration.
  */
@@ -15,7 +17,7 @@ public interface IJavaEnumeration
 
     /** Creates an new enum constant within this enumeration. */
     IJavaEnumConstant addEnumConstant(
-        String name, String description, Integer uniqueId, String parametersCode, String referencePrefix
+        String name, Optional<String> description, Integer uniqueId, String parametersCode, String referencePrefix
     );
 
     /** @return the enum constants within this enumeration. */

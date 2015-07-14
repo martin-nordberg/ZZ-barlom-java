@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaAnnotatableModelElement;
 import org.grestler.domain.javamodel.api.elements.IJavaAnnotation;
 import org.grestler.domain.javamodel.api.elements.IJavaAnnotationInterface;
 
+import java.util.Optional;
+
 /**
  * An annotation
  */
@@ -21,7 +23,7 @@ public final class JavaAnnotation
      */
     JavaAnnotation(
         JavaAnnotatableModelElement parent,
-        String description,
+        Optional<String> description,
         IJavaAnnotationInterface annotationInterface,
         String parametersCode
     ) {
@@ -33,13 +35,11 @@ public final class JavaAnnotation
         parent.onAddChild( this );
     }
 
-    /** @return the annotationInterface. */
     @Override
     public IJavaAnnotationInterface getAnnotationInterface() {
         return this.annotationInterface;
     }
 
-    /** @return the parametersCode. */
     @Override
     public String getParametersCode() {
         return this.parametersCode;

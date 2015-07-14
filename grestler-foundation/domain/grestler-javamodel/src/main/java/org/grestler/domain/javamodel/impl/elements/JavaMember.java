@@ -10,6 +10,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaMember;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 
+import java.util.Optional;
+
 /**
  * A member.
  */
@@ -24,7 +26,7 @@ public abstract class JavaMember
     protected JavaMember(
         IJavaComponent parent,
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isStatic,
         boolean isFinal,
@@ -37,25 +39,21 @@ public abstract class JavaMember
         this.isFinal = isFinal;
     }
 
-    /** @return the accessibility of this method. */
     @Override
     public EJavaAccessibility getAccessibility() {
         return this.accessibility;
     }
 
-    /** @return the parent of this field. */
     @Override
     public IJavaComponent getParent() {
         return (IJavaComponent) super.getParent();
     }
 
-    /** Returns the isFinal. */
     @Override
     public boolean isFinal() {
         return this.isFinal;
     }
 
-    /** @return whether this is a static method. */
     @Override
     public boolean isStatic() {
         return this.isStatic;

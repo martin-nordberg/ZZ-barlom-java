@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.api.elements;
 
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 
+import java.util.Optional;
+
 /**
  * An interface, enum, or class.
  */
@@ -15,20 +17,22 @@ public interface IJavaComponent
 
     /**
      * Creates a method within this component.
-     * @param name the name of the method.
-     * @param description a description of the method.
+     *
+     * @param name          the name of the method.
+     * @param description   a description of the method.
      * @param accessibility the accessibility of the method.
-     * @param isAbstract whether the new method is abstract.
-     * @param isStatic whether the new method is static.
-     * @param isFinal whether the new method is final.
-     * @param returnType the return type of the method.
-     * @param code the textual code of the method.
+     * @param isAbstract    whether the new method is abstract.
+     * @param isStatic      whether the new method is static.
+     * @param isFinal       whether the new method is final.
+     * @param returnType    the return type of the method.
+     * @param code          the textual code of the method.
+     *
      * @return the newly created method.
      */
     @SuppressWarnings( "BooleanParameter" )
     IJavaMethod addMethod(
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isAbstract,
         boolean isStatic,
@@ -55,7 +59,9 @@ public interface IJavaComponent
 
     /**
      * Constructs a generic Java type with one type argument.
+     *
      * @param typeArg1 the type argument for the new type.
+     *
      * @return the newly created type.
      */
     IJavaType makeGenericType( IJavaComponent typeArg1 );

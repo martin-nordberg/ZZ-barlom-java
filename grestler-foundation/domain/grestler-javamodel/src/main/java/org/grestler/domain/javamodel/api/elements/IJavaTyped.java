@@ -6,12 +6,12 @@
 package org.grestler.domain.javamodel.api.elements;
 
 /**
- * Interface for elements that have a Java type.
+ * Mixin interface for elements that have a Java type.
  */
 @SuppressWarnings( "InterfaceMayBeAnnotatedFunctional" )
 public interface IJavaTyped {
 
     /** @return the type of this element. */
-    IJavaType makeJavaType();
+    IJavaType getType();
 
 }

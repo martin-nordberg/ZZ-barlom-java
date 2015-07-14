@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.impl.elements;
 
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 
+import java.util.Optional;
+
 /**
  * A Java type.
  */
@@ -19,7 +21,7 @@ public abstract class JavaType
      * Constructs a new type.
      */
     protected JavaType() {
-        super( null, "" );
+        super( null, Optional.empty() );
     }
 
     @Override

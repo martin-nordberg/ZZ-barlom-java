@@ -9,6 +9,7 @@ import org.grestler.domain.javamodel.api.elements.IJavaNamedModelElement;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 import org.grestler.domain.javamodel.api.elements.IJavaTypedModelElement;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ public abstract class JavaTypedModelElement
      * Constructs a new member.
      */
     protected JavaTypedModelElement(
-        IJavaNamedModelElement parent, String name, String description, IJavaType type
+        IJavaNamedModelElement parent, String name, Optional<String> description, IJavaType type
     ) {
         super( parent, name, description );
 
@@ -38,7 +39,6 @@ public abstract class JavaTypedModelElement
         return result;
     }
 
-    /** Returns the type. */
     @Override
     public IJavaType getType() {
         return this.type;

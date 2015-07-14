@@ -7,36 +7,29 @@ package org.grestler.domain.javamodel.impl.elements;
 
 import org.grestler.domain.javamodel.api.elements.IJavaConcreteComponent;
 import org.grestler.domain.javamodel.api.elements.IJavaStaticInitialization;
+import org.grestler.domain.javamodel.impl.statements.JavaCodeBlock;
+
+import java.util.Optional;
 
 /**
  * A static initialization block.
  */
 public final class JavaStaticInitialization
-    extends JavaModelElement
+    extends JavaCodeBlock
     implements IJavaStaticInitialization {
 
     /**
      * Constructs a new static initialization block.
      */
-    JavaStaticInitialization( JavaConcreteComponent parent, String description, String code ) {
+    JavaStaticInitialization( JavaConcreteComponent parent, Optional<String> description ) {
         super( parent, description );
 
-        this.code = code;
-
         parent.onAddChild( this );
-    }
-
-    /** Returns the code. */
-    @Override
-    public String getCode() {
-        return this.code;
     }
 
     @Override
     public IJavaConcreteComponent getParent() {
         return (IJavaConcreteComponent) super.getParent();
     }
-
-    private final String code;
 
 }

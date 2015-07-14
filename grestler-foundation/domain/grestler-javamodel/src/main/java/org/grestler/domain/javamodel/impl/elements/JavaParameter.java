@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.IJavaFunction;
 import org.grestler.domain.javamodel.api.elements.IJavaParameter;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 
+import java.util.Optional;
+
 /**
  * A Java parameter.
  */
@@ -19,13 +21,12 @@ public class JavaParameter
     /**
      * Constructs a new parameter
      */
-    JavaParameter( JavaFunction parent, String name, String description, IJavaType type ) {
+    JavaParameter( JavaFunction parent, String name, Optional<String> description, IJavaType type ) {
         super( parent, name, description, type );
 
         parent.onAddChild( this );
     }
 
-    /** @return the parent of this parameter. */
     @Override
     public IJavaFunction getParent() {
         return (IJavaFunction) super.getParent();

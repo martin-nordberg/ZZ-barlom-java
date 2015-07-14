@@ -5,14 +5,13 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
+import org.grestler.domain.javamodel.api.statements.IJavaCodeBlock;
+
 /**
  * A static initialization block.
  */
 public interface IJavaStaticInitialization
-    extends IJavaModelElement {
-
-    /** Returns the code. */
-    String getCode();
+    extends IJavaCodeBlock {
 
     @Override
     IJavaConcreteComponent getParent();

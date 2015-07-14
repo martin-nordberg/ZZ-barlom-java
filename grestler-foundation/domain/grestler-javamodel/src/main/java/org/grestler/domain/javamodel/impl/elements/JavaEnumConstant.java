@@ -9,6 +9,8 @@ import org.grestler.domain.javamodel.api.elements.EJavaAccessibility;
 import org.grestler.domain.javamodel.api.elements.IJavaEnumConstant;
 import org.grestler.domain.javamodel.api.elements.IJavaEnumeration;
 
+import java.util.Optional;
+
 /**
  * An Enum constant.
  */
@@ -22,7 +24,7 @@ public final class JavaEnumConstant
     JavaEnumConstant(
         JavaEnumeration parent,
         String name,
-        String description,
+        Optional<String> description,
         Integer uniqueId,
         String parametersCode,
         String referencePrefix

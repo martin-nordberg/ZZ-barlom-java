@@ -25,6 +25,7 @@ public interface IJavaClass
 
     /**
      * Sets the base class.
+     *
      * @param baseClass the base class for this class.
      */
     void setBaseClass( IJavaClass baseClass );

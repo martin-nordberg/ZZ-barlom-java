@@ -21,6 +21,7 @@ import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -34,7 +35,7 @@ public abstract class JavaComponent
      * Constructs a new component.
      */
     protected JavaComponent(
-        IJavaNamedModelElement parent, String name, String description, boolean isExternal
+        IJavaNamedModelElement parent, String name, Optional<String> description, boolean isExternal
     ) {
         super( parent, name, description );
 
@@ -50,7 +51,7 @@ public abstract class JavaComponent
     @Override
     public IJavaMethod addMethod(
         String name,
-        String description,
+        Optional<String> description,
         EJavaAccessibility accessibility,
         boolean isAbstract,
         boolean isStatic,
@@ -63,19 +64,16 @@ public abstract class JavaComponent
         );
     }
 
-    /** @return the fully qualified name of this component. */
     @Override
     public String getFullyQualifiedJavaName() {
         return this.getParent().getFullyQualifiedJavaName() + "." + this.getJavaName();
     }
 
-    /** @return the interfaces implemented by this component. */
     @Override
     public IIndexable<IJavaImplementedInterface> getImplementedInterfaces() {
         return new ReadOnlyListAdapter<>( this.implementedInterfaces );
     }
 
-    /** @return the types needed to be imported by this component. */
     @Override
     public Set<IJavaType> getImports() {
         Set<IJavaType> result = super.getImports();
@@ -85,13 +83,12 @@ public abstract class JavaComponent
         }
 
         for ( IJavaImplementedInterface implInterface : this.implementedInterfaces ) {
-            result.add( implInterface.getImplementedInterface().makeJavaType() );
+            result.add( implInterface.getImplementedInterface().getType() );
         }
 
         return result;
     }
 
-    /** @return the methods within this component. */
     @Override
     public IIndexable<IJavaMethod> getMethods() {
         List<IJavaMethod> result = new ArrayList<>( this.methods );
@@ -113,30 +110,26 @@ public abstract class JavaComponent
         return new ReadOnlyListAdapter<>( result );
     }
 
-    /** @return the parent of this package. */
     @Override
     public IJavaPackage getParent() {
         return (IJavaPackage) super.getParent();
     }
 
-    /** Returns the isExternal. */
+    @Override
+    public IJavaType getType() {
+        return new JavaReferenceType( this );
+    }
+
     @Override
     public boolean isExternal() {
         return this.isExternal;
     }
 
-    /** Constructs a generic Java type with one type argument. */
     @Override
     public IJavaType makeGenericType( IJavaComponent typeArg1 ) {
         IJavaReferenceType result = new JavaReferenceType( this );
         result.addTypeArgument( typeArg1 );
         return result;
-    }
-
-    /** @return a type referencing this component. */
-    @Override
-    public IJavaType makeJavaType() {
-        return new JavaReferenceType( this );
     }
 
     /** Responds to the event of adding a child to this model element. */

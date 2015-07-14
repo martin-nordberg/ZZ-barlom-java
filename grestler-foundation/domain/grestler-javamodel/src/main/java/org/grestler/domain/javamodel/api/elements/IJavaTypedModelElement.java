@@ -9,9 +9,6 @@ package org.grestler.domain.javamodel.api.elements;
  * A typed model element.
  */
 public interface IJavaTypedModelElement
-    extends IJavaAnnotatableModelElement {
-
-    /** Returns the type. */
-    IJavaType getType();
+    extends IJavaAnnotatableModelElement, IJavaTyped {
 
 }

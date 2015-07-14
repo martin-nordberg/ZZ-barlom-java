@@ -7,6 +7,8 @@ package org.grestler.domain.javamodel.api.elements;
 
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 
+import java.util.Optional;
+
 /**
  * A Java function (constructor or member).
  */
@@ -14,7 +16,7 @@ public interface IJavaFunction
     extends IJavaMember {
 
     /** Creates a parameter for this method. */
-    IJavaParameter addParameter( String name, String description, IJavaType type );
+    IJavaParameter addParameter( String name, Optional<String> description, IJavaType type );
 
     /** @return the code of this method. */
     String getCode();

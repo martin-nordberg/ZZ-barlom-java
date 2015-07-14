@@ -18,31 +18,39 @@ public interface IJavaAbstractPackage
 
     /**
      * Creates a package within this one.
-     * @param name the name of the new package.
-     * @param description a description of the new package.
+     *
+     * @param name                 the name of the new package.
+     * @param description          a description of the new package.
      * @param isImplicitlyImported true if the package needs no import (like java.lang).
+     *
      * @return the newly created package.
      */
     @SuppressWarnings( "BooleanParameter" )
-    IJavaPackage addPackage( String name, String description, boolean isImplicitlyImported );
+    IJavaPackage addPackage( String name, Optional<String> description, boolean isImplicitlyImported );
 
     /**
      * Given a qualified name relative to this package, find the needed annotation interface.
+     *
      * @param relativeQualifiedName the relative name for the annotation interface to find.
+     *
      * @return the found annotation interface.
      */
     Optional<IJavaAnnotationInterface> findAnnotationInterface( String relativeQualifiedName );
 
     /**
      * Given a qualified name relative to this package, find the needed component.
+     *
      * @param relativeQualifiedName the relative name for the component within this package.
+     *
      * @return the component found.
      */
     Optional<IJavaComponent> findComponent( String relativeQualifiedName );
 
     /**
      * Given a qualified name relative to this package, find or create the needed subpackages.
+     *
      * @param relativeQualifiedName the relative name of the package to find or create if it does not exist.
+     *
      * @return the found or created package.
      */
     IJavaPackage findOrCreatePackage( String relativeQualifiedName );

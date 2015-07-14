@@ -7,6 +7,8 @@ import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * A Java model element with a name.
@@ -22,7 +24,8 @@ public abstract class JavaNamedModelElement
      * @param name        The name of the element.
      * @param description A description of the element
      */
-    protected JavaNamedModelElement( IJavaNamedModelElement parent, String name, String description ) {
+    @SuppressWarnings( "TypeMayBeWeakened" )
+    protected JavaNamedModelElement( IJavaNamedModelElement parent, String name, Optional<String> description ) {
         super( parent, description );
 
         assert name != null && !name.isEmpty();
@@ -30,6 +33,11 @@ public abstract class JavaNamedModelElement
         this.name = name;
 
         this.children = new ArrayList<>();
+    }
+
+    /** @return A Java name from the given model element name. */
+    public static String makeJavaName( CharSequence nonJavaName ) {
+        return JavaNamedModelElement.SPACES_PATTERN.matcher( nonJavaName ).replaceAll( "" );
     }
 
     @SuppressWarnings( "NullableProblems" )
@@ -68,22 +76,23 @@ public abstract class JavaNamedModelElement
     }
 
     @Override
+    public IJavaNamedModelElement getParent() {
+        return (IJavaNamedModelElement) super.getParent();
+    }
+
+    @Override
     public int hashCode() {
         int result = this.getParent().hashCode();
         result = 31 * result + this.name.hashCode();
         return result;
     }
 
-    /** @return A Java name from the given model element name. */
-    @SuppressWarnings( "DynamicRegexReplaceableByCompiledPattern" )
-    static String makeJavaName( String nonJavaName ) {
-        return nonJavaName.replaceAll( " ", "" );
-    }
-
     /** Responds to the event of adding a child to this model element. */
     void onAddChild( IJavaModelElement child ) {
         this.children.add( child );
     }
+
+    private static final Pattern SPACES_PATTERN = Pattern.compile( " " );
 
     private final List<IJavaModelElement> children;
 

@@ -30,7 +30,6 @@ public final class JavaReferenceType
         this.typeArgs = new ArrayList<>();
     }
 
-    /** Adds a type argument to this type. */
     @Override
     public void addTypeArgument( IJavaComponent typeArg ) {
         this.typeArgs.add( typeArg );
