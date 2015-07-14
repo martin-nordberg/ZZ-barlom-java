@@ -29,10 +29,9 @@ public final class JavaMethod
         boolean isAbstract,
         boolean isStatic,
         boolean isFinal,
-        IJavaType returnType,
-        String code
+        IJavaType returnType
     ) {
-        super( parent, name, description, accessibility, isStatic, isFinal, returnType, code );
+        super( parent, name, description, accessibility, isStatic, isFinal, returnType );
 
         this.isAbstract = isAbstract;
 

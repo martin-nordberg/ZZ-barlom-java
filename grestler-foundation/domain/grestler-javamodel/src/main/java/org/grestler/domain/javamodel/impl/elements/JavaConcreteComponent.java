@@ -43,9 +43,9 @@ public abstract class JavaConcreteComponent
 
     @Override
     public IJavaConstructor addConstructor(
-        Optional<String> description, EJavaAccessibility accessibility, String code
+        Optional<String> description, EJavaAccessibility accessibility
     ) {
-        return new JavaConstructor( this, description, accessibility, code );
+        return new JavaConstructor( this, description, accessibility );
     }
 
     @SuppressWarnings( "BooleanParameter" )

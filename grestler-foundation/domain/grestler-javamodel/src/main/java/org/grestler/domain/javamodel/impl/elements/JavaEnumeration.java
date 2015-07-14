@@ -34,9 +34,9 @@ public class JavaEnumeration
 
     @Override
     public IJavaEnumConstant addEnumConstant(
-        String name, Optional<String> description, Integer uniqueId, String parametersCode, String referencePrefix
+        String name, Optional<String> description, Optional<String> parametersCode
     ) {
-        return new JavaEnumConstant( this, name, description, uniqueId, parametersCode, referencePrefix );
+        return new JavaEnumConstant( this, name, description, parametersCode );
     }
 
     @Override
@@ -51,4 +51,5 @@ public class JavaEnumeration
     }
 
     private final List<IJavaEnumConstant> enumConstants;
+
 }

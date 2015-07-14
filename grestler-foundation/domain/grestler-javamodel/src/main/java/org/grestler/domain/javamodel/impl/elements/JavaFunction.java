@@ -9,6 +9,12 @@ import org.grestler.domain.javamodel.api.elements.EJavaAccessibility;
 import org.grestler.domain.javamodel.api.elements.IJavaFunction;
 import org.grestler.domain.javamodel.api.elements.IJavaParameter;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
+import org.grestler.domain.javamodel.api.statements.IJavaAssignmentStatement;
+import org.grestler.domain.javamodel.api.statements.IJavaReturnStatement;
+import org.grestler.domain.javamodel.api.statements.IJavaStatement;
+import org.grestler.domain.javamodel.api.statements.IJavaVariableDeclaration;
+import org.grestler.domain.javamodel.api.statements.IJavaWhileLoop;
+import org.grestler.domain.javamodel.impl.statements.JavaCodeBlockImpl;
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 import org.grestler.infrastructure.utilities.collections.ReadOnlyListAdapter;
 
@@ -34,16 +40,21 @@ public abstract class JavaFunction
         EJavaAccessibility accessibility,
         boolean isStatic,
         boolean isFinal,
-        IJavaType returnType,
-        String code
+        IJavaType returnType
     ) {
         super( parent, name, description, accessibility, isStatic, isFinal, returnType );
 
-        this.code = code;
-
         this.parameters = new ArrayList<>();
+        this.codeBlock = new JavaCodeBlockImpl( this );
 
         parent.onAddChild( this );
+    }
+
+    @Override
+    public IJavaAssignmentStatement addAssignmentStatement(
+        Optional<String> description, String leftHandSide, String rightHandSide, Optional<String> extraOperator
+    ) {
+        return this.codeBlock.addAssignmentStatement( description, leftHandSide, rightHandSide, extraOperator );
     }
 
     @Override
@@ -52,8 +63,22 @@ public abstract class JavaFunction
     }
 
     @Override
-    public String getCode() {
-        return this.code;
+    public IJavaReturnStatement addReturnStatement(
+        Optional<String> description, Optional<String> returnValue
+    ) {
+        return this.codeBlock.addReturnStatement( description, returnValue );
+    }
+
+    @Override
+    public IJavaVariableDeclaration addVariableDeclaration(
+        String name, Optional<String> description, IJavaType type, Optional<String> initialValue
+    ) {
+        return this.codeBlock.addVariableDeclaration( name, description, type, initialValue );
+    }
+
+    @Override
+    public IJavaWhileLoop addWhileLoop( Optional<String> description, String loopCondition ) {
+        return this.codeBlock.addWhileLoop( description, loopCondition );
     }
 
     @Override
@@ -77,13 +102,18 @@ public abstract class JavaFunction
         return this.getType();
     }
 
+    @Override
+    public IIndexable<IJavaStatement> getStatements() {
+        return this.codeBlock.getStatements();
+    }
+
     /** Responds to the event of adding a child to this model element. */
     void onAddChild( IJavaParameter child ) {
         super.onAddChild( child );
         this.parameters.add( child );
     }
 
-    private final String code;
+    private final JavaCodeBlockImpl codeBlock;
 
     private final List<IJavaParameter> parameters;
 

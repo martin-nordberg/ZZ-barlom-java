@@ -56,7 +56,7 @@ public final class JavaPackage
         Optional<String> description,
         boolean isAbstract,
         boolean isFinal,
-        IJavaClass baseClass,
+        Optional<IJavaClass> baseClass,
         boolean isTestCode
     ) {
         return new JavaClass(

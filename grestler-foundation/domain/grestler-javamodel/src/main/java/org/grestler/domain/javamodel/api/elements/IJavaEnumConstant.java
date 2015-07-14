@@ -5,21 +5,20 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
+import java.util.Optional;
+
 /**
  * An Enum constant.
  */
 public interface IJavaEnumConstant
     extends IJavaMember {
 
-    String getParametersCode();
+    /**
+     * @return the raw code for the parameters of the constant's construction.
+     */
+    Optional<String> getParametersCode();
 
     @Override
     IJavaEnumeration getParent();
-
-    String getRawName();
-
-    String getReferencePrefix();
-
-    Integer getUniqueId();
 
 }

@@ -21,20 +21,20 @@ public class JavaVariableDeclaration
     /**
      * Constructs a new Java model element
      *
-     * @param parent       the parent of this model element.
+     * @param codeBlock    the parent code block of this statement.
      * @param description  a description of this model element.
      * @param initialValue code for the initial value expression.
      * @param name         the name of the variable
      * @param type         the type of the variable
      */
     protected JavaVariableDeclaration(
-        JavaCodeBlock parent,
+        JavaCodeBlockImpl codeBlock,
         String name,
         Optional<String> description,
         IJavaType type,
         Optional<String> initialValue
     ) {
-        super( parent, description );
+        super( codeBlock, description );
 
         this.name = name;
         this.type = type;

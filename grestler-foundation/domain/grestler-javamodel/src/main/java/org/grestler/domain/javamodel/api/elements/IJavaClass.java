@@ -5,6 +5,8 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
+import java.util.Optional;
+
 /**
  * A Java class.
  */
@@ -12,7 +14,7 @@ public interface IJavaClass
     extends IJavaConcreteComponent {
 
     /** @return the baseClass. */
-    IJavaClass getBaseClass();
+    Optional<IJavaClass> getBaseClass();
 
     /** @return whether this is an abstract class. */
     boolean isAbstract();

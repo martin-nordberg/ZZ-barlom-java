@@ -5,70 +5,75 @@
 
 package org.grestler.domain.javamodel.impl.statements;
 
-import org.grestler.domain.javamodel.api.elements.IJavaModelElement;
 import org.grestler.domain.javamodel.api.elements.IJavaType;
 import org.grestler.domain.javamodel.api.statements.IJavaAssignmentStatement;
-import org.grestler.domain.javamodel.api.statements.IJavaCodeBlock;
 import org.grestler.domain.javamodel.api.statements.IJavaReturnStatement;
 import org.grestler.domain.javamodel.api.statements.IJavaStatement;
 import org.grestler.domain.javamodel.api.statements.IJavaVariableDeclaration;
 import org.grestler.domain.javamodel.api.statements.IJavaWhileLoop;
-import org.grestler.domain.javamodel.impl.elements.JavaModelElement;
 import org.grestler.infrastructure.utilities.collections.IIndexable;
 
 import java.util.Optional;
 
 /**
- * Implementation of a Java code block (non-mixin).
+ * A Java return statement.
  */
-public class JavaCodeBlock
-    extends JavaModelElement
-    implements IJavaCodeBlock {
+public class JavaWhileLoop
+    extends JavaStatement
+    implements IJavaWhileLoop {
 
     /**
      * Constructs a new Java model element
      *
-     * @param parent      the parent of this model element.
-     * @param description a description of this model element.
+     * @param codeBlock     the container of statements.
+     * @param description   a description of this model element.
+     * @param loopCondition expression for the value returned.
      */
-    protected JavaCodeBlock(
-        IJavaModelElement parent,
-        Optional<String> description
+    protected JavaWhileLoop(
+        JavaCodeBlockImpl codeBlock,
+        Optional<String> description, String loopCondition
     ) {
-        super( parent, description );
-
-        this.impl = new JavaCodeBlockImpl( this );
+        super( codeBlock, description );
+        this.loopCondition = loopCondition;
+        this.codeBlock = new JavaCodeBlockImpl( this );
     }
 
     @Override
     public IJavaAssignmentStatement addAssignmentStatement(
         Optional<String> description, String leftHandSide, String rightHandSide, Optional<String> extraOperator
     ) {
-        return this.impl.addAssignmentStatement( description, leftHandSide, rightHandSide, extraOperator );
+        return this.codeBlock.addAssignmentStatement( description, leftHandSide, rightHandSide, extraOperator );
     }
 
     @Override
     public IJavaReturnStatement addReturnStatement( Optional<String> description, Optional<String> returnValue ) {
-        return this.impl.addReturnStatement( description, returnValue );
+        return this.codeBlock.addReturnStatement( description, returnValue );
     }
 
     @Override
     public IJavaVariableDeclaration addVariableDeclaration(
         String name, Optional<String> description, IJavaType type, Optional<String> initialValue
     ) {
-        return this.impl.addVariableDeclaration( name, description, type, initialValue );
+        return this.codeBlock.addVariableDeclaration( name, description, type, initialValue );
+    }
+
+    @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
+    @Override
+    public IJavaWhileLoop addWhileLoop( Optional<String> description, String nestedLoopCondition ) {
+        return this.codeBlock.addWhileLoop( description, nestedLoopCondition );
     }
 
     @Override
-    public IJavaWhileLoop addWhileLoop( Optional<String> description, String loopCondition ) {
-        return this.impl.addWhileLoop( description, loopCondition );
+    public String getLoopCondition() {
+        return this.loopCondition;
     }
 
     @Override
     public IIndexable<IJavaStatement> getStatements() {
-        return this.impl.getStatements();
+        return this.codeBlock.getStatements();
     }
 
-    private final JavaCodeBlockImpl impl;
+    private final JavaCodeBlockImpl codeBlock;
 
+    private final String loopCondition;
 }

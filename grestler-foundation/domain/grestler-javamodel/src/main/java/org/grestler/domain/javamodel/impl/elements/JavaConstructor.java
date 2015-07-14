@@ -22,7 +22,7 @@ public class JavaConstructor
      * Constructs a new constructor.
      */
     JavaConstructor(
-        JavaConcreteComponent parent, Optional<String> description, EJavaAccessibility accessibility, String code
+        JavaConcreteComponent parent, Optional<String> description, EJavaAccessibility accessibility
     ) {
         super(
             parent,
@@ -31,8 +31,7 @@ public class JavaConstructor
             accessibility,
             false,
             false,
-            parent.getRootPackage().getBuiltinVoid(),
-            code
+            parent.getRootPackage().getBuiltinVoid()
         );
 
         parent.onAddChild( this );

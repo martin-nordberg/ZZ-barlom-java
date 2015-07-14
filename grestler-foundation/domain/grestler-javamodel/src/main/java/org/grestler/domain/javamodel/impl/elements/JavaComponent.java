@@ -56,11 +56,10 @@ public abstract class JavaComponent
         boolean isAbstract,
         boolean isStatic,
         boolean isFinal,
-        IJavaType returnType,
-        String code
+        IJavaType returnType
     ) {
         return new JavaMethod(
-            this, name, description, accessibility, isAbstract, isStatic, isFinal, returnType, code
+            this, name, description, accessibility, isAbstract, isStatic, isFinal, returnType
         );
     }
 

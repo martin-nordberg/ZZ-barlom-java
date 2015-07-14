@@ -17,7 +17,7 @@ public interface IJavaConcreteComponent
 
     /** Creates a constructor within this class. */
     IJavaConstructor addConstructor(
-        Optional<String> description, EJavaAccessibility accessibility, String code
+        Optional<String> description, EJavaAccessibility accessibility
     );
 
     /** Creates a field within this class. */

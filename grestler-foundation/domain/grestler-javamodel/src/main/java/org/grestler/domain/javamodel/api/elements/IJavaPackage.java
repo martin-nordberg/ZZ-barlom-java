@@ -35,7 +35,7 @@ public interface IJavaPackage
         Optional<String> description,
         boolean isAbstract,
         boolean isFinal,
-        IJavaClass baseClass,
+        Optional<IJavaClass> baseClass,
         boolean isTestCode
     );
 

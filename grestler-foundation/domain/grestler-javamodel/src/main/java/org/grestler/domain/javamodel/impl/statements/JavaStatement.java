@@ -19,18 +19,19 @@ public class JavaStatement
     implements IJavaStatement {
 
     /**
-     * Constructs a new Java model element
+     * Constructs a new Java statement.
      *
-     * @param parent      the parent of this model element.
+     * @param codeBlock   the helper object containing the statements of the parent code block.
      * @param description a description of this model element.
      */
+    @SuppressWarnings( "TypeMayBeWeakened" )
     protected JavaStatement(
-        JavaCodeBlock parent,
+        JavaCodeBlockImpl codeBlock,
         Optional<String> description
     ) {
-        super( parent, description );
+        super( codeBlock.getParent(), description );
 
-        parent.onAddChild( this );
+        codeBlock.onAddChild( this );
     }
 
     @Override

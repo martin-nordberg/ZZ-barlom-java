@@ -17,7 +17,7 @@ public interface IJavaEnumeration
 
     /** Creates an new enum constant within this enumeration. */
     IJavaEnumConstant addEnumConstant(
-        String name, Optional<String> description, Integer uniqueId, String parametersCode, String referencePrefix
+        String name, Optional<String> description, Optional<String> parametersCode
     );
 
     /** @return the enum constants within this enumeration. */

@@ -28,7 +28,7 @@ public final class JavaClass
         boolean isExternal,
         boolean isAbstract,
         boolean isFinal,
-        IJavaClass baseClass,
+        Optional<IJavaClass> baseClass,
         boolean isTestCode
     ) {
         super( parent, name, description, isExternal );
@@ -42,7 +42,7 @@ public final class JavaClass
     }
 
     @Override
-    public IJavaClass getBaseClass() {
+    public Optional<IJavaClass> getBaseClass() {
         return this.baseClass;
     }
 
@@ -50,8 +50,8 @@ public final class JavaClass
     public Set<IJavaType> getImports() {
         Set<IJavaType> result = super.getImports();
 
-        if ( this.baseClass != null ) {
-            result.add( this.baseClass.getType() );
+        if ( this.baseClass.isPresent() ) {
+            result.add( this.baseClass.get().getType() );
         }
 
         return result;
@@ -74,11 +74,11 @@ public final class JavaClass
 
     @Override
     public void setBaseClass( IJavaClass baseClass ) {
-        assert this.baseClass == null;
-        this.baseClass = baseClass;
+        assert !this.baseClass.isPresent() : "Cannot change base class once set.";
+        this.baseClass = Optional.of( baseClass );
     }
 
-    private IJavaClass baseClass;
+    private Optional<IJavaClass> baseClass;
 
     private final boolean isAbstract;
 

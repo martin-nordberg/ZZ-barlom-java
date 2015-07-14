@@ -25,7 +25,6 @@ public interface IJavaComponent
      * @param isStatic      whether the new method is static.
      * @param isFinal       whether the new method is final.
      * @param returnType    the return type of the method.
-     * @param code          the textual code of the method.
      *
      * @return the newly created method.
      */
@@ -37,8 +36,7 @@ public interface IJavaComponent
         boolean isAbstract,
         boolean isStatic,
         boolean isFinal,
-        IJavaType returnType,
-        String code
+        IJavaType returnType
     );
 
     /** @return the fully qualified name of this component. */

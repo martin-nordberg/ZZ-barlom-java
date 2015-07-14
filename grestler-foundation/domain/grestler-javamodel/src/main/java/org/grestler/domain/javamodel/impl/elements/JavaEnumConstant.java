@@ -25,23 +25,19 @@ public final class JavaEnumConstant
         JavaEnumeration parent,
         String name,
         Optional<String> description,
-        Integer uniqueId,
-        String parametersCode,
-        String referencePrefix
+        Optional<String> parametersCode
     ) {
         super(
             parent, name, description, EJavaAccessibility.PUBLIC, true, true, new JavaReferenceType( parent )
         );
 
         this.parametersCode = parametersCode;
-        this.uniqueId = uniqueId;
-        this.referencePrefix = referencePrefix;
 
         parent.onAddChild( this );
     }
 
     @Override
-    public String getParametersCode() {
+    public Optional<String> getParametersCode() {
         return this.parametersCode;
     }
 
@@ -50,24 +46,6 @@ public final class JavaEnumConstant
         return (IJavaEnumeration) super.getParent();
     }
 
-    @Override
-    public String getRawName() {
-        return super.getName();
-    }
+    private final Optional<String> parametersCode;
 
-    @Override
-    public String getReferencePrefix() {
-        return this.referencePrefix;
-    }
-
-    @Override
-    public Integer getUniqueId() {
-        return this.uniqueId;
-    }
-
-    private final String parametersCode;
-
-    private final String referencePrefix;
-
-    private final Integer uniqueId;
 }

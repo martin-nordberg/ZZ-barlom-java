@@ -14,8 +14,24 @@ import java.util.Optional;
 /**
  * Mixin interface defining the behavior of a block of code (function, static initialization, loop, etc.).
  */
+@SuppressWarnings( "ClassReferencesSubclass" )
 public interface IJavaCodeBlock
     extends IJavaModelElement {
+
+    /**
+     * Adds an assignment statement to this code block.
+     *
+     * @param description   description for the statement
+     * @param leftHandSide  the code for the value being assigned to.
+     * @param rightHandSide the code for the assigned value.
+     * @param extraOperator an extra operator to include in the assignment, e.g. "+" for += assignment.
+     */
+    IJavaAssignmentStatement addAssignmentStatement(
+        Optional<String> description,
+        String leftHandSide,
+        String rightHandSide,
+        Optional<String> extraOperator
+    );
 
     /**
      * Adds a return statement to this code block.
@@ -38,6 +54,14 @@ public interface IJavaCodeBlock
     IJavaVariableDeclaration addVariableDeclaration(
         String name, Optional<String> description, IJavaType type, Optional<String> initialValue
     );
+
+    /**
+     * Adds a while loop statement to this code block.
+     *
+     * @param description   description for the statement
+     * @param loopCondition the code for the expression controlling the loop.
+     */
+    IJavaWhileLoop addWhileLoop( Optional<String> description, String loopCondition );
 
     /**
      * Returns the statements within this code block.
