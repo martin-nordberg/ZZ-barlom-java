@@ -10,10 +10,10 @@ import org.grestler.persistence.ioutilities.codegen.CodeWriter;
  * Code generator for a Java field.
  */
 public final class JavaMethodCodeGenerator
+    extends JavaMemberCodeGenerator
     implements IJavaModelConsumerService<IJavaMethod, CodeWriter> {
 
     private JavaMethodCodeGenerator() {
-
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
@@ -26,11 +26,11 @@ public final class JavaMethodCodeGenerator
         writer.append( "// TODO: javadoc ... " )
               .newLine();
 
+        // Annotations
+        this.writeAnnotations( method, writer );
+
         // Qualifiers
-        writer.append( method.getAccessibility().getKeyWord() )
-              .appendIf( method.isStatic(), " static" )
-              .appendIf( method.isFinal(), " final" )
-              .spaceOrWrap();
+        this.writeQualifiers( method, writer );
 
         // Return type
         method.getType().consume( JavaCodeGenerator.INSTANCE, writer );
@@ -43,18 +43,15 @@ public final class JavaMethodCodeGenerator
         writer.append( "(" )
               .spaceOrWrapIndent();
 
-        for ( int i=0 ; i<method.getParameters().size(); i+=1 ) {
-            IJavaParameter parameter = method.getParameters().getAt( i );
-
+        for ( IJavaParameter parameter : method.getParameters() ) {
             parameter.consume( JavaCodeGenerator.INSTANCE, writer );
-
-            if ( i<method.getParameters().size()-1 ) {
-                writer.append( "," )
-                      .spaceOrWrap();
-            }
+            writer.mark()
+                  .append( "," )
+                  .spaceOrWrap();
         }
 
-        writer.spaceOrWrapUnindent()
+        writer.revertToMark()
+              .spaceOrWrapUnindent()
               .append( ")" );
 
         // Throws

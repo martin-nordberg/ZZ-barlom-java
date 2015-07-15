@@ -3,6 +3,7 @@ package org.grestler.domain.javacodegen.api.services;
 import org.grestler.domain.javacodegen.impl.services.JavaClassCodeGenerator;
 import org.grestler.domain.javacodegen.impl.services.JavaFieldCodeGenerator;
 import org.grestler.domain.javacodegen.impl.services.JavaMethodCodeGenerator;
+import org.grestler.domain.javacodegen.impl.services.JavaParameterCodeGenerator;
 import org.grestler.domain.javamodel.api.elements.IJavaModelElement;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerFactory;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerService;
@@ -28,6 +29,7 @@ public final class JavaCodeGenerator
         this.consumers.put( "JavaClass", JavaClassCodeGenerator.INSTANCE );
         this.consumers.put( "JavaField", JavaFieldCodeGenerator.INSTANCE );
         this.consumers.put( "JavaMethod", JavaMethodCodeGenerator.INSTANCE );
+        this.consumers.put( "JavaParameter", JavaParameterCodeGenerator.INSTANCE );
 
     }
 

@@ -10,6 +10,7 @@ import org.grestler.persistence.ioutilities.codegen.CodeWriter;
  * Code generator for a Java class.
  */
 public final class JavaClassCodeGenerator
+    extends JavaAnnotatableModelElementCodeGenerator
     implements IJavaModelConsumerService<IJavaClass, CodeWriter> {
 
     private JavaClassCodeGenerator() {
@@ -35,15 +36,18 @@ public final class JavaClassCodeGenerator
         writer.append( "// TODO: javadoc ... " )
               .newLine();
 
+        this.writeAnnotations( klass, writer );
+        writer.newLine();
+
         writer.append( "public " )
               .appendIf( klass.isFinal(), "final " )
               .appendIf( klass.isAbstract(), "abstract " )
               .append( "class " )
-              .append( klass.getName() )
-              // TODO: type args
-              .append( " {" )
-              .newLine()
-              .indent();
+            .append( klass.getName() )
+                // TODO: type args
+            .append( " {" )
+            .newLine()
+            .indent();
 
         writer.append( "// TODO: extends ... " )
               .newLine();

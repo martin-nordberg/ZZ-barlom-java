@@ -8,7 +8,9 @@ import org.grestler.persistence.ioutilities.codegen.CodeWriter;
 /**
  * Code generator for a Java field.
  */
-public final class JavaFieldCodeGenerator implements IJavaModelConsumerService<IJavaField,CodeWriter> {
+public final class JavaFieldCodeGenerator
+    extends JavaMemberCodeGenerator
+    implements IJavaModelConsumerService<IJavaField, CodeWriter> {
 
     private JavaFieldCodeGenerator() {
 
@@ -23,12 +25,9 @@ public final class JavaFieldCodeGenerator implements IJavaModelConsumerService<I
         writer.append( "// TODO: javadoc ... " )
               .newLine();
 
-        // TODO: annotations
+        this.writeAnnotations( field, writer );
 
-        writer.append( field.getAccessibility().getKeyWord() )
-              .appendIf( field.isStatic(), " static" )
-              .appendIf( field.isFinal(), " final" )
-              .spaceOrWrap();
+        this.writeQualifiers( field, writer );
 
         field.getType().consume( JavaCodeGenerator.INSTANCE, writer );
 

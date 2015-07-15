@@ -89,5 +89,60 @@ class CodeWriterSpec
 
     }
 
+    def "A code writer reverts to a mark."() {
+
+        given:
+        def writer = new StringWriter();
+        def config = new CodeWriterConfig( 4, 20 );
+        def codeWriter = new CodeWriter( writer, config );
+
+        codeWriter.append( "1" )
+                  .append( "2" )
+                  .append( "3" )
+                  .mark()
+                  .append( "4" )
+                  .append( "5" )
+                  .append( "6" )
+                  .revertToMark()
+                  .newLine()
+                  .close();
+
+        def code = writer.toString();
+
+        expect:
+        code == "123" + nl;
+
+    }
+
+
+    def "A code writer reverts to multiple marks."() {
+
+        given:
+        def writer = new StringWriter();
+        def config = new CodeWriterConfig( 4, 20 );
+        def codeWriter = new CodeWriter( writer, config );
+
+        codeWriter.append( "1" )
+                  .append( "2" )
+                  .append( "3" )
+                  .mark()
+                  .append( "4" )
+                  .mark()
+                  .append( "5" )
+                  .mark()
+                  .append( "6" )
+                  .revertToMark()
+                  .revertToMark()
+                  .revertToMark()
+                  .newLine()
+                  .close();
+
+        def code = writer.toString();
+
+        expect:
+        code == "123" + nl;
+
+    }
+
 
 }

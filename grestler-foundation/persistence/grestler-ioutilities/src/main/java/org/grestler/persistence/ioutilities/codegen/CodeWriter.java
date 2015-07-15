@@ -28,6 +28,7 @@ public class CodeWriter
         this.writer = writer;
         this.config = config;
         this.indentForCurrLine = 0;
+        this.markers = new ArrayList<>();
         this.tokensOnCurrLine = new ArrayList<>();
     }
 
@@ -77,6 +78,38 @@ public class CodeWriter
     public CodeWriter indent() {
         this.tokensOnCurrLine.add( new IndentCodeOutputToken() );
         return this;
+    }
+
+    /**
+     * Marks the current line's output so far as a point to back up to if needed.
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter mark() {
+        this.markers.add( this.tokensOnCurrLine.size() );
+        return this;
+    }
+
+    /**
+     * Discards anything written since the last marker was set.
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter revertToMark() {
+
+        if ( this.markers.isEmpty() ) {
+            throw new IllegalStateException( "No marker to revert to." );
+        }
+
+        int lastMarkerIndex = this.markers.size() - 1;
+        int lastMarker = this.markers.get( lastMarkerIndex );
+
+        while ( this.tokensOnCurrLine.size() > lastMarker ) {
+            this.tokensOnCurrLine.remove( this.tokensOnCurrLine.size() - 1 );
+        }
+
+        this.markers.remove( lastMarkerIndex );
+
+        return this;
+
     }
 
     /**
@@ -133,7 +166,8 @@ public class CodeWriter
         this.indentForCurrLine = indent;
 
         // Start the next line.
-        this.tokensOnCurrLine = new ArrayList<>();
+        this.tokensOnCurrLine.clear();
+        this.markers.clear();
 
         return this;
 
@@ -191,8 +225,11 @@ public class CodeWriter
     /** The indent level queued up for the current line. */
     private int indentForCurrLine;
 
+    /** Markers to make it possible to back up on the current line. */
+    private final List<Integer> markers;
+
     /** Tokens waiting to be written as the current line of output. */
-    private List<ICodeOutputToken> tokensOnCurrLine;
+    private final List<ICodeOutputToken> tokensOnCurrLine;
 
     /** The underlying writer receiving the output of this code writer. */
     private final Writer writer;
