@@ -3,6 +3,7 @@ package org.grestler.domain.javacodegen.impl.services;
 import org.grestler.domain.javacodegen.api.services.JavaCodeGenerator;
 import org.grestler.domain.javamodel.api.elements.IJavaClass;
 import org.grestler.domain.javamodel.api.elements.IJavaField;
+import org.grestler.domain.javamodel.api.elements.IJavaImplementedInterface;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.grestler.persistence.ioutilities.codegen.CodeWriter;
 
@@ -22,6 +23,7 @@ public final class JavaClassCodeGenerator
 
         JavaCodeGenerator generator = JavaCodeGenerator.INSTANCE;
 
+        // Package declaration
         writer.newLine()
               .append( "package " )
               .append( klass.getParent().getFullyQualifiedJavaName() )
@@ -29,13 +31,16 @@ public final class JavaClassCodeGenerator
               .newLine()
               .newLine();
 
+        // Imports
         writer.append( "// TODO: imports ... " )
               .newLine()
               .newLine();
 
+        // JavaDoc
         writer.append( "// TODO: javadoc ... " )
               .newLine();
 
+        // Annotations
         this.writeAnnotations( klass, writer );
         writer.newLine();
 
@@ -43,17 +48,32 @@ public final class JavaClassCodeGenerator
               .appendIf( klass.isFinal(), "final " )
               .appendIf( klass.isAbstract(), "abstract " )
               .append( "class " )
-            .append( klass.getName() )
-                // TODO: type args
-            .append( " {" )
-            .newLine()
-            .indent();
+              .append( klass.getJavaName() );
+        // TODO: type args
 
-        writer.append( "// TODO: extends ... " )
-              .newLine();
+        if ( klass.getBaseClass().isPresent() ) {
+            writer.newLine()
+                  .indent()
+                  .append( "extends " )
+                  .append( klass.getBaseClass().get().getJavaName() )
+                  .unindent();
+        }
 
-        writer.append( "// TODO: implements ... " )
-              .newLine();
+        if ( !klass.getImplementedInterfaces().isEmpty() ) {
+            writer.newLine()
+                  .indent()
+                  .append( "implements " );
+            for ( IJavaImplementedInterface implInterface : klass.getImplementedInterfaces() ) {
+                writer.append( implInterface.getImplementedInterface().getJavaName() )
+                      .mark()
+                      .append( ", " );
+            }
+            writer.revertToMark();
+        }
+
+        writer.append( " {" )
+              .newLine()
+              .indent();
 
         writer.append( "// TODO: methods ... " )
               .newLine()

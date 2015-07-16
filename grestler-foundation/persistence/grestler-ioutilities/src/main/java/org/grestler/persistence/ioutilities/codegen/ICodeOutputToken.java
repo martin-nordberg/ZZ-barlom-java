@@ -28,9 +28,10 @@ interface ICodeOutputToken {
      * @param output          the string builder to receive the output.
      * @param startingIndent  the starting indent level.
      * @param spacesPerIndent the spaces to use per indent level.
+     * @param maxLineLength   the maximum number of characters per line.
      *
      * @return the ending indent level.
      */
-    int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent );
+    int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent, int maxLineLength );
 
 }

@@ -6,11 +6,14 @@
 package org.grestler.persistence.ioutilities.codegen;
 
 /**
- * Token representing a simple string of text.
+ * Token representing an increment to the indentation level.
  */
 class IndentCodeOutputToken
     extends AbstractCodeOutputToken {
 
+    /**
+     * Constructs a new indent token.
+     */
     IndentCodeOutputToken() {
     }
 

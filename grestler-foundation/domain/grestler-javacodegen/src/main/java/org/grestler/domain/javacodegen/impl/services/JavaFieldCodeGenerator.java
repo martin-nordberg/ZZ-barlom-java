@@ -22,24 +22,36 @@ public final class JavaFieldCodeGenerator
         IJavaField field, CodeWriter writer
     ) {
 
-        writer.append( "// TODO: javadoc ... " )
-              .newLine();
+        // JavaDoc
+        if ( field.getDescription().isPresent() ) {
+            writer.append( "/** " )
+                  .append( field.getDescription().get() )
+                  .append( " */" )
+                  .newLine();
+        }
 
+        // Annotations
         this.writeAnnotations( field, writer );
+        writer.newLine();
 
+        // Qualifiers
         this.writeQualifiers( field, writer );
 
+        // Type
         field.getType().consume( JavaCodeGenerator.INSTANCE, writer );
 
+        // Name
         writer.spaceOrWrap()
               .append( field.getJavaName() );
 
+        // Initial value
         if ( field.getInitialValueCode().isPresent() ) {
             writer.append( " =" )
                   .spaceOrWrap()
                   .append( field.getInitialValueCode().get() );
         }
 
+        // Ending punctuation
         writer.append( ";" )
               .newLine()
               .newLine();

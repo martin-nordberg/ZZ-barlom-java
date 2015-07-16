@@ -60,6 +60,14 @@ public class CodeWriter
         return this;
     }
 
+    /**
+     * Appends a string of text that can be evenly spaced and wrapped as needed.
+     */
+    public CodeWriter appendProse( String text, String newLinePrefixChars ) {
+        this.tokensOnCurrLine.add( new ProseCodeOutputToken( text, newLinePrefixChars ) );
+        return this;
+    }
+
     @Override
     public void close() {
         try {
@@ -82,34 +90,12 @@ public class CodeWriter
 
     /**
      * Marks the current line's output so far as a point to back up to if needed.
+     *
      * @return this code writer for method chaining.
      */
     public CodeWriter mark() {
         this.markers.add( this.tokensOnCurrLine.size() );
         return this;
-    }
-
-    /**
-     * Discards anything written since the last marker was set.
-     * @return this code writer for method chaining.
-     */
-    public CodeWriter revertToMark() {
-
-        if ( this.markers.isEmpty() ) {
-            throw new IllegalStateException( "No marker to revert to." );
-        }
-
-        int lastMarkerIndex = this.markers.size() - 1;
-        int lastMarker = this.markers.get( lastMarkerIndex );
-
-        while ( this.tokensOnCurrLine.size() > lastMarker ) {
-            this.tokensOnCurrLine.remove( this.tokensOnCurrLine.size() - 1 );
-        }
-
-        this.markers.remove( lastMarkerIndex );
-
-        return this;
-
     }
 
     /**
@@ -138,9 +124,10 @@ public class CodeWriter
         // If the line is too long, rewrite it with intermediate wrapping.
         if ( lineLength > this.config.maxLineLength ) {
 
+            indent = this.indentForCurrLine;
             line = new StringBuilder();
             for ( ICodeOutputToken token : this.tokensOnCurrLine ) {
-                indent = token.writeWrappedText( line, indent, this.config.spacesPerIndent );
+                indent = token.writeWrappedText( line, indent, this.config.spacesPerIndent, this.config.maxLineLength );
             }
 
         }
@@ -174,12 +161,48 @@ public class CodeWriter
     }
 
     /**
+     * Discards anything written since the last marker was set.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter revertToMark() {
+
+        if ( this.markers.isEmpty() ) {
+            throw new IllegalStateException( "No marker to revert to." );
+        }
+
+        int lastMarkerIndex = this.markers.size() - 1;
+        int lastMarker = this.markers.get( lastMarkerIndex );
+
+        while ( this.tokensOnCurrLine.size() > lastMarker ) {
+            this.tokensOnCurrLine.remove( this.tokensOnCurrLine.size() - 1 );
+        }
+
+        this.markers.remove( lastMarkerIndex );
+
+        return this;
+
+    }
+
+    /**
      * Appends a space character to the output or when needed provides a place to wrap to the next line instead.
      *
      * @return this code writer for method chaining.
      */
     public CodeWriter spaceOrWrap() {
-        this.tokensOnCurrLine.add( new SpaceOrWrapCodeOutputToken() );
+        return this.spaceOrWrap( "" );
+    }
+
+    /**
+     * Appends a space character to the output or when needed provides a place to wrap to the next line instead.
+     * Includes extra characters (typically a comment indicator) at the start of the new line if wrapped.
+     *
+     * @param newLinePrefixChars the characters to append at the start of the new line when wrapped.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter spaceOrWrap( String newLinePrefixChars ) {
+        this.tokensOnCurrLine.add( new SpaceOrWrapCodeOutputToken( newLinePrefixChars ) );
         return this;
     }
 
@@ -214,10 +237,10 @@ public class CodeWriter
     }
 
     /** Pattern for removing line ending spaces. */
-    private static final Pattern SPACE_CR_LF = Pattern.compile( " \\r\\n" );
+    private static final Pattern SPACE_CR_LF = Pattern.compile( "( )+\\r\\n" );
 
     /** Pattern for removing line ending spaces. */
-    private static final Pattern SPACE_LF = Pattern.compile( " \\n" );
+    private static final Pattern SPACE_LF = Pattern.compile( "( )+\\n" );
 
     /** The configuration of the code writer. */
     private final CodeWriterConfig config;

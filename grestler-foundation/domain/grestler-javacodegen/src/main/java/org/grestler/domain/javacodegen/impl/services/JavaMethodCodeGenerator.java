@@ -22,12 +22,40 @@ public final class JavaMethodCodeGenerator
         IJavaMethod method, CodeWriter writer
     ) {
 
-        // Javadoc
-        writer.append( "// TODO: javadoc ... " )
-              .newLine();
+        // JavaDoc
+        if ( method.getDescription().isPresent() ) {
+
+            writer.append( "/**" )
+                  .spaceOrWrap( " * " )
+                  .appendProse( method.getDescription().get(), " * " );
+
+            if ( !method.getParameters().isEmpty() ) {
+
+                for ( IJavaParameter parameter : method.getParameters() ) {
+
+                    writer.spaceOrWrap( " * " )
+                          .append( parameter.getJavaName() );
+
+                    if ( parameter.getDescription().isPresent() ) {
+                        writer.append( " " )
+                              .appendProse( parameter.getDescription().get(), " *     " );
+                    }
+
+                }
+
+            }
+
+            // TODO: need a return value description
+
+            writer.spaceOrWrap( " " )
+                  .append( "*/" )
+                  .newLine();
+
+        }
 
         // Annotations
         this.writeAnnotations( method, writer );
+        writer.newLine();
 
         // Qualifiers
         this.writeQualifiers( method, writer );

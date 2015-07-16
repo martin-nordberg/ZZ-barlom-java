@@ -6,11 +6,14 @@
 package org.grestler.persistence.ioutilities.codegen;
 
 /**
- * Token representing a simple string of text.
+ * Token representing a decrement to the indentation level.
  */
 class UnindentCodeOutputToken
     extends AbstractCodeOutputToken {
 
+    /**
+     * Constructs a new unindent token.
+     */
     UnindentCodeOutputToken() {
     }
 

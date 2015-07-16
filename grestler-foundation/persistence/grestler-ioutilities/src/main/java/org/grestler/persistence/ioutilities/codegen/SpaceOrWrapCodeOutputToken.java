@@ -6,12 +6,13 @@
 package org.grestler.persistence.ioutilities.codegen;
 
 /**
- * Token representing a simple string of text.
+ * Token representing a space character or else a line separator when needed to make the overall line shorter.
  */
 class SpaceOrWrapCodeOutputToken
     extends AbstractCodeOutputToken {
 
-    SpaceOrWrapCodeOutputToken() {
+    SpaceOrWrapCodeOutputToken( String newLinePrefixChars ) {
+        this.newLinePrefixChars = newLinePrefixChars;
     }
 
     @Override
@@ -26,14 +27,18 @@ class SpaceOrWrapCodeOutputToken
     }
 
     @Override
-    public int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
+    public int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent, int maxLineLength ) {
 
         output.append( SpaceOrWrapCodeOutputToken.LINE_SEPARATOR );
+        this.appendIndentSpacesIfNeeded( output, startingIndent, spacesPerIndent );
+        output.append( this.newLinePrefixChars );
 
         return startingIndent;
 
     }
 
     static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
+
+    private final String newLinePrefixChars;
 
 }

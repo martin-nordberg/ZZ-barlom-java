@@ -16,7 +16,7 @@ abstract class AbstractCodeOutputToken
     }
 
     @Override
-    public int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
+    public int writeWrappedText( StringBuilder output, int startingIndent, int spacesPerIndent, int maxLineLength ) {
         return this.writeText( output, startingIndent, spacesPerIndent );
     }
 
