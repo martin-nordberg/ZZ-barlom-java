@@ -33,6 +33,28 @@ public class CodeWriter
     }
 
     /**
+     * Forces a wrap at this position in the current line of output.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter alwaysWrap() {
+        return this.alwaysWrap( "" );
+    }
+
+    /**
+     * Forces a wrap at this position in the current line of output. Includes extra characters (typically a comment
+     * indicator) at the start of the new line if wrapped.
+     *
+     * @param newLinePrefixChars the characters to append at the start of the new line when wrapped.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter alwaysWrap( String newLinePrefixChars ) {
+        this.tokensOnCurrLine.add( new AlwaysWrapCodeOutputToken( newLinePrefixChars ) );
+        return this;
+    }
+
+    /**
      * Appends a string of text to the output code.
      *
      * @param text the text to append (must not contain any new line characters).
@@ -218,12 +240,42 @@ public class CodeWriter
 
     /**
      * Appends a space character to the output or when needed provides a place to wrap to the next line instead. If
+     * wrapped, the next line will also be indented. Skips the whole thing if the condition is false.
+     *
+     * @param condition if false do nothing at all.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter spaceOrWrapIndentIf( boolean condition ) {
+        if ( condition ) {
+            return this.spaceOrWrap().indent();
+        }
+        return this;
+    }
+
+    /**
+     * Appends a space character to the output or when needed provides a place to wrap to the next line instead. If
      * wrapped, the next line will also be unindented.
      *
      * @return this code writer for method chaining.
      */
     public CodeWriter spaceOrWrapUnindent() {
         return this.spaceOrWrap().unindent();
+    }
+
+    /**
+     * Appends a space character to the output or when needed provides a place to wrap to the next line instead. If
+     * wrapped, the next line will also be unindented. Skips the whole thing if the condition is false.
+     *
+     * @param condition if false do nothing at all.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter spaceOrWrapUnindentIf( boolean condition ) {
+        if ( condition ) {
+            return this.spaceOrWrap().unindent();
+        }
+        return this;
     }
 
     /**

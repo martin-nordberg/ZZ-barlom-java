@@ -13,7 +13,6 @@ public final class JavaFieldCodeGenerator
     implements IJavaModelConsumerService<IJavaField, CodeWriter> {
 
     private JavaFieldCodeGenerator() {
-
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
@@ -24,15 +23,16 @@ public final class JavaFieldCodeGenerator
 
         // JavaDoc
         if ( field.getDescription().isPresent() ) {
-            writer.append( "/** " )
-                  .append( field.getDescription().get() )
-                  .append( " */" )
+            writer.append( "/**" )
+                  .spaceOrWrap( " * " )
+                  .appendProse( field.getDescription().get(), " * " )
+                  .spaceOrWrap( " " )
+                  .append( "*/" )
                   .newLine();
         }
 
         // Annotations
-        this.writeAnnotations( field, writer );
-        writer.newLine();
+        this.writeAnnotations( field, writer, true );
 
         // Qualifiers
         this.writeQualifiers( field, writer );

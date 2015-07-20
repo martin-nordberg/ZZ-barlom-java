@@ -17,6 +17,29 @@ public interface IJavaAbstractPackage
     extends IJavaNamedModelElement {
 
     /**
+     * Creates a package within this one (empty description, not implicitly imported).
+     *
+     * @param name the name of the new package.
+     *
+     * @return the newly created package.
+     */
+    default IJavaPackage addPackage( String name ) {
+        return this.addPackage( name, Optional.empty(), false );
+    }
+
+    /**
+     * Creates a package within this one (empty description, not implicitly imported).
+     *
+     * @param name        the name of the new package.
+     * @param description a description of the new package.
+     *
+     * @return the newly created package.
+     */
+    default IJavaPackage addPackage( String name, String description ) {
+        return this.addPackage( name, Optional.of( description ), false );
+    }
+
+    /**
      * Creates a package within this one.
      *
      * @param name                 the name of the new package.

@@ -56,11 +56,10 @@ public final class JavaPackage
         Optional<String> description,
         boolean isAbstract,
         boolean isFinal,
-        Optional<IJavaClass> baseClass,
-        boolean isTestCode
+        Optional<IJavaClass> baseClass
     ) {
         return new JavaClass(
-            this, name, description, false, isAbstract, isFinal, baseClass, isTestCode
+            this, name, description, false, isAbstract, isFinal, baseClass
         );
     }
 
@@ -72,7 +71,7 @@ public final class JavaPackage
 
     @Override
     public IJavaClass addExternalClass( String name ) {
-        return new JavaClass( this, name, Optional.empty(), true, false, false, null, false );
+        return new JavaClass( this, name, Optional.empty(), true, false, false, null );
     }
 
     @Override

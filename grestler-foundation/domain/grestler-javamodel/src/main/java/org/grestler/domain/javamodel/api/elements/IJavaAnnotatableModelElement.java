@@ -27,7 +27,7 @@ public interface IJavaAnnotatableModelElement
      * @return the newly added annotation.
      */
     IJavaAnnotation addAnnotation(
-        Optional<String> description, IJavaAnnotationInterface annotationInterface, String parametersCode
+        Optional<String> description, IJavaAnnotationInterface annotationInterface, Optional<String> parametersCode
     );
 
     /** @return the annotations of this named model element. */

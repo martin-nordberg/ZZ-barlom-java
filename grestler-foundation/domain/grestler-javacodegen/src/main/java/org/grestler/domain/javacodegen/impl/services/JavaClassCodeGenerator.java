@@ -2,8 +2,11 @@ package org.grestler.domain.javacodegen.impl.services;
 
 import org.grestler.domain.javacodegen.api.services.JavaCodeGenerator;
 import org.grestler.domain.javamodel.api.elements.IJavaClass;
+import org.grestler.domain.javamodel.api.elements.IJavaConstructor;
 import org.grestler.domain.javamodel.api.elements.IJavaField;
 import org.grestler.domain.javamodel.api.elements.IJavaImplementedInterface;
+import org.grestler.domain.javamodel.api.elements.IJavaMethod;
+import org.grestler.domain.javamodel.api.elements.IJavaStaticInitialization;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.grestler.persistence.ioutilities.codegen.CodeWriter;
 
@@ -21,8 +24,6 @@ public final class JavaClassCodeGenerator
     @Override
     public void consume( IJavaClass klass, CodeWriter writer ) {
 
-        JavaCodeGenerator generator = JavaCodeGenerator.INSTANCE;
-
         // Package declaration
         writer.newLine()
               .append( "package " )
@@ -37,13 +38,22 @@ public final class JavaClassCodeGenerator
               .newLine();
 
         // JavaDoc
-        writer.append( "// TODO: javadoc ... " )
-              .newLine();
+        if ( klass.getDescription().isPresent() ) {
+
+            writer.append( "/**" )
+                  .spaceOrWrap( " * " )
+                  .appendProse( klass.getDescription().get(), " * " );
+
+            writer.spaceOrWrap( " " )
+                  .append( "*/" )
+                  .newLine();
+
+        }
 
         // Annotations
-        this.writeAnnotations( klass, writer );
-        writer.newLine();
+        this.writeAnnotations( klass, writer, true );
 
+        // Class name
         writer.append( "public " )
               .appendIf( klass.isFinal(), "final " )
               .appendIf( klass.isAbstract(), "abstract " )
@@ -51,6 +61,7 @@ public final class JavaClassCodeGenerator
               .append( klass.getJavaName() );
         // TODO: type args
 
+        // Extends
         if ( klass.getBaseClass().isPresent() ) {
             writer.newLine()
                   .indent()
@@ -59,6 +70,7 @@ public final class JavaClassCodeGenerator
                   .unindent();
         }
 
+        // Implements
         if ( !klass.getImplementedInterfaces().isEmpty() ) {
             writer.newLine()
                   .indent()
@@ -68,21 +80,37 @@ public final class JavaClassCodeGenerator
                       .mark()
                       .append( ", " );
             }
-            writer.revertToMark();
+            writer.revertToMark()
+                  .unindent();
         }
 
+        // Opening brace
         writer.append( " {" )
+              .newLine()
               .newLine()
               .indent();
 
-        writer.append( "// TODO: methods ... " )
-              .newLine()
-              .newLine();
-
-        for ( IJavaField field : klass.getFields() ) {
-            field.consume( generator, writer );
+        // Constructors
+        for ( IJavaConstructor constructor : klass.getConstructors() ) {
+            constructor.consume( JavaCodeGenerator.INSTANCE, writer );
         }
 
+        // Methods
+        for ( IJavaMethod method : klass.getMethods() ) {
+            method.consume( JavaCodeGenerator.INSTANCE, writer );
+        }
+
+        // Fields
+        for ( IJavaField field : klass.getFields() ) {
+            field.consume( JavaCodeGenerator.INSTANCE, writer );
+        }
+
+        // Static initializers
+        for ( IJavaStaticInitialization staticInitialization : klass.getStaticInitializations() ) {
+            staticInitialization.consume( JavaCodeGenerator.INSTANCE, writer );
+        }
+
+        // Closing brace
         writer.unindent()
               .append( "}" )
               .newLine()

@@ -25,7 +25,7 @@ public final class JavaAnnotation
         JavaAnnotatableModelElement parent,
         Optional<String> description,
         IJavaAnnotationInterface annotationInterface,
-        String parametersCode
+        Optional<String> parametersCode
     ) {
         super( parent, description );
 
@@ -41,7 +41,7 @@ public final class JavaAnnotation
     }
 
     @Override
-    public String getParametersCode() {
+    public Optional<String> getParametersCode() {
         return this.parametersCode;
     }
 
@@ -52,6 +52,6 @@ public final class JavaAnnotation
 
     private final IJavaAnnotationInterface annotationInterface;
 
-    private final String parametersCode;
+    private final Optional<String> parametersCode;
 
 }

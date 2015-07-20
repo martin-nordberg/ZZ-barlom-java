@@ -1,38 +1,38 @@
 package org.grestler.domain.javacodegen.impl.services;
 
 import org.grestler.domain.javacodegen.api.services.JavaCodeGenerator;
-import org.grestler.domain.javamodel.api.elements.IJavaMethod;
+import org.grestler.domain.javamodel.api.elements.IJavaConstructor;
 import org.grestler.domain.javamodel.api.elements.IJavaParameter;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.grestler.domain.javamodel.api.statements.IJavaStatement;
 import org.grestler.persistence.ioutilities.codegen.CodeWriter;
 
 /**
- * Code generator for a Java field.
+ * Code generator for a Java constructor.
  */
-public final class JavaMethodCodeGenerator
+public final class JavaConstructorCodeGenerator
     extends JavaMemberCodeGenerator
-    implements IJavaModelConsumerService<IJavaMethod, CodeWriter> {
+    implements IJavaModelConsumerService<IJavaConstructor, CodeWriter> {
 
-    private JavaMethodCodeGenerator() {
+    private JavaConstructorCodeGenerator() {
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
     @Override
     public void consume(
-        IJavaMethod method, CodeWriter writer
+        IJavaConstructor constructor, CodeWriter writer
     ) {
 
         // JavaDoc
-        if ( method.getDescription().isPresent() ) {
+        if ( constructor.getDescription().isPresent() ) {
 
             writer.append( "/**" )
                   .spaceOrWrap( " * " )
-                  .appendProse( method.getDescription().get(), " * " );
+                  .appendProse( constructor.getDescription().get(), " * " );
 
-            if ( !method.getParameters().isEmpty() ) {
+            if ( !constructor.getParameters().isEmpty() ) {
 
-                for ( IJavaParameter parameter : method.getParameters() ) {
+                for ( IJavaParameter parameter : constructor.getParameters() ) {
 
                     writer.alwaysWrap( " * @param " )
                           .append( parameter.getJavaName() );
@@ -46,8 +46,6 @@ public final class JavaMethodCodeGenerator
 
             }
 
-            // TODO: need a return value description
-
             // TODO: throws declaration(s)
 
             writer.spaceOrWrap( " " )
@@ -57,24 +55,21 @@ public final class JavaMethodCodeGenerator
         }
 
         // Annotations
-        this.writeAnnotations( method, writer, true );
+        this.writeAnnotations( constructor, writer, true );
 
         // Qualifiers
-        this.writeQualifiers( method, writer );
-
-        // Return type
-        method.getType().consume( JavaCodeGenerator.INSTANCE, writer );
+        this.writeQualifiers( constructor, writer );
 
         // Name
         writer.spaceOrWrap()
-              .append( method.getJavaName() );
+              .append( constructor.getJavaName() );
 
         // Parameters
         writer.append( "(" )
-              .spaceOrWrapIndentIf( !method.getParameters().isEmpty() )
+              .spaceOrWrapIndentIf( !constructor.getParameters().isEmpty() )
               .mark();
 
-        for ( IJavaParameter parameter : method.getParameters() ) {
+        for ( IJavaParameter parameter : constructor.getParameters() ) {
             parameter.consume( JavaCodeGenerator.INSTANCE, writer );
             writer.mark()
                   .append( "," )
@@ -82,35 +77,29 @@ public final class JavaMethodCodeGenerator
         }
 
         writer.revertToMark()
-              .spaceOrWrapUnindentIf( !method.getParameters().isEmpty() )
+              .spaceOrWrapUnindentIf( !constructor.getParameters().isEmpty() )
               .append( ")" );
 
         // Throws
         // TODO
 
-        if ( method.isAbstract() ) {
-            // Abstract empty body
-            writer.append( ";" );
-        }
-        else {
-            // Concrete body
-            writer.append( " {" )
-                  .newLine()
-                  .indent();
+        // Body
+        writer.append( " {" )
+              .newLine()
+              .indent();
 
-            for ( IJavaStatement statement : method.getStatements() ) {
-                statement.consume( JavaCodeGenerator.INSTANCE, writer );
-            }
-
-            writer.unindent()
-                  .append( "}" );
+        for ( IJavaStatement statement : constructor.getStatements() ) {
+            statement.consume( JavaCodeGenerator.INSTANCE, writer );
         }
+
+        writer.unindent()
+              .append( "}" );
 
         writer.newLine()
               .newLine();
 
     }
 
-    public static final JavaMethodCodeGenerator INSTANCE = new JavaMethodCodeGenerator();
+    public static final JavaConstructorCodeGenerator INSTANCE = new JavaConstructorCodeGenerator();
 
 }

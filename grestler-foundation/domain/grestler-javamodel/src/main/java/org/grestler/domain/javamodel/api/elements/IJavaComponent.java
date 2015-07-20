@@ -18,6 +18,32 @@ public interface IJavaComponent
     /**
      * Creates a method within this component.
      *
+     * @param name        the name of the method.
+     * @param description a description of the method.
+     * @param returnType  the return type of the method.
+     *
+     * @return the newly created method.
+     */
+    @SuppressWarnings( "BooleanParameter" )
+    default IJavaMethod addMethod(
+        String name,
+        String description,
+        IJavaType returnType
+    ) {
+        return this.addMethod(
+            name,
+            Optional.of( description ),
+            EJavaAccessibility.PUBLIC,
+            false,
+            false,
+            false,
+            returnType
+        );
+    }
+
+    /**
+     * Creates a method within this component.
+     *
      * @param name          the name of the method.
      * @param description   a description of the method.
      * @param accessibility the accessibility of the method.

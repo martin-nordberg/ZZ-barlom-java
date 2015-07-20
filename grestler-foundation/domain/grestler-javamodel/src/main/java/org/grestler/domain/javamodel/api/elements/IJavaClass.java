@@ -22,9 +22,6 @@ public interface IJavaClass
     /** @return whether this is a final class. */
     boolean isFinal();
 
-    /** @return whether this is a test class. */
-    boolean isTestCode();
-
     /**
      * Sets the base class.
      *

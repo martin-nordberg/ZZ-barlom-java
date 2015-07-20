@@ -45,7 +45,7 @@ public abstract class JavaAnnotatableModelElement
 
     @Override
     public IJavaAnnotation addAnnotation(
-        Optional<String> description, IJavaAnnotationInterface annotationInterface, String parametersCode
+        Optional<String> description, IJavaAnnotationInterface annotationInterface, Optional<String> parametersCode
     ) {
         return new JavaAnnotation( this, description, annotationInterface, parametersCode );
     }

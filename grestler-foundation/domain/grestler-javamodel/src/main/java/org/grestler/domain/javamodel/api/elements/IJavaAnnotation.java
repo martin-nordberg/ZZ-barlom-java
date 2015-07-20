@@ -5,6 +5,8 @@
 
 package org.grestler.domain.javamodel.api.elements;
 
+import java.util.Optional;
+
 /**
  * An annotation.
  */
@@ -15,7 +17,7 @@ public interface IJavaAnnotation
     IJavaAnnotationInterface getAnnotationInterface();
 
     /** @return the parametersCode. */
-    String getParametersCode();
+    Optional<String> getParametersCode();
 
     @Override
     IJavaAnnotatableModelElement getParent();

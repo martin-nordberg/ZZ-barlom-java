@@ -21,6 +21,19 @@ public interface IJavaCodeBlock
     /**
      * Adds an assignment statement to this code block.
      *
+     * @param leftHandSide  the code for the value being assigned to.
+     * @param rightHandSide the code for the assigned value.
+     */
+    default IJavaAssignmentStatement addAssignmentStatement(
+        String leftHandSide,
+        String rightHandSide
+    ) {
+        return this.addAssignmentStatement( Optional.empty(), leftHandSide, rightHandSide, Optional.empty() );
+    }
+
+    /**
+     * Adds an assignment statement to this code block.
+     *
      * @param description   description for the statement
      * @param leftHandSide  the code for the value being assigned to.
      * @param rightHandSide the code for the assigned value.

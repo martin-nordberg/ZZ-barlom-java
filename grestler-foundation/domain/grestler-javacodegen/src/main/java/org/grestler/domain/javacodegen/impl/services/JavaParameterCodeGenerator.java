@@ -9,10 +9,10 @@ import org.grestler.persistence.ioutilities.codegen.CodeWriter;
  * Code generator for a Java parameter.
  */
 public final class JavaParameterCodeGenerator
+    extends JavaAnnotatableModelElementCodeGenerator
     implements IJavaModelConsumerService<IJavaParameter, CodeWriter> {
 
     private JavaParameterCodeGenerator() {
-
     }
 
     @SuppressWarnings( "ParameterNameDiffersFromOverriddenParameter" )
@@ -21,10 +21,7 @@ public final class JavaParameterCodeGenerator
         IJavaParameter parameter, CodeWriter writer
     ) {
 
-        writer.append( "// TODO: javadoc ... " )
-              .newLine();
-
-        // TODO: annotations
+        this.writeAnnotations( parameter, writer, false );
 
         parameter.getType().consume( JavaCodeGenerator.INSTANCE, writer );
 

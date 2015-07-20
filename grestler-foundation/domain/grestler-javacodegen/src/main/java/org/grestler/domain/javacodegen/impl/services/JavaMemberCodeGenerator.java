@@ -7,7 +7,7 @@ import org.grestler.persistence.ioutilities.codegen.CodeWriter;
  * Code generator for a Java field.
  */
 @SuppressWarnings( "AbstractClassWithoutAbstractMethods" )
-public abstract class JavaMemberCodeGenerator
+abstract class JavaMemberCodeGenerator
     extends JavaAnnotatableModelElementCodeGenerator {
 
     protected JavaMemberCodeGenerator() {

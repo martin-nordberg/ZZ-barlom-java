@@ -28,15 +28,13 @@ public final class JavaClass
         boolean isExternal,
         boolean isAbstract,
         boolean isFinal,
-        Optional<IJavaClass> baseClass,
-        boolean isTestCode
+        Optional<IJavaClass> baseClass
     ) {
         super( parent, name, description, isExternal );
 
         this.isAbstract = isAbstract;
         this.isFinal = isFinal;
         this.baseClass = baseClass;
-        this.isTestCode = isTestCode;
 
         parent.onAddChild( this );
     }
@@ -68,11 +66,6 @@ public final class JavaClass
     }
 
     @Override
-    public boolean isTestCode() {
-        return this.isTestCode;
-    }
-
-    @Override
     public void setBaseClass( IJavaClass baseClass ) {
         assert !this.baseClass.isPresent() : "Cannot change base class once set.";
         this.baseClass = Optional.of( baseClass );
@@ -84,5 +77,4 @@ public final class JavaClass
 
     private final boolean isFinal;
 
-    private final boolean isTestCode;
 }
