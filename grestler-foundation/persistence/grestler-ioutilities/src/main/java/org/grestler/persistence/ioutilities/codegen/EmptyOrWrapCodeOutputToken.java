@@ -8,22 +8,16 @@ package org.grestler.persistence.ioutilities.codegen;
 /**
  * Token representing a space character or else a line separator when needed to make the overall line shorter.
  */
-final class SpaceOrWrapCodeOutputToken
+final class EmptyOrWrapCodeOutputToken
     extends AbstractWrapCodeOutputToken {
 
-    SpaceOrWrapCodeOutputToken( String newLinePrefixChars ) {
+    EmptyOrWrapCodeOutputToken( String newLinePrefixChars ) {
         super( newLinePrefixChars );
     }
 
     @Override
     public int writeText( StringBuilder output, int startingIndent, int spacesPerIndent ) {
-
-        this.appendIndentSpacesIfNeeded( output, startingIndent, spacesPerIndent );
-
-        output.append( " " );
-
         return startingIndent;
-
     }
 
 }

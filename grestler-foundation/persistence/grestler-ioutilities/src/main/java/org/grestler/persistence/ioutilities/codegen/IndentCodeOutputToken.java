@@ -8,7 +8,7 @@ package org.grestler.persistence.ioutilities.codegen;
 /**
  * Token representing an increment to the indentation level.
  */
-class IndentCodeOutputToken
+final class IndentCodeOutputToken
     extends AbstractCodeOutputToken {
 
     /**

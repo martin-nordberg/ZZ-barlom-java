@@ -7,6 +7,7 @@ import org.grestler.domain.javamodel.api.elements.IJavaField;
 import org.grestler.domain.javamodel.api.elements.IJavaImplementedInterface;
 import org.grestler.domain.javamodel.api.elements.IJavaMethod;
 import org.grestler.domain.javamodel.api.elements.IJavaStaticInitialization;
+import org.grestler.domain.javamodel.api.elements.IJavaType;
 import org.grestler.domain.javamodel.api.services.IJavaModelConsumerService;
 import org.grestler.persistence.ioutilities.codegen.CodeWriter;
 
@@ -33,9 +34,13 @@ public final class JavaClassCodeGenerator
               .newLine();
 
         // Imports
-        writer.append( "// TODO: imports ... " )
-              .newLine()
-              .newLine();
+        for ( IJavaType imp : klass.getImports() ) {
+            writer.append( "import " )
+                  .append( imp.getFullyQualifiedJavaName() )
+                  .append( ";" )
+                  .newLine();
+        }
+        writer.newLineIf( !klass.getImports().isEmpty() );
 
         // JavaDoc
         if ( klass.getDescription().isPresent() ) {

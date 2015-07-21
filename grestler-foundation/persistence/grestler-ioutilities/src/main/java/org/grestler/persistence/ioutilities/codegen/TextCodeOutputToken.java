@@ -8,7 +8,7 @@ package org.grestler.persistence.ioutilities.codegen;
 /**
  * Token representing a simple string of text.
  */
-class TextCodeOutputToken
+final class TextCodeOutputToken
     extends AbstractCodeOutputToken {
 
     /**

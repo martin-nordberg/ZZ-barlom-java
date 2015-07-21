@@ -6,6 +6,7 @@
 package org.grestler.domain.javamodel.impl.elements;
 
 import org.grestler.domain.javamodel.api.elements.IJavaBuiltinType;
+import org.grestler.domain.javamodel.api.elements.IJavaPackage;
 import org.grestler.domain.javamodel.api.elements.IJavaRootPackage;
 
 import java.util.Optional;
@@ -29,6 +30,8 @@ public final class JavaRootPackage
         this.builtinInt = new JavaBuiltinType( "int" );
         this.builtinLong = new JavaBuiltinType( "long" );
         this.builtinVoid = new JavaBuiltinType( "void" );
+
+        this.establishJavaLangPackage();
     }
 
     @Override
@@ -59,6 +62,26 @@ public final class JavaRootPackage
     @Override
     public IJavaBuiltinType getBuiltinVoid() {
         return this.builtinVoid;
+    }
+
+    /**
+     * Creates the external classes of the java.lang package.
+     */
+    private void establishJavaLangPackage() {
+
+        IJavaPackage lang = this.addPackage( "java" )
+                                .addPackage( "lang", Optional.of( "Standard java language package." ), true );
+
+        lang.addExternalClass( "Boolean" );
+        lang.addExternalClass( "Exception" );
+        lang.addExternalClass( "Float" );
+        lang.addExternalClass( "Integer" );
+        lang.addExternalClass( "Long" );
+        lang.addExternalClass( "Object" );
+        lang.addExternalClass( "String" );
+        lang.addExternalClass( "Thread" );
+        // TODO: lots more if/when needed ...
+
     }
 
     @Override

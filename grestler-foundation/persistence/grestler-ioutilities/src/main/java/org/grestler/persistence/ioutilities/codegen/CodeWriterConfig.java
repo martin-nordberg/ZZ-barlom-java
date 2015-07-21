@@ -8,7 +8,7 @@ package org.grestler.persistence.ioutilities.codegen;
 /**
  * Configuration parameters for a code writer.
  */
-public class CodeWriterConfig {
+public final class CodeWriterConfig {
 
     /**
      * Constructs a new code writer configuration object.

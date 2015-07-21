@@ -14,7 +14,7 @@ class JavaCodeGeneratorSpec
 
     def nl = System.getProperty( "line.separator" );
 
-    def "A code generator generates the code for a simple class."() {
+    def "A code generator generates the code for a class."() {
 
         given:
         def writer = new StringWriter();
@@ -30,10 +30,10 @@ class JavaCodeGeneratorSpec
 
         cls.addConstructor( "Default constructor.", EJavaAccessibility.PROTECTED );
 
-        def con = cls.addConstructor( "Constructs a new instance.", EJavaAccessibility.PUBLIC );
-        con.addParameter( "p1", "first parameter", root.builtinDouble );
-        con.addParameter( "p2", "second parameter", root.builtinFloat );
-//        con.addAssignmentStatement( "this.field1", "p1" );
+        def con2 = cls.addConstructor( "Constructs a new instance.", EJavaAccessibility.PUBLIC );
+        con2.addParameter( "p1", "first parameter", root.builtinDouble );
+        con2.addParameter( "p2", "second parameter", root.builtinFloat );
+        con2.addAssignmentStatement( "this.field1", "p1" );
 
         def meth1 = cls.addMethod( "method1", "A method to do stuff.", root.builtinBoolean );
 
@@ -48,12 +48,10 @@ class JavaCodeGeneratorSpec
         code == nl +
             "package pkg1.pkg2;" + nl +
             nl +
-            "// TODO: imports ..." + nl +
-            nl +
             "public final class MyClass {" + nl +
             nl +
             "  /** Default constructor. */" + nl +
-            "  protected  MyClass() {" + nl +
+            "  protected MyClass() {" + nl +
             "  }" + nl +
             nl +
             "  /**" + nl +
@@ -61,7 +59,8 @@ class JavaCodeGeneratorSpec
             "   * @param p1 first parameter" + nl +
             "   * @param p2 second parameter" + nl +
             "   */" + nl +
-            "  public  MyClass( double p1, float p2 ) {" + nl +
+            "  public MyClass( double p1, float p2 ) {" + nl +
+            "    this.field1 = p1;" + nl +
             "  }" + nl +
             nl +
             "  /** A method to do stuff. */" + nl +

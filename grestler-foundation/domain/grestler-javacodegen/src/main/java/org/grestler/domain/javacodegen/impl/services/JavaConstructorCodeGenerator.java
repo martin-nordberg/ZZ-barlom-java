@@ -61,8 +61,7 @@ public final class JavaConstructorCodeGenerator
         this.writeQualifiers( constructor, writer );
 
         // Name
-        writer.spaceOrWrap()
-              .append( constructor.getJavaName() );
+        writer.append( constructor.getJavaName() );
 
         // Parameters
         writer.append( "(" )

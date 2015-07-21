@@ -1,5 +1,6 @@
 package org.grestler.domain.javacodegen.api.services;
 
+import org.grestler.domain.javacodegen.impl.services.JavaAssignmentStatementCodeGenerator;
 import org.grestler.domain.javacodegen.impl.services.JavaBuiltinTypeCodeGenerator;
 import org.grestler.domain.javacodegen.impl.services.JavaClassCodeGenerator;
 import org.grestler.domain.javacodegen.impl.services.JavaConstructorCodeGenerator;
@@ -29,6 +30,7 @@ public final class JavaCodeGenerator
         this.consumers = new HashMap<>();
 
         // Map all the concrete classes to individual code generators.
+        this.consumers.put( "JavaAssignmentStatement", JavaAssignmentStatementCodeGenerator.INSTANCE );
         this.consumers.put( "JavaBuiltinType", JavaBuiltinTypeCodeGenerator.INSTANCE );
         this.consumers.put( "JavaClass", JavaClassCodeGenerator.INSTANCE );
         this.consumers.put( "JavaConstructor", JavaConstructorCodeGenerator.INSTANCE );

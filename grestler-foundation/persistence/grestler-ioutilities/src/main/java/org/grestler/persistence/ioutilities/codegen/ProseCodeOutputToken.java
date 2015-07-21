@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Token representing a sequence of words to be separated by spaces with line separators only where needed.
  */
-class ProseCodeOutputToken
+final class ProseCodeOutputToken
     extends AbstractCodeOutputToken {
 
     /**
@@ -62,7 +62,7 @@ class ProseCodeOutputToken
             }
             else if ( usedLineLength + word.length() + 1 > availableLineLength ) {
                 // Insert a line separator, indent & prefix when the line would get too long.
-                output.append( SpaceOrWrapCodeOutputToken.LINE_SEPARATOR );
+                output.append( AbstractWrapCodeOutputToken.LINE_SEPARATOR );
                 this.appendIndentSpacesIfNeeded( output, startingIndent, spacesPerIndent );
                 output.append( this.newLinePrefixChars );
                 usedLineLength = 0;

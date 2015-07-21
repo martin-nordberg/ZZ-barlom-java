@@ -14,8 +14,8 @@ import java.util.regex.Pattern;
 /**
  * Utility class for writing code.
  */
-@SuppressWarnings( "HardcodedLineSeparator" )
-public class CodeWriter
+@SuppressWarnings( { "HardcodedLineSeparator", "ClassWithTooManyMethods" } )
+public final class CodeWriter
     implements AutoCloseable {
 
     /**
@@ -101,6 +101,48 @@ public class CodeWriter
     }
 
     /**
+     * Appends nothing to the output or when needed provides a place to wrap to the next line instead.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter emptyOrWrap() {
+        return this.emptyOrWrap( "" );
+    }
+
+    /**
+     * Appends nothing to the output or when needed provides a place to wrap to the next line instead. Includes extra
+     * characters (typically a comment indicator) at the start of the new line if wrapped.
+     *
+     * @param newLinePrefixChars the characters to append at the start of the new line when wrapped.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter emptyOrWrap( String newLinePrefixChars ) {
+        this.tokensOnCurrLine.add( new EmptyOrWrapCodeOutputToken( newLinePrefixChars ) );
+        return this;
+    }
+
+    /**
+     * Appends nothing to the output or when needed provides a place to wrap to the next line instead. If wrapped, the
+     * next line will also be indented.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter emptyOrWrapIndent() {
+        return this.emptyOrWrap().indent();
+    }
+
+    /**
+     * Appends nothing to the output or when needed provides a place to wrap to the next line instead. If wrapped, the
+     * next line will also be unindented.
+     *
+     * @return this code writer for method chaining.
+     */
+    public CodeWriter emptyOrWrapUnindent() {
+        return this.emptyOrWrap().unindent();
+    }
+
+    /**
      * Increments the indent level for the next written line of code.
      *
      * @return this code writer for method chaining.
@@ -155,7 +197,7 @@ public class CodeWriter
         }
 
         // Output the final line ending character(s).
-        line.append( SpaceOrWrapCodeOutputToken.LINE_SEPARATOR );
+        line.append( AbstractWrapCodeOutputToken.LINE_SEPARATOR );
 
         // Write through to the underlying writer.
         try {
@@ -180,6 +222,20 @@ public class CodeWriter
 
         return this;
 
+    }
+
+    /**
+     * Starts a new line in the output if the given condition is true. Writes out the currently pending line including
+     * intermediate line wraps if needed.
+     *
+     * @return this code writer for method chaining.
+     */
+    @SuppressWarnings( "BooleanParameter" )
+    public CodeWriter newLineIf( boolean condition ) {
+        if ( condition ) {
+            return this.newLine();
+        }
+        return this;
     }
 
     /**
@@ -246,6 +302,7 @@ public class CodeWriter
      *
      * @return this code writer for method chaining.
      */
+    @SuppressWarnings( "BooleanParameter" )
     public CodeWriter spaceOrWrapIndentIf( boolean condition ) {
         if ( condition ) {
             return this.spaceOrWrap().indent();
@@ -271,6 +328,7 @@ public class CodeWriter
      *
      * @return this code writer for method chaining.
      */
+    @SuppressWarnings( "BooleanParameter" )
     public CodeWriter spaceOrWrapUnindentIf( boolean condition ) {
         if ( condition ) {
             return this.spaceOrWrap().unindent();

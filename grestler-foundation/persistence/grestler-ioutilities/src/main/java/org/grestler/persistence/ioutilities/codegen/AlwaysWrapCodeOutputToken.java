@@ -8,8 +8,8 @@ package org.grestler.persistence.ioutilities.codegen;
 /**
  * Token representing a space character or else a line separator when needed to make the overall line shorter.
  */
-class AlwaysWrapCodeOutputToken
-    extends SpaceOrWrapCodeOutputToken {
+final class AlwaysWrapCodeOutputToken
+    extends AbstractWrapCodeOutputToken {
 
     AlwaysWrapCodeOutputToken( String newLinePrefixChars ) {
         super( newLinePrefixChars );
