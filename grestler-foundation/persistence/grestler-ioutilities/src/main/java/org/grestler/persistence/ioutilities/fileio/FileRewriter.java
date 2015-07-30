@@ -16,79 +16,32 @@ import java.nio.file.Files;
  * Class similar to FileWriter, but it does not change a file if the output content matches the file's current content.
  */
 public class FileRewriter
-    extends Writer {
+    extends AbstractFileRewriter {
 
     /**
      * Constructs a new file rewriter to the given file.
      * @param file the file to be written if changed.
      */
     public FileRewriter( File file ) {
-        this.file = file;
-        this.writer = new StringWriter();
+        super( file );
     }
 
-    /**
-     * Closes the file writer: compares the intended output against current file contents and writes the output only if
-     * changed.
-     */
     @Override
-    public void close() throws IOException {
+    protected void rewrite( File fileToWrite, String newContent ) throws IOException {
 
-        // Check whether the file exists.
-        boolean rewrite = !this.file.exists();
-
-        // Get the new content for the file.
-        String newContent = this.writer.toString();
-
-        if ( !rewrite ) {
-            try {
-                // Read the current content of the file.
-                String oldContent = new String( Files.readAllBytes( this.file.toPath() ) );
-
-                // Rewrite if the content has changed.
-                if ( !newContent.equals( oldContent ) ) {
-                    rewrite = true;
-                }
-            }
-            catch ( IOException e ) {
-                // Rewrite if failed to read.
-                rewrite = true;
+        // Delete the old file if exists.
+        if ( fileToWrite.exists() ) {
+            if ( !fileToWrite.delete() ) {
+                throw new IOException( "Failed to delete output file: " + fileToWrite.getAbsolutePath() );
             }
         }
 
-        // Write the real file if its contents have changed.
-        if ( rewrite ) {
-            // Delete the old file if exists.
-            if ( this.file.exists() ) {
-                if ( !this.file.delete() ) {
-                    throw new IOException( "Failed to delete output file: " + this.file.getAbsolutePath() );
-                }
-            }
+        // Write the new contents.
+        FileWriter outWriter = new FileWriter( fileToWrite );
+        outWriter.write( newContent );
+        outWriter.close();
 
-            // Write the new contents.
-            FileWriter outWriter = new FileWriter( this.file );
-            outWriter.write( newContent );
-            outWriter.close();
-        }
     }
 
-    /** Flushes the output for this file writer. */
-    @Override
-    public void flush() throws IOException {
-        this.writer.flush();
-    }
-
-    /** Low level writer implementation - writes some bytes to the inner string writer. */
-    @SuppressWarnings( "NullableProblems" )
-    @Override
-    public void write( char[] buffer, int off, int len ) throws IOException {
-        this.writer.write( buffer, off, len );
-    }
-
-    /** The file to be written if content changes */
-    private final File file;
-
-    /** The place to write out output until we have decided if the content has changed. */
-    private final StringWriter writer;
 
 }
