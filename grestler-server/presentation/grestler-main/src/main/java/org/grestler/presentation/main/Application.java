@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.grestler.application.restserver.ApplicationServicesWrapper;
 import org.grestler.infrastructure.utilities.uuids.Uuids;
+import org.grestler.presentation.adminserver.AdminServerBuilder;
 import org.grestler.presentation.webutilities.logging.Log4j2JettyLogger;
 
 import javax.inject.Inject;
@@ -42,6 +43,7 @@ public class Application {
 
         // Register dependency injection at lower levels which cannot be injected directly
         ApplicationServicesWrapper.registerObjectGraph( objectGraph );
+        AdminServerBuilder.registerObjectGraph( objectGraph );
 
         // do extra experimental stuff
         Application.experiment();

@@ -5,6 +5,7 @@
 
 package org.grestler.domain.metamodel.api.elements;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,7 @@ public interface INamedElement
 
         protected Record( UUID id, String name ) {
             super( id );
+            Objects.requireNonNull( name );
             this.name = name;
         }
 

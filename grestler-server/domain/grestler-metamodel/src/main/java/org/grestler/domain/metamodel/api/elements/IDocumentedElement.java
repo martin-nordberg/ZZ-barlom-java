@@ -8,6 +8,7 @@ package org.grestler.domain.metamodel.api.elements;
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
 import java.io.StringWriter;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,7 @@ public interface IDocumentedElement {
     class Record {
 
         protected Record( UUID id ) {
+            Objects.requireNonNull( id );
             this.id = id;
         }
 

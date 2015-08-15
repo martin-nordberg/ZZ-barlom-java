@@ -5,6 +5,7 @@
 
 package org.grestler.presentation.adminserver;
 
+import dagger.ObjectGraph;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -70,6 +71,11 @@ public final class AdminServerBuilder {
         );
         result.addServlet( servletHolder, "/exit" );
 
+        // Add a servlet for executing actions.
+        AdminServerActionsServlet actionServlet = AdminServerBuilder.objectGraph.get( AdminServerActionsServlet.class );
+        servletHolder = new ServletHolder( actionServlet );
+        result.addServlet( servletHolder, "/actions/*" );
+
         // TBD: Any other stuff needed for admin ...
 
         // Rename request threads for better logging.
@@ -114,5 +120,21 @@ public final class AdminServerBuilder {
         return fileServerContext;
 
     }
+
+    /**
+     * Registers the Dagger object graph that will be used to inject everything below the application itself. This
+     * clumsy hack is to work around the seeming inability to dependency inject the application object itself without a
+     * JEE container.
+     *
+     * @param objGraph the already initialized Dagger object graph for dependency injection.
+     */
+    public static void registerObjectGraph( ObjectGraph objGraph ) {
+        AdminServerBuilder.objectGraph = objGraph;
+    }
+
+    /**
+     * The Dagger dependency injection service. Explicitly used since no clear way to inject Application itself.
+     */
+    private static ObjectGraph objectGraph = null;
 
 }

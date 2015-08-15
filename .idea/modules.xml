@@ -16,6 +16,7 @@
       <module fileurl="file://$PROJECT_DIR$/grestler-foundation/domain/grestler-sqlmodel/grestler-sqlmodel.iml" filepath="$PROJECT_DIR$/grestler-foundation/domain/grestler-sqlmodel/grestler-sqlmodel.iml" />
       <module fileurl="file://$PROJECT_DIR$/grestler-foundation/infrastructure/grestler-utilities/grestler-utilities.iml" filepath="$PROJECT_DIR$/grestler-foundation/infrastructure/grestler-utilities/grestler-utilities.iml" group="infrastructure" />
       <module fileurl="file://$PROJECT_DIR$/grestler-foundation/presentation/grestler-webutilities/grestler-webutilities.iml" filepath="$PROJECT_DIR$/grestler-foundation/presentation/grestler-webutilities/grestler-webutilities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/steamflake-server/persistence/steamflake-metametamodel/steamflake-metametamodel.iml" filepath="$PROJECT_DIR$/steamflake-server/persistence/steamflake-metametamodel/steamflake-metametamodel.iml" />
     </modules>
   </component>
 </project>

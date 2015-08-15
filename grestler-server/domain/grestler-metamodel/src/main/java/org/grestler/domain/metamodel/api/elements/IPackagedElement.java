@@ -5,6 +5,7 @@
 
 package org.grestler.domain.metamodel.api.elements;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,7 @@ public interface IPackagedElement
 
         protected Record( UUID id, UUID parentPackageId, String name ) {
             super( id, name );
+            Objects.requireNonNull( parentPackageId );
             this.parentPackageId = parentPackageId;
         }
 

@@ -43,7 +43,7 @@ public class WebServer
 
         WebServer.LOG.info( "Preparing to shut down ..." );
 
-        // Define a task to stop the two servers.
+        // Define a task to stop the server.
         Runnable stopServer = () -> {
             try {
                 Thread.sleep( 100L );
@@ -55,7 +55,7 @@ public class WebServer
             }
         };
 
-        // Stop the servers in a separate thread.
+        // Stop the server in a separate thread.
         final Thread stopThread = new Thread( stopServer );
         stopThread.setName( "Shutdown" );
 
@@ -64,7 +64,7 @@ public class WebServer
     }
 
     /**
-     * Starts the app server of Grestler. Does not return until they are stopped.
+     * Starts the app server of Grestler. Does not return until it is stopped.
      *
      * @throws Exception If Jetty servers do not start properly.
      */

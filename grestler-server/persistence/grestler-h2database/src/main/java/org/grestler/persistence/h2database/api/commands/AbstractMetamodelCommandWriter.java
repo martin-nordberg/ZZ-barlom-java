@@ -30,7 +30,7 @@ abstract class AbstractMetamodelCommandWriter<R extends IMetamodelCommandSpi.Cmd
         R record, IMetamodelCommandSpi<R> cmdFinisher
     ) {
 
-        // Insert the new vertex type record and the command itself.
+        // Insert the new record and the command itself.
         try ( IConnection connection = this.dataSource.openConnection() ) {
 
             connection.executeInTransaction(

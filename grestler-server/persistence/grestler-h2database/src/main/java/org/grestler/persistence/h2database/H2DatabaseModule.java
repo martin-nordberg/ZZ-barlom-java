@@ -15,7 +15,9 @@ import org.grestler.domain.metamodel.spi.queries.IPackageDependencyLoader;
 import org.grestler.domain.metamodel.spi.queries.IPackageLoader;
 import org.grestler.domain.metamodel.spi.queries.IUndirectedEdgeTypeLoader;
 import org.grestler.domain.metamodel.spi.queries.IVertexTypeLoader;
+import org.grestler.infrastructure.utilities.functions.IAction;
 import org.grestler.persistence.dbutilities.api.IDataSource;
+import org.grestler.persistence.h2database.api.actions.DataDumpAction;
 import org.grestler.persistence.h2database.api.commands.MetamodelCommandWriterFactory;
 import org.grestler.persistence.h2database.api.queries.AttributeDeclLoader;
 import org.grestler.persistence.h2database.api.queries.AttributeTypeLoader;
@@ -26,11 +28,12 @@ import org.grestler.persistence.h2database.api.queries.UndirectedEdgeTypeLoader;
 import org.grestler.persistence.h2database.api.queries.VertexTypeLoader;
 import org.grestler.persistence.h2database.impl.H2DataSource;
 
+import javax.inject.Named;
+
 /**
  * Dagger module providing H2 data sources..
  */
-@Module(
-    library = true )
+@Module( library = true )
 public class H2DatabaseModule {
 
     /**
@@ -58,6 +61,19 @@ public class H2DatabaseModule {
     }
 
     /**
+     * Provides a data dump action for H2.
+     *
+     * @param dataSource the H2 data source.
+     *
+     * @return the constructed data dump action.
+     */
+    @Provides
+    @Named( "DataDumpAction" )
+    public IAction provideDataDumpAction( IDataSource dataSource ) {
+        return new DataDumpAction( dataSource );
+    }
+
+    /**
      * Provides an H2 data source.
      *
      * @return the newly created data source.
@@ -65,7 +81,7 @@ public class H2DatabaseModule {
     @Provides
     public IDataSource provideDataSource() {
         // TODO: make the data source name configurable in the injection
-        return new H2DataSource( "tmp" );
+        return new H2DataSource( "steamflake" );
     }
 
     /**

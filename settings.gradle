@@ -60,4 +60,21 @@ rootProject.children.find { it.name == 'grestler-server/persistence/grestler-h2d
 // Infrastructure
 
 
+// STEAMFLAKE SERVER
+// -----------------
+
+// Presentation
+
+// Application
+
+// Domain
+
+// Persistence
+include 'steamflake-server/persistence/steamflake-metametamodel'
+rootProject.children.find { it.name == 'steamflake-server/persistence/steamflake-metametamodel' }.name = 'steamflake-metametamodel'
+
+// Infrastructure
+
+
+
 

@@ -1,0 +1,27 @@
+
+buildDir = '../../../build/steamflake-server/persistence/steamflake-metametamodel'
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+
+    // Other Modules
+    compile project( ':grestler-metamodel' )
+
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+
+}
+
+
