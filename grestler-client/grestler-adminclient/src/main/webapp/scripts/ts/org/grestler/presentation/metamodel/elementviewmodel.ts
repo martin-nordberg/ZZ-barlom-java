@@ -168,10 +168,67 @@ export class ElementHolder extends ElementHandle {
     private _setElement( element : api_elements.IDocumentedElement ) {
         this.element = element;
         this.isPackage = this.element && this.element.isA( api_elements.PACKAGE );
+
+        switch ( this.element ? this.element.typeName : "NULL" ) {
+            case api_elements.BOOLEAN_ATTRIBUTE_TYPE:
+                this.typeDisplayName = "Attribute Type";
+                break;
+            case api_elements.DATE_TIME_ATTRIBUTE_TYPE:
+                this.typeDisplayName = "Date/Time Attribute Type";
+                break;
+            case api_elements.DIRECTED_EDGE_TYPE:
+                this.typeDisplayName = "Directed Edge Type";
+                break;
+            case api_elements.FLOAT64_ATTRIBUTE_TYPE:
+                this.typeDisplayName = "64-Bit Floating Point Attribute Type";
+                break;
+            case api_elements.INTEGER32_ATTRIBUTE_TYPE:
+                this.typeDisplayName = "32-Bit Integer Attribute Type";
+                break;
+            case api_elements.PACKAGE:
+                this.typeDisplayName = "Package";
+                break;
+            case api_elements.PACKAGE_DEPENDENCY:
+                this.typeDisplayName = "Package Dependency";
+                break;
+            case api_elements.ROOT_DIRECTED_EDGE_TYPE:
+                this.typeDisplayName = "Root Directed Edge Type";
+                break;
+            case api_elements.ROOT_PACKAGE:
+                this.typeDisplayName = "Root Package";
+                break;
+            case api_elements.ROOT_UNDIRECTED_EDGE_TYPE:
+                this.typeDisplayName = "Root Undirected Edge Type";
+                break;
+            case api_elements.ROOT_VERTEX_TYPE:
+                this.typeDisplayName = "Root Vertex Type";
+                break;
+            case api_elements.STRING_ATTRIBUTE_TYPE:
+                this.typeDisplayName = "String Attribute Type";
+                break;
+            case api_elements.UNDIRECTED_EDGE_TYPE:
+                this.typeDisplayName = "Undirected Edge Type";
+                break;
+            case api_elements.UUID_ATTRIBUTE_TYPE:
+                this.typeDisplayName = "UUID Attribute Type";
+                break;
+            case api_elements.VERTEX_TYPE:
+                this.typeDisplayName = "Vertex Type";
+                break;
+            case "NULL":
+                this.typeDisplayName = null;
+                break;
+            default:
+                this.typeDisplayName = this.element.typeName;
+                break;
+        }
     }
 
     /** Whether the selected element is a package. */
     public isPackage : boolean = false;
+
+    /** Human-friendly type name of the element. */
+    public typeDisplayName : string = null;
 
     /** The selected element to be watched. */
     private _elementSelection : elementmodel.ElementSelection;

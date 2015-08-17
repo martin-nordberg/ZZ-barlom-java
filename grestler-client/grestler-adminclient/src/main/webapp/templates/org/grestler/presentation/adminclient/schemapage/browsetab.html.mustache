@@ -5,6 +5,13 @@
     {{! Breadcrumbs for browsed element }}
     {{#with browsedElementHolder}}
 
+        {{! Kind of element }}
+        {{#if typeDisplayName}}
+            <h4>
+                {{typeDisplayName}}:
+            </h4>
+        {{/if}}
+
         <ul class="breadcrumb">
 
             {{#if element}}
