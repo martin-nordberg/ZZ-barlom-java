@@ -34,6 +34,8 @@ public class MetamodelCommandWriterFactory
         switch ( commandTypeName.toLowerCase() ) {
             case "directededgetypecreation":
                 return new DirectedEdgeTypeCreationCmdWriter( this.dataSource );
+            case "edgetypeabstractnesschange":
+                return new EdgeTypeAbstractnessChangeCmdWriter( this.dataSource );
             case "packagecreation":
                 return new PackageCreationCmdWriter( this.dataSource );
             case "packagedelementnamechange":

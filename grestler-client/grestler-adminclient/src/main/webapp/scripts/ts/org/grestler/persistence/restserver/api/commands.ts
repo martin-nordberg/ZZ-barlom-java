@@ -4,7 +4,7 @@
 //
 
 /**
- * Module: org/grestler/persistence/restserver/api/queries
+ * Module: org/grestler/persistence/restserver/api/commands
  */
 
 import ajax = require( '../../../infrastructure/utilities/ajax' );
@@ -73,6 +73,50 @@ class DirectedEdgeTypeCreationCmdWriter extends AbstractMetamodelCommandWriter {
 
         return ajax.httpPost(
             "http://localhost:8080/grestlerdata/metadata/commands/directededgetypecreation",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Command to change the abstractness of an edge type.
+ */
+class EdgeTypeAbstractnessChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new edge type abstractness change command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var abstractness : string = jsonCmdArgs.abstractness;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                abstractness: abstractness
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/edgetypeabstractnesschange",
             "application/json",
             content
         ).then(
@@ -364,6 +408,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
         switch ( commandTypeName.toLowerCase() ) {
             case "directededgetypecreation":
                 return new DirectedEdgeTypeCreationCmdWriter();
+            case "edgetypeabstractnesschange":
+                return new EdgeTypeAbstractnessChangeCmdWriter();
             case "packagecreation":
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":

@@ -60,6 +60,9 @@ export class PropertiesPanelController {
         var fieldName = event.node.name;
 
         switch ( fieldName ) {
+            case 'edgeTypeAbstractness':
+                this._onEdgeTypeAbstractnessChanged( event.node.value );
+                break;
             case 'vertexTypeAbstractness':
                 this._onVertexTypeAbstractnessChanged( event.node.value );
                 break;
@@ -86,6 +89,28 @@ export class PropertiesPanelController {
                 console.log( "Unknown field name: " + fieldName );
                 break
         }
+
+    }
+
+    /**
+     * Responds to a change in the abstractness of an edge type.
+     * @param abstractnessNumStr the new value as a numeric string.
+     * @private
+     */
+    private _onEdgeTypeAbstractnessChanged( abstractnessNumStr : string ) : void {
+
+        // TODO: UUID from server
+        var cmdId = uuids.makeUuid();
+
+        var etJson = {
+            cmdId: cmdId,
+            id: this._elementSelection.elementSelection.id,
+            abstractness: api_elements.EAbstractness[parseInt( abstractnessNumStr, 10 )]
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "edgetypeabstractnesschange" );
+
+        cmd.execute( etJson )
 
     }
 

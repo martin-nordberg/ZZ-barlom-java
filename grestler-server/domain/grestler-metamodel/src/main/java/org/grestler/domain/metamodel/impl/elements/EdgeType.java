@@ -21,7 +21,7 @@ import javax.json.stream.JsonGenerator;
 /**
  * Implementation class for edge types.
  */
-abstract class EdgeType
+public abstract class EdgeType
     extends PackagedElement
     implements IEdgeType, IEdgeTypeUnderAssembly {
 

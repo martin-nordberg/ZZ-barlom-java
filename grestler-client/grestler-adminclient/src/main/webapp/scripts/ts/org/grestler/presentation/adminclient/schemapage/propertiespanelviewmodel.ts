@@ -198,6 +198,34 @@ export class PropertiesPanelFields {
 
         }
 
+        // Edge Type
+        if ( element.isA( api_elements.EDGE_TYPE ) ) {
+
+            var edgeType = <api_elements.IEdgeType> element;
+
+            this.fields.push(
+                {
+                    isRadioGroup: true,
+                    label: "Abstractness",
+                    name: 'edgeTypeAbstractness',
+                    radioButtons: [
+                        {
+                            checked: edgeType.abstractness == api_elements.EAbstractness.ABSTRACT,
+                            label: "Abstract",
+                            value: api_elements.EAbstractness.ABSTRACT
+                        },
+                        {
+                            checked: edgeType.abstractness == api_elements.EAbstractness.CONCRETE,
+                            label: "Concrete",
+                            value: api_elements.EAbstractness.CONCRETE
+                        }
+                    ]
+                }
+            );
+
+
+        }
+
     }
 
     /**
