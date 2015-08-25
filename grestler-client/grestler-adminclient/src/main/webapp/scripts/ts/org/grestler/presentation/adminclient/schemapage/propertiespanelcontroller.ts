@@ -63,6 +63,9 @@ export class PropertiesPanelController {
             case 'edgeTypeAbstractness':
                 this._onEdgeTypeAbstractnessChanged( event.node.value );
                 break;
+            case 'edgeTypeCyclicity':
+                this._onEdgeTypeCyclicityChanged( event.node.value );
+                break;
             case 'vertexTypeAbstractness':
                 this._onVertexTypeAbstractnessChanged( event.node.value );
                 break;
@@ -109,6 +112,28 @@ export class PropertiesPanelController {
         };
 
         var cmd = this._metamodelCommandFactory.makeCommand( "edgetypeabstractnesschange" );
+
+        cmd.execute( etJson )
+
+    }
+
+    /**
+     * Responds to a change in the cyclicity of an edge type.
+     * @param cyclicityNumStr the new value as a numeric string.
+     * @private
+     */
+    private _onEdgeTypeCyclicityChanged( cyclicityNumStr : string ) : void {
+
+        // TODO: UUID from server
+        var cmdId = uuids.makeUuid();
+
+        var etJson = {
+            cmdId: cmdId,
+            id: this._elementSelection.elementSelection.id,
+            cyclicity: api_elements.ECyclicity[parseInt( cyclicityNumStr, 10 )]
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "edgetypecyclicitychange" );
 
         cmd.execute( etJson )
 

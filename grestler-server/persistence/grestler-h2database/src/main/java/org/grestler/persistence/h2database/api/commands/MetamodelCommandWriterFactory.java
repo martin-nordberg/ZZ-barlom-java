@@ -36,6 +36,8 @@ public class MetamodelCommandWriterFactory
                 return new DirectedEdgeTypeCreationCmdWriter( this.dataSource );
             case "edgetypeabstractnesschange":
                 return new EdgeTypeAbstractnessChangeCmdWriter( this.dataSource );
+            case "edgetypecyclicitychange":
+                return new EdgeTypeCyclicityChangeCmdWriter( this.dataSource );
             case "packagecreation":
                 return new PackageCreationCmdWriter( this.dataSource );
             case "packagedelementnamechange":

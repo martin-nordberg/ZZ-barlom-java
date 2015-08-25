@@ -223,6 +223,31 @@ export class PropertiesPanelFields {
                 }
             );
 
+            this.fields.push(
+                {
+                    isRadioGroup: true,
+                    label: "Cyclicity",
+                    name: 'edgeTypeCyclicity',
+                    radioButtons: [
+                        {
+                            checked: edgeType.cyclicity == api_elements.ECyclicity.ACYCLIC,
+                            label: "Acyclic",
+                            value: api_elements.ECyclicity.ACYCLIC
+                        },
+                        {
+                            checked: edgeType.cyclicity == api_elements.ECyclicity.POTENTIALLY_CYCLIC,
+                            label: "Potentially Cyclic",
+                            value: api_elements.ECyclicity.POTENTIALLY_CYCLIC
+                        },
+                        {
+                            checked: edgeType.cyclicity == api_elements.ECyclicity.UNCONSTRAINED,
+                            label: "Unconstrained",
+                            value: api_elements.ECyclicity.UNCONSTRAINED
+                        }
+                    ]
+                }
+            );
+
 
         }
 

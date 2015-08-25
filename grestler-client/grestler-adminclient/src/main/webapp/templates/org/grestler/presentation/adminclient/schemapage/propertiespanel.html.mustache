@@ -30,7 +30,7 @@
 
                         {{#if isRadioGroup}}
                             {{#each radioButtons:index}}
-                                <label for="field-{{name}}-{{index}}">
+                                <label class="radio-label" for="field-{{name}}-{{index}}">
                                     <input id="field-{{name}}-{{index}}" type="radio" name="{{name}}" on-change="radioChanged" checked="{{checked}}" value="{{value}}" {{#if readOnly}}disabled{{/if}}>
                                     {{label}}
                                 </label>

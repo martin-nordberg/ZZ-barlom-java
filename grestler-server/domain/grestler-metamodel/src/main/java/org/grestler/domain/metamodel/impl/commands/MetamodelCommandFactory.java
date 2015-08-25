@@ -12,6 +12,7 @@ import org.grestler.domain.metamodel.api.commands.IMetamodelCommandFactory;
 import org.grestler.domain.metamodel.api.exceptions.MetamodelException;
 import org.grestler.domain.metamodel.spi.commands.DirectedEdgeTypeCreationCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.EdgeTypeAbstractnessChangeCmdRecord;
+import org.grestler.domain.metamodel.spi.commands.EdgeTypeCyclicityChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory;
@@ -57,6 +58,10 @@ public class MetamodelCommandFactory
             case "edgetypeabstractnesschange":
                 return new EdgeTypeAbstractnessChangeCmd(
                     this.metamodelRepository, (IMetamodelCommandWriter<EdgeTypeAbstractnessChangeCmdRecord>) cmdWriter
+                );
+            case "edgetypecyclicitychange":
+                return new EdgeTypeCyclicityChangeCmd(
+                    this.metamodelRepository, (IMetamodelCommandWriter<EdgeTypeCyclicityChangeCmdRecord>) cmdWriter
                 );
             case "packagecreation":
                 return new PackageCreationCmd(

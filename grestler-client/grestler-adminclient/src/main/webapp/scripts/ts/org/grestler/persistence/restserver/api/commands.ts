@@ -132,6 +132,50 @@ class EdgeTypeAbstractnessChangeCmdWriter extends AbstractMetamodelCommandWriter
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the cyclicity of an edge type.
+ */
+class EdgeTypeCyclicityChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new edge type cyclicity change command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var cyclicity : string = jsonCmdArgs.cyclicity;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                cyclicity: cyclicity
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/edgetypecyclicitychange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
@@ -410,6 +454,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
                 return new DirectedEdgeTypeCreationCmdWriter();
             case "edgetypeabstractnesschange":
                 return new EdgeTypeAbstractnessChangeCmdWriter();
+            case "edgetypecyclicitychange":
+                return new EdgeTypeCyclicityChangeCmdWriter();
             case "packagecreation":
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":

@@ -38,4 +38,16 @@ public enum ECyclicity {
 
     }
 
+    /**
+     * Converts this enum value to a boolean equivalent.
+     *
+     * @return true if this is acyclic.
+     */
+    public static Optional<Boolean> isAcyclic( ECyclicity cyclicity ) {
+        if ( cyclicity == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( cyclicity == ECyclicity.ACYCLIC );
+    }
+
 }

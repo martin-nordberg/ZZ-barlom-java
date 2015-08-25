@@ -6,6 +6,10 @@ table#propertiesPanelTable {
 
   label {
     font-weight: normal;
+
+    &.radio-label {
+      margin-right: 10px;
+    }
   }
 
 }
