@@ -38,4 +38,16 @@ public enum EMultiEdgedness {
 
     }
 
+    /**
+     * Converts this enum value to a boolean equivalent.
+     *
+     * @return true if this is multi-edged.
+     */
+    public static Optional<Boolean> isMultiEdgeAllowed( EMultiEdgedness multiEdgedness ) {
+        if ( multiEdgedness == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( multiEdgedness == EMultiEdgedness.MULTI_EDGES_ALLOWED );
+    }
+
 }

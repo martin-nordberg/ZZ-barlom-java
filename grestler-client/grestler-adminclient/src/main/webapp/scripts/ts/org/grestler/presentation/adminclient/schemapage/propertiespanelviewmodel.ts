@@ -248,6 +248,31 @@ export class PropertiesPanelFields {
                 }
             );
 
+            this.fields.push(
+                {
+                    isRadioGroup: true,
+                    label: "Multi-edges",
+                    name: 'edgeTypeMultiEdgedness',
+                    radioButtons: [
+                        {
+                            checked: edgeType.multiEdgedness == api_elements.EMultiEdgedness.MULTI_EDGES_ALLOWED,
+                            label: "Allowed",
+                            value: api_elements.EMultiEdgedness.MULTI_EDGES_ALLOWED
+                        },
+                        {
+                            checked: edgeType.multiEdgedness == api_elements.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED,
+                            label: "Disallowed",
+                            value: api_elements.EMultiEdgedness.MULTI_EDGES_NOT_ALLOWED
+                        },
+                        {
+                            checked: edgeType.multiEdgedness == api_elements.EMultiEdgedness.UNCONSTRAINED,
+                            label: "Unconstrained",
+                            value: api_elements.EMultiEdgedness.UNCONSTRAINED
+                        }
+                    ]
+                }
+            );
+
 
         }
 

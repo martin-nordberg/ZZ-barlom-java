@@ -200,6 +200,38 @@ class EdgeTypeCyclicityChangeCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the multi-edgedness of an edge type.
+ */
+class EdgeTypeMultiEdgednessChangeCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the package attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var multiEdgedness : string = jsonCmdArgs.multiEdgedness;
+
+        // Make the change.
+        this.metamodelRepository.findEdgeTypeById( id ).multiEdgedness = api_elements.EMultiEdgedness[multiEdgedness];
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmd extends AbstractMetamodelCommand {
@@ -461,6 +493,8 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
                 return new EdgeTypeAbstractnessChangeCmd( this._metamodelRepository, cmdWriter );
             case "edgetypecyclicitychange":
                 return new EdgeTypeCyclicityChangeCmd( this._metamodelRepository, cmdWriter );
+            case "edgetypemultiedgednesschange":
+                return new EdgeTypeMultiEdgednessChangeCmd( this._metamodelRepository, cmdWriter );
             case "packagecreation":
                 return new PackageCreationCmd( this._metamodelRepository, cmdWriter );
             case "packagedelementnamechange":

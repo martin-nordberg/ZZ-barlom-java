@@ -176,6 +176,50 @@ class EdgeTypeCyclicityChangeCmdWriter extends AbstractMetamodelCommandWriter {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the multi-edgedness of an edge type.
+ */
+class EdgeTypeMultiEdgednessChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new edge type multi-edgedness change command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var multiEdgedness : string = jsonCmdArgs.multiEdgedness;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                multiEdgedness: multiEdgedness
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/edgetypemultiedgednesschange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
@@ -456,6 +500,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
                 return new EdgeTypeAbstractnessChangeCmdWriter();
             case "edgetypecyclicitychange":
                 return new EdgeTypeCyclicityChangeCmdWriter();
+            case "edgetypemultiedgednesschange":
+                return new EdgeTypeMultiEdgednessChangeCmdWriter();
             case "packagecreation":
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":

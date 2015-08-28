@@ -15,7 +15,7 @@ import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 import javax.json.JsonObject;
 
 /**
- * Command to change the abstractness of a vertex type.
+ * Command to change the abstractness of an edge type.
  */
 final class EdgeTypeAbstractnessChangeCmd
     extends AbstractMetamodelCommand<EdgeTypeAbstractnessChangeCmdRecord> {

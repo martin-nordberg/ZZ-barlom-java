@@ -8,16 +8,17 @@ package org.grestler.domain.metamodel.impl.commands;
 import org.grestler.domain.metamodel.api.elements.IEdgeType;
 import org.grestler.domain.metamodel.impl.elements.EdgeType;
 import org.grestler.domain.metamodel.spi.commands.EdgeTypeCyclicityChangeCmdRecord;
+import org.grestler.domain.metamodel.spi.commands.EdgeTypeMultiEdgednessChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.domain.metamodel.spi.queries.IMetamodelRepositorySpi;
 
 import javax.json.JsonObject;
 
 /**
- * Command to change the cyclicity of an edge type.
+ * Command to change the multi-edgedness of an edge type.
  */
-final class EdgeTypeCyclicityChangeCmd
-    extends AbstractMetamodelCommand<EdgeTypeCyclicityChangeCmdRecord> {
+final class EdgeTypeMultiEdgednessChangeCmd
+    extends AbstractMetamodelCommand<EdgeTypeMultiEdgednessChangeCmdRecord> {
 
     /**
      * Constructs a new command.
@@ -25,26 +26,26 @@ final class EdgeTypeCyclicityChangeCmd
      * @param metamodelRepository the repository the command will act upon.
      * @param cmdWriter           the command's persistence provider.
      */
-    EdgeTypeCyclicityChangeCmd(
+    EdgeTypeMultiEdgednessChangeCmd(
         IMetamodelRepositorySpi metamodelRepository,
-        IMetamodelCommandWriter<EdgeTypeCyclicityChangeCmdRecord> cmdWriter
+        IMetamodelCommandWriter<EdgeTypeMultiEdgednessChangeCmdRecord> cmdWriter
     ) {
         super( metamodelRepository, cmdWriter );
     }
 
     @Override
-    protected EdgeTypeCyclicityChangeCmdRecord parseJson( JsonObject jsonCmdArgs ) {
-        return new EdgeTypeCyclicityChangeCmdRecord( jsonCmdArgs );
+    protected EdgeTypeMultiEdgednessChangeCmdRecord parseJson( JsonObject jsonCmdArgs ) {
+        return new EdgeTypeMultiEdgednessChangeCmdRecord( jsonCmdArgs );
     }
 
     @Override
-    protected void writeChangesToMetamodel( EdgeTypeCyclicityChangeCmdRecord record ) {
+    protected void writeChangesToMetamodel( EdgeTypeMultiEdgednessChangeCmdRecord record ) {
 
         // Look up the related parent package.
         IEdgeType element = this.getMetamodelRepository().findEdgeTypeById( record.id );
 
         // Change the name
-        ( (EdgeType) element ).setCyclicity( record.cyclicity );
+        ( (EdgeType) element ).setMultiEdgedness( record.multiEdgedness );
 
     }
 
