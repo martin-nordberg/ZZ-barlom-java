@@ -232,6 +232,38 @@ class EdgeTypeMultiEdgednessChangeCmd extends AbstractMetamodelCommand {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the self-looping of an edge type.
+ */
+class EdgeTypeSelfLoopingChangeCmd extends AbstractMetamodelCommand {
+
+    /**
+     * Constructs a new command.
+     *
+     * @param metamodelRepository the repository the command will act upon.
+     * @param cmdWriter           the command's persistence provider.
+     */
+    constructor(
+        metamodelRepository : spi_queries.IMetamodelRepositorySpi, cmdWriter : spi_commands.IMetamodelCommandWriter
+    ) {
+        super( metamodelRepository, cmdWriter );
+    }
+
+    public writeChangesToMetamodel( jsonCmdArgs : any ) : void {
+
+        // Extract the package attributes from the command JSON.
+        var id : string = jsonCmdArgs.id;
+        var selfLooping : string = jsonCmdArgs.selfLooping;
+
+        // Make the change.
+        this.metamodelRepository.findEdgeTypeById( id ).selfLooping = api_elements.ESelfLooping[selfLooping];
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmd extends AbstractMetamodelCommand {
@@ -495,6 +527,8 @@ export class MetamodelCommandFactory implements api_commands.IMetamodelCommandFa
                 return new EdgeTypeCyclicityChangeCmd( this._metamodelRepository, cmdWriter );
             case "edgetypemultiedgednesschange":
                 return new EdgeTypeMultiEdgednessChangeCmd( this._metamodelRepository, cmdWriter );
+            case "edgetypeselfloopingchange":
+                return new EdgeTypeSelfLoopingChangeCmd( this._metamodelRepository, cmdWriter );
             case "packagecreation":
                 return new PackageCreationCmd( this._metamodelRepository, cmdWriter );
             case "packagedelementnamechange":

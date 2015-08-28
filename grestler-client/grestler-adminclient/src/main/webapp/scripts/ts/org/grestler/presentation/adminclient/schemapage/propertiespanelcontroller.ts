@@ -69,6 +69,9 @@ export class PropertiesPanelController {
             case 'edgeTypeMultiEdgedness':
                 this._onEdgeTypeMultiEdgednessChanged( event.node.value );
                 break;
+            case 'edgeTypeSelfLooping':
+                this._onEdgeTypeSelfLoopingChanged( event.node.value );
+                break;
             case 'vertexTypeAbstractness':
                 this._onVertexTypeAbstractnessChanged( event.node.value );
                 break;
@@ -159,6 +162,28 @@ export class PropertiesPanelController {
         };
 
         var cmd = this._metamodelCommandFactory.makeCommand( "edgetypemultiedgednesschange" );
+
+        cmd.execute( etJson )
+
+    }
+
+    /**
+     * Responds to a change in the self-looping of an edge type.
+     * @param selfLoopingNumStr the new value as a numeric string.
+     * @private
+     */
+    private _onEdgeTypeSelfLoopingChanged( selfLoopingNumStr : string ) : void {
+
+        // TODO: UUID from server
+        var cmdId = uuids.makeUuid();
+
+        var etJson = {
+            cmdId: cmdId,
+            id: this._elementSelection.elementSelection.id,
+            selfLooping: api_elements.ESelfLooping[parseInt( selfLoopingNumStr, 10 )]
+        };
+
+        var cmd = this._metamodelCommandFactory.makeCommand( "edgetypeselfloopingchange" );
 
         cmd.execute( etJson )
 

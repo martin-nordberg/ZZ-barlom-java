@@ -273,6 +273,30 @@ export class PropertiesPanelFields {
                 }
             );
 
+            this.fields.push(
+                {
+                    isRadioGroup: true,
+                    label: "Self-looping",
+                    name: 'edgeTypeSelfLooping',
+                    radioButtons: [
+                        {
+                            checked: edgeType.selfLooping == api_elements.ESelfLooping.SELF_LOOPS_ALLOWED,
+                            label: "Allowed",
+                            value: api_elements.ESelfLooping.SELF_LOOPS_ALLOWED
+                        },
+                        {
+                            checked: edgeType.selfLooping == api_elements.ESelfLooping.SELF_LOOPS_NOT_ALLOWED,
+                            label: "Disallowed",
+                            value: api_elements.ESelfLooping.SELF_LOOPS_NOT_ALLOWED
+                        },
+                        {
+                            checked: edgeType.selfLooping == api_elements.ESelfLooping.UNCONSTRAINED,
+                            label: "Unconstrained",
+                            value: api_elements.ESelfLooping.UNCONSTRAINED
+                        }
+                    ]
+                }
+            );
 
         }
 

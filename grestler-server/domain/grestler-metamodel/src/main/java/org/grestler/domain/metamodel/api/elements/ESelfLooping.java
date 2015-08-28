@@ -38,4 +38,16 @@ public enum ESelfLooping {
 
     }
 
+    /**
+     * Converts this enum value to a boolean equivalent.
+     *
+     * @return true if this is self-looping.
+     */
+    public static Optional<Boolean> isSelfLoopAllowed( ESelfLooping selfLooping ) {
+        if ( selfLooping == null ) {
+            return Optional.empty();
+        }
+        return Optional.of( selfLooping == ESelfLooping.SELF_LOOPS_ALLOWED );
+    }
+
 }

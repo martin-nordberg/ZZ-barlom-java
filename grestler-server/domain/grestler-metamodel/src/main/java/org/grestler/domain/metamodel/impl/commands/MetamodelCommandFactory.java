@@ -14,6 +14,7 @@ import org.grestler.domain.metamodel.spi.commands.DirectedEdgeTypeCreationCmdRec
 import org.grestler.domain.metamodel.spi.commands.EdgeTypeAbstractnessChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.EdgeTypeCyclicityChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.EdgeTypeMultiEdgednessChangeCmdRecord;
+import org.grestler.domain.metamodel.spi.commands.EdgeTypeSelfLoopingChangeCmdRecord;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandSpi;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriter;
 import org.grestler.domain.metamodel.spi.commands.IMetamodelCommandWriterFactory;
@@ -66,7 +67,11 @@ public class MetamodelCommandFactory
                 );
             case "edgetypemultiedgednesschange":
                 return new EdgeTypeMultiEdgednessChangeCmd(
-                    this.metamodelRepository, (IMetamodelCommandWriter< EdgeTypeMultiEdgednessChangeCmdRecord>) cmdWriter
+                    this.metamodelRepository, (IMetamodelCommandWriter<EdgeTypeMultiEdgednessChangeCmdRecord>) cmdWriter
+                );
+            case "edgetypeselfloopingchange":
+                return new EdgeTypeSelfLoopingChangeCmd(
+                    this.metamodelRepository, (IMetamodelCommandWriter<EdgeTypeSelfLoopingChangeCmdRecord>) cmdWriter
                 );
             case "packagecreation":
                 return new PackageCreationCmd(

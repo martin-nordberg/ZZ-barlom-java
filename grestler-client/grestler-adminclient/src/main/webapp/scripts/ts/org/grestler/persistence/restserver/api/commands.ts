@@ -220,6 +220,50 @@ class EdgeTypeMultiEdgednessChangeCmdWriter extends AbstractMetamodelCommandWrit
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Command to change the self-looping of an edge type.
+ */
+class EdgeTypeSelfLoopingChangeCmdWriter extends AbstractMetamodelCommandWriter {
+
+    /**
+     * Constructs a new edge type self-looping change command.
+     */
+    constructor() {
+        super();
+    }
+
+    public writeCommand( jsonCmdArgs : any ) : Promise<values.ENothing> {
+
+        // Parse the JSON arguments.
+        // TODO: handle input validation problems
+        var cmdId : string = jsonCmdArgs.cmdId;
+        var id : string = jsonCmdArgs.id;
+        var selfLooping : string = jsonCmdArgs.selfLooping;
+
+        var content = JSON.stringify(
+            {
+                cmdId: cmdId,
+                id: id,
+                selfLooping: selfLooping
+            }
+        );
+
+        return ajax.httpPost(
+            "http://localhost:8080/grestlerdata/metadata/commands/edgetypeselfloopingchange",
+            "application/json",
+            content
+        ).then(
+            function () {
+                return values.nothing;
+            }
+        );
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Command to create a package.
  */
 class PackageCreationCmdWriter extends AbstractMetamodelCommandWriter {
@@ -502,6 +546,8 @@ export class MetamodelCommandWriterFactory implements spi_commands.IMetamodelCom
                 return new EdgeTypeCyclicityChangeCmdWriter();
             case "edgetypemultiedgednesschange":
                 return new EdgeTypeMultiEdgednessChangeCmdWriter();
+            case "edgetypeselfloopingchange":
+                return new EdgeTypeSelfLoopingChangeCmdWriter();
             case "packagecreation":
                 return new PackageCreationCmdWriter();
             case "packagedelementnamechange":
