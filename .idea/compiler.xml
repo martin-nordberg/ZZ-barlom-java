@@ -18,6 +18,35 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="grestler-adminserver_main" target="1.8" />
+      <module name="grestler-adminserver_test" target="1.8" />
+      <module name="grestler-apputilities_main" target="1.8" />
+      <module name="grestler-apputilities_test" target="1.8" />
+      <module name="grestler-dbutilities_main" target="1.8" />
+      <module name="grestler-dbutilities_test" target="1.8" />
+      <module name="grestler-h2database_main" target="1.8" />
+      <module name="grestler-h2database_test" target="1.8" />
+      <module name="grestler-ioutilities_main" target="1.8" />
+      <module name="grestler-ioutilities_test" target="1.8" />
+      <module name="grestler-javacodegen_main" target="1.8" />
+      <module name="grestler-javacodegen_test" target="1.8" />
+      <module name="grestler-javamodel_main" target="1.8" />
+      <module name="grestler-javamodel_test" target="1.8" />
+      <module name="grestler-main_main" target="1.8" />
+      <module name="grestler-main_test" target="1.8" />
+      <module name="grestler-metamodel_main" target="1.8" />
+      <module name="grestler-metamodel_test" target="1.8" />
+      <module name="grestler-restserver_main" target="1.8" />
+      <module name="grestler-restserver_test" target="1.8" />
+      <module name="grestler-sqlmodel_main" target="1.8" />
+      <module name="grestler-sqlmodel_test" target="1.8" />
+      <module name="grestler-utilities_main" target="1.8" />
+      <module name="grestler-utilities_test" target="1.8" />
+      <module name="grestler-webutilities_main" target="1.8" />
+      <module name="grestler-webutilities_test" target="1.8" />
+      <module name="steamflake-metametamodel_main" target="1.8" />
+      <module name="steamflake-metametamodel_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
-

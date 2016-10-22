@@ -8,6 +8,7 @@ package org.grestler.presentation.main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
@@ -148,6 +149,15 @@ public class WebServer
         ServerConnector connector = new ServerConnector( result );
         connector.setPort( port );
         result.setConnectors( new Connector[]{ connector } );
+
+        // Configure request logging
+        NCSARequestLog requestLog = new NCSARequestLog( /*TODO: for file*/ );
+        requestLog.setAppend( true );
+        requestLog.setExtended( false );
+        requestLog.setLogTimeZone( "EST" );
+        requestLog.setLogLatency( true );
+        requestLog.setRetainDays( 10 );
+        result.setRequestLog( requestLog );
 
         return result;
 

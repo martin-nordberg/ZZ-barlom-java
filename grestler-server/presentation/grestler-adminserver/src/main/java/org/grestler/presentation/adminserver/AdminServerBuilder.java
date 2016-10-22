@@ -6,6 +6,7 @@
 package org.grestler.presentation.adminserver;
 
 import dagger.ObjectGraph;
+import org.eclipse.jetty.http.MimeTypes;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -108,11 +109,14 @@ public final class AdminServerBuilder {
         // TODO: Make internal resource
         fileResourceHandler.setBaseResource(
             Resource.newResource(
-                "/home/mnordberg/Workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp"
+                "/home/mnordberg/workspace/grestler/grestler-client/grestler-adminclient/src/main/webapp"
             )
         );
 
         // Add MIME types for unusual file types.
+        if ( fileResourceHandler.getMimeTypes() == null ) {
+            fileResourceHandler.setMimeTypes( new MimeTypes() );
+        }
         fileResourceHandler.getMimeTypes().addMimeMapping( "mustache", "text/ractive; charset=UTF-8" );
 
         fileServerContext.setHandler( fileResourceHandler );

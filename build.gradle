@@ -9,14 +9,15 @@ subprojects {
     }
 
     // Versions of all external libraries used throughout Grestler
-    ext.daggerVersion = '1.2.2'
-    ext.flywayVersion = '3.1'
-    ext.h2Version = '1.4.182'
-    ext.jettyVersion = '9.2.5.v20141112'
+    ext.daggerVersion = '1.2.2'  // TODO: Dagger 2
+    ext.flywayVersion = '4.0.3'
+    ext.h2Version = '1.4.192'
+    ext.jbossLoggingVersion = '3.3.0.Final'
+    ext.jettyVersion = '9.3.13.v20161014'
     ext.jsonpVersion = '1.0.4'
-    ext.log4j2Version = '2.1'
-    ext.resteasyVersion = '3.0.10.Final'
-    ext.spockVersion = '0.7-groovy-2.0'
+    ext.log4j2Version = '2.7'
+    ext.resteasyVersion = '3.0.19.Final'
+    ext.spockVersion = '1.0-groovy-2.4'
 
     // Javac arguments
     gradle.projectsEvaluated {

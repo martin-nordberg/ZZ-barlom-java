@@ -9,12 +9,9 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.grestler.application.apputilities.filters.ThreadNameFilter;
-import org.grestler.application.restserver.logging.Log4j2RestEasyLogger;
-import org.jboss.resteasy.logging.Logger;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
 import javax.servlet.DispatcherType;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.util.EnumSet;
 
@@ -35,9 +32,6 @@ public final class RestServerBuilder {
      * @throws java.net.MalformedURLException if the configuration is broken.
      */
     public static void makeRestServer( ContextHandlerCollection contexts ) throws MalformedURLException {
-
-        // Redirect RESTEasy logging to Log4j2.
-        RestServerBuilder.overrideRestEasyLoggerInitialization();
 
         // Serve dynamic content.
         ServletContextHandler webServiceContext = RestServerBuilder.makeWebServiceContextHandler();
@@ -69,32 +63,6 @@ public final class RestServerBuilder {
         result.addFilter( ThreadNameFilter.class, "/*", EnumSet.of( DispatcherType.REQUEST ) );
 
         return result;
-
-    }
-
-    /**
-     * Connects RESTEasy logging to Log4j2.
-     */
-    private static void overrideRestEasyLoggerInitialization() {
-
-        // Ensure that RESTEasy logging is initialized
-        Logger.setLoggerType( Logger.LoggerType.JUL );
-
-        // Override by reflection
-        try {
-            Field field = Logger.class.getDeclaredField( "loggerConstructor" );
-            field.setAccessible( true );
-            field.set( null, Log4j2RestEasyLogger.class.getDeclaredConstructor( String.class ) );
-        }
-        catch ( NoSuchFieldException e ) {
-            assert false : "RESTEasy logger field has changed." + e.getMessage();
-        }
-        catch ( NoSuchMethodException e ) {
-            assert false : "Missing RESTEasy logger constructor." + e.getMessage();
-        }
-        catch ( IllegalAccessException e ) {
-            assert false : "Inaccessible RESTEasy logger constructor." + e.getMessage();
-        }
 
     }
 
