@@ -1,0 +1,13 @@
+buildDir = '../../../build/barlom-foundation/presentation/barlom-webutilities'
+
+dependencies {
+
+    // Other Modules
+    compile project( ':barlom-utilities' )
+
+    // Jetty
+    compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
+    compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
+
+}
+

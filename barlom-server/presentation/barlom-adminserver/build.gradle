@@ -1,0 +1,31 @@
+buildDir = '../../../build/barlom-server/presentation/barlom-adminserver'
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+
+    // Other Modules
+    compile project( ':barlom-apputilities' )
+    compile project( ':barlom-dbutilities' )
+    compile project( ':barlom-webutilities' )
+
+    // Dagger
+    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+
+    // Jetty
+    compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
+    compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
+
+    // Dagger Annotation Processor
+    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+
+}
+

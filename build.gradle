@@ -8,7 +8,7 @@ subprojects {
         mavenCentral()
     }
 
-    // Versions of all external libraries used throughout Grestler
+    // Versions of all external libraries used throughout Barlom
     ext.daggerVersion = '1.2.2'  // TODO: Dagger 2
     ext.flywayVersion = '4.0.3'
     ext.h2Version = '1.4.192'

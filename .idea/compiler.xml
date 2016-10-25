@@ -19,8 +19,34 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="barlom-adminserver_main" target="1.8" />
+      <module name="barlom-adminserver_test" target="1.8" />
+      <module name="barlom-apputilities_main" target="1.8" />
+      <module name="barlom-apputilities_test" target="1.8" />
+      <module name="barlom-dbutilities_main" target="1.8" />
+      <module name="barlom-dbutilities_test" target="1.8" />
       <module name="barlom-gdb-postgresql_main" target="1.8" />
       <module name="barlom-gdb-postgresql_test" target="1.8" />
+      <module name="barlom-h2database_main" target="1.8" />
+      <module name="barlom-h2database_test" target="1.8" />
+      <module name="barlom-ioutilities_main" target="1.8" />
+      <module name="barlom-ioutilities_test" target="1.8" />
+      <module name="barlom-javacodegen_main" target="1.8" />
+      <module name="barlom-javacodegen_test" target="1.8" />
+      <module name="barlom-javamodel_main" target="1.8" />
+      <module name="barlom-javamodel_test" target="1.8" />
+      <module name="barlom-main_main" target="1.8" />
+      <module name="barlom-main_test" target="1.8" />
+      <module name="barlom-metamodel_main" target="1.8" />
+      <module name="barlom-metamodel_test" target="1.8" />
+      <module name="barlom-restserver_main" target="1.8" />
+      <module name="barlom-restserver_test" target="1.8" />
+      <module name="barlom-sqlmodel_main" target="1.8" />
+      <module name="barlom-sqlmodel_test" target="1.8" />
+      <module name="barlom-utilities_main" target="1.8" />
+      <module name="barlom-utilities_test" target="1.8" />
+      <module name="barlom-webutilities_main" target="1.8" />
+      <module name="barlom-webutilities_test" target="1.8" />
       <module name="grestler-adminserver_main" target="1.8" />
       <module name="grestler-adminserver_test" target="1.8" />
       <module name="grestler-apputilities_main" target="1.8" />

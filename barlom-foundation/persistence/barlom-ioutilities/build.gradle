@@ -1,0 +1,11 @@
+buildDir = '../../../build/barlom-foundation/persistence/barlom-ioutilities'
+
+dependencies {
+
+    // Other Modules
+    compile project( ':barlom-utilities' )
+
+    // Flyway
+    compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )
+
+}

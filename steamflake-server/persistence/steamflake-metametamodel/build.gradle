@@ -14,7 +14,7 @@ sourceSets {
 dependencies {
 
     // Other Modules
-    compile project( ':grestler-metamodel' )
+    compile project( ':barlom-metamodel' )
 
     // Dagger
     compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )

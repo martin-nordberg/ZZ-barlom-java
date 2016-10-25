@@ -1,4 +1,6 @@
-grestler
+Barlom
 ========
 
-REST Accessible Graph Database
+Boxes, ARrows and Lines, Oh My!
+
+A graph-oriented, meandering, experimental work in progress.
