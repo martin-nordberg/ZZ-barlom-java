@@ -16,6 +16,7 @@ subprojects {
     ext.jettyVersion = '9.3.13.v20161014'
     ext.jsonpVersion = '1.0.4'
     ext.log4j2Version = '2.7'
+    ext.postgreSqlVersion = '9.4.1211'
     ext.resteasyVersion = '3.0.19.Final'
     ext.spockVersion = '1.0-groovy-2.4'
 

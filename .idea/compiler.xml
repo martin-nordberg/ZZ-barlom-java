@@ -19,6 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="barlom-gdb-postgresql_main" target="1.8" />
+      <module name="barlom-gdb-postgresql_test" target="1.8" />
       <module name="grestler-adminserver_main" target="1.8" />
       <module name="grestler-adminserver_test" target="1.8" />
       <module name="grestler-apputilities_main" target="1.8" />

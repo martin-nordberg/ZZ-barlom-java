@@ -57,6 +57,9 @@ rootProject.children.find { it.name == 'grestler-server/domain/grestler-metamode
 include 'grestler-server/persistence/grestler-h2database'
 rootProject.children.find { it.name == 'grestler-server/persistence/grestler-h2database' }.name = 'grestler-h2database'
 
+include 'grestler-server/persistence/barlom-gdb-postgresql'
+rootProject.children.find { it.name == 'grestler-server/persistence/barlom-gdb-postgresql' }.name = 'barlom-gdb-postgresql'
+
 // Infrastructure
 
 

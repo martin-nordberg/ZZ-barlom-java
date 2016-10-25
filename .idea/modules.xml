@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/grestler-server/persistence/barlom-gdb-postgresql/barlom-gdb-postgresql.iml" filepath="$PROJECT_DIR$/.idea/modules/grestler-server/persistence/barlom-gdb-postgresql/barlom-gdb-postgresql.iml" group="barlom-gdb-postgresql" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/grestler-server/persistence/barlom-gdb-postgresql/barlom-gdb-postgresql_main.iml" filepath="$PROJECT_DIR$/.idea/modules/grestler-server/persistence/barlom-gdb-postgresql/barlom-gdb-postgresql_main.iml" group="barlom-gdb-postgresql" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/grestler-server/persistence/barlom-gdb-postgresql/barlom-gdb-postgresql_test.iml" filepath="$PROJECT_DIR$/.idea/modules/grestler-server/persistence/barlom-gdb-postgresql/barlom-gdb-postgresql_test.iml" group="barlom-gdb-postgresql" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/grestler.iml" filepath="$PROJECT_DIR$/.idea/modules/grestler.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/grestler-server/presentation/grestler-adminserver/grestler-adminserver.iml" filepath="$PROJECT_DIR$/.idea/modules/grestler-server/presentation/grestler-adminserver/grestler-adminserver.iml" group="grestler-adminserver" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/grestler-server/presentation/grestler-adminserver/grestler-adminserver_main.iml" filepath="$PROJECT_DIR$/.idea/modules/grestler-server/presentation/grestler-adminserver/grestler-adminserver_main.iml" group="grestler-adminserver" />

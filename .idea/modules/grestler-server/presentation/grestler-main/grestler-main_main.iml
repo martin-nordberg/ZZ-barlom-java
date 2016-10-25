@@ -12,9 +12,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="grestler-apputilities_main" />
     <orderEntry type="module" module-name="grestler-dbutilities_main" />
-    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="module" module-name="grestler-webutilities_main" />
     <orderEntry type="module" module-name="grestler-utilities_main" />
+    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="module" module-name="grestler-metamodel_main" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.7" level="project" />
     <orderEntry type="module" module-name="grestler-adminserver_main" />
