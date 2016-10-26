@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":barlom-gdb-postgresql:main" external.linked.project.path="$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdb-postgresql" external.root.project.path="$MODULE_DIR$/../../../../.." external.system.id="GRADLE" external.system.module.group="barlom" external.system.module.type="sourceSet" external.system.module.version="0.1.0-alpha" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":barlom-gdbpostgresql:main" external.linked.project.path="$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdbpostgresql" external.root.project.path="$MODULE_DIR$/../../../../.." external.system.id="GRADLE" external.system.module.group="barlom" external.system.module.type="sourceSet" external.system.module.version="0.1.0-alpha" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../../../build/barlom-server/persistence/barlom-gdb-postgresql/classes/main" />
+    <output url="file://$MODULE_DIR$/../../../../../build/barlom-server/persistence/barlom-gdbpostgresql/classes/main" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdb-postgresql/src/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdb-postgresql/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdb-postgresql/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdb-postgresql/src/main/resources" type="java-resource" />
+    <content url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdbpostgresql/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdbpostgresql/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdbpostgresql/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../../barlom-server/persistence/barlom-gdbpostgresql/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

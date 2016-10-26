@@ -3,7 +3,7 @@ rootProject.name = 'barlom'
 
 
 // BARLOM FOUNDATION
-// -------------------
+// -----------------
 
 // Presentation
 include 'barlom-foundation/presentation/barlom-webutilities'
@@ -45,6 +45,9 @@ rootProject.children.find { it.name == 'barlom-server/presentation/barlom-main' 
 include 'barlom-server/presentation/barlom-adminserver'
 rootProject.children.find { it.name == 'barlom-server/presentation/barlom-adminserver' }.name = 'barlom-adminserver'
 
+include 'barlom-server/presentation/barlom-gdbconsoleserver'
+rootProject.children.find { it.name == 'barlom-server/presentation/barlom-gdbconsoleserver' }.name = 'barlom-gdbconsoleserver'
+
 // Application
 include 'barlom-server/application/barlom-restserver'
 rootProject.children.find { it.name == 'barlom-server/application/barlom-restserver' }.name = 'barlom-restserver'
@@ -57,8 +60,8 @@ rootProject.children.find { it.name == 'barlom-server/domain/barlom-metamodel' }
 include 'barlom-server/persistence/barlom-h2database'
 rootProject.children.find { it.name == 'barlom-server/persistence/barlom-h2database' }.name = 'barlom-h2database'
 
-include 'barlom-server/persistence/barlom-gdb-postgresql'
-rootProject.children.find { it.name == 'barlom-server/persistence/barlom-gdb-postgresql' }.name = 'barlom-gdb-postgresql'
+include 'barlom-server/persistence/barlom-gdbpostgresql'
+rootProject.children.find { it.name == 'barlom-server/persistence/barlom-gdbpostgresql' }.name = 'barlom-gdbpostgresql'
 
 // Infrastructure
 

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.barlom.application.restserver.ApplicationServicesWrapper;
 import org.barlom.infrastructure.utilities.uuids.Uuids;
 import org.barlom.presentation.adminserver.AdminServerBuilder;
+import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.barlom.presentation.webutilities.logging.Log4j2JettyLogger;
 
 import javax.inject.Inject;
@@ -44,6 +45,7 @@ public class Application {
         // Register dependency injection at lower levels which cannot be injected directly
         ApplicationServicesWrapper.registerObjectGraph( objectGraph );
         AdminServerBuilder.registerObjectGraph( objectGraph );
+        BarlomGdbConsoleServerBuilder.registerObjectGraph( objectGraph );
 
         // do extra experimental stuff
         Application.experiment();

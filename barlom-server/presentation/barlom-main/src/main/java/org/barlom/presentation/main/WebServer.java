@@ -7,6 +7,7 @@ package org.barlom.presentation.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
@@ -76,6 +77,7 @@ public class WebServer
         int port = config.readInt( "port" );
         boolean enableAdminServer = config.readBoolean( "enableAdminServer" );
         boolean enableH2Console = config.readBoolean( "enableH2Console" );
+        boolean enableBarlomGdbConsole = config.readBoolean( "enableBarlomGdbConsole" );
 
         // Build the app server.
         this.server = WebServer.makeServer( port );
@@ -89,6 +91,11 @@ public class WebServer
         // Build the admin server.
         if ( enableAdminServer ) {
             AdminServerBuilder.makeAdminServer( this, contexts );
+        }
+
+        // Build the Barlom-GDB console.
+        if ( enableBarlomGdbConsole ) {
+            BarlomGdbConsoleServerBuilder.makeConsole( this, contexts );
         }
 
         // Add a raw H2 SQL console.
