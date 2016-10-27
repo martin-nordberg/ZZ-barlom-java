@@ -49,6 +49,9 @@ include 'barlom-server/presentation/barlom-gdbconsoleserver'
 rootProject.children.find { it.name == 'barlom-server/presentation/barlom-gdbconsoleserver' }.name = 'barlom-gdbconsoleserver'
 
 // Application
+include 'barlom-server/application/barlom-gdbconsolerestservices'
+rootProject.children.find { it.name == 'barlom-server/application/barlom-gdbconsolerestservices' }.name = 'barlom-gdbconsolerestservices'
+
 include 'barlom-server/application/barlom-restserver'
 rootProject.children.find { it.name == 'barlom-server/application/barlom-restserver' }.name = 'barlom-restserver'
 

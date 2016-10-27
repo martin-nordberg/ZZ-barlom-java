@@ -25,6 +25,8 @@
       <module name="barlom-apputilities_test" target="1.8" />
       <module name="barlom-dbutilities_main" target="1.8" />
       <module name="barlom-dbutilities_test" target="1.8" />
+      <module name="barlom-gdbconsolerestservices_main" target="1.8" />
+      <module name="barlom-gdbconsolerestservices_test" target="1.8" />
       <module name="barlom-gdbconsoleserver_main" target="1.8" />
       <module name="barlom-gdbconsoleserver_test" target="1.8" />
       <module name="barlom-gdbpostgresql_main" target="1.8" />

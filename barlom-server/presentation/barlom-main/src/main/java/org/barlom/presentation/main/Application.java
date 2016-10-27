@@ -45,6 +45,7 @@ public class Application {
         // Register dependency injection at lower levels which cannot be injected directly
         ApplicationServicesWrapper.registerObjectGraph( objectGraph );
         AdminServerBuilder.registerObjectGraph( objectGraph );
+        org.barlom.application.gdbconsolerestservices.ApplicationServicesWrapper.registerObjectGraph( objectGraph );
         BarlomGdbConsoleServerBuilder.registerObjectGraph( objectGraph );
 
         // do extra experimental stuff

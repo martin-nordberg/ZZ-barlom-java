@@ -93,6 +93,7 @@ public final class BarlomGdbConsoleServerBuilder {
         // Set the context for static content.
         ContextHandler fileServerContext = new ContextHandler();
         fileServerContext.setContextPath( "/barlomgdbconsole" );
+        fileServerContext.setWelcomeFiles( new String[]{ "index.html" } );
 
         // Set the source for static content.
         ResourceHandler fileResourceHandler = new ResourceHandler();

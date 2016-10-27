@@ -7,6 +7,7 @@ package org.barlom.presentation.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.barlom.application.gdbconsolerestservices.GdbConsoleRestServicesBuilder;
 import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.NCSARequestLog;
@@ -96,6 +97,7 @@ public class WebServer
         // Build the Barlom-GDB console.
         if ( enableBarlomGdbConsole ) {
             BarlomGdbConsoleServerBuilder.makeConsole( this, contexts );
+            GdbConsoleRestServicesBuilder.makeRestServer( contexts );
         }
 
         // Add a raw H2 SQL console.
