@@ -36,7 +36,7 @@ public class VertexTypeQueries {
      */
     @GET
     @Path( "" )
-    @Produces( { "text/xml" } )
+    @Produces( { "application/json", "application/vnd.barlom.org.v1.vertextype+json" } )
     public String getAllVertexTypes() {
 
         VertexTypeQueries.LOG.info( "Querying for all vertex types." );
@@ -46,12 +46,12 @@ public class VertexTypeQueries {
 
         // TODO: need dynamic results
 
-        out.println( "<barlom-gdb-vertextypes>" );
-        out.println( " <barlom-gdb-vertextype id=\"1\" name=\"VertexType1\"></barlom-gdb-vertextype>" );
-        out.println( " <barlom-gdb-vertextype id=\"2\" name=\"VertexType2\"></barlom-gdb-vertextype>" );
-        out.println( " <barlom-gdb-vertextype id=\"3\" name=\"VertexType3\"></barlom-gdb-vertextype>" );
-        out.println( " <barlom-gdb-vertextype id=\"4\" name=\"VertexType4\"></barlom-gdb-vertextype>" );
-        out.println( "</barlom-gdb-vertextypes>" );
+        out.println( "{ \"data\": [" );
+        out.println( " { \"uuid\": \"1\", \"name\": \"VertexType1\" }," );
+        out.println( " { \"uuid\": \"2\", \"name\": \"VertexType2\" }," );
+        out.println( " { \"uuid\": \"3\", \"name\": \"VertexType3\" }," );
+        out.println( " { \"uuid\": \"4\", \"name\": \"VertexType4\" }" );
+        out.println( "] }" );
 
         out.close();
 
@@ -68,7 +68,7 @@ public class VertexTypeQueries {
      */
     @GET
     @Path( "/{uuid}" )
-    @Produces( { "text/xml" } )
+    @Produces( { "application/json", "application/vnd.barlom.org.v1.vertextype+json" } )
     public String getVertexTypeByUuid( @PathParam( "uuid" ) String uuid ) {
 
         VertexTypeQueries.LOG.info( "Querying for vertex type {}.", uuid );
@@ -78,7 +78,7 @@ public class VertexTypeQueries {
 
         // TODO: need dynamic results
 
-        out.println( "<barlom-gdb-vertextype id=\"" + uuid + "\" name=\"VertexType" + uuid + "\"></barlom-gdb-vertextype>" );
+        out.println( " { \"uuid\": \"" + uuid + "\", \"name\": \"VertexType" + uuid + "\" }" );
 
         out.close();
 
