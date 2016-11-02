@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -8,9 +8,6 @@ package org.barlom.persistence.postgresql.api.exceptions;
 import org.apache.logging.log4j.Logger;
 import org.barlom.infrastructure.utilities.exceptions.EValidationType;
 import org.barlom.persistence.dbutilities.api.DatabaseException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Concrete exception for PostgreSQL database errors.

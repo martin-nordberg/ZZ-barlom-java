@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2014-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -14,17 +14,17 @@ import org.barlom.persistence.postgresql.api.exceptions.PostgreSqlDatabaseExcept
 import java.sql.ResultSet;
 
 /**
- * Result set wrapper for H2 database.
+ * Result set wrapper for PostgreSQL database.
  */
-public class PostgreSqlResultSet
+class PostgreSqlResultSet
     extends AbstractResultSet {
 
     /**
-     * Constructs a new H2 result set wrapping the given JDBC result set.
+     * Constructs a new PostgreSQL result set wrapping the given JDBC result set.
      *
      * @param resultSet the JDBC result set to encapsulate.
      */
-    public PostgreSqlResultSet( ResultSet resultSet ) {
+    PostgreSqlResultSet( ResultSet resultSet ) {
         super( resultSet );
     }
 

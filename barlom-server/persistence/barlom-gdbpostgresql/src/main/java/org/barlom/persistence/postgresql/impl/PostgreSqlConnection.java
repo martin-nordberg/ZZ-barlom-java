@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -16,17 +16,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
- * Concrete connection implementation for the PostgreSql database.
+ * Concrete connection implementation for the PostgreSQL database.
  */
-public class PostgreSqlConnection
+class PostgreSqlConnection
     extends AbstractConnection {
 
     /**
-     * Constructs a new PostgreSql connection wrapping the given JDBC connection.
+     * Constructs a new PostgreSQL connection wrapping the given JDBC connection.
      *
      * @param connection the JDBC connection to wrap.
      */
-    public PostgreSqlConnection( Connection connection ) {
+    PostgreSqlConnection( Connection connection ) {
         super( connection );
     }
 

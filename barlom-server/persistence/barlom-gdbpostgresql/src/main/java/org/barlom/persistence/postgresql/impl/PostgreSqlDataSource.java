@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2014-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -19,13 +19,13 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
 /**
- * Wrapper for an H2 data source providing pooled connections.
+ * Wrapper for an PostgreSQL data source providing pooled connections.
  */
 public final class PostgreSqlDataSource
     implements IDataSource {
 
     /**
-     * Constructs a new H2 data source.
+     * Constructs a new PostgreSQL data source.
      *
      * @param dataSourceName the name of the data source (used in configuration property names).
      */
@@ -45,13 +45,14 @@ public final class PostgreSqlDataSource
         String extraMigrationLocations = config.readString( dataSourceName + ".extraMigrationLocations" );
 
         PostgreSqlDataSource.LOG.info( "Opening data source {}: User Name = {}, Database = {}, Schema = {}.",
-                                       dataSourceName, user, databaseName );
+                                       dataSourceName, user, databaseName
+        );
 
         this.connectionPool = new PGPoolingDataSource();
         this.connectionPool.setDataSourceName( dataSourceName );
         this.connectionPool.setServerName( serverName );
         this.connectionPool.setPortNumber( portNumber );
-        this.connectionPool.setDatabaseName( databaseName);
+        this.connectionPool.setDatabaseName( databaseName );
         this.connectionPool.setCurrentSchema( currentSchema );
         this.connectionPool.setUser( user );
         this.connectionPool.setPassword( password );
