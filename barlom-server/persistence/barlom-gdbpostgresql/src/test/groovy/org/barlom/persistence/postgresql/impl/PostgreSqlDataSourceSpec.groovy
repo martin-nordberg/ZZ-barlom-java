@@ -17,14 +17,14 @@ public class PostgreSqlDataSourceSpec
         def count = 0;
         def readResult = { IResultSet rs ->
             assert rs.getInt( "one" ) == 1;
-            assert rs.getInt( "two" ) == 2;
+            assert rs.getString( "two" ) == "TWO";
             assert rs.getInt( "three" ) == 3;
             count += 1;
         }
 
         IDataSource dataSource = new PostgreSqlDataSource( "test" );
         IConnection connection = dataSource.openConnection();
-        connection.executeQuery( readResult, "SELECT 1 one, 2 two, 3 three" )
+        connection.executeQuery( readResult, "SELECT 1 one, 'TWO' two, 3 three" );
 
         expect:
         count == 1;

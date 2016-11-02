@@ -59,7 +59,7 @@ public final class PostgreSqlDataSource
         this.connectionPool.setMaxConnections( maxConnections );
 
         // Update the schema if needed.
-        // TODO new DatabaseMigration( this ).updateDatabaseSchema( extraMigrationLocations );
+        new DatabaseMigration( this ).updateDatabaseSchema( extraMigrationLocations );
 
     }
 
