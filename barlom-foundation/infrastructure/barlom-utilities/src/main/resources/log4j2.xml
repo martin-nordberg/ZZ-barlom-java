@@ -12,7 +12,7 @@
         <Logger name="org.eclipse.jetty" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="org.flywaydb" level="info" additivity="false">
+        <Logger name="org.flywaydb" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="org.jboss.resteasy" level="info" additivity="false">
