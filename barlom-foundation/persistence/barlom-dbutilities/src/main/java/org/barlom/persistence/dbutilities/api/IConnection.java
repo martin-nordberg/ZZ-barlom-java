@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -54,16 +54,6 @@ public interface IConnection
     void close();
 
     /**
-     * Executes a SQL SELECT with no result.
-     *
-     * @param sqlQuery the SQL command (with named parameters).
-     * @param args     the arguments to substitute into the query.
-     *
-     * @throws DatabaseException if the command fails.
-     */
-    void executeCall( String sqlQuery, Map<String, Object> args );
-
-    /**
      * Executes a SQL command.
      *
      * @param sqlQuery the SQL command (with named parameters).
@@ -74,6 +64,18 @@ public interface IConnection
      * @throws DatabaseException if the command fails.
      */
     int executeCommand( String sqlQuery, Map<String, Object> args );
+
+    /**
+     * Executes a SQL SELECT with an integer result.
+     *
+     * @param sqlQuery the SQL command (with named parameters).
+     * @param args     the arguments to substitute into the query.
+     *
+     * @return the integer result of the query.
+     *
+     * @throws DatabaseException if the command fails.
+     */
+    int executeCountQuery( String sqlQuery, Map<String, Object> args );
 
     /**
      * Executes a task while a transaction is open for the connection.

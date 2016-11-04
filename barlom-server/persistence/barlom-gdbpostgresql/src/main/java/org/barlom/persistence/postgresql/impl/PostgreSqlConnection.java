@@ -36,12 +36,12 @@ class PostgreSqlConnection
     }
 
     @Override
-    protected void throwException( String message ) throws DatabaseException {
+    protected int throwException( String message ) throws DatabaseException {
         throw new PostgreSqlDatabaseException( PostgreSqlConnection.LOG, message );
     }
 
     @Override
-    protected void throwException( String message, Throwable cause ) throws DatabaseException {
+    protected int throwException( String message, Throwable cause ) throws DatabaseException {
         throw new PostgreSqlDatabaseException( PostgreSqlConnection.LOG, message, cause );
     }
 

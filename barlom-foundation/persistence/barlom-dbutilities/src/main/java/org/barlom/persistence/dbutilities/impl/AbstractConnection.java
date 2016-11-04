@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -46,22 +46,27 @@ public abstract class AbstractConnection
     }
 
     @Override
-    public void executeCall( String sqlQuery, Map<String, Object> args ) {
+    public int executeCountQuery( String sqlQuery, Map<String, Object> args ) {
 
-        assert sqlQuery.startsWith( "SELECT" );
+        assert sqlQuery.startsWith( "SELECT" ); // TODO: or "WITH"
 
-        AbstractConnection.LOG.debug( "Executing call: {}.", sqlQuery );
+        AbstractConnection.LOG.debug( "Executing count query: {}.", sqlQuery );
         AbstractConnection.LOG.debug( "Call Arguments: {}.", args.toString() );
 
         try {
 
             try ( PreparedStatement stmt = this.prepareStatement( sqlQuery, args ) ) {
-                stmt.executeQuery();
+                try ( ResultSet rs = stmt.executeQuery() ) {
+                    if ( rs.next() ) {
+                        return rs.getInt( 1 );
+                    }
+                    return this.throwException( "Failed to retrieve count from SQL count query: \"" + sqlQuery + "\"" );
+                }
             }
 
         }
         catch ( SQLException e ) {
-            this.throwException( "Failed to execute SQL command: \"" + sqlQuery + "\"", e );
+            return this.throwException( "Failed to execute SQL count query: \"" + sqlQuery + "\"", e );
         }
 
     }
@@ -82,8 +87,7 @@ public abstract class AbstractConnection
 
         }
         catch ( SQLException e ) {
-            this.throwException( "Failed to execute SQL command: \"" + sqlQuery + "\"", e );
-            return 0;
+            return this.throwException( "Failed to execute SQL command: \"" + sqlQuery + "\"", e );
         }
 
     }
@@ -227,7 +231,7 @@ public abstract class AbstractConnection
      *
      * @throws DatabaseException always thrown by this method.
      */
-    protected abstract void throwException( String message, Throwable cause ) throws DatabaseException;
+    protected abstract int throwException( String message, Throwable cause ) throws DatabaseException;
 
     /**
      * Throws an exception with no underlying database exception.
@@ -236,7 +240,7 @@ public abstract class AbstractConnection
      *
      * @throws DatabaseException always thrown by this method.
      */
-    protected abstract void throwException( String message ) throws DatabaseException;
+    protected abstract int throwException( String message ) throws DatabaseException;
 
     /** The logger for this class. */
     private static final Logger LOG = LogManager.getLogger();

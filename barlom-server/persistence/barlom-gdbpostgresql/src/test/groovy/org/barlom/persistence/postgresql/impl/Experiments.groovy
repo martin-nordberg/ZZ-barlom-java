@@ -27,16 +27,18 @@ class Experiments
 
         Map<String,Object> params = new HashMap<>();
         params.put( "uuid", Uuids.makeUuid() );
-        params.put( "name", "Vertex Type Ten" );
+        params.put( "name", "Vertex Type Four" );
 
-        connection.executeCall( "SELECT UpsertVertexType( {{uuid}}, {{name}} )", params );
+        int inserted = connection.executeCountQuery( "SELECT UpsertVertexType( {{uuid}}, {{name}} )", params );
 
         connection.executeQuery( readResult, "SELECT uuid, name FROM FindVertexTypesAll()" );
 
-        connection.executeCall( "SELECT DeleteVertexType( {{uuid}} )", params );
+        int deleted = connection.executeCountQuery( "SELECT DeleteVertexType( {{uuid}} )", params );
 
         expect:
+        inserted == 1;
         count >= 1;
+        deleted == 1;
 
         cleanup:
         connection.close();

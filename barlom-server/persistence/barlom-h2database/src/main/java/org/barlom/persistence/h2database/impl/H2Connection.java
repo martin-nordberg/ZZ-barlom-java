@@ -36,12 +36,12 @@ public class H2Connection
     }
 
     @Override
-    protected void throwException( String message ) throws DatabaseException {
+    protected int throwException( String message ) throws DatabaseException {
         throw new H2DatabaseException( H2Connection.LOG, message );
     }
 
     @Override
-    protected void throwException( String message, Throwable cause ) throws DatabaseException {
+    protected int throwException( String message, Throwable cause ) throws DatabaseException {
         throw new H2DatabaseException( H2Connection.LOG, message, cause );
     }
 
