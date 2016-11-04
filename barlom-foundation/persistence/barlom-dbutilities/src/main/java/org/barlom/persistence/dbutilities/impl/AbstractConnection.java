@@ -35,12 +35,35 @@ public abstract class AbstractConnection
 
     @Override
     public void close() {
+
         try {
             this.connection.close();
         }
         catch ( SQLException e ) {
             this.throwException( "Failed to close connection.", e );
         }
+
+    }
+
+    @Override
+    public void executeCall( String sqlQuery, Map<String, Object> args ) {
+
+        assert sqlQuery.startsWith( "SELECT" );
+
+        AbstractConnection.LOG.debug( "Executing call: {}.", sqlQuery );
+        AbstractConnection.LOG.debug( "Call Arguments: {}.", args.toString() );
+
+        try {
+
+            try ( PreparedStatement stmt = this.prepareStatement( sqlQuery, args ) ) {
+                stmt.executeQuery();
+            }
+
+        }
+        catch ( SQLException e ) {
+            this.throwException( "Failed to execute SQL command: \"" + sqlQuery + "\"", e );
+        }
+
     }
 
     @Override

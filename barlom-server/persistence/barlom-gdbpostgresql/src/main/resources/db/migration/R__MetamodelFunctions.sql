@@ -8,11 +8,13 @@
 
 DROP FUNCTION IF EXISTS DeleteVertexType( uuid UUID );
 CREATE FUNCTION DeleteVertexType( uuid UUID )
-    RETURNS VOID
+    RETURNS INTEGER
 AS $$
     DELETE
       FROM VertexType
      WHERE uuid = uuid;
+
+    SELECT 1;
 $$
 LANGUAGE 'sql';
 
@@ -47,7 +49,7 @@ LANGUAGE 'sql';
 
 DROP FUNCTION IF EXISTS UpsertVertexType( uuid UUID, name NAME );
 CREATE FUNCTION UpsertVertexType( uuid UUID, name NAME )
-   RETURNS VOID
+   RETURNS INTEGER
 AS $$
    INSERT INTO VertexType
                ( uuid, name )
@@ -55,5 +57,7 @@ AS $$
    ON CONFLICT ( uuid ) DO
         UPDATE
            SET name = EXCLUDED.name;
+
+   SELECT 1;
 $$
 LANGUAGE 'sql';

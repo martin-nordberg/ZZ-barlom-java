@@ -31,6 +31,7 @@ public class PostgreSqlDataSourceSpec
 
         cleanup:
         connection.close();
+        dataSource.close();
 
     }
 

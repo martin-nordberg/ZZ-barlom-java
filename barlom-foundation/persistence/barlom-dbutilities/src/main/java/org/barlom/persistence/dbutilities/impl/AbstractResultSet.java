@@ -196,7 +196,25 @@ public abstract class AbstractResultSet
             return result;
         }
         catch ( SQLException e ) {
-            this.throwException( "Error reading string column " + columnName + ".", e );
+            // TODO: Move inside throwException for use elsewhere
+            String columns = "Columns [";
+            try {
+                columns += this.resultSet.getMetaData().getColumnCount();
+                columns += "] are: (";
+
+                String delimiter = "";
+                for ( int col = 1; col <= this.resultSet.getMetaData().getColumnCount() ; col+=1 ) {
+                    columns += delimiter;
+                    columns += this.resultSet.getMetaData().getColumnLabel( col );
+                    delimiter = ", ";
+                }
+
+                columns += ").";
+            }
+            catch ( SQLException e2 ) {
+                //ignore
+            }
+            this.throwException( "Error reading string column " + columnName + ". " + columns , e );
             return "";
         }
     }
