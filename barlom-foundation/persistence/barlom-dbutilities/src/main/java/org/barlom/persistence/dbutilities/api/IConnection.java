@@ -100,8 +100,23 @@ public interface IConnection
      * @param queryCallback the callback function called with each record of the result.
      * @param sqlQuery      the text of the SQL query to execute.
      *
+     * @return the number of records found
+     *
      * @throws DatabaseException if the query process fails.
      */
-    void executeQuery( IQueryCallback queryCallback, String sqlQuery );
+    int executeQuery( IQueryCallback queryCallback, String sqlQuery );
+
+    /**
+     * Executes a single SQL select query. Calls a callback for each record found.
+     *
+     * @param queryCallback the callback function called with each record of the result.
+     * @param sqlQuery      the text of the SQL query to execute.
+     * @param args     the arguments to substitute into the query.
+     *
+     * @return the number of records found
+     *
+     * @throws DatabaseException if the query process fails.
+     */
+    int executeQuery( IQueryCallback queryCallback, String sqlQuery, Map<String, Object> args );
 
 }

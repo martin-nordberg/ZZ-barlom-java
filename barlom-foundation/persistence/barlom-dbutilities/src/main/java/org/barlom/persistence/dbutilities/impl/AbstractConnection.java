@@ -46,38 +46,12 @@ public abstract class AbstractConnection
     }
 
     @Override
-    public int executeCountQuery( String sqlQuery, Map<String, Object> args ) {
-
-        assert sqlQuery.startsWith( "SELECT" ); // TODO: or "WITH"
-
-        AbstractConnection.LOG.debug( "Executing count query: {}.", sqlQuery );
-        AbstractConnection.LOG.debug( "Call Arguments: {}.", args.toString() );
-
-        try {
-
-            try ( PreparedStatement stmt = this.prepareStatement( sqlQuery, args ) ) {
-                try ( ResultSet rs = stmt.executeQuery() ) {
-                    if ( rs.next() ) {
-                        return rs.getInt( 1 );
-                    }
-                    return this.throwException( "Failed to retrieve count from SQL count query: \"" + sqlQuery + "\"" );
-                }
-            }
-
-        }
-        catch ( SQLException e ) {
-            return this.throwException( "Failed to execute SQL count query: \"" + sqlQuery + "\"", e );
-        }
-
-    }
-
-    @Override
     public int executeCommand( String sqlQuery, Map<String, Object> args ) {
 
         assert sqlQuery.startsWith( "INSERT" ) || sqlQuery.startsWith( "UPDATE" ) || sqlQuery.startsWith( "DELETE" );
 
         AbstractConnection.LOG.debug( "Executing command: {}.", sqlQuery );
-        AbstractConnection.LOG.debug( "Command Arguments: {}.", args.toString() );
+        AbstractConnection.LOG.debug( "Arguments: {}.", args.toString() );
 
         try {
 
@@ -93,17 +67,50 @@ public abstract class AbstractConnection
     }
 
     @Override
+    public int executeCountQuery( String sqlQuery, Map<String, Object> args ) {
+
+        assert sqlQuery.startsWith( "SELECT" ); // TODO: or "WITH"
+
+        AbstractConnection.LOG.debug( "Executing count query: {}.", sqlQuery );
+        AbstractConnection.LOG.debug( "Arguments: {}.", args.toString() );
+
+        try {
+
+            try ( PreparedStatement stmt = this.prepareStatement( sqlQuery, args ) ) {
+
+                try ( ResultSet rs = stmt.executeQuery() ) {
+
+                    if ( rs.next() ) {
+                        return rs.getInt( 1 );
+                    }
+
+                    return this.throwException( "Failed to retrieve count from SQL count query: \"" + sqlQuery + "\"" );
+
+                }
+
+            }
+
+        }
+        catch ( SQLException e ) {
+            return this.throwException( "Failed to execute SQL count query: \"" + sqlQuery + "\"", e );
+        }
+
+    }
+
+    @Override
     public void executeInTransaction( ITransactionalCallback transactionalCallback ) {
 
         // Start the transaction.
         this.startTransaction();
 
         try {
+
             // Execute the task.
             transactionalCallback.execute();
 
             // Commit the transaction.
             this.connection.commit();
+
         }
         catch ( DatabaseException e ) {
             // On error rollback the transaction.
@@ -124,7 +131,9 @@ public abstract class AbstractConnection
 
     @Override
     public void executeOneRowCommand( String sqlQuery, Map<String, Object> args ) {
+
         int rows = this.executeCommand( sqlQuery, args );
+
         if ( rows != 1 ) {
             this.throwException( "Command expected to affect one record but affected " + rows + ": " + sqlQuery + " with parameters " + args + "." );
         }
@@ -132,7 +141,7 @@ public abstract class AbstractConnection
     }
 
     @Override
-    public void executeQuery( IQueryCallback queryCallback, String sqlQuery ) {
+    public int executeQuery( IQueryCallback queryCallback, String sqlQuery ) {
 
         assert sqlQuery.startsWith( "SELECT" );
 
@@ -142,19 +151,63 @@ public abstract class AbstractConnection
             try ( Statement stmt = this.connection.createStatement() ) {
 
                 try ( IResultSetSpi resultSet = this.makeResultSet( stmt.executeQuery( sqlQuery ) ) ) {
-
-                    // Call back with each record.
-                    while ( resultSet.next() ) {
-                        queryCallback.handleRecord( resultSet );
-                    }
-
+                    return AbstractConnection.handleQueryResults( resultSet, queryCallback );
                 }
 
             }
         }
         catch ( SQLException e ) {
-            this.throwException( "Failed to complete SQL query \"" + sqlQuery + "\"", e );
+            return this.throwException( "Failed to complete SQL query \"" + sqlQuery + "\"", e );
         }
+
+    }
+
+    @Override
+    public int executeQuery( IQueryCallback queryCallback, String sqlQuery, Map<String, Object> args ) {
+
+        assert sqlQuery.startsWith( "SELECT" ); // TODO: or "WITH"
+
+        AbstractConnection.LOG.debug( "Executing query: {}.", sqlQuery );
+        AbstractConnection.LOG.debug( "Arguments: {}.", args.toString() );
+
+        try {
+
+            try ( PreparedStatement stmt = this.prepareStatement( sqlQuery, args ) ) {
+
+                try ( IResultSetSpi resultSet = this.makeResultSet( stmt.executeQuery() ) ) {
+                    return AbstractConnection.handleQueryResults( resultSet, queryCallback );
+                }
+
+            }
+
+        }
+        catch ( SQLException e ) {
+            return this.throwException( "Failed to execute SQL count query: \"" + sqlQuery + "\"", e );
+        }
+
+    }
+
+    /**
+     * Iterates through a result set, calling a callback for each record.
+     *
+     * @param resultSet     the result set to iterate.
+     * @param queryCallback the callback to receive each record.
+     *
+     * @return the number of records handled.
+     */
+    private static int handleQueryResults( IResultSetSpi resultSet, IQueryCallback queryCallback ) {
+
+        int result = 0;
+
+        // Call back with each record.
+        while ( resultSet.next() ) {
+            queryCallback.handleRecord( resultSet );
+            result += 1;
+        }
+
+        AbstractConnection.LOG.debug( "Records Found: {}", result );
+
+        return result;
 
     }
 
@@ -191,6 +244,7 @@ public abstract class AbstractConnection
         }
 
         return result;
+
     }
 
     /**
