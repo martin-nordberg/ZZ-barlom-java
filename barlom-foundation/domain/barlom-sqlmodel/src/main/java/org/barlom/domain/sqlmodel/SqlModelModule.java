@@ -12,7 +12,7 @@ import org.barlom.domain.sqlmodel.impl.elements.SqlDataModel;
 /**
  * Dagger dependency injection module.
  */
-@Module( library = true )
+@Module
 public class SqlModelModule {
 
     /**

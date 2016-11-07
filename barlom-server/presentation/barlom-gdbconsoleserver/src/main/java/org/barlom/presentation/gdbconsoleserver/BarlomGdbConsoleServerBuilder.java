@@ -5,10 +5,8 @@
 
 package org.barlom.presentation.gdbconsoleserver;
 
-import dagger.ObjectGraph;
 import org.barlom.application.apputilities.filters.ThreadNameFilter;
 import org.barlom.presentation.webutilities.servlets.ShutdownServlet;
-import org.eclipse.jetty.http.MimeTypes;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -22,6 +20,7 @@ import java.util.EnumSet;
 
 /**
  * Builder class creates and configures the admin server.
+ * TODO: Seems like this stuff could be dependency-injected in a backwards sort of way.
  */
 public final class BarlomGdbConsoleServerBuilder {
 
@@ -114,21 +113,5 @@ public final class BarlomGdbConsoleServerBuilder {
         return fileServerContext;
 
     }
-
-    /**
-     * Registers the Dagger object graph that will be used to inject everything below the application itself. This
-     * clumsy hack is to work around the seeming inability to dependency inject the application object itself without a
-     * JEE container.
-     *
-     * @param objGraph the already initialized Dagger object graph for dependency injection.
-     */
-    public static void registerObjectGraph( ObjectGraph objGraph ) {
-        BarlomGdbConsoleServerBuilder.objectGraph = objGraph;
-    }
-
-    /**
-     * The Dagger dependency injection service. Explicitly used since no clear way to inject Application itself.
-     */
-    private static ObjectGraph objectGraph = null;
 
 }

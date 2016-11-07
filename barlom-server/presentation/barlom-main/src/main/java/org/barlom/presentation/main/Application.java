@@ -5,19 +5,25 @@
 
 package org.barlom.presentation.main;
 
-import dagger.ObjectGraph;
+import dagger.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barlom.infrastructure.utilities.uuids.Uuids;
-import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.barlom.presentation.webutilities.logging.Log4j2JettyLogger;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Barlom main program.
  */
 public class Application {
+
+    @Singleton
+    @Component
+    interface Injections {
+        Application makeApp();
+    }
 
     @Inject
     public Application( WebServer webServer ) {
@@ -37,12 +43,8 @@ public class Application {
         org.eclipse.jetty.util.log.Log.setLog( new Log4j2JettyLogger( "Jetty" ) );
 
         // Initialize dependency injection.
-        ObjectGraph objectGraph = ObjectGraph.create( new ApplicationModule() );
-        Application app = objectGraph.get( Application.class );
 
-        // Register dependency injection at lower levels which cannot be injected directly
-        org.barlom.application.gdbconsolerestservices.ApplicationServicesWrapper.registerObjectGraph( objectGraph );
-        BarlomGdbConsoleServerBuilder.registerObjectGraph( objectGraph );
+        Application app = DaggerApplication_Injections.create().makeApp();
 
         // do extra experimental stuff
         Application.experiment();

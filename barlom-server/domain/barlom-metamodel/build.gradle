@@ -16,12 +16,12 @@ dependencies {
     compile project( ':barlom-utilities' )
 
     // Dagger
-    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
 
     // JSON-P
     compile( group: 'org.glassfish', name: 'javax.json', version: jsonpVersion )
 
     // Dagger Annotation Processor
-    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }

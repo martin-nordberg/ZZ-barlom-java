@@ -18,14 +18,14 @@ dependencies {
     compile project( ':barlom-webutilities' )
 
     // Dagger
-    compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )
+    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
 
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
     compile( group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion )
 
     // Dagger Annotation Processor
-    provided( group: 'com.squareup.dagger', name: 'dagger-compiler', version: daggerVersion )
+    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }
 

@@ -12,14 +12,14 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="barlom-main_main" />
     <orderEntry type="module" module-name="barlom-apputilities_main" />
-    <orderEntry type="module" module-name="barlom-webutilities_main" />
     <orderEntry type="module" module-name="barlom-dbutilities_main" />
     <orderEntry type="module" module-name="barlom-utilities_main" />
+    <orderEntry type="module" module-name="barlom-webutilities_main" />
     <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.7" level="project" />
     <orderEntry type="module" module-name="barlom-gdbconsoleserver_main" />
     <orderEntry type="module" module-name="barlom-gdbconsolerestservices_main" />
-    <orderEntry type="library" name="Gradle: com.squareup.dagger:dagger:1.2.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.7" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-server:9.3.13.v20161014" level="project" />
     <orderEntry type="library" name="Gradle: org.spockframework:spock-core:1.0-groovy-2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.7" level="project" />
