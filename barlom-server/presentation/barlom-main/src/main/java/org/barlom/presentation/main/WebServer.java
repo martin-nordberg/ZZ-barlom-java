@@ -8,18 +8,13 @@ package org.barlom.presentation.main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barlom.application.gdbconsolerestservices.GdbConsoleRestServicesBuilder;
+import org.barlom.infrastructure.utilities.configuration.Configuration;
 import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.barlom.application.restserver.RestServerBuilder;
-import org.barlom.infrastructure.utilities.configuration.Configuration;
-import org.barlom.presentation.adminserver.AdminServerBuilder;
-import org.h2.server.web.WebServlet;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,14 +23,14 @@ import javax.inject.Singleton;
  * Jetty web server initial configuration and start up.
  */
 @Singleton
-public class WebServer
+class WebServer
     implements AutoCloseable {
 
     /**
      * Constructs a new web server.
      */
     @Inject
-    public WebServer() {
+    WebServer() {
     }
 
     /**
@@ -71,13 +66,11 @@ public class WebServer
      *
      * @throws Exception If Jetty servers do not start properly.
      */
-    public void run() throws Exception {
+    void run() throws Exception {
 
         // Read the configuration.
         Configuration config = new Configuration( WebServer.class );
         int port = config.readInt( "port" );
-        boolean enableAdminServer = config.readBoolean( "enableAdminServer" );
-        boolean enableH2Console = config.readBoolean( "enableH2Console" );
         boolean enableBarlomGdbConsole = config.readBoolean( "enableBarlomGdbConsole" );
 
         // Build the app server.
@@ -86,23 +79,10 @@ public class WebServer
         // Create the context list.
         ContextHandlerCollection contexts = new ContextHandlerCollection();
 
-        // Build the REST server.
-        RestServerBuilder.makeRestServer( contexts );
-
-        // Build the admin server.
-        if ( enableAdminServer ) {
-            AdminServerBuilder.makeAdminServer( this, contexts );
-        }
-
         // Build the Barlom-GDB console.
         if ( enableBarlomGdbConsole ) {
             BarlomGdbConsoleServerBuilder.makeConsole( this, contexts );
             GdbConsoleRestServicesBuilder.makeRestServer( contexts );
-        }
-
-        // Add a raw H2 SQL console.
-        if ( enableH2Console ) {
-            WebServer.makeH2Console( contexts );
         }
 
         // Configure the server for its contexts
@@ -118,27 +98,6 @@ public class WebServer
 
         // Hang out until the server is stopped.
         this.server.join();
-
-    }
-
-    /**
-     * Add the H2 console servlet to the set of contexts.
-     *
-     * @param contexts the contexts being built.
-     */
-    private static void makeH2Console( ContextHandlerCollection contexts ) {
-
-        // TODO: move this to a lower level
-
-        ServletContextHandler result = new ServletContextHandler( ServletContextHandler.SESSIONS );
-        result.setContextPath( "/h2console" );
-
-        ServletHolder servletHolder = new ServletHolder( new WebServlet() );
-        servletHolder.setInitParameter( "webAllowOthers", "true" );
-
-        result.addServlet( servletHolder, "/*" );
-
-        contexts.addHandler( result );
 
     }
 

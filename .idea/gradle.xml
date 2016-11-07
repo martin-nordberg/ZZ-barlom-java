@@ -19,11 +19,8 @@
             <option value="$PROJECT_DIR$/barlom-foundation/persistence/barlom-ioutilities" />
             <option value="$PROJECT_DIR$/barlom-foundation/presentation/barlom-webutilities" />
             <option value="$PROJECT_DIR$/barlom-server/application/barlom-gdbconsolerestservices" />
-            <option value="$PROJECT_DIR$/barlom-server/application/barlom-restserver" />
             <option value="$PROJECT_DIR$/barlom-server/domain/barlom-metamodel" />
             <option value="$PROJECT_DIR$/barlom-server/persistence/barlom-gdbpostgresql" />
-            <option value="$PROJECT_DIR$/barlom-server/persistence/barlom-h2database" />
-            <option value="$PROJECT_DIR$/barlom-server/presentation/barlom-adminserver" />
             <option value="$PROJECT_DIR$/barlom-server/presentation/barlom-gdbconsoleserver" />
             <option value="$PROJECT_DIR$/barlom-server/presentation/barlom-main" />
             <option value="$PROJECT_DIR$/steamflake-server/persistence/steamflake-metametamodel" />

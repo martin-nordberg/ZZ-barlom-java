@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -8,9 +8,6 @@ package org.barlom.presentation.main;
 import dagger.Module;
 import dagger.Provides;
 import org.barlom.application.gdbconsolerestservices.GdbConsoleRestServicesModule;
-import org.barlom.application.restserver.RestServerModule;
-import org.barlom.persistence.h2database.H2DatabaseModule;
-import org.barlom.presentation.adminserver.AdminServerModule;
 
 /**
  * Dagger dependency injection module for top level application configuration.
@@ -18,10 +15,7 @@ import org.barlom.presentation.adminserver.AdminServerModule;
 @Module(
     injects = Application.class,
     includes = {
-        AdminServerModule.class,
-        RestServerModule.class,
         GdbConsoleRestServicesModule.class,
-        H2DatabaseModule.class
     } )
 public class ApplicationModule {
 

@@ -15,11 +15,8 @@ sourceSets {
 dependencies {
 
     // Other Modules
-    compile project( ':barlom-adminserver' )
     compile project( ':barlom-gdbconsoleserver' )
     compile project( ':barlom-gdbconsolerestservices' )
-    compile project( ':barlom-h2database' )
-    compile project( ':barlom-restserver' )
 
     // Dagger
     compile( group: 'com.squareup.dagger', name: 'dagger', version: daggerVersion )

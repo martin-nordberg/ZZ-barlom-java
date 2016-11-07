@@ -42,9 +42,6 @@ rootProject.children.find { it.name == 'barlom-foundation/infrastructure/barlom-
 include 'barlom-server/presentation/barlom-main'
 rootProject.children.find { it.name == 'barlom-server/presentation/barlom-main' }.name = 'barlom-main'
 
-include 'barlom-server/presentation/barlom-adminserver'
-rootProject.children.find { it.name == 'barlom-server/presentation/barlom-adminserver' }.name = 'barlom-adminserver'
-
 include 'barlom-server/presentation/barlom-gdbconsoleserver'
 rootProject.children.find { it.name == 'barlom-server/presentation/barlom-gdbconsoleserver' }.name = 'barlom-gdbconsoleserver'
 
@@ -52,17 +49,11 @@ rootProject.children.find { it.name == 'barlom-server/presentation/barlom-gdbcon
 include 'barlom-server/application/barlom-gdbconsolerestservices'
 rootProject.children.find { it.name == 'barlom-server/application/barlom-gdbconsolerestservices' }.name = 'barlom-gdbconsolerestservices'
 
-include 'barlom-server/application/barlom-restserver'
-rootProject.children.find { it.name == 'barlom-server/application/barlom-restserver' }.name = 'barlom-restserver'
-
 // Domain
 include 'barlom-server/domain/barlom-metamodel'
 rootProject.children.find { it.name == 'barlom-server/domain/barlom-metamodel' }.name = 'barlom-metamodel'
 
 // Persistence
-include 'barlom-server/persistence/barlom-h2database'
-rootProject.children.find { it.name == 'barlom-server/persistence/barlom-h2database' }.name = 'barlom-h2database'
-
 include 'barlom-server/persistence/barlom-gdbpostgresql'
 rootProject.children.find { it.name == 'barlom-server/persistence/barlom-gdbpostgresql' }.name = 'barlom-gdbpostgresql'
 

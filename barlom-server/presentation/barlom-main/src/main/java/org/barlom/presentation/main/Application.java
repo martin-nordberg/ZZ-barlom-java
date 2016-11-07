@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2014-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -8,9 +8,7 @@ package org.barlom.presentation.main;
 import dagger.ObjectGraph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.barlom.application.restserver.ApplicationServicesWrapper;
 import org.barlom.infrastructure.utilities.uuids.Uuids;
-import org.barlom.presentation.adminserver.AdminServerBuilder;
 import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.barlom.presentation.webutilities.logging.Log4j2JettyLogger;
 
@@ -43,8 +41,6 @@ public class Application {
         Application app = objectGraph.get( Application.class );
 
         // Register dependency injection at lower levels which cannot be injected directly
-        ApplicationServicesWrapper.registerObjectGraph( objectGraph );
-        AdminServerBuilder.registerObjectGraph( objectGraph );
         org.barlom.application.gdbconsolerestservices.ApplicationServicesWrapper.registerObjectGraph( objectGraph );
         BarlomGdbConsoleServerBuilder.registerObjectGraph( objectGraph );
 
