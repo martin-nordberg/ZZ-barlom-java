@@ -1,3 +1,8 @@
+//
+// (C) Copyright 2016 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
 package org.barlom.application.gdbconsolerestservices;
 
 import org.barlom.application.apputilities.filters.ThreadNameFilter;

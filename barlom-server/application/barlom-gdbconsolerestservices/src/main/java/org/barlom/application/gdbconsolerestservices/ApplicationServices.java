@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -16,14 +16,14 @@ import java.util.Set;
 /**
  * Registry of services for RESTEasy.
  */
-public class ApplicationServices
+class ApplicationServices
     extends Application {
 
     /**
      * Constructs a new application definition.
      */
     @Inject
-    public ApplicationServices(
+    ApplicationServices(
         VertexTypeQueries vertexTypeQueries
     ) {
 
