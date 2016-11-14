@@ -1,22 +1,9 @@
 buildDir = '../../../build/barlom-server/application/barlom-gdbconsolerestservices'
 
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
-}
-
 dependencies {
 
     // Other Modules
     compile project( ':barlom-apputilities' )
-
-    // Dagger
-    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
 
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
@@ -30,9 +17,6 @@ dependencies {
 
     compile( group: 'org.jboss.logging', name: 'jboss-logging', version: jbossLoggingVersion )
 
-
-    // Dagger Annotation Processor
-    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }
 

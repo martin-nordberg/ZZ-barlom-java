@@ -5,24 +5,18 @@
 
 package org.barlom.presentation.main;
 
-import dagger.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.barlom.infrastructure.utilities.injections.InjectionsFactory;
 import org.barlom.infrastructure.utilities.uuids.Uuids;
 import org.barlom.presentation.webutilities.logging.Log4j2JettyLogger;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Barlom main program.
  */
-public class Application {
+public final class Application {
 
-    @Inject
-    public Application( WebServer webServer ) {
-        this.webServer = webServer;
+    private Application() {
+        this.webServer = new WebServer();
     }
 
     /**
@@ -37,10 +31,7 @@ public class Application {
         // Capture Jetty logging into Log4J2.
         org.eclipse.jetty.util.log.Log.setLog( new Log4j2JettyLogger( "Jetty" ) );
 
-        // Initialize dependency injection.
-        Injections injections = new InjectionsFactory().create( Injections.class );
-
-        Application app = injections.makeApp();
+        Application app = new Application();
 
         // do extra experimental stuff
         Application.experiment();
@@ -48,14 +39,6 @@ public class Application {
         // Run the application.
         app.run();
 
-    }
-
-    @SuppressWarnings( "InterfaceMayBeAnnotatedFunctional" )
-    @Singleton
-    @Component
-    interface Injections {
-
-        Application makeApp();
     }
 
     /**

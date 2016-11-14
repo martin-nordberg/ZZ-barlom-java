@@ -28,7 +28,6 @@ import org.barlom.infrastructure.utilities.revisions.V;
 import org.barlom.infrastructure.utilities.revisions.VArray;
 import org.barlom.infrastructure.utilities.revisions.VHashMap;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +54,6 @@ public final class MetamodelRepository
      * @param attributeDeclLoader      the loader used to initialize attribute declarations into the metamodel
      *                                 repository.
      */
-    @Inject
     public MetamodelRepository(
         IPackageLoader packageLoader,
         IPackageDependencyLoader packageDependencyLoader,

@@ -22,7 +22,6 @@ class ApplicationServices
     /**
      * Constructs a new application definition.
      */
-    @Inject
     ApplicationServices(
         VertexTypeQueries vertexTypeQueries
     ) {

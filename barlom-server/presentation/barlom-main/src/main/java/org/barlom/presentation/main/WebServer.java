@@ -16,20 +16,15 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Jetty web server initial configuration and start up.
  */
-@Singleton
 class WebServer
     implements AutoCloseable {
 
     /**
      * Constructs a new web server.
      */
-    @Inject
     WebServer() {
     }
 

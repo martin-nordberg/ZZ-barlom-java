@@ -1,27 +1,11 @@
 buildDir = '../../../build/barlom-server/domain/barlom-metamodel'
 
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
-}
-
 dependencies {
 
     // Other Modules
     compile project( ':barlom-utilities' )
 
-    // Dagger
-    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
-
     // JSON-P
     compile( group: 'org.glassfish', name: 'javax.json', version: jsonpVersion )
-
-    // Dagger Annotation Processor
-    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }

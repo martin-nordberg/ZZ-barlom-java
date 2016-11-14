@@ -2,30 +2,14 @@ apply plugin: 'application'
 
 buildDir = '../../../build/barlom-server/presentation/barlom-main'
 
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
-}
-
 dependencies {
 
     // Other Modules
     compile project( ':barlom-gdbconsoleserver' )
     compile project( ':barlom-gdbconsolerestservices' )
 
-    // Dagger
-    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
-
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )
-
-    // Dagger Annotation Processor
-    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }
 

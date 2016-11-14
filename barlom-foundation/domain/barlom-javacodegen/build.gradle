@@ -1,25 +1,9 @@
 buildDir = '../../../build/barlom-foundation/domain/barlom-javacodegen'
 
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
-}
-
 dependencies {
 
     // Other Modules
     compile project( ':barlom-ioutilities' )
     compile project( ':barlom-javamodel' )
-
-    // Dagger
-    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
-
-    // Dagger Annotation Processor
-    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }

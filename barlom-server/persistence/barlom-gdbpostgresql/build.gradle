@@ -1,33 +1,17 @@
 
 buildDir = '../../../build/barlom-server/persistence/barlom-gdbpostgresql'
 
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
-}
-
 dependencies {
 
     // Other Modules
     compile project( ':barlom-dbutilities' )
     compile project( ':barlom-metamodel' )
 
-    // Dagger
-    compile( group: 'com.google.dagger', name: 'dagger', version: daggerVersion )
-
     // PostgreSQL
     compile( group: 'org.postgresql', name: 'postgresql', version: postgreSqlVersion )
 
     // Flyway
     compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )
-
-    // Dagger Annotation Processor
-    provided( group: 'com.google.dagger', name: 'dagger-compiler', version: daggerVersion )
 
 }
 

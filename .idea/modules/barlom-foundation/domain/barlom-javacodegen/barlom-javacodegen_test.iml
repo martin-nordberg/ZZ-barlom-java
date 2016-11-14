@@ -16,7 +16,6 @@
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.7" level="project" />
     <orderEntry type="module" module-name="barlom-ioutilities_main" />
     <orderEntry type="module" module-name="barlom-javamodel_main" />
-    <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.7" level="project" />
     <orderEntry type="library" name="Gradle: org.spockframework:spock-core:1.0-groovy-2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.7" level="project" />
     <orderEntry type="library" name="Gradle: org.flywaydb:flyway-core:4.0.3" level="project" />

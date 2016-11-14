@@ -9,7 +9,6 @@ subprojects {
     }
 
     // Versions of all external libraries used throughout Barlom
-    ext.daggerVersion = '2.7'
     ext.flywayVersion = '4.0.3'
     ext.h2Version = '1.4.192'
     ext.jbossLoggingVersion = '3.3.0.Final'

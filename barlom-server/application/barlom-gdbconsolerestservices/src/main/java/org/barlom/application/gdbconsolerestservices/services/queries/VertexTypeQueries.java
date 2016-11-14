@@ -8,7 +8,6 @@ package org.barlom.application.gdbconsolerestservices.services.queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -25,7 +24,6 @@ public class VertexTypeQueries {
     /**
      * Constructs a new vertex type query service backed by given metamodel repository.
      */
-    @Inject
     public VertexTypeQueries( /*TODO*/ ) {
     }
 
