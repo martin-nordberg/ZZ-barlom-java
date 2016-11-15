@@ -11,7 +11,7 @@ class ConfigurationSpec
     def "Sample properties can be read"() {
 
         given:
-        def config = new Configuration( ConfigurationSpec.class )
+        def config = new PropertiesFileConfiguration( ConfigurationSpec.class )
 
         when:
         def result = config.readString( key )
@@ -29,7 +29,7 @@ class ConfigurationSpec
     def "An integer property can be read"() {
 
         given:
-        def config = new Configuration( ConfigurationSpec.class )
+        def config = new PropertiesFileConfiguration( ConfigurationSpec.class )
 
         when:
         def result = config.readInt( key )
@@ -47,7 +47,7 @@ class ConfigurationSpec
     def "A boolean property can be read"() {
 
         given:
-        def config = new Configuration( ConfigurationSpec.class )
+        def config = new PropertiesFileConfiguration( ConfigurationSpec.class )
 
         when:
         def result = config.readBoolean( key )
@@ -69,7 +69,7 @@ class ConfigurationSpec
     def "A string list of properties can be read"() {
 
         given:
-        def config = new Configuration( ConfigurationSpec.class )
+        def config = new PropertiesFileConfiguration( ConfigurationSpec.class )
 
         def result = config.readStrings( "key7" )
 

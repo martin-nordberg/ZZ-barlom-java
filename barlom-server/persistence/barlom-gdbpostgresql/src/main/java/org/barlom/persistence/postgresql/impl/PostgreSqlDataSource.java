@@ -6,9 +6,11 @@
 package org.barlom.persistence.postgresql.impl;
 
 import org.apache.logging.log4j.LogManager;
-import org.barlom.infrastructure.utilities.configuration.Configuration;
+import org.barlom.infrastructure.utilities.configuration.PropertiesFileConfiguration;
+import org.barlom.infrastructure.utilities.configuration.IConfiguration;
 import org.barlom.persistence.dbutilities.api.IConnection;
 import org.barlom.persistence.dbutilities.api.IDataSource;
+import org.barlom.persistence.postgresql.GdbPostgreSqlSubsystem;
 import org.barlom.persistence.postgresql.api.exceptions.PostgreSqlDatabaseException;
 import org.postgresql.ds.PGPoolingDataSource;
 
@@ -24,25 +26,30 @@ import java.util.logging.Logger;
 public final class PostgreSqlDataSource
     implements IDataSource {
 
+
     /**
      * Constructs a new PostgreSQL data source.
      *
+     * @param token token ensures that instances are created only via the subsystem facade.
      * @param dataSourceName the name of the data source (used in configuration property names).
+     * @param clientConfiguration overriding configuration for data source connection parameters.
      */
-    public PostgreSqlDataSource( String dataSourceName ) {
+    public PostgreSqlDataSource(
+        @SuppressWarnings( "UnusedParameters" ) GdbPostgreSqlSubsystem.Token token,
+        String dataSourceName,
+        IConfiguration clientConfiguration
+    ) {
 
         // Read the database configuration.
-        Configuration config = new Configuration( PostgreSqlDataSource.class );
+        IConfiguration config = new PropertiesFileConfiguration( PostgreSqlDataSource.class, clientConfiguration, dataSourceName );
 
-        String serverName = config.readString( dataSourceName + ".serverName" );
-        int portNumber = config.readInt( dataSourceName + ".portNumber" );
-        String databaseName = config.readString( dataSourceName + ".databaseName" );
-        String currentSchema = config.readString( dataSourceName + ".currentSchema" );
-        String user = config.readString( dataSourceName + ".user" );
-        String password = config.readString( dataSourceName + ".password" );
-        int maxConnections = config.readInt( dataSourceName + ".maxConnections" );
-
-        String extraMigrationLocations = config.readString( dataSourceName + ".extraMigrationLocations" );
+        String serverName = config.readString( "serverName" );
+        int portNumber = config.readInt( "portNumber" );
+        String databaseName = config.readString( "databaseName" );
+        String currentSchema = config.readString( "currentSchema" );
+        String user = config.readString( "user" );
+        String password = config.readString( "password" );
+        int maxConnections = config.readInt( "maxConnections" );
 
         PostgreSqlDataSource.LOG.info( "Opening data source {}: User Name = {}, Database = {}, Schema = {}.",
                                        dataSourceName, user, databaseName
@@ -57,9 +64,6 @@ public final class PostgreSqlDataSource
         this.connectionPool.setUser( user );
         this.connectionPool.setPassword( password );
         this.connectionPool.setMaxConnections( maxConnections );
-
-        // Update the schema if needed.
-        new DatabaseMigration( this ).updateDatabaseSchema( extraMigrationLocations );
 
     }
 
@@ -132,6 +136,9 @@ public final class PostgreSqlDataSource
      */
     private static final org.apache.logging.log4j.Logger LOG = LogManager.getLogger();
 
+    /**
+     * The underlying PostgreSQL JDBC connection pool.
+     */
     private final PGPoolingDataSource connectionPool;
 
 }

@@ -1,5 +1,6 @@
-package org.barlom.persistence.postgresql.impl
+package org.barlom.persistence.postgresql
 
+import org.barlom.domain.metamodel.api.IMetamodelFacade
 import org.barlom.infrastructure.utilities.uuids.Uuids
 import org.barlom.persistence.dbutilities.api.IConnection
 import org.barlom.persistence.dbutilities.api.IDataSource
@@ -22,7 +23,10 @@ class Experiments
             count += 1;
         }
 
-        IDataSource dataSource = new PostgreSqlDataSource( "test" );
+        GdbPostgreSqlSubsystem gdbPostgreSqlSubsystem = new GdbPostgreSqlSubsystem( "test" );
+        IDataSource dataSource = gdbPostgreSqlSubsystem.provideDataSource();
+        gdbPostgreSqlSubsystem.provideMetamodelFacade();
+
         IConnection connection = dataSource.openConnection();
 
         Map<String,Object> params = new HashMap<>();

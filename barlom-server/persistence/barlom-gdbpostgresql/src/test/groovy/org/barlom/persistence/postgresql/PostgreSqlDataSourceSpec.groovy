@@ -1,4 +1,4 @@
-package org.barlom.persistence.postgresql.impl
+package org.barlom.persistence.postgresql
 
 import org.barlom.persistence.dbutilities.api.IConnection
 import org.barlom.persistence.dbutilities.api.IDataSource
@@ -22,7 +22,7 @@ public class PostgreSqlDataSourceSpec
             count += 1;
         }
 
-        IDataSource dataSource = new PostgreSqlDataSource( "test" );
+        IDataSource dataSource = new GdbPostgreSqlSubsystem( "test" ).provideDataSource();
         IConnection connection = dataSource.openConnection();
         connection.executeQuery( readResult, "SELECT 1 one, 'TWO' two, 3 three" );
 

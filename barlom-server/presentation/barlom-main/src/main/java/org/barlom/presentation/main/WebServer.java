@@ -8,7 +8,7 @@ package org.barlom.presentation.main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barlom.application.gdbconsolerestservices.GdbConsoleRestServicesBuilder;
-import org.barlom.infrastructure.utilities.configuration.Configuration;
+import org.barlom.infrastructure.utilities.configuration.PropertiesFileConfiguration;
 import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.NCSARequestLog;
@@ -64,7 +64,7 @@ class WebServer
     void run() throws Exception {
 
         // Read the configuration.
-        Configuration config = new Configuration( WebServer.class );
+        PropertiesFileConfiguration config = new PropertiesFileConfiguration( WebServer.class );
         int port = config.readInt( "port" );
         boolean enableBarlomGdbConsole = config.readBoolean( "enableBarlomGdbConsole" );
 
