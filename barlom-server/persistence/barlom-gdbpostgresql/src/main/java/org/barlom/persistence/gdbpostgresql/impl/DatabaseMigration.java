@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.barlom.persistence.postgresql.impl;
+package org.barlom.persistence.gdbpostgresql.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,22 +18,17 @@ import javax.sql.DataSource;
  */
 final class DatabaseMigration {
 
-    /**
-     * Static utility class not intended for instantiation.
-     *
-     * @param dataSource the data source for the database to be migrated.
-     */
-    DatabaseMigration( DataSource dataSource ) {
-        this.dataSource = dataSource;
+    private DatabaseMigration() {
     }
 
     /**
      * Updates the database schema to the latest version.
      *
+     * @param dataSource the data source for the database to be migrated.
      * @param extraMigrationClasspath extra classpath folders that should be read and migrated after the base schema
      *                                definition.
      */
-    void updateDatabaseSchema( String extraMigrationClasspath ) {
+    static void updateDatabaseSchema( DataSource dataSource, String extraMigrationClasspath ) {
 
         DatabaseMigration.LOG.info( "Updating database schema..." );
 
@@ -44,7 +39,7 @@ final class DatabaseMigration {
         Flyway flyway = new Flyway();
 
         // Point it to the database.
-        flyway.setDataSource( this.dataSource );
+        flyway.setDataSource( dataSource );
 
         // Build the path for migrations.
         String migrationClasspath = DatabaseMigration.SCHEMA_MIGRATION_CLASSPATHS;
@@ -72,10 +67,5 @@ final class DatabaseMigration {
      * The base classpath locations for defining the schema.
      */
     private static final String SCHEMA_MIGRATION_CLASSPATHS = "classpath:db/migration";
-
-    /**
-     * The data source for the database to migrate.
-     */
-    private final DataSource dataSource;
 
 }

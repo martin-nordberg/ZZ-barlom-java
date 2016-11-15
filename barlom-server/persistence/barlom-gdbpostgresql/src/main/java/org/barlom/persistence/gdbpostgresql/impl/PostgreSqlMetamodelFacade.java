@@ -1,11 +1,15 @@
-package org.barlom.persistence.postgresql.impl;
+//
+// (C) Copyright 2016 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+package org.barlom.persistence.gdbpostgresql.impl;
 
 import org.barlom.domain.metamodel.api.IMetamodelFacade;
 import org.barlom.domain.metamodel.api.exceptions.MetamodelException;
-import org.barlom.infrastructure.utilities.configuration.IConfiguration;
-import org.barlom.infrastructure.utilities.configuration.PropertiesFileConfiguration;
 import org.barlom.persistence.dbutilities.api.IConnection;
-import org.barlom.persistence.postgresql.GdbPostgreSqlSubsystem;
+import org.barlom.persistence.gdbpostgresql.GdbPostgreSqlSubsystem;
+import org.barlom.persistence.postgresql.impl.PostgreSqlDataSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,18 +24,13 @@ public class PostgreSqlMetamodelFacade
     public PostgreSqlMetamodelFacade(
         @SuppressWarnings( "UnusedParameters" ) GdbPostgreSqlSubsystem.Token token,
         PostgreSqlDataSource dataSource,
-        IConfiguration clientConfiguration
+        String extraMigrationLocations
     ) {
 
         this.dataSource = dataSource;
 
-        // Read the database migration configuration.
-        IConfiguration config = new PropertiesFileConfiguration( PostgreSqlMetamodelFacade.class, clientConfiguration );
-
-        String extraMigrationLocations = config.readString( "extraMigrationLocations" );
-
         // Update the schema if needed.
-        new DatabaseMigration( this.dataSource ).updateDatabaseSchema( extraMigrationLocations );
+        DatabaseMigration.updateDatabaseSchema( this.dataSource, extraMigrationLocations );
 
     }
 

@@ -6,9 +6,7 @@ dependencies {
     // Other Modules
     compile project( ':barlom-dbutilities' )
     compile project( ':barlom-metamodel' )
-
-    // PostgreSQL
-    compile( group: 'org.postgresql', name: 'postgresql', version: postgreSqlVersion )
+    compile project( ':barlom-postgresql' )
 
     // Flyway
     compile( group: 'org.flywaydb', name: 'flyway-core', version: flywayVersion )

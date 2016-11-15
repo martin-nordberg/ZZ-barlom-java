@@ -6,12 +6,10 @@
 package org.barlom.persistence.postgresql.impl;
 
 import org.apache.logging.log4j.LogManager;
-import org.barlom.infrastructure.utilities.configuration.PropertiesFileConfiguration;
-import org.barlom.infrastructure.utilities.configuration.IConfiguration;
 import org.barlom.persistence.dbutilities.api.IConnection;
 import org.barlom.persistence.dbutilities.api.IDataSource;
-import org.barlom.persistence.postgresql.GdbPostgreSqlSubsystem;
-import org.barlom.persistence.postgresql.api.exceptions.PostgreSqlDatabaseException;
+import org.barlom.persistence.postgresql.PostgreSqlSubsystem;
+import org.barlom.persistence.postgresql.api.PostgreSqlDatabaseException;
 import org.postgresql.ds.PGPoolingDataSource;
 
 import java.io.PrintWriter;
@@ -26,30 +24,30 @@ import java.util.logging.Logger;
 public final class PostgreSqlDataSource
     implements IDataSource {
 
-
     /**
      * Constructs a new PostgreSQL data source.
      *
-     * @param token token ensures that instances are created only via the subsystem facade.
-     * @param dataSourceName the name of the data source (used in configuration property names).
-     * @param clientConfiguration overriding configuration for data source connection parameters.
+     * @param token          token ensures that only the subsystem can construct a new data source.
+     * @param dataSourceName the name of the data source.
+     * @param serverName     the server host name.
+     * @param portNumber     the server port number.
+     * @param databaseName   the database name to connect to.
+     * @param currentSchema  the schema to operate within.
+     * @param user           the connecting user name.
+     * @param password       the user's password.
+     * @param maxConnections the maximum number of connections to keep open in the pool.
      */
     public PostgreSqlDataSource(
-        @SuppressWarnings( "UnusedParameters" ) GdbPostgreSqlSubsystem.Token token,
+        @SuppressWarnings( "UnusedParameters" ) PostgreSqlSubsystem.Token token,
         String dataSourceName,
-        IConfiguration clientConfiguration
+        String serverName,
+        int portNumber,
+        String databaseName,
+        String currentSchema,
+        String user,
+        String password,
+        int maxConnections
     ) {
-
-        // Read the database configuration.
-        IConfiguration config = new PropertiesFileConfiguration( PostgreSqlDataSource.class, clientConfiguration, dataSourceName );
-
-        String serverName = config.readString( "serverName" );
-        int portNumber = config.readInt( "portNumber" );
-        String databaseName = config.readString( "databaseName" );
-        String currentSchema = config.readString( "currentSchema" );
-        String user = config.readString( "user" );
-        String password = config.readString( "password" );
-        int maxConnections = config.readInt( "maxConnections" );
 
         PostgreSqlDataSource.LOG.info( "Opening data source {}: User Name = {}, Database = {}, Schema = {}.",
                                        dataSourceName, user, databaseName
@@ -94,6 +92,11 @@ public final class PostgreSqlDataSource
     @Override
     public int getLoginTimeout() throws SQLException {
         return this.connectionPool.getLoginTimeout();
+    }
+
+    @Override
+    public String getName() {
+        return this.connectionPool.getDataSourceName();
     }
 
     @Override

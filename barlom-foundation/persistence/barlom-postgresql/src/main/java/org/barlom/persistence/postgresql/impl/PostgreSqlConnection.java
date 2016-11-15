@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.barlom.persistence.dbutilities.api.DatabaseException;
 import org.barlom.persistence.dbutilities.impl.AbstractConnection;
 import org.barlom.persistence.dbutilities.spi.IResultSetSpi;
-import org.barlom.persistence.postgresql.api.exceptions.PostgreSqlDatabaseException;
+import org.barlom.persistence.postgresql.api.PostgreSqlDatabaseException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -3,7 +3,7 @@
 // Apache 2.0 License
 //
 
-package org.barlom.persistence.postgresql.api.exceptions;
+package org.barlom.persistence.postgresql.api;
 
 import org.apache.logging.log4j.Logger;
 import org.barlom.infrastructure.utilities.exceptions.EValidationType;

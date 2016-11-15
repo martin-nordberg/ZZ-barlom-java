@@ -1,10 +1,15 @@
-package org.barlom.persistence.postgresql
+//
+// (C) Copyright 2016 Martin E. Nordberg III
+// Apache 2.0 License
+//
 
-import org.barlom.domain.metamodel.api.IMetamodelFacade
+package org.barlom.persistence.gdbpostgresql
+
 import org.barlom.infrastructure.utilities.uuids.Uuids
 import org.barlom.persistence.dbutilities.api.IConnection
 import org.barlom.persistence.dbutilities.api.IDataSource
 import org.barlom.persistence.dbutilities.api.IResultSet
+import org.barlom.persistence.postgresql.PostgreSqlSubsystem
 import spock.lang.Specification
 
 /**
@@ -23,8 +28,9 @@ class Experiments
             count += 1;
         }
 
-        GdbPostgreSqlSubsystem gdbPostgreSqlSubsystem = new GdbPostgreSqlSubsystem( "test" );
-        IDataSource dataSource = gdbPostgreSqlSubsystem.provideDataSource();
+        PostgreSqlSubsystem postgreSqlSubsystem = new PostgreSqlSubsystem( "test" );
+        GdbPostgreSqlSubsystem gdbPostgreSqlSubsystem = new GdbPostgreSqlSubsystem( postgreSqlSubsystem );
+        IDataSource dataSource = postgreSqlSubsystem.provideDataSource();
         gdbPostgreSqlSubsystem.provideMetamodelFacade();
 
         IConnection connection = dataSource.openConnection();

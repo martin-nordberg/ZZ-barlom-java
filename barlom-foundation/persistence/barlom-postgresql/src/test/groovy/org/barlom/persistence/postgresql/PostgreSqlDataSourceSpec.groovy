@@ -22,7 +22,7 @@ public class PostgreSqlDataSourceSpec
             count += 1;
         }
 
-        IDataSource dataSource = new GdbPostgreSqlSubsystem( "test" ).provideDataSource();
+        IDataSource dataSource = new PostgreSqlSubsystem( "test" ).provideDataSource();
         IConnection connection = dataSource.openConnection();
         connection.executeQuery( readResult, "SELECT 1 one, 'TWO' two, 3 three" );
 

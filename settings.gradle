@@ -30,6 +30,9 @@ rootProject.children.find { it.name == 'barlom-foundation/persistence/barlom-dbu
 include 'barlom-foundation/persistence/barlom-ioutilities'
 rootProject.children.find { it.name == 'barlom-foundation/persistence/barlom-ioutilities' }.name = 'barlom-ioutilities'
 
+include 'barlom-foundation/persistence/barlom-postgresql'
+rootProject.children.find { it.name == 'barlom-foundation/persistence/barlom-postgresql' }.name = 'barlom-postgresql'
+
 // Infrastructure
 include 'barlom-foundation/infrastructure/barlom-utilities'
 rootProject.children.find { it.name == 'barlom-foundation/infrastructure/barlom-utilities' }.name = 'barlom-utilities'

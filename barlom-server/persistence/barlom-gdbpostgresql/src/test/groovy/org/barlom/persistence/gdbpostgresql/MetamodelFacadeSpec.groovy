@@ -1,9 +1,15 @@
-package org.barlom.persistence.postgresql
+//
+// (C) Copyright 2016 Martin E. Nordberg III
+// Apache 2.0 License
+//
+
+package org.barlom.persistence.gdbpostgresql
 
 import org.barlom.domain.metamodel.api.IMetamodelFacade
 import org.barlom.infrastructure.utilities.uuids.Uuids
-import org.barlom.persistence.dbutilities.api.IDataSource
+import org.barlom.persistence.postgresql.PostgreSqlSubsystem
 import spock.lang.Specification
+
 /**
  * Specification for the PostgreSQL metamodel facade.
  */
@@ -23,8 +29,8 @@ class MetamodelFacadeSpec
             count += 1;
         }
 
-        GdbPostgreSqlSubsystem gdbPostgreSqlSubsystem = new GdbPostgreSqlSubsystem( "test" );
-        IDataSource dataSource = gdbPostgreSqlSubsystem.provideDataSource();
+        PostgreSqlSubsystem postgreSqlSubsystem = new PostgreSqlSubsystem( "test" );
+        GdbPostgreSqlSubsystem gdbPostgreSqlSubsystem = new GdbPostgreSqlSubsystem( postgreSqlSubsystem );
         IMetamodelFacade facade = gdbPostgreSqlSubsystem.provideMetamodelFacade();
 
         facade.upsertVertexType( uuid, name );
@@ -38,7 +44,7 @@ class MetamodelFacadeSpec
         count >= 1;
 
         cleanup:
-        dataSource.close();
+        postgreSqlSubsystem.provideDataSource().close();
 
     }
 

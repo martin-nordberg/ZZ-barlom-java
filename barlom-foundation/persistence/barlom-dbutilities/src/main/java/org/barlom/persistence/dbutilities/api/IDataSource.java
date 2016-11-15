@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2014-2015 Martin E. Nordberg III
+// (C) Copyright 2014-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -15,6 +15,11 @@ public interface IDataSource
 
     @Override
     void close();
+
+    /**
+     * @return the name of this data source.
+     */
+    String getName();
 
     /**
      * Creates a new connection from this data source.

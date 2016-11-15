@@ -1,0 +1,14 @@
+
+buildDir = '../../../build/barlom-foundation/persistence/barlom-postgresql'
+
+dependencies {
+
+    // Other Modules
+    compile project( ':barlom-dbutilities' )
+
+    // PostgreSQL
+    compile( group: 'org.postgresql', name: 'postgresql', version: postgreSqlVersion )
+
+}
+
+

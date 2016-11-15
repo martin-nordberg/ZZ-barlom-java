@@ -43,6 +43,8 @@
       <module name="barlom-main_test" target="1.8" />
       <module name="barlom-metamodel_main" target="1.8" />
       <module name="barlom-metamodel_test" target="1.8" />
+      <module name="barlom-postgresql_main" target="1.8" />
+      <module name="barlom-postgresql_test" target="1.8" />
       <module name="barlom-restserver_main" target="1.8" />
       <module name="barlom-restserver_test" target="1.8" />
       <module name="barlom-sqlmodel_main" target="1.8" />
