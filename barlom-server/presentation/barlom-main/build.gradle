@@ -7,6 +7,8 @@ dependencies {
     // Other Modules
     compile project( ':barlom-gdbconsoleserver' )
     compile project( ':barlom-gdbconsolerestservices' )
+    compile project( ':barlom-gdbpostgresql' )
+    compile project( ':barlom-postgresql' )
 
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )

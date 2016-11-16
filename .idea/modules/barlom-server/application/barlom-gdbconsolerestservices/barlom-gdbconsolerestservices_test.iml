@@ -15,12 +15,14 @@
     <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.7" level="project" />
     <orderEntry type="module" module-name="barlom-apputilities_main" />
+    <orderEntry type="module" module-name="barlom-metamodel_main" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-server:9.3.13.v20161014" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-servlet:9.3.13.v20161014" level="project" />
     <orderEntry type="library" name="Gradle: org.jboss.resteasy:resteasy-jaxrs:3.0.19.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.spockframework:spock-core:1.0-groovy-2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.glassfish:javax.json:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-http:9.3.13.v20161014" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-io:9.3.13.v20161014" level="project" />

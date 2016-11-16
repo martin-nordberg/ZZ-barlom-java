@@ -1,5 +1,5 @@
 //
-// (C) Copyright 2015 Martin E. Nordberg III
+// (C) Copyright 2015-2016 Martin E. Nordberg III
 // Apache 2.0 License
 //
 
@@ -7,6 +7,7 @@ package org.barlom.application.gdbconsolerestservices.services.queries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.barlom.domain.metamodel.api.IMetamodelFacade;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,7 +25,8 @@ public class VertexTypeQueries {
     /**
      * Constructs a new vertex type query service backed by given metamodel repository.
      */
-    public VertexTypeQueries( /*TODO*/ ) {
+    public VertexTypeQueries( IMetamodelFacade metamodelFacade ) {
+        this.metamodelFacade = metamodelFacade;
     }
 
     /**
@@ -85,5 +87,7 @@ public class VertexTypeQueries {
     }
 
     private static final Logger LOG = LogManager.getLogger();
+
+    private final IMetamodelFacade metamodelFacade;
 
 }

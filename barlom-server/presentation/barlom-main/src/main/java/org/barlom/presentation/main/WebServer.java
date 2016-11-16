@@ -7,14 +7,7 @@ package org.barlom.presentation.main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.barlom.application.gdbconsolerestservices.GdbConsoleRestServicesBuilder;
-import org.barlom.infrastructure.utilities.configuration.PropertiesFileConfiguration;
-import org.barlom.presentation.gdbconsoleserver.BarlomGdbConsoleServerBuilder;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 /**
  * Jetty web server initial configuration and start up.
@@ -25,7 +18,8 @@ class WebServer
     /**
      * Constructs a new web server.
      */
-    WebServer() {
+    WebServer( Server server ) {
+        this.server = server;
     }
 
     /**
@@ -34,17 +28,17 @@ class WebServer
     @Override
     public void close() {
 
-        WebServer.LOG.info( "Preparing to shut down ..." );
+        WebServer.LOG.info( "Stopping application server ..." );
 
         // Define a task to stop the server.
         Runnable stopServer = () -> {
             try {
                 Thread.sleep( 100L );
                 this.server.stop();
-                WebServer.LOG.info( "Application server shut down." );
+                WebServer.LOG.info( "Application server stopped." );
             }
             catch ( Exception e ) {
-                WebServer.LOG.error( "Failed shutdown.", e );
+                WebServer.LOG.error( "Failed to stop application server.", e );
             }
         };
 
@@ -63,26 +57,6 @@ class WebServer
      */
     void run() throws Exception {
 
-        // Read the configuration.
-        PropertiesFileConfiguration config = new PropertiesFileConfiguration( WebServer.class );
-        int port = config.readInt( "port" );
-        boolean enableBarlomGdbConsole = config.readBoolean( "enableBarlomGdbConsole" );
-
-        // Build the app server.
-        this.server = WebServer.makeServer( port );
-
-        // Create the context list.
-        ContextHandlerCollection contexts = new ContextHandlerCollection();
-
-        // Build the Barlom-GDB console.
-        if ( enableBarlomGdbConsole ) {
-            BarlomGdbConsoleServerBuilder.makeConsole( this, contexts );
-            GdbConsoleRestServicesBuilder.makeRestServer( contexts );
-        }
-
-        // Configure the server for its contexts
-        this.server.setHandler( contexts );
-
         // Start the server.
         WebServer.LOG.info( "Starting application server ..." );
         this.server.start();
@@ -96,39 +70,9 @@ class WebServer
 
     }
 
-    /**
-     * Constructs the Jetty HTTP server.
-     *
-     * @param port the port for the server to listen on.
-     *
-     * @return the created server ready to be configured.
-     */
-    private static Server makeServer( int port ) {
-
-        // Create the server itself.
-        Server result = new Server();
-
-        // Configure the server connection.
-        ServerConnector connector = new ServerConnector( result );
-        connector.setPort( port );
-        result.setConnectors( new Connector[]{ connector } );
-
-        // Configure request logging
-        NCSARequestLog requestLog = new NCSARequestLog( /*TODO: for file*/ );
-        requestLog.setAppend( true );
-        requestLog.setExtended( false );
-        requestLog.setLogTimeZone( "EST" );
-        requestLog.setLogLatency( true );
-        requestLog.setRetainDays( 10 );
-        result.setRequestLog( requestLog );
-
-        return result;
-
-    }
-
     private static final Logger LOG = LogManager.getLogger();
 
     /** App server for static content and REST web services. */
-    private Server server = null;
+    private final Server server;
 
 }

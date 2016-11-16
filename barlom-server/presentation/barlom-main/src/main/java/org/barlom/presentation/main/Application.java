@@ -16,7 +16,6 @@ import org.barlom.presentation.webutilities.logging.Log4j2JettyLogger;
 public final class Application {
 
     private Application() {
-        this.webServer = new WebServer();
     }
 
     /**
@@ -31,13 +30,15 @@ public final class Application {
         // Capture Jetty logging into Log4J2.
         org.eclipse.jetty.util.log.Log.setLog( new Log4j2JettyLogger( "Jetty" ) );
 
-        Application app = new Application();
-
         // do extra experimental stuff
         Application.experiment();
 
         // Run the application.
-        app.run();
+        Application.LOG.info( "Application started." );
+
+        new ApplicationSystem().makeWebServer().run();
+
+        Application.LOG.info( "Application stopped." );
 
     }
 
@@ -48,27 +49,7 @@ public final class Application {
         Application.LOG.info( "UUID: " + Uuids.makeUuidWithReservedBlock() );
     }
 
-    /**
-     * Runs the main application.
-     *
-     * @throws Exception if anything goes wrong without handling.
-     */
-    private void run() throws Exception {
-
-        Application.LOG.info( "Application started." );
-
-        // Run the web server.
-        this.webServer.run();
-
-        Application.LOG.info( "Application stopped." );
-
-    }
-
     private static final Logger LOG = LogManager.getLogger();
 
-    /**
-     * The web server to be run by this application.
-     */
-    private final WebServer webServer;
 
 }

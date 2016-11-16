@@ -4,6 +4,7 @@ dependencies {
 
     // Other Modules
     compile project( ':barlom-apputilities' )
+    compile project( ':barlom-metamodel' )
 
     // Jetty
     compile( group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion )

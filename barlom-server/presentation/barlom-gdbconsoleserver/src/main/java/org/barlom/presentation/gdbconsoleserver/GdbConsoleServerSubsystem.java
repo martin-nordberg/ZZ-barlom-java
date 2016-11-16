@@ -8,7 +8,6 @@ package org.barlom.presentation.gdbconsoleserver;
 import org.barlom.application.apputilities.filters.ThreadNameFilter;
 import org.barlom.presentation.webutilities.servlets.ShutdownServlet;
 import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -16,39 +15,34 @@ import org.eclipse.jetty.util.resource.Resource;
 
 import javax.servlet.DispatcherType;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 
 /**
- * Builder class creates and configures the admin server.
- * TODO: Seems like this stuff could be dependency-injected in a backwards sort of way.
+ * Subsystem facade class creates and configures the GDB console server.
  */
-public final class BarlomGdbConsoleServerBuilder {
+public final class GdbConsoleServerSubsystem {
 
-    /** Static utility class. */
-    private BarlomGdbConsoleServerBuilder() {
+    public GdbConsoleServerSubsystem() {
     }
 
     /**
      * Creates a Jetty server for Barlom-GDB Console.
      *
      * @param webServer The top level web server to be shutdown via the console.
-     * @param contexts  the context collection to be configured with the Barlom console application.
-     *
-     * @throws java.net.MalformedURLException if the configuration is broken.
      */
-    public static void makeConsole( AutoCloseable webServer, ContextHandlerCollection contexts )
-        throws MalformedURLException {
+    public Collection<ContextHandler> makeContextHandlers( AutoCloseable webServer ) {
+
+        Collection<ContextHandler> result = new ArrayList<>();
 
         // Serve static content.
-        ContextHandler staticContext = BarlomGdbConsoleServerBuilder.makeStaticContextHandler();
+        result.add( GdbConsoleServerSubsystem.makeStaticContextHandler() );
 
         // Serve dynamic content plus a shutdown handler.
-        ServletContextHandler dynamicContext = BarlomGdbConsoleServerBuilder.makeDynamicContextHandler( webServer );
+        result.add( GdbConsoleServerSubsystem.makeDynamicContextHandler( webServer ) );
 
-        // Combine the two contexts plus a shutdown handler.
-        contexts.addHandler( staticContext );
-        contexts.addHandler( dynamicContext );
-
+        return result;
     }
 
     /**
@@ -84,10 +78,8 @@ public final class BarlomGdbConsoleServerBuilder {
      * Creates the static file server context handler.
      *
      * @return the new context handler.
-     *
-     * @throws java.net.MalformedURLException if things are configured incorrectly.
      */
-    private static ContextHandler makeStaticContextHandler() throws MalformedURLException {
+    private static ContextHandler makeStaticContextHandler() {
 
         // Set the context for static content.
         ContextHandler fileServerContext = new ContextHandler();
@@ -102,11 +94,16 @@ public final class BarlomGdbConsoleServerBuilder {
         fileResourceHandler.setCacheControl( "max-age=0, no-cache, no-store" );
 
         // TODO: Make internal resource
-        fileResourceHandler.setBaseResource(
-            Resource.newResource(
-                "/home/mnordberg/workspace/barlom/barlom-client/barlom-gdbconsole/webapp"
-            )
-        );
+        try {
+            fileResourceHandler.setBaseResource(
+                Resource.newResource(
+                    "/home/mnordberg/workspace/barlom/barlom-client/barlom-gdbconsole/webapp"
+                )
+            );
+        }
+        catch ( MalformedURLException e ) {
+            throw new RuntimeException( "Failed to make static context handler", e );
+        }
 
         fileServerContext.setHandler( fileResourceHandler );
 
