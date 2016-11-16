@@ -20,7 +20,7 @@ class MetamodelFacadeSpec
 
         given:
         UUID uuid = Uuids.makeUuid();
-        String name = "Vertex Type Ten";
+        String name = "VertexTypeTen";
 
         def count = 0;
         def readResult = { UUID readUuid, String readName ->
@@ -42,6 +42,29 @@ class MetamodelFacadeSpec
         expect:
         foundByUuid == 1;
         count >= 1;
+
+        cleanup:
+        postgreSqlSubsystem.provideDataSource().close();
+
+    }
+
+    def "PostgreSQL metamodel finds all vertex types"() {
+
+        given:
+        def count = 0;
+        def readResult = { UUID readUuid, String readName ->
+            count += 1;
+        }
+
+        PostgreSqlSubsystem postgreSqlSubsystem = new PostgreSqlSubsystem( "test" );
+        GdbPostgreSqlSubsystem gdbPostgreSqlSubsystem = new GdbPostgreSqlSubsystem( postgreSqlSubsystem );
+        IMetamodelFacade facade = gdbPostgreSqlSubsystem.provideMetamodelFacade();
+
+        int foundAll = facade.findVertexTypesAll( readResult )
+
+        expect:
+        foundAll > 1;
+        count == foundAll;
 
         cleanup:
         postgreSqlSubsystem.provideDataSource().close();

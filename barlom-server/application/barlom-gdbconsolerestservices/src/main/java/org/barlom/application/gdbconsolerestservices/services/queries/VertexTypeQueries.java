@@ -15,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.UUID;
 
 /**
  * Service for querying Barlom vertex types.
@@ -44,13 +45,17 @@ public class VertexTypeQueries {
         StringWriter result = new StringWriter();
         PrintWriter out = new PrintWriter( result );
 
-        // TODO: need dynamic results
+        String[] delimiter = { "" };
 
-        out.println( "{ \"data\": [" );
-        out.println( " { \"uuid\": \"1\", \"name\": \"VertexType1\" }," );
-        out.println( " { \"uuid\": \"2\", \"name\": \"VertexType2\" }," );
-        out.println( " { \"uuid\": \"3\", \"name\": \"VertexType3\" }," );
-        out.println( " { \"uuid\": \"4\", \"name\": \"VertexType4\" }" );
+        out.print( "{ \"data\": [" );
+
+        this.metamodelFacade.findVertexTypesAll( (uuid,name) -> {
+            out.println( delimiter[0] );
+            delimiter[0] = ",";
+            out.print( " { \"uuid\": \"" + uuid + "\", \"name\": \"" + name + "\" }" );
+        } );
+
+        out.println();
         out.println( "] }" );
 
         out.close();
@@ -76,9 +81,12 @@ public class VertexTypeQueries {
         StringWriter result = new StringWriter();
         PrintWriter out = new PrintWriter( result );
 
-        // TODO: need dynamic results
-
-        out.println( " { \"uuid\": \"" + uuid + "\", \"name\": \"VertexType" + uuid + "\" }" );
+        this.metamodelFacade.findVertexTypeByUuid(
+            UUID.fromString(uuid),
+            ( uuid2, name) -> {
+                out.println( " { \"uuid\": \"" + uuid2 + "\", \"name\": \"" + name + "\" }" );
+            }
+        );
 
         out.close();
 

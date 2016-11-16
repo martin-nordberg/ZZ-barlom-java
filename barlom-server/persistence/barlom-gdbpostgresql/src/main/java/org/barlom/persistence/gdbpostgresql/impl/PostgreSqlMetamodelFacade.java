@@ -71,6 +71,20 @@ public class PostgreSqlMetamodelFacade
     }
 
     @Override
+    public int findVertexTypesAll( IVertexTypeQueryCallback callback ) throws MetamodelException {
+
+        try ( IConnection connection = this.dataSource.openConnection() ) {
+
+            return connection.executeQuery(
+                rs -> callback.handleVertexType( UUID.fromString( rs.getString( "uuid" ) ), rs.getString( "name" ) ),
+                "SELECT uuid, name FROM FindVertexTypesAll()"
+            );
+
+        }
+
+    }
+
+    @Override
     public void upsertVertexType( UUID uuid, String name ) throws MetamodelException {
 
         try ( IConnection connection = this.dataSource.openConnection() ) {
