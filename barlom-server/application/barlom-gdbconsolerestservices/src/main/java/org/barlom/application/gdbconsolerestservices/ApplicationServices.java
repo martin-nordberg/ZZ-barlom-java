@@ -6,7 +6,7 @@
 package org.barlom.application.gdbconsolerestservices;
 
 import org.barlom.application.gdbconsolerestservices.filters.CacheControlFilter;
-import org.barlom.application.gdbconsolerestservices.services.queries.VertexTypeQueries;
+import org.barlom.application.gdbconsolerestservices.services.VertexTypeService;
 import org.barlom.domain.metamodel.api.IMetamodelFacade;
 
 import javax.servlet.ServletContext;
@@ -46,7 +46,7 @@ public class ApplicationServices
             (IMetamodelFacade) context.getAttribute( GdbConsoleRestServicesSubsystem.METAMODEL_FACADE );
 
         // register RESTful query services
-        this.singletons.add( new VertexTypeQueries( metamodelFacade ) );
+        this.singletons.add( new VertexTypeService( metamodelFacade ) );
 
     }
 

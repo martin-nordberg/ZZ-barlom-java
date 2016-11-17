@@ -7,4 +7,4 @@
  * Package containing JAX-RS query controllers.
  */
 
-package org.barlom.application.gdbconsolerestservices.services.queries;
+package org.barlom.application.gdbconsolerestservices.services;
