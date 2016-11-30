@@ -9,6 +9,9 @@
 
     <title>Barlom-GDB Console</title>
 
+    <!-- Blaze CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/blaze">
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.1.1.js"
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
@@ -23,16 +26,28 @@
 
 </head>
 
-<body id="console-id">
+<body id="console-id" class="c-text">
 
-<h1>Barlom-GDB Console</h1>
-
-<a href="/barlomgdbconsole/exit">Exit</a>
-
-<div id="content">
-    <a href="#vertextypes">Vertex Types</a>
-    <!-- Filled dynamically according to hash tag. -->
-</div>
+    <main class="o-grid o-grid--no-gutter o-panel">
+        <div class="o-grid__cell--width-15 o-panel-container">
+            <nav class="c-nav o-panel">
+                <div class="c-nav__content">Barlom-GDB Console</div>
+                <div class="c-nav__item c-nav__item--active" onclick="riot.route('/vertextypes');">Vertex Types</div>
+                <div class="c-nav__item" onclick="riot.route('/edgetypes');">Edge Types</div>
+            </nav>
+        </div>
+        <div class="o-grid__cell--width-85 o-panel-container">
+            <nav class="c-nav c-nav--inline c-nav--light">
+                <span class="c-nav__item">TBD</span>
+                <span class="c-nav__item">TBD</span>
+                <span class="c-nav__item c-nav__item--right"><a href="/barlomgdbconsole/exit">Exit</a></span>
+                <span class="c-nav__item c-nav__item--right">TBD</span>
+            </nav>
+            <div id="content" class="o-panel o-panel--nav-top">
+                <!-- Filled dynamically according to hash tag. -->
+            </div>
+        </div>
+    </main>
 
 </body>
 
