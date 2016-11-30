@@ -1,4 +1,22 @@
 
+SET SEARCH_PATH = barlomgdbmetamodel;
+
+
+CREATE TYPE ChangeType AS ENUM (
+    'UpsertVertexType',
+    'DeleteVertexType'
+);
+
+CREATE TABLE Change
+(
+    id SERIAL NOT NULL,
+    type ChangeType NOT NULL,
+    elementUuid UUID NOT NULL,
+    dateTime TIMESTAMPTZ NOT NULL,
+    details JSONB NOT NULL,
+
+    CONSTRAINT PK_Change PRIMARY KEY (id)
+);
 
 CREATE TABLE VertexType
 (
@@ -12,24 +30,4 @@ CREATE TABLE VertexType
 );
 
 
-
-INSERT INTO VertexType
-            ( uuid, name )
-     VALUES ( md5(random()::text || clock_timestamp()::text)::uuid, 'VertexType1' );
-
-INSERT INTO VertexType
-            ( uuid, name )
-     VALUES ( md5(random()::text || clock_timestamp()::text)::uuid, 'VertexType2' );
-
-INSERT INTO VertexType
-            ( uuid, name )
-     VALUES ( md5(random()::text || clock_timestamp()::text)::uuid, 'VertexType3' );
-
-INSERT INTO VertexType
-            ( uuid, name )
-     VALUES ( md5(random()::text || clock_timestamp()::text)::uuid, 'VertexType4' );
-
-INSERT INTO VertexType
-            ( uuid, name )
-     VALUES ( md5(random()::text || clock_timestamp()::text)::uuid, 'VertexType5' );
 

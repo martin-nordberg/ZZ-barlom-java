@@ -17,8 +17,9 @@
     <!-- riot.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.6.4/riot+compiler.min.js"></script>
 
-    <!-- custom elements -->
-    <script src="customelements/vertextyperow.es6.js"></script>
+    <!-- riot tags -->
+    <script src="tags/barlom-gdb-vertextypes.html" type="riot/tag"></script>
+    <script src="tags/barlom-gdb-vertextype.html" type="riot/tag"></script>
 
 </head>
 
@@ -37,55 +38,58 @@
 
 <script>
 
-    function loadVertexType( uuid ) {
+  function loadVertexType( uuid ) {
 
-        $.getJSON( '/barlomgdbconsolecontent/vertextypes/' + uuid )
-                .done(
-                        function ( vertextype ) {
-                            var content = `<barlom-gdb-vertextyperow uuid="${vertextype.uuid}" name="${vertextype.name}"></barlom-gdb-vertextyperow>`;
-                            $( '#content' ).html( content );
-                        }
-                )
-                .fail(
-                        function ( jqxhr, textStatus, error ) {
-                            var err = textStatus + ", " + error;
-                            alert( "Request Failed: " + err );
-                        }
-                );
+    $.getJSON( '/barlomgdbconsolecontent/vertextypes/' + uuid )
+      .done(
+        function ( vertextype ) {
+          const content = `<barlom-gdb-vertextype uuid="${vertextype.uuid}" name="${vertextype.name}"></barlom-gdb-vertextype>`;
+          $( '#content' ).html( content );
+          riot.mount( '*' );
+        }
+      )
+      .fail(
+        function ( jqxhr, textStatus, error ) {
+          const err = textStatus + ", " + error;
+          alert( "Request Failed: " + err );
+        }
+      );
 
+  }
+
+  function loadVertexTypes() {
+
+    $.getJSON( '/barlomgdbconsolecontent/vertextypes' )
+      .done(
+        function ( response ) {
+          let content = "<barlom-gdb-vertextypes>";
+          for ( let vertextype of response.data ) {
+            content += `<barlom-gdb-vertextype uuid="${vertextype.uuid}" name="${vertextype.name}" linked="true"></barlom-gdb-vertextype>`;
+          }
+          content += "</barlom-gdb-vertextypes>";
+          $( '#content' ).html( content );
+          riot.mount( '*' );
+        }
+      )
+      .fail(
+        function ( jqxhr, textStatus, error ) {
+          const err = textStatus + ", " + error;
+          alert( "Request Failed: " + err );
+        }
+      );
+
+  }
+
+  $(
+    function () {
+      // Vertex types
+      riot.route( '/vertextypes/*', loadVertexType );
+      riot.route( '/vertextypes', loadVertexTypes );
+
+      // Start routing
+      riot.route.start( true );
     }
-
-    function loadVertexTypes() {
-
-        $.getJSON( '/barlomgdbconsolecontent/vertextypes' )
-                .done(
-                        function ( response ) {
-                            var content = "";
-                            for ( let vertextype of response.data ) {
-                                content += `<barlom-gdb-vertextyperow uuid="${vertextype.uuid}" name="${vertextype.name}"></barlom-gdb-vertextyperow>`;
-                            }
-                            $( '#content' ).html( content );
-                        }
-                )
-                .fail(
-                        function ( jqxhr, textStatus, error ) {
-                            var err = textStatus + ", " + error;
-                            alert( "Request Failed: " + err );
-                        }
-                );
-
-    }
-
-    $(
-            function () {
-                // Vertex types
-                riot.route( '/vertextypes/*', loadVertexType );
-                riot.route( '/vertextypes', loadVertexTypes );
-
-                // Start routing
-                riot.route.start( true );
-            }
-    );
+  );
 
 </script>
 
