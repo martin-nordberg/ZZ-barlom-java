@@ -17,25 +17,20 @@
             integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
             crossorigin="anonymous"></script>
 
-    <!-- riot.js -->
+    <!-- Riot.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.6.4/riot+compiler.min.js"></script>
 
-    <!-- riot tags -->
-    <script src="tags/barlom-gdb-vertextypes.html" type="riot/tag"></script>
-    <script src="tags/barlom-gdb-vertextype.html" type="riot/tag"></script>
+    <!-- Riot tags -->
+    <script src="tags/content/vertextype.html" type="riot/tag"></script>
+    <script src="tags/content/vertextypes.html" type="riot/tag"></script>
+    <script src="tags/navigation/leftnavigation.html" type="riot/tag"></script>
 
 </head>
 
 <body id="console-id" class="c-text">
 
     <main class="o-grid o-grid--no-gutter o-panel">
-        <div class="o-grid__cell--width-15 o-panel-container">
-            <nav class="c-nav o-panel">
-                <div class="c-nav__content">Barlom-GDB Console</div>
-                <div class="c-nav__item c-nav__item--active" onclick="riot.route('/vertextypes');">Vertex Types</div>
-                <div class="c-nav__item" onclick="riot.route('/edgetypes');">Edge Types</div>
-            </nav>
-        </div>
+        <div data-is="barlom-gdb-leftnavigation"></div>
         <div class="o-grid__cell--width-85 o-panel-container">
             <nav class="c-nav c-nav--inline c-nav--light">
                 <span class="c-nav__item">TBD</span>
@@ -103,6 +98,8 @@
 
       // Start routing
       riot.route.start( true );
+
+      riot.mount( '*' );
     }
   );
 
