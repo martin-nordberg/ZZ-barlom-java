@@ -21,28 +21,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.6.4/riot+compiler.min.js"></script>
 
     <!-- Riot tags -->
+    <script src="tags/app.html" type="riot/tag"></script>
     <script src="tags/content/vertextype.html" type="riot/tag"></script>
     <script src="tags/content/vertextypes.html" type="riot/tag"></script>
-    <script src="tags/navigation/leftnavigation.html" type="riot/tag"></script>
+    <script src="tags/navigation/topnavigation.html" type="riot/tag"></script>
 
 </head>
 
 <body id="console-id" class="c-text">
 
-    <main class="o-grid o-grid--no-gutter o-panel">
-        <div data-is="barlom-gdb-leftnavigation"></div>
-        <div class="o-grid__cell--width-85 o-panel-container">
-            <nav class="c-nav c-nav--inline c-nav--light">
-                <span class="c-nav__item">TBD</span>
-                <span class="c-nav__item">TBD</span>
-                <span class="c-nav__item c-nav__item--right"><a href="/barlomgdbconsole/exit">Exit</a></span>
-                <span class="c-nav__item c-nav__item--right">TBD</span>
-            </nav>
-            <div id="content" class="o-panel o-panel--nav-top">
-                <!-- Filled dynamically according to hash tag. -->
-            </div>
-        </div>
-    </main>
+    <barlom-gdb-app></barlom-gdb-app>
 
 </body>
 
@@ -54,8 +42,8 @@
       .done(
         function ( vertextype ) {
           const content = `<barlom-gdb-vertextype uuid="${vertextype.uuid}" name="${vertextype.name}"></barlom-gdb-vertextype>`;
-          $( '#content' ).html( content );
-          riot.mount( '*' );
+          $( '#right-panel' ).html( content );
+          riot.mount( 'barlom-gdb-vertextype' );
         }
       )
       .fail(
@@ -77,8 +65,9 @@
             content += `<barlom-gdb-vertextype uuid="${vertextype.uuid}" name="${vertextype.name}" linked="true"></barlom-gdb-vertextype>`;
           }
           content += "</barlom-gdb-vertextypes>";
-          $( '#content' ).html( content );
-          riot.mount( '*' );
+          $( '#left-panel' ).html( content );
+          riot.mount( 'barlom-gdb-vertextypes' );
+          riot.mount( 'barlom-gdb-vertextype' );
         }
       )
       .fail(
