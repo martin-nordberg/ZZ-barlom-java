@@ -1,0 +1,19 @@
+{
+  "name": "Barlom-GDB-Console",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "cycle-scripts-ts-browserify": "0.1.2"
+  },
+  "dependencies": {
+    "@cycle/dom": "^14.1.0",
+    "@cycle/xstream-run": "^4.0.0",
+    "xstream": "^9.0.0"
+  },
+  "scripts": {
+    "start": "cycle-scripts start",
+    "test": "cycle-scripts test",
+    "build": "cycle-scripts build",
+    "eject": "cycle-scripts eject"
+  }
+}
