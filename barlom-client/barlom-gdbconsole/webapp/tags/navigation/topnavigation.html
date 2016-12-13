@@ -1,5 +1,5 @@
 
-<!-- Riot.js tag for left navigation panel. -->
+<!-- Riot.js tag for top navigation panel. -->
 
 <!-- Usage: <nav data-is="barlom-gdb-topnavigation"></nav> -->
 
@@ -7,9 +7,9 @@
 
     <div class="c-nav__content">Barlom-GDB Console</div>
 
-    <span class="c-nav__item" onclick="riot.route('/vertextypes');">Vertex Types</span>
+    <span data-is="barlom-gdb-topnavitem" route="/vertextypes">Vertex Types</span>
 
-    <span class="c-nav__item" onclick="riot.route('/edgetypes');">Edge Types</span>
+    <span data-is="barlom-gdb-topnavitem" route="/edgetypes">Edge Types</span>
 
     <span class="c-nav__item c-nav__item--right" onclick="window.location='/barlomgdbconsole/exit';">Exit</span>
 
