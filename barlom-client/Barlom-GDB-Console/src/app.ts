@@ -1,34 +1,49 @@
-
-import {div, main, nav} from '@cycle/dom'
+import {div, main, nav, VNode} from '@cycle/dom'
 import xs from 'xstream'
+import {DOMSource} from '@cycle/dom/xstream-typings'
+import {Stream} from 'xstream'
+import TopNavigation, {TopNavigationProps} from "./components/navigation/topnavigation";
 
-import {ISources, ISinks} from './common/cycledefinitions'
+export type Sources = {
+    DOM : DOMSource
+}
 
+export type Sinks = {
+    DOM : Stream<VNode>
+}
 
-export function App( sources : ISources ) : ISinks {
+export function App( sources : Sources ) : Sinks {
 
-    const vtree$ = xs.of(
+    const topNavProps$ = xs.of<TopNavigationProps>( { title: "Barlom-GDB Console" } ).remember();
 
-        main( '.o-grid.o-grid--no-gutter.o-panel', [
+    const topNav = TopNavigation( { DOM: sources.DOM, props$: topNavProps$ } );
 
-            div( '.o-grid__cell--width-100.o-panel-container', [
+    const vtree$ = topNav.DOM.map(
+        topNavVTree =>
+            main(
+                '.o-grid.o-grid--no-gutter.o-panel', [
 
-                nav( '.c-nav.c-nav--inline.c-nav--high', [
-                    div( '.c-nav__content', ["Barlom-GDB Console"] ),
-                    div( '.c-nav__item', ["Vertex Types"] ),
-                    div( '.c-nav__item', ["Edge Types"] ),
-                    div( '.c-nav__item.c-nav__item--right', "Exit" )
-                ] ),
+                    div(
+                        '.o-grid__cell--width-100.o-panel-container', [
 
-                div( '.o-grid o-panel.o-panel--nav-top', [
-                    div( '.o-grid__cell.o-grid__cell--width-30', { id: 'left-panel' }, ["Left Panel"] ),
-                    div( '.o-grid__cell.o-grid__cell--width-70', { id: 'right-panel' }, ["Right Panel"] )
-                ] )
+                            topNavVTree,
 
-            ] )
+                            div(
+                                '.o-grid o-panel.o-panel--nav-top', [
+                                    div( '.o-grid__cell.o-grid__cell--width-30', { id: 'left-panel' }, ["Left Panel"] ),
+                                    div(
+                                        '.o-grid__cell.o-grid__cell--width-70',
+                                        { id: 'right-panel' },
+                                        ["Right Panel"]
+                                    )
+                                ]
+                            )
 
-        ] )
+                        ]
+                    )
 
+                ]
+            )
     );
 
     const sinks = {
