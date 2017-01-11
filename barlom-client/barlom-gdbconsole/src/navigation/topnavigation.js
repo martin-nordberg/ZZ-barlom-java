@@ -6,21 +6,26 @@ import xs from 'xstream'
 
 export default function TopNavigation(sources) {
 
-  const vtree$ = xs.of(
+  const history$ = sources.history;
 
-    nav('.c-nav.c-nav--inline.c-nav--high', [
+  const vtree$ = xs.combine([history$])
+    .map( ( [location] ) =>
 
-      div( '.c-nav__content', [ "Barlon-GDB Console" ] ),
+            nav('.c-nav.c-nav--inline.c-nav--high', [
 
-      span( '.c-nav__item.c-nav__item--active', [ "Vertex Types" ] ),
+              div( '.c-nav__content', [ "Barlon-GDB Console" ] ),
 
-      span( '.c-nav__item', [ "Edge Types" ] ),
+              span( '.c-nav__item.c-nav__item--active', [ "Vertex Types" ] ),
 
-      span( '.c-nav__item.c-nav__item--right', [ "Exit" ] )
+              span( '.c-nav__item', [ "Edge Types" ] ),
 
-    ])
+              //span( "Location=" + location ),
 
-  );
+              span( '.c-nav__item.c-nav__item--right', [ "Exit" ] )
+
+            ])
+
+    );
 
   const sinks = {
     DOM: vtree$

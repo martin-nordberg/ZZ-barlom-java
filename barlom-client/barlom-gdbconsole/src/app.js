@@ -4,7 +4,7 @@ import TopNavigation from './navigation/topnavigation'
 
 export function App( sources ) {
 
-  const topNavSources = { DOM: sources.DOM };
+  const topNavSources = { DOM: sources.DOM, history: sources.history };
 
   const topNav = TopNavigation( topNavSources );
 
