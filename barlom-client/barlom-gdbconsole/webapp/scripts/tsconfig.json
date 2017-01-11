@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "outDir": "./js-gen",
+    "sourceMap": true,
+    "target": "ES6"
+  },
+  "include": [
+    "ts/**/*"
+  ],
+  "exclude": [
+  ]
+}
