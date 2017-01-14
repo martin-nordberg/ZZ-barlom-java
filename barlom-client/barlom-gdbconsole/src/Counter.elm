@@ -5,7 +5,6 @@ import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
 
-
 -- MODEL
 
 
@@ -14,7 +13,6 @@ type alias Model =
         count : Int
     }
 
-
 initialModel : Model
 initialModel =
     {
@@ -22,18 +20,13 @@ initialModel =
     }
 
 
-
-
 -- MESSAGES
-
 
 type Msg
     = Increase
 
 
-
 -- VIEW
-
 
 view : Model -> Html Msg
 view model =
@@ -43,9 +36,7 @@ view model =
         ]
 
 
-
 -- UPDATE
-
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =

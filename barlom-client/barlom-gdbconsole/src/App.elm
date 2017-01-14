@@ -6,11 +6,14 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 
 import Counter
+import Navigation.TopNavBar
 
 
+-- MODEL
 
 type alias AppModel =
     {
+        activeItem : Navigation.TopNavBar.Model,
         counterModel : Counter.Model
     }
 
@@ -18,6 +21,7 @@ type alias AppModel =
 initialModel : AppModel
 initialModel =
     {
+        activeItem = Navigation.TopNavBar.initialModel,
         counterModel = Counter.initialModel
     }
 
@@ -27,43 +31,40 @@ init =
     ( initialModel, Cmd.none )
 
 
-
 -- MESSAGES
 
-
-type Msg
-    = CounterMsg Counter.Msg
-
-
-
+type Msg =
+    CounterMsg Counter.Msg
+    | TopNavBarMsg Navigation.TopNavBar.Msg
 
 
 -- UPDATE
-
 
 update : Msg -> AppModel -> ( AppModel, Cmd Msg )
 update message model =
     case message of
         CounterMsg subMsg ->
             let
-                ( updatedCounterModel, widgetCmd ) =
+                ( updatedCounterModel, counterCmd ) =
                     Counter.update subMsg model.counterModel
             in
-                ( { model | counterModel = updatedCounterModel }, Cmd.map CounterMsg widgetCmd )
-
+                ( { model | counterModel = updatedCounterModel }, Cmd.map CounterMsg counterCmd )
+        TopNavBarMsg subMsg ->
+            let
+                ( updatedTopNavModel, topNavCmd ) =
+                    Navigation.TopNavBar.update subMsg model.activeItem
+            in
+                ( { model | activeItem = updatedTopNavModel }, Cmd.map TopNavBarMsg topNavCmd )
 
 
 -- SUBSCRIPTIONS
-
 
 subscriptions : AppModel -> Sub Msg
 subscriptions model =
     Sub.none
 
 
-
 -- VIEW
-
 
 view : AppModel -> Html Msg
 view model =
@@ -71,6 +72,8 @@ view model =
   main_ [ class "o-grid o-grid--no-gutter o-panel" ] [
 
     div [ class "o-grid__cell--width-100 o-panel-container" ] [
+
+      Html.map TopNavBarMsg (Navigation.TopNavBar.view model.activeItem),
 
       div [ class "o-grid o-panel o-panel--nav-top" ] [
 
@@ -95,9 +98,7 @@ view model =
   ]
 
 
-
 -- MAIN PROGRAM
-
 
 main : Program Never AppModel Msg
 main =
