@@ -1,1 +1,2 @@
-elm-make ../src/app.elm --output ../webapp/scripts/app.js
+#!/usr/bin/env bash
+elm-make ../src/App.elm --output ../webapp/scripts/app.js
