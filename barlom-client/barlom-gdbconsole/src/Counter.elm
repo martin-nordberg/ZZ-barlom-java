@@ -1,5 +1,4 @@
-
-module Counter exposing(..)
+module Counter exposing (..)
 
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
@@ -9,24 +8,27 @@ import Html.Events exposing (onClick)
 
 
 type alias Model =
-    {
-        count : Int
+    { count : Int
     }
+
 
 initialModel : Model
 initialModel =
-    {
-        count = 0
+    { count = 0
     }
 
 
+
 -- MESSAGES
+
 
 type Msg
     = Increase
 
 
+
 -- VIEW
+
 
 view : Model -> Html Msg
 view model =
@@ -36,7 +38,9 @@ view model =
         ]
 
 
+
 -- UPDATE
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
