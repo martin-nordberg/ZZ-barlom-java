@@ -3,25 +3,8 @@ module Barlom.Presentation.Navigation.TopNavBar exposing (..)
 import Html exposing (Html, div, nav, span, text)
 import Html.Attributes exposing (class, classList)
 import Html.Events exposing (onClick)
-
-
--- MODEL
-
-
-type Item
-    = Browse
-    | Diagrams
-
-
-type alias Model =
-    { activeItem : Item }
-
-
-initialModel : Model
-initialModel =
-    { activeItem = Browse
-    }
-
+import Navigation
+import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
 
 
 -- MESSAGES
@@ -37,12 +20,12 @@ type Msg
 -- VIEW
 
 
-view : Model -> Html Msg
-view model =
+view : Route -> Html Msg
+view currentRoute =
     nav [ class "c-nav c-nav--inline c-nav--high" ]
         [ div [ class "c-nav__content" ] [ text "Barlom-GDB Console" ]
-        , viewNavItem model "Browse" Browse ActivateBrowse
-        , viewNavItem model "Diagrams" Diagrams ActivateDiagrams
+        , viewNavItem currentRoute "Browse" Routes.BrowseRoute ActivateBrowse
+        , viewNavItem currentRoute "Diagrams" Routes.DiagramsRoute ActivateDiagrams
         , span
             [ class "c-nav__item c-nav__item--right"
             , onClick Exit
@@ -51,10 +34,10 @@ view model =
         ]
 
 
-viewNavItem : Model -> String -> Item -> Msg -> Html Msg
-viewNavItem model title item msg =
+viewNavItem : Route -> String -> Route -> Msg -> Html Msg
+viewNavItem currentRoute title route msg =
     span
-        [ classList [ ( "c-nav__item", True ), ( "c-nav__item--active", model.activeItem == item ) ]
+        [ classList [ ( "c-nav__item", True ), ( "c-nav__item--active", currentRoute == route ) ]
         , onClick msg
         ]
         [ text title ]
@@ -64,14 +47,14 @@ viewNavItem model title item msg =
 -- UPDATE
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update message model =
+update : Msg -> Route -> ( Route, Cmd Msg )
+update message route =
     case message of
         ActivateBrowse ->
-            ( { model | activeItem = Browse }, Cmd.none )
+            ( route, Navigation.newUrl "#browse" )
 
         ActivateDiagrams ->
-            ( { model | activeItem = Diagrams }, Cmd.none )
+            ( route, Navigation.newUrl "#diagrams" )
 
         Exit ->
-            ( model, Cmd.none )
+            ( route, Navigation.modifyUrl "exit" )
