@@ -1,31 +1,27 @@
-module App exposing (..)
+module Barlom.Presentation.Main.App exposing (..)
 
 import Html exposing (Html, br, button, div, main_, program, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Navigation exposing (Location)
 import Counter
-import Navigation.TopNavBar
+import Barlom.Presentation.Navigation.TopNavBar
 
 
 -- MODEL
 
 
 type alias AppModel =
-    { activeItem : Navigation.TopNavBar.Model
+    { activeItem : Barlom.Presentation.Navigation.TopNavBar.Model
     , counterModel : Counter.Model
     }
 
 
 initialModel : AppModel
 initialModel =
-    { activeItem = Navigation.TopNavBar.initialModel
+    { activeItem = Barlom.Presentation.Navigation.TopNavBar.initialModel
     , counterModel = Counter.initialModel
     }
-
-
-init : ( AppModel, Cmd Msg )
-init =
-    ( initialModel, Cmd.none )
 
 
 
@@ -34,7 +30,8 @@ init =
 
 type Msg
     = CounterMsg Counter.Msg
-    | TopNavBarMsg Navigation.TopNavBar.Msg
+    | OnLocationChange Location
+    | TopNavBarMsg Barlom.Presentation.Navigation.TopNavBar.Msg
 
 
 
@@ -51,10 +48,13 @@ update message model =
             in
                 ( { model | counterModel = updatedCounterModel }, Cmd.map CounterMsg counterCmd )
 
+        OnLocationChange location ->
+            ( model, Cmd.none )
+
         TopNavBarMsg subMsg ->
             let
                 ( updatedTopNavModel, topNavCmd ) =
-                    Navigation.TopNavBar.update subMsg model.activeItem
+                    Barlom.Presentation.Navigation.TopNavBar.update subMsg model.activeItem
             in
                 ( { model | activeItem = updatedTopNavModel }, Cmd.map TopNavBarMsg topNavCmd )
 
@@ -76,7 +76,7 @@ view : AppModel -> Html Msg
 view model =
     main_ [ class "o-grid o-grid--no-gutter o-panel" ]
         [ div [ class "o-grid__cell--width-100 o-panel-container" ]
-            [ Html.map TopNavBarMsg (Navigation.TopNavBar.view model.activeItem)
+            [ Html.map TopNavBarMsg (Barlom.Presentation.Navigation.TopNavBar.view model.activeItem)
             , div [ class "o-grid o-panel o-panel--nav-top" ]
                 [ div [ class "o-grid__cell o-grid__cell--width-30" ]
                     [ text "Left Panel"
@@ -98,9 +98,14 @@ view model =
 -- MAIN PROGRAM
 
 
+init : Location -> ( AppModel, Cmd Msg )
+init location =
+    ( initialModel, Cmd.none )
+
+
 main : Program Never AppModel Msg
 main =
-    program
+    Navigation.program OnLocationChange
         { init = init
         , view = view
         , update = update

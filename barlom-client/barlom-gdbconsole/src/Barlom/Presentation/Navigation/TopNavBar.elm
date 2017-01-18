@@ -1,4 +1,4 @@
-module Navigation.TopNavBar exposing (..)
+module Barlom.Presentation.Navigation.TopNavBar exposing (..)
 
 import Html exposing (Html, div, nav, span, text)
 import Html.Attributes exposing (class, classList)
