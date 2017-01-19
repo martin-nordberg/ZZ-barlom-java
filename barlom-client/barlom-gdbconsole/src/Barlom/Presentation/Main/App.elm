@@ -5,22 +5,28 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Navigation exposing (Location)
 import Counter
-import Barlom.Presentation.Navigation.TopNavBar
+import Barlom.Presentation.Navigation.TopNavBar as TopNavBar
 import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
 
 
 -- MODEL
 
 
+type alias UiState =
+    { currentRoute : Route }
+
+
 type alias AppModel =
-    { currentRoute : Route
+    { uiState : UiState
     , counterModel : Counter.Model
     }
 
 
 initialModel : Route -> AppModel
 initialModel route =
-    { currentRoute = route
+    { uiState =
+        { currentRoute = route
+        }
     , counterModel = Counter.initialModel
     }
 
@@ -32,7 +38,7 @@ initialModel route =
 type Msg
     = CounterMsg Counter.Msg
     | OnLocationChange Location
-    | TopNavBarMsg Barlom.Presentation.Navigation.TopNavBar.Msg
+    | TopNavBarMsg TopNavBar.Msg
 
 
 
@@ -41,27 +47,31 @@ type Msg
 
 update : Msg -> AppModel -> ( AppModel, Cmd Msg )
 update message model =
-    case message of
-        CounterMsg subMsg ->
-            let
-                ( updatedCounterModel, counterCmd ) =
-                    Counter.update subMsg model.counterModel
-            in
-                ( { model | counterModel = updatedCounterModel }, Cmd.map CounterMsg counterCmd )
+    let
+        oldUiState =
+            model.uiState
+    in
+        case message of
+            CounterMsg subMsg ->
+                let
+                    ( updatedCounterModel, counterCmd ) =
+                        Counter.update subMsg model.counterModel
+                in
+                    ( { model | counterModel = updatedCounterModel }, Cmd.map CounterMsg counterCmd )
 
-        OnLocationChange location ->
-            let
-                newRoute =
-                    Routes.parseLocation location
-            in
-                ( { model | currentRoute = newRoute }, Cmd.none )
+            OnLocationChange location ->
+                let
+                    newRoute =
+                        Routes.parseLocation location
+                in
+                    ( { model | uiState = { oldUiState | currentRoute = newRoute } }, Cmd.none )
 
-        TopNavBarMsg subMsg ->
-            let
-                ( updatedRoute, topNavCmd ) =
-                    Barlom.Presentation.Navigation.TopNavBar.update subMsg model.currentRoute
-            in
-                ( { model | currentRoute = updatedRoute }, Cmd.map TopNavBarMsg topNavCmd )
+            TopNavBarMsg subMsg ->
+                let
+                    ( updatedRoute, topNavCmd ) =
+                        TopNavBar.update subMsg model.uiState.currentRoute
+                in
+                    ( { model | uiState = { oldUiState | currentRoute = updatedRoute } }, Cmd.map TopNavBarMsg topNavCmd )
 
 
 
@@ -81,7 +91,7 @@ view : AppModel -> Html Msg
 view model =
     main_ [ class "o-grid o-grid--no-gutter o-panel" ]
         [ div [ class "o-grid__cell--width-100 o-panel-container" ]
-            [ Html.map TopNavBarMsg (Barlom.Presentation.Navigation.TopNavBar.view model.currentRoute)
+            [ Html.map TopNavBarMsg (TopNavBar.view model.uiState.currentRoute)
             , div [ class "o-grid o-panel o-panel--nav-top" ]
                 [ div [ class "o-grid__cell o-grid__cell--width-30" ]
                     [ text "Left Panel"
