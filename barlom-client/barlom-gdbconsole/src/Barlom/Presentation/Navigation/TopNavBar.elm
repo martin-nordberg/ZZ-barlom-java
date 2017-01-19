@@ -7,7 +7,10 @@ import Navigation
 import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
 
 
--- MESSAGES
+--------------
+-- MESSAGES --
+--------------
+-- Messages that trigger routing changes.
 
 
 type Msg
@@ -17,7 +20,10 @@ type Msg
 
 
 
--- VIEW
+----------
+-- VIEW --
+----------
+-- Generates markup for the top nav bar.
 
 
 view : Route -> Html Msg
@@ -26,12 +32,25 @@ view currentRoute =
         [ div [ class "c-nav__content" ] [ text "Barlom-GDB Console" ]
         , viewNavItem currentRoute "Browse" Routes.BrowseRoute ActivateBrowse
         , viewNavItem currentRoute "Diagrams" Routes.DiagramsRoute ActivateDiagrams
-        , span
-            [ class "c-nav__item c-nav__item--right"
-            , onClick Exit
-            ]
-            [ text "Exit" ]
+        , viewExitNavItem
         ]
+
+
+
+-- The markup for the Exit link on the right side of the top nav bar.
+
+
+viewExitNavItem : Html Msg
+viewExitNavItem =
+    span
+        [ class "c-nav__item c-nav__item--right"
+        , onClick Exit
+        ]
+        [ text "Exit" ]
+
+
+
+-- Generates markup for a single top nav item with given text, route, and on-click message.
 
 
 viewNavItem : Route -> String -> Route -> Msg -> Html Msg
@@ -44,7 +63,10 @@ viewNavItem currentRoute title route msg =
 
 
 
--- UPDATE
+------------
+-- UPDATE --
+------------
+-- Triggers navigation via routing for given nav item message.
 
 
 update : Msg -> Route -> ( Route, Cmd Msg )
@@ -57,4 +79,4 @@ update message route =
             ( route, Navigation.newUrl "#diagrams" )
 
         Exit ->
-            ( route, Navigation.modifyUrl "exit" )
+            ( route, Navigation.newUrl "exit" )
