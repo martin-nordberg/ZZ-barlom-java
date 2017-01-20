@@ -1,43 +1,82 @@
-module Barlom.Presentation.Browsing.VertexTypeGrid exposing (Msg, view)
+module Barlom.Presentation.Browsing.VertexTypeGrid exposing (FocusedVertexType, Msg, update, view)
 
 import Barlom.Domain.Repository exposing (Entities, VertexType)
 import Html exposing (Html, button, div, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, classList)
 import Html.Events exposing (onClick)
 
 
--- MESSAGES
+-- TYPES --
+-----------
+--
+-- Optional focused vertex type.
+
+
+type alias FocusedVertexType =
+    Maybe VertexType
+
+
+
+--------------
+-- MESSAGES --
+--------------
+--
+-- Message for focusing a vertex type.
 
 
 type Msg
-    = SelectVertexType
+    = FocusVertexType (Maybe VertexType)
 
 
 
--- VIEW
+----------
+-- VIEW --
+----------
+--
+-- Generates mark up for a grid of vertex types.
 
 
-view : Entities -> Html Msg
-view entities =
-    table [ class "c-table" ]
-        [ thead [ class "c-table__head" ]
-            [ tr [ class "c-table__row c-table__row--heading" ] [ th [ class "c-table__cell" ] [ text "Name" ] ]
+view : Entities -> FocusedVertexType -> Html Msg
+view entities focusedVertexType =
+    table [ class "c-table c-table--clickable c-table--condensed" ]
+        [ tbody [] (List.map (viewVertexTypeRow focusedVertexType) entities.vertexTypesList) ]
+
+
+
+-- Generates mark for one vertex type row. Includes click handler to focus that vertex type.
+
+
+viewVertexTypeRow : FocusedVertexType -> VertexType -> Html Msg
+viewVertexTypeRow focusedVertexType vertexType =
+    let
+        isfocused =
+            case focusedVertexType of
+                Just selVertexType ->
+                    selVertexType == vertexType
+
+                Nothing ->
+                    False
+    in
+        tr [ class "c-table__row" ]
+            [ td
+                [ classList [ ( "c-table__cell", True ), ( "c-text--loud", isfocused ) ]
+                , (onClick (FocusVertexType (Just vertexType)))
+                ]
+                [ text vertexType.name
+                ]
             ]
-        , tbody [] (List.map viewVertexTypeRow entities.vertexTypesList)
-        ]
-
-
-viewVertexTypeRow : VertexType -> Html Msg
-viewVertexTypeRow vertexType =
-    tr [ class "c-table__row" ]
-        [ td [ class "c-table__cell" ] [ text vertexType.name ]
-        ]
 
 
 
--- UPDATE
---update : Msg -> Model -> ( Model, Cmd Msg )
---update message model =
---    case message of
---        Increase ->
---            ( { model | count = model.count + 1 }, Cmd.none )
+------------
+-- UPDATE --
+------------
+--
+-- Updates the focused vertex type.
+
+
+update : Msg -> ( FocusedVertexType, Cmd Msg )
+update message =
+    case message of
+        FocusVertexType vertexType ->
+            ( vertexType, Cmd.none )

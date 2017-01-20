@@ -6,16 +6,18 @@ import Html.Events exposing (onClick)
 import Navigation exposing (Location)
 import Barlom.Presentation.Navigation.TopNavBar as TopNavBar
 import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
-import Barlom.Domain.Repository as Repository exposing (Entities)
+import Barlom.Domain.Repository as Repository exposing (Entities, VertexType)
 import Barlom.Persistence.VertexTypeLoader as VertexTypeLoader
-import Barlom.Presentation.Browsing.VertexTypeGrid as VertexTypeGrid
+import Barlom.Presentation.Browsing.VertexTypeGrid as VertexTypeGrid exposing (FocusedVertexType)
 
 
 -- MODEL
 
 
 type alias UiState =
-    { currentRoute : Route }
+    { currentRoute : Route
+    , focusedVertexType : FocusedVertexType
+    }
 
 
 type alias AppModel =
@@ -28,6 +30,7 @@ initialModel : Route -> AppModel
 initialModel route =
     { uiState =
         { currentRoute = route
+        , focusedVertexType = Nothing
         }
     , entities = Repository.emptyRepository
     }
@@ -64,20 +67,24 @@ update message model =
 
             TopNavBarMsg subMsg ->
                 let
-                    ( updatedRoute, topNavCmd ) =
+                    ( newRoute, topNavCmd ) =
                         TopNavBar.update subMsg model.uiState.currentRoute
                 in
-                    ( { model | uiState = { oldUiState | currentRoute = updatedRoute } }, Cmd.map TopNavBarMsg topNavCmd )
+                    ( { model | uiState = { oldUiState | currentRoute = newRoute } }, Cmd.map TopNavBarMsg topNavCmd )
 
             VertexTypeGridMsg subMsg ->
-                ( model, Cmd.none )
+                let
+                    ( newfocusedVertexType, vtGridCmd ) =
+                        VertexTypeGrid.update subMsg
+                in
+                    ( { model | uiState = { oldUiState | focusedVertexType = newfocusedVertexType } }, Cmd.none )
 
             VertexTypeLoaderMsg subMsg ->
                 let
-                    ( updatedEntities, loadCmd ) =
+                    ( newEntities, loadCmd ) =
                         VertexTypeLoader.update subMsg model.entities
                 in
-                    ( { model | entities = updatedEntities }, Cmd.map VertexTypeLoaderMsg loadCmd )
+                    ( { model | entities = newEntities }, Cmd.map VertexTypeLoaderMsg loadCmd )
 
 
 
@@ -106,7 +113,7 @@ view model =
                         , label [ (class "c-card__item"), (for "vt-accordion") ]
                             [ text "Vertex Types" ]
                         , div [ class "c-card__item" ]
-                            [ Html.map VertexTypeGridMsg (VertexTypeGrid.view model.entities) ]
+                            [ Html.map VertexTypeGridMsg (VertexTypeGrid.view model.entities model.uiState.focusedVertexType) ]
                         ]
                     ]
                 , div [ class "o-grid__cell o-grid__cell--width-70" ]
