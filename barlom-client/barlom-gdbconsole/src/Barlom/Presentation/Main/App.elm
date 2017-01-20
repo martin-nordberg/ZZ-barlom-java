@@ -1,12 +1,14 @@
 module Barlom.Presentation.Main.App exposing (..)
 
-import Html exposing (Html, br, button, div, main_, program, text)
-import Html.Attributes exposing (class)
+import Html exposing (Html, br, button, div, input, label, main_, program, text)
+import Html.Attributes exposing (class, for, id, type_)
 import Html.Events exposing (onClick)
 import Navigation exposing (Location)
-import Counter
 import Barlom.Presentation.Navigation.TopNavBar as TopNavBar
 import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
+import Barlom.Domain.Repository as Repository exposing (Entities)
+import Barlom.Persistence.VertexTypeLoader as VertexTypeLoader
+import Barlom.Presentation.Browsing.VertexTypeGrid as VertexTypeGrid
 
 
 -- MODEL
@@ -18,7 +20,7 @@ type alias UiState =
 
 type alias AppModel =
     { uiState : UiState
-    , counterModel : Counter.Model
+    , entities : Entities
     }
 
 
@@ -27,7 +29,7 @@ initialModel route =
     { uiState =
         { currentRoute = route
         }
-    , counterModel = Counter.initialModel
+    , entities = Repository.emptyRepository
     }
 
 
@@ -36,9 +38,10 @@ initialModel route =
 
 
 type Msg
-    = CounterMsg Counter.Msg
-    | OnLocationChange Location
+    = OnLocationChange Location
     | TopNavBarMsg TopNavBar.Msg
+    | VertexTypeGridMsg VertexTypeGrid.Msg
+    | VertexTypeLoaderMsg VertexTypeLoader.Msg
 
 
 
@@ -52,13 +55,6 @@ update message model =
             model.uiState
     in
         case message of
-            CounterMsg subMsg ->
-                let
-                    ( updatedCounterModel, counterCmd ) =
-                        Counter.update subMsg model.counterModel
-                in
-                    ( { model | counterModel = updatedCounterModel }, Cmd.map CounterMsg counterCmd )
-
             OnLocationChange location ->
                 let
                     newRoute =
@@ -72,6 +68,16 @@ update message model =
                         TopNavBar.update subMsg model.uiState.currentRoute
                 in
                     ( { model | uiState = { oldUiState | currentRoute = updatedRoute } }, Cmd.map TopNavBarMsg topNavCmd )
+
+            VertexTypeGridMsg subMsg ->
+                ( model, Cmd.none )
+
+            VertexTypeLoaderMsg subMsg ->
+                let
+                    ( updatedEntities, loadCmd ) =
+                        VertexTypeLoader.update subMsg model.entities
+                in
+                    ( { model | entities = updatedEntities }, Cmd.map VertexTypeLoaderMsg loadCmd )
 
 
 
@@ -94,16 +100,17 @@ view model =
             [ Html.map TopNavBarMsg (TopNavBar.view model.uiState.currentRoute)
             , div [ class "o-grid o-panel o-panel--nav-top" ]
                 [ div [ class "o-grid__cell o-grid__cell--width-30" ]
-                    [ text "Left Panel"
-                    , br [] []
-                    , -- Counter sample code
-                      div []
-                        [ Html.map CounterMsg (Counter.view model.counterModel)
+                    [ div [ class "c-card c-card--accordion u-high" ]
+                        [ input [ (type_ "checkbox"), (id "vt-accordion") ]
+                            []
+                        , label [ (class "c-card__item"), (for "vt-accordion") ]
+                            [ text "Vertex Types" ]
+                        , div [ class "c-card__item" ]
+                            [ Html.map VertexTypeGridMsg (VertexTypeGrid.view model.entities) ]
                         ]
                     ]
                 , div [ class "o-grid__cell o-grid__cell--width-70" ]
-                    [ text "Right Panel"
-                    ]
+                    [ text "Right Panel" ]
                 ]
             ]
         ]
@@ -119,7 +126,7 @@ init location =
         currentRoute =
             Routes.parseLocation location
     in
-        ( initialModel currentRoute, Cmd.none )
+        ( initialModel currentRoute, Cmd.map VertexTypeLoaderMsg VertexTypeLoader.fetchVertexTypes )
 
 
 main : Program Never AppModel Msg

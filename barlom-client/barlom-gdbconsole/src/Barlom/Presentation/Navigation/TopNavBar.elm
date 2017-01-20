@@ -1,4 +1,4 @@
-module Barlom.Presentation.Navigation.TopNavBar exposing (..)
+module Barlom.Presentation.Navigation.TopNavBar exposing (Msg, view, update)
 
 import Html exposing (Html, div, nav, span, text)
 import Html.Attributes exposing (class, classList)
@@ -10,6 +10,7 @@ import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
 --------------
 -- MESSAGES --
 --------------
+--
 -- Messages that trigger routing changes.
 
 
@@ -23,6 +24,7 @@ type Msg
 ----------
 -- VIEW --
 ----------
+--
 -- Generates markup for the top nav bar.
 
 
@@ -66,6 +68,7 @@ viewNavItem currentRoute title route msg =
 ------------
 -- UPDATE --
 ------------
+--
 -- Triggers navigation via routing for given nav item message.
 
 
