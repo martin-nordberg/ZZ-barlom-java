@@ -1,20 +1,10 @@
-module Barlom.Presentation.Browsing.VertexTypeGrid exposing (FocusedVertexType, Msg, update, view)
+module Barlom.Presentation.Browsing.VertexType.Grid exposing (Msg, update, view)
 
 import Barlom.Domain.Repository exposing (Entities, VertexType)
+import Barlom.Presentation.Browsing.VertexType.Types exposing (FocusedVertexType)
 import Html exposing (Html, button, div, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, classList)
 import Html.Events exposing (onClick)
-
-
--- TYPES --
------------
---
--- Optional focused vertex type.
-
-
-type alias FocusedVertexType =
-    Maybe VertexType
-
 
 
 --------------
@@ -43,7 +33,7 @@ view entities focusedVertexType =
 
 
 
--- Generates mark for one vertex type row. Includes click handler to focus that vertex type.
+-- Generates mark up for one vertex type row. Includes click handler to focus that vertex type.
 
 
 viewVertexTypeRow : FocusedVertexType -> VertexType -> Html Msg

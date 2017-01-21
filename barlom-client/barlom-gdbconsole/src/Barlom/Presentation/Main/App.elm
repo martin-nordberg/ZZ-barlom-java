@@ -1,14 +1,16 @@
 module Barlom.Presentation.Main.App exposing (..)
 
 import Html exposing (Html, br, button, div, input, label, main_, program, text)
-import Html.Attributes exposing (class, for, id, type_)
+import Html.Attributes exposing (checked, class, for, id, type_)
 import Html.Events exposing (onClick)
 import Navigation exposing (Location)
 import Barlom.Presentation.Navigation.TopNavBar as TopNavBar
 import Barlom.Presentation.Routing.Routes as Routes exposing (Route)
 import Barlom.Domain.Repository as Repository exposing (Entities, VertexType)
 import Barlom.Persistence.VertexTypeLoader as VertexTypeLoader
-import Barlom.Presentation.Browsing.VertexTypeGrid as VertexTypeGrid exposing (FocusedVertexType)
+import Barlom.Presentation.Browsing.VertexType.Form as VertexTypeForm
+import Barlom.Presentation.Browsing.VertexType.Grid as VertexTypeGrid
+import Barlom.Presentation.Browsing.VertexType.Types exposing (FocusedVertexType)
 
 
 -- MODEL
@@ -43,6 +45,7 @@ initialModel route =
 type Msg
     = OnLocationChange Location
     | TopNavBarMsg TopNavBar.Msg
+    | VertexTypeFormMsg VertexTypeForm.Msg
     | VertexTypeGridMsg VertexTypeGrid.Msg
     | VertexTypeLoaderMsg VertexTypeLoader.Msg
 
@@ -71,6 +74,9 @@ update message model =
                         TopNavBar.update subMsg model.uiState.currentRoute
                 in
                     ( { model | uiState = { oldUiState | currentRoute = newRoute } }, Cmd.map TopNavBarMsg topNavCmd )
+
+            VertexTypeFormMsg subMsg ->
+                ( model, Cmd.none )
 
             VertexTypeGridMsg subMsg ->
                 let
@@ -108,7 +114,7 @@ view model =
             , div [ class "o-grid o-panel o-panel--nav-top" ]
                 [ div [ class "o-grid__cell o-grid__cell--width-30" ]
                     [ div [ class "c-card c-card--accordion u-high" ]
-                        [ input [ (type_ "checkbox"), (id "vt-accordion") ]
+                        [ input [ (type_ "checkbox"), (id "vt-accordion"), (checked True {- TODO: make variable in UI state -}) ]
                             []
                         , label [ (class "c-card__item"), (for "vt-accordion") ]
                             [ text "Vertex Types" ]
@@ -117,7 +123,7 @@ view model =
                         ]
                     ]
                 , div [ class "o-grid__cell o-grid__cell--width-70" ]
-                    [ text "Right Panel" ]
+                    [ Html.map VertexTypeFormMsg (VertexTypeForm.view model.uiState.focusedVertexType) ]
                 ]
             ]
         ]
