@@ -23,6 +23,7 @@ CREATE TABLE VertexType
     id SERIAL NOT NULL,
     uuid UUID NOT NULL,
     name NAME NOT NULL,
+    summary VARCHAR(100),
 
     CONSTRAINT PK_VertexType PRIMARY KEY (id),
     CONSTRAINT UQ_VertexType_uuid UNIQUE (uuid),

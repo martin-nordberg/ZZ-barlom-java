@@ -76,10 +76,10 @@ public class VertexTypeService {
 
         out.print( "{ \"data\": [" );
 
-        this.metamodelFacade.findVertexTypesAll( (uuid,name) -> {
+        this.metamodelFacade.findVertexTypesAll( (uuid,name,summary) -> {
             out.println( delimiter[0] );
             delimiter[0] = ",";
-            out.print( " { \"uuid\": \"" + uuid + "\", \"name\": \"" + name + "\" }" );
+            out.print( " { \"uuid\": \"" + uuid + "\", \"name\": \"" + name + "\", \"summary\": \"" + summary + "\" }" );
         } );
 
         out.println();
@@ -110,7 +110,7 @@ public class VertexTypeService {
 
         this.metamodelFacade.findVertexTypeByUuid(
             UUID.fromString(uuid),
-            ( uuid2, name ) -> out.println( " { \"uuid\": \"" + uuid2 + "\", \"name\": \"" + name + "\" }" )
+            ( uuid2, name, summary ) -> out.println( " { \"uuid\": \"" + uuid2 + "\", \"name\": \"" + name + "\", \"summary\": \"" + summary + "\" }" )
         );
 
         out.close();
@@ -142,10 +142,11 @@ public class VertexTypeService {
         }
 
         String name = jsonVertexType.getString( "name" );
+        String summary = jsonVertexType.getString( "summary" );
 
-        this.metamodelFacade.upsertVertexType( UUID.fromString( uuid ), name );
+        this.metamodelFacade.upsertVertexType( UUID.fromString( uuid ), name, summary );
 
-        return "{ \"uuid\": \"" + uuid + "\", \"name\": \"" + name + "\" }";
+        return "{ \"uuid\": \"" + uuid + "\", \"name\": \"" + name + "\", \"summary\": \"" + summary + "\" }";
 
     }
 

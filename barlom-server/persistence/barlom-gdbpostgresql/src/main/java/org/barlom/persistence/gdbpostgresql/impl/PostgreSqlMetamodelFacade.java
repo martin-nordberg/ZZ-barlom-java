@@ -61,8 +61,8 @@ public class PostgreSqlMetamodelFacade
             params.put( "uuid", uuid );
 
             return connection.executeQuery(
-                rs -> callback.handleVertexType( UUID.fromString( rs.getString( "uuid" ) ), rs.getString( "name" ) ),
-                "SELECT uuid, name FROM FindVertexTypeByUuid( {{uuid}} )",
+                rs -> callback.handleVertexType( UUID.fromString( rs.getString( "uuid" ) ), rs.getString( "name" ), rs.getString( "summary" ) ),
+                "SELECT uuid, name, summary FROM FindVertexTypeByUuid( {{uuid}} )",
                 params
             );
 
@@ -76,8 +76,8 @@ public class PostgreSqlMetamodelFacade
         try ( IConnection connection = this.dataSource.openConnection() ) {
 
             return connection.executeQuery(
-                rs -> callback.handleVertexType( UUID.fromString( rs.getString( "uuid" ) ), rs.getString( "name" ) ),
-                "SELECT uuid, name FROM FindVertexTypesAll()"
+                rs -> callback.handleVertexType( UUID.fromString( rs.getString( "uuid" ) ), rs.getString( "name" ), rs.getString( "summary" ) ),
+                "SELECT uuid, name, summary FROM FindVertexTypesAll()"
             );
 
         }
@@ -85,15 +85,16 @@ public class PostgreSqlMetamodelFacade
     }
 
     @Override
-    public void upsertVertexType( UUID uuid, String name ) throws MetamodelException {
+    public void upsertVertexType( UUID uuid, String name, String summary ) throws MetamodelException {
 
         try ( IConnection connection = this.dataSource.openConnection() ) {
 
             Map<String, Object> params = new HashMap<>();
             params.put( "uuid", uuid );
             params.put( "name", name );
+            params.put( "summary", summary );
 
-            int inserted = connection.executeCountQuery( "SELECT UpsertVertexType( {{uuid}}, {{name}} )", params );
+            int inserted = connection.executeCountQuery( "SELECT UpsertVertexType( {{uuid}}, {{name}}, {{summary}} )", params );
 
             assert inserted == 1;
 

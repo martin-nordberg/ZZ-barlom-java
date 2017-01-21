@@ -19,7 +19,7 @@ public interface IMetamodelFacade {
      */
     @FunctionalInterface
     interface IVertexTypeQueryCallback {
-        void handleVertexType( UUID uuid, String name );
+        void handleVertexType( UUID uuid, String name, String summary );
     }
 
     /**
@@ -62,6 +62,6 @@ public interface IMetamodelFacade {
      *
      * @throws MetamodelException if the update fails.
      */
-    void upsertVertexType( UUID uuid, String name ) throws MetamodelException;
+    void upsertVertexType( UUID uuid, String name, String summary ) throws MetamodelException;
 
 }

@@ -28,8 +28,8 @@ type Msg
 view : FocusedVertexType -> Html Msg
 view focusedVertexType =
     let
-        vtNameInputId =
-            "vt-name-input"
+        ( vtNameInputId, vtSummaryInputId ) =
+            ( "vt-name-input", "vt-summary-input" )
     in
         case focusedVertexType of
             Just vertexType ->
@@ -37,6 +37,10 @@ view focusedVertexType =
                     [ label [ for vtNameInputId ] [ text "Name:" ]
                     , br [] []
                     , input [ (id vtNameInputId), (value vertexType.name) ] []
+                    , br [] []
+                    , label [ for vtSummaryInputId ] [ text "Summary:" ]
+                    , br [] []
+                    , input [ (id vtSummaryInputId), (value vertexType.summary) ] []
                     ]
 
             Nothing ->
@@ -48,4 +52,4 @@ view focusedVertexType =
 -- UPDATE --
 ------------
 --
--- Updates the focused vertex type.
+-- TODO: save changes.

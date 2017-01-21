@@ -12,15 +12,15 @@ type alias Entities =
 
 type alias VertexType =
     { name : String
-    , uuid :
-        String
-        -- TODO: Uuid
+    , summary : String
+    , uuid : String {- TODO: UUID -}
     }
 
 
-constructVertexType : String -> String -> VertexType
-constructVertexType uuid name =
+constructVertexType : String -> String -> String -> VertexType
+constructVertexType uuid name summary =
     { uuid = uuid
+    , summary = summary
     , name = name
     }
 

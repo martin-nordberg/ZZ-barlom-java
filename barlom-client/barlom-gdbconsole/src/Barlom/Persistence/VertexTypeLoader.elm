@@ -55,9 +55,10 @@ vertexTypeListDecoder =
 
 vertexTypeDecoder : Decode.Decoder VertexType
 vertexTypeDecoder =
-    Decode.map2 constructVertexType
+    Decode.map3 constructVertexType
         (field "uuid" Decode.string)
         (field "name" Decode.string)
+        (field "summary" Decode.string)
 
 
 
