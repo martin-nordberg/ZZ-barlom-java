@@ -39,7 +39,7 @@ view entities focusedVertexType =
 viewVertexTypeRow : FocusedVertexType -> VertexType -> Html Msg
 viewVertexTypeRow focusedVertexType vertexType =
     let
-        isfocused =
+        isFocused =
             case focusedVertexType of
                 Just selVertexType ->
                     selVertexType == vertexType
@@ -49,7 +49,7 @@ viewVertexTypeRow focusedVertexType vertexType =
     in
         tr [ class "c-table__row" ]
             [ td
-                [ classList [ ( "c-table__cell", True ), ( "c-text--loud", isfocused ) ]
+                [ classList [ ( "c-table__cell", True ), ( "c-text--loud c-text--highlight", isFocused ) ]
                 , (onClick (FocusVertexType (Just vertexType)))
                 ]
                 [ text vertexType.name
