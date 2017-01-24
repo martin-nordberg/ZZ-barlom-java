@@ -12,7 +12,7 @@
     <!-- Blaze CSS -->
     <link rel="stylesheet" href="styles/lib/blaze.min.css">
 
-    <!-- System.js -->
+    <!-- Bundled application and Elem runtime -->
     <script src="scripts/app.js"></script>
 
 </head>
@@ -23,5 +23,11 @@
 
 </body>
 
+<script>
+
+    var appDiv = document.getElementById('app');
+    Elm.Barlom.Presentation.Main.App.embed( appDiv );
+
+</script>
 
 </html>
