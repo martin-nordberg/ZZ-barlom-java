@@ -1,38 +1,22 @@
-/**
- * Barlom-GDB Console main program.
- */
-
 "use strict";
 
-import { stuff, moreStuff } from './junk/stuff.js'
+import snabbdom from 'snabbdom';
+import h from 'snabbdom/h';
 
-import snabbdomx from './lib/snabbdom/snabbdom.js';
-import h from './lib/snabbdom/h.js';
-
-import snabbdomClass from './lib/snabbdom/snabbdom-class.js';
-import snabbdomProps from './lib/snabbdom/snabbdom-props.js';
-import snabbdomStyle from './lib/snabbdom/snabbdom-style.js';
-import snabbdomEventListeners from './lib/snabbdom/snabbdom-eventlisteners.js';
-
-
-
-console.log( "Stuff: ", stuff );
-
-console.log( "More Stuff: ", moreStuff() );
-
-console.log( snabbdom );
+const patch = snabbdom.init(
+  [
+    require( 'snabbdom/modules/class' ),          // makes it easy to toggle classes
+    require( 'snabbdom/modules/props' ),          // for setting properties on DOM elements
+    require( 'snabbdom/modules/style' ),          // handles styling on elements with support for animations
+    require( 'snabbdom/modules/eventlisteners' ), // attaches event listeners
+  ]
+);
 
 
-const patch = snabbdom.init([
-                              snabbdomClass,
-                              snabbdomProps,
-                              snabbdomStyle,
-                              snabbdomEventListeners
-                            ]);
+let message = "Hello World!";
 
+let vnode = h( 'div', { style: { fontWeight: 'bold' } }, message );
 
-var vnode = h('div', {style: {fontWeight: 'bold'}}, 'Hello world');
-patch(document.getElementById('app'), vnode);
-
+patch( document.getElementById( 'app' ), vnode );
 
 
