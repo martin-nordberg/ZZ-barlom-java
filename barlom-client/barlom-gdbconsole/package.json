@@ -9,7 +9,8 @@
   },
   "author": "Martin E. Nordberg III",
   "dependencies": {
-    "snabbdom": "^0.2.0"
+    "snabbdom": "^0.2.0",
+    "union-type": "^0.1.6"
   },
   "devDependencies": {
     "babel": "^5.2.13",
@@ -18,7 +19,7 @@
     "watchify": "^3.3.0"
   },
   "scripts": {
-    "build": "browserify webapp/scripts/main.js -t [ babelify --stage 1 ] --outfile webapp/app.js",
-    "watch": "watchify webapp/scripts/main.js -t babelify --outfile webapp/app.js"
+    "build": "browserify webapp/scripts/main.js -t [ babelify --stage 1 --debug ] --outfile webapp/app.js",
+    "watch": "watchify webapp/scripts/main.js -t babelify --outfile webapp/app.js --debug"
   }
 }

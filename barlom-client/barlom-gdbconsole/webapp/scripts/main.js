@@ -1,7 +1,7 @@
 "use strict";
 
 import snabbdom from 'snabbdom';
-import h from 'snabbdom/h';
+import counterList from './counterList';
 
 const patch = snabbdom.init(
   [
@@ -13,10 +13,18 @@ const patch = snabbdom.init(
 );
 
 
-let message = "Hello World!";
+function main( initState, oldVnode, { view, update } ) {
+  const newVnode = view(
+    initState, e => {
+      const newState = update( initState, e );
+      main( newState, newVnode, { view, update } );
+    }
+  );
+  patch( oldVnode, newVnode );
+}
 
-let vnode = h( 'div', { style: { fontWeight: 'bold' } }, message );
-
-patch( document.getElementById( 'app' ), vnode );
-
-
+main(
+  { nextID: 1, counters: [] }, // the initial state
+  document.getElementById( 'app' ),
+  counterList
+);
