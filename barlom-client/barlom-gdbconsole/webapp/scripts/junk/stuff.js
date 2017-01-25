@@ -4,4 +4,6 @@
 
 export const stuff = 42;
 
-export let moreStuff = () => 43;
+export let moreStuff = function() {
+    return 43;
+};
