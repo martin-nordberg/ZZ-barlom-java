@@ -20,6 +20,6 @@
   },
   "scripts": {
     "build": "browserify webapp/scripts/main.js -t [ babelify --stage 1 --debug ] --outfile webapp/app.js",
-    "watch": "watchify webapp/scripts/main.js -t babelify --outfile webapp/app.js --debug"
+    "watch": "watchify webapp/scripts/main.js -t babelify --outfile webapp/app.js --debug --verbose"
   }
 }

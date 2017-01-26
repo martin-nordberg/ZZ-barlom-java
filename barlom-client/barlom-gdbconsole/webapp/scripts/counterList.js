@@ -4,6 +4,8 @@ import h from 'snabbdom/h';
 import Type from 'union-type';
 import counter from './counter';
 
+// ACTIONS
+
 const Action = Type(
   {
     Add: [],
@@ -13,11 +15,24 @@ const Action = Type(
   }
 );
 
+const resetAction = counter.Action.Init( 0 );
+
+
+// MODEL
 
 /*  model : {
  counters: [{id: Number, counter: counter.model}],
  nextID  : Number
  }
+ */
+
+
+// VIEW
+
+/**
+ * Generates the mark up for the list of counters.
+ * @param model the state of the counters.
+ * @param handler event handling.
  */
 function view( model, handler ) {
   return h(
@@ -39,6 +54,11 @@ function view( model, handler ) {
   );
 }
 
+/**
+ * Generates the mark up for one counter plus a remove button.
+ * @param item one entry in the counters array.
+ * @param handler the master event handler
+ */
 function counterItemView( item, handler ) {
   return h(
     'div.counter-item', { key: item.id }, [
@@ -53,7 +73,19 @@ function counterItemView( item, handler ) {
   );
 }
 
-const resetAction = counter.Action.Init( 0 );
+// UPDATE
+
+function update( model, action ) {
+
+  return Action.case(
+    {
+      Add: () => addCounter( model ),
+      Remove: ( id ) => removeCounter( model, id ),
+      Reset: () => resetCounters( model ),
+      Update: ( id, action ) => updateCounter( model, id, action )
+    }, action
+  );
+}
 
 function addCounter( model ) {
   const newCounter = { id: model.nextID, counter: counter.update( null, resetAction ) };
@@ -62,6 +94,7 @@ function addCounter( model ) {
     nextID: model.nextID + 1
   };
 }
+
 
 function resetCounters( model ) {
 
@@ -96,18 +129,6 @@ function updateCounter( model, id, action ) {
           }
     )
   };
-}
-
-function update( model, action ) {
-
-  return Action.case(
-    {
-      Add: () => addCounter( model ),
-      Remove: id => removeCounter( model, id ),
-      Reset: () => resetCounters( model ),
-      Update: ( id, action ) => updateCounter( model, id, action )
-    }, action
-  );
 }
 
 export default { view, update, Action };

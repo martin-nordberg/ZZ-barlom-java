@@ -37,7 +37,7 @@ function update( count, action ) {
     {
       Increment: () => count + 1,
       Decrement: () => count - 1,
-      Init: n => n
+      Init: (n) => n
     }, action
   );
 }

@@ -13,18 +13,24 @@ const patch = snabbdom.init(
 );
 
 
-function main( initState, oldVnode, { view, update } ) {
-  const newVnode = view(
-    initState, e => {
-      const newState = update( initState, e );
-      main( newState, newVnode, { view, update } );
-    }
-  );
+function main( state, oldVnode, { view, update } ) {
+
+  let eventHandler = e => {
+    const newState = update( state, e );
+    main( newState, newVnode, { view, update } );
+  };
+
+  const newVnode = view( state, eventHandler );
+
   patch( oldVnode, newVnode );
 }
 
+function initState() {
+  return { nextID: 1, counters: [] };
+}
+
 main(
-  { nextID: 1, counters: [] }, // the initial state
+  initState(),
   document.getElementById( 'app' ),
   counterList
 );
