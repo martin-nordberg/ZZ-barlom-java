@@ -1,25 +1,24 @@
 {
   "name": "Barlom-GDB-Console",
   "version": "0.0.0",
-  "description": "Simple snabbdom starter repository",
+  "description": "Barlom Graph Database Metamodeling Console",
   "main": "main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/martin-nordberg/barlom"
   },
   "author": "Martin E. Nordberg III",
+  "license": "Apache-2.0",
   "dependencies": {
   },
   "devDependencies": {
     "browserify": "^14.0.0",
-    "tsify": "*",
+    "tsify": "^3.0.0",
     "typescript": "^2.1.5",
-    "watchify": "^3.3.0"
+    "watchify": "^3.9.0"
   },
   "scripts": {
     "build": "browserify webapp/scripts/main.ts -p [ tsify ] --outfile webapp/app.js --debug",
-
-    "buildj": "browserify webapp/scripts/main.js -t [ babelify --stage 1 --debug ] --outfile webapp/app.js",
-    "watchj": "watchify webapp/scripts/main.js -t babelify --outfile webapp/app.js --debug --verbose"
+    "watch": "watchify webapp/scripts/main.ts -p [ tsify ] --outfile webapp/app.js --debug --verbose"
   }
 }
