@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES6",
+        "XXnoImplicitAny": true,
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "declaration": true,
+        "removeComments": false,
+        "noUnusedLocals": true,
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.core"
+        ]
+    }
+}

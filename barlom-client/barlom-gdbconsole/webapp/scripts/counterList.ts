@@ -1,21 +1,17 @@
 "use strict";
 
-import h from 'snabbdom/h';
-import Type from 'union-type';
+import h from './lib/snabbdom/src/h';
+import { VNode } from './lib/snabbdom/src/vnode';
 import counter from './counter';
 
 // ACTIONS
 
-const Action = Type(
-  {
-    Add: [],
-    Remove: [Number],
-    Reset: [],
-    Update: [Number, counter.Action],
-  }
-);
+const ADD     = 'add';
+const UPDATE  = 'update counter';
+const REMOVE  = 'remove';
+const RESET   = 'reset';
 
-const resetAction = counter.Action.Init( 0 );
+const resetAction = { type: counter.INIT };
 
 
 // MODEL
@@ -34,17 +30,17 @@ const resetAction = counter.Action.Init( 0 );
  * @param model the state of the counters.
  * @param handler event handling.
  */
-function view( model, handler ) {
+function view( model, handler ) : VNode {
   return h(
     'div', [
       h(
         'button', {
-          on: { click: handler.bind( null, Action.Add() ) }
+          on: { click: handler.bind( null, {type: ADD} ) }
         }, 'Add'
       ),
       h(
         'button', {
-          on: { click: handler.bind( null, Action.Reset() ) }
+          on: { click: handler.bind( null, {type: RESET} ) }
         }, 'Reset'
       ),
       h( 'hr' ),
@@ -64,10 +60,10 @@ function counterItemView( item, handler ) {
     'div.counter-item', { key: item.id }, [
       h(
         'button.remove', {
-          on: { click: handler.bind( null, Action.Remove( item.id ) ) }
+          on: { click: handler.bind( null, { type: REMOVE, id: item.id} ) }
         }, 'Remove'
       ),
-      counter.view( item.counter, a => handler( Action.Update( item.id, a ) ) ),
+      counter.view( item.counter, a => handler( {type: UPDATE, id: item.id, data: a} ) ),
       h( 'hr' )
     ]
   );
@@ -77,14 +73,12 @@ function counterItemView( item, handler ) {
 
 function update( model, action ) {
 
-  return Action.case(
-    {
-      Add: () => addCounter( model ),
-      Remove: ( id ) => removeCounter( model, id ),
-      Reset: () => resetCounters( model ),
-      Update: ( id, action ) => updateCounter( model, id, action )
-    }, action
-  );
+    return  action.type === ADD     ? addCounter(model)
+          : action.type === RESET   ? resetCounters(model)
+          : action.type === REMOVE  ? removeCounter(model, action.id)
+          : action.type === UPDATE  ? updateCounter(model, action.id, action.data)
+          : model;
+
 }
 
 function addCounter( model ) {
@@ -131,4 +125,4 @@ function updateCounter( model, id, action ) {
   };
 }
 
-export default { view, update, Action };
+export default { view, update };
