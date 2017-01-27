@@ -5,16 +5,16 @@ import {VNode} from './lib/snabbdom/src/vnode';
 import {
     view as viewCounter,
     update as updateCounter,
-    actionInitialize as actionInitializeCounter,
     Action as CounterAction
 } from './counter';
 
+
 // ACTIONS
 
-export interface Action_Add { kind : 'add' }
-export interface Action_Update { kind : 'update', id : number, counterAction : CounterAction }
-export interface Action_Remove { kind : 'remove', id : number }
-export interface Action_Reset { kind : 'reset' }
+export interface Action_Add { kind : 'Action_Add' }
+export interface Action_Update { kind : 'Action_Update', id : number, counterAction : CounterAction }
+export interface Action_Remove { kind : 'Action_Remove', id : number }
+export interface Action_Reset { kind : 'Action_Reset' }
 
 export type Action = Action_Add | Action_Update | Action_Remove | Action_Reset;
 
@@ -25,12 +25,19 @@ export type ActionHandler = (action:Action) => void;
 
 export interface CounterItem {
     id : number,
-    counter : number
+    count : number
 }
 
 export interface Model {
     nextID : number,
     counters : CounterItem[]
+}
+
+/**
+ * Initializes the application state.
+ */
+export function initState() : Model {
+    return { nextID: 5, counters: [] };
 }
 
 
@@ -46,12 +53,12 @@ export function view( model : Model, handler : ActionHandler ) : VNode {
         'div', [
             h(
                 'button', {
-                    on: { click: handler.bind( null, { kind: 'add' } ) }
+                    on: { click: () => handler( { kind: 'Action_Add' } ) }
                 }, 'Add'
             ),
             h(
                 'button', {
-                    on: { click: handler.bind( null, { kind: 'reset' } ) }
+                    on: { click: () => handler( { kind: 'Action_Reset' } ) }
                 }, 'Reset'
             ),
             h( 'hr' ),
@@ -71,10 +78,10 @@ function counterItemView( item :CounterItem, handler : ActionHandler ) {
         'div.counter-item', { key: item.id }, [
             h(
                 'button.remove', {
-                    on: { click: handler.bind( null, { kind: 'remove', id: item.id } ) }
+                    on: { click: () => handler( { kind: 'Action_Remove', id: item.id } ) }
                 }, 'Remove'
             ),
-            viewCounter( item.counter, a => handler( { kind: 'update', id: item.id, counterAction: a } ) ),
+            viewCounter( { count: item.count }, a => handler( { kind: 'Action_Update', id: item.id, counterAction: a } ) ),
             h( 'hr' )
         ]
     );
@@ -85,14 +92,14 @@ function counterItemView( item :CounterItem, handler : ActionHandler ) {
 export function update( model : Model, action : Action ) : Model {
 
     switch ( action.kind ) {
-        case 'add':
+        case 'Action_Add':
             return addCounter( model );
-        case 'reset':
+        case 'Action_Reset':
             return resetCounters( model );
-        case 'remove':
+        case 'Action_Remove':
             const removeAction = <Action_Remove>action;
             return removeCounter( model, removeAction.id );
-        case 'update':
+        case 'Action_Update':
             const updateAction = <Action_Update>action;
             return updateCounterRow( model, updateAction.id, updateAction.counterAction );
     }
@@ -100,7 +107,7 @@ export function update( model : Model, action : Action ) : Model {
 }
 
 function addCounter( model : Model ) : Model {
-    const newCounter : CounterItem = { id: model.nextID, counter: updateCounter( 0, actionInitializeCounter ) };
+    const newCounter : CounterItem = { id: model.nextID, count: 0 };
     return {
         counters: model.counters.concat(newCounter),
         nextID: model.nextID + 1
@@ -114,7 +121,7 @@ function resetCounters( model : Model ) : Model {
         counters: model.counters.map(
             ( item : CounterItem ) => ({
                 id: item.id,
-                counter: updateCounter( item.counter, actionInitializeCounter )
+                count: 0
             })
         )
     };
@@ -136,7 +143,7 @@ function updateCounterRow( model : Model, id : number, action : CounterAction ) 
                     item
                     : {
                         id: item.id,
-                        counter: updateCounter( item.counter, action )
+                        count: updateCounter( item, action ).count
                     }
         )
     };
