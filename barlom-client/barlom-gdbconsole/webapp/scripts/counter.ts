@@ -1,25 +1,31 @@
 "use strict";
 
-import { VNode } from './lib/snabbdom/src/vnode';
+import {VNode} from './lib/snabbdom/src/vnode';
 import h from './lib/snabbdom/src/h';
 
-const INC = 'inc';
-const DEC = 'dec';
-const INIT = 'init';
+export interface Action_Increment { kind : 'increment' }
+export interface Action_Decrement { kind : 'decrement' }
+export interface Action_Initialize { kind : 'initialize' }
+
+export type Action = Action_Increment | Action_Decrement | Action_Initialize;
+
+export const actionInitialize : Action_Initialize = { kind: 'initialize' };
+
+export type ActionHandler = (action:Action) => void;
 
 
 // model : Number
-function view( count: number, handler ) : VNode {
+export function view( count : number, handler : ActionHandler ) : VNode {
     return h(
         'div', [
             h(
                 'button', {
-                    on: { click: handler.bind( null, { type: INC } ) }
+                    on: { click: handler.bind( null, { kind: 'increment' } ) }
                 }, '+'
             ),
             h(
                 'button', {
-                    on: { click: handler.bind( null, { type: DEC } ) }
+                    on: { click: handler.bind( null, { kind: 'decrement' } ) }
                 }, '-'
             ),
             h( 'div', `Count : ${count}` ),
@@ -28,11 +34,14 @@ function view( count: number, handler ) : VNode {
 }
 
 
-function update( count, action ) {
-    return action.type === INC ? count + 1
-         : action.type === DEC ? count - 1
-         : action.type === INIT ? 0
-         : count;
+export function update( count : number, action : Action ) : number {
+    switch ( action.kind ) {
+        case 'increment':
+            return count + 1;
+        case 'decrement':
+            return count - 1;
+        case 'initialize':
+            return 0;
+    }
 }
 
-export default { view, update, INIT }

@@ -2,7 +2,7 @@
   "name": "Barlom-GDB-Console",
   "version": "0.0.0",
   "description": "Barlom Graph Database Metamodeling Console",
-  "main": "main.js",
+  "main": "main.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/martin-nordberg/barlom"
