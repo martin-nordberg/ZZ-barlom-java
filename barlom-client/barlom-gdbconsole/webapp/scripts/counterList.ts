@@ -1,43 +1,44 @@
 "use strict";
 
-import h from './lib/snabbdom/src/h';
-import {VNode} from './lib/snabbdom/src/vnode';
+import {Handler, VNode, button, div, hr} from './infrastructure/snabbdom-wrapper'
 import {
     view as viewCounter,
     update as updateCounter,
-    Action as CounterAction
+    Action as CounterAction,
+    Model as CounterModel
 } from './counter';
 
 
 // ACTIONS
 
-export interface Action_Add { kind : 'Action_Add' }
-export interface Action_Update { kind : 'Action_Update', id : number, counterAction : CounterAction }
-export interface Action_Remove { kind : 'Action_Remove', id : number }
-export interface Action_Reset { kind : 'Action_Reset' }
+export interface Action_Add {
+    kind : 'Action_Add'
+}
+export interface Action_Update {
+    kind : 'Action_Update', id : number, counterAction : CounterAction
+}
+export interface Action_Remove {
+    kind : 'Action_Remove', id : number
+}
+export interface Action_Reset {
+    kind : 'Action_Reset'
+}
 
 export type Action = Action_Add | Action_Update | Action_Remove | Action_Reset;
-
-export type ActionHandler = (action:Action) => void;
 
 
 // MODEL
 
-export interface CounterItem {
-    id : number,
-    count : number
-}
-
 export interface Model {
-    nextID : number,
-    counters : CounterItem[]
+    readonly nextID : number,
+    readonly counters : CounterModel[]
 }
 
 /**
  * Initializes the application state.
  */
 export function initState() : Model {
-    return { nextID: 5, counters: [] };
+    return { nextID: 1, counters: [] };
 }
 
 
@@ -48,22 +49,21 @@ export function initState() : Model {
  * @param model the state of the counters.
  * @param handler event handling.
  */
-export function view( model : Model, handler : ActionHandler ) : VNode {
-    return h(
-        'div', [
-            h(
-                'button', {
+export function view( model : Model, handler : Handler<Action> ) : VNode {
+    return div(
+        [
+            button(
+                {
                     on: { click: () => handler( { kind: 'Action_Add' } ) }
-                }, 'Add'
+                }, "Add"
             ),
-            h(
-                'button', {
+            button(
+                {
                     on: { click: () => handler( { kind: 'Action_Reset' } ) }
-                }, 'Reset'
+                }, "Reset"
             ),
-            h( 'hr' ),
-            h( 'div.counter-list', model.counters.map( item => counterItemView( item, handler ) ) )
-
+            hr(),
+            div( '.counter-list', model.counters.map( item => counterItemView( item, handler ) ) )
         ]
     );
 }
@@ -73,16 +73,16 @@ export function view( model : Model, handler : ActionHandler ) : VNode {
  * @param item one entry in the counters array.
  * @param handler the master event handler
  */
-function counterItemView( item :CounterItem, handler : ActionHandler ) {
-    return h(
-        'div.counter-item', { key: item.id }, [
-            h(
-                'button.remove', {
+function counterItemView( item : CounterModel, handler : Handler<Action> ) {
+    return div(
+        '.counter-item', { key: item.id }, [
+            button(
+                '.remove', {
                     on: { click: () => handler( { kind: 'Action_Remove', id: item.id } ) }
                 }, 'Remove'
             ),
-            viewCounter( { count: item.count }, a => handler( { kind: 'Action_Update', id: item.id, counterAction: a } ) ),
-            h( 'hr' )
+            viewCounter( item, a => handler( { kind: 'Action_Update', id: item.id, counterAction: a } ) ),
+            hr()
         ]
     );
 }
@@ -107,9 +107,9 @@ export function update( model : Model, action : Action ) : Model {
 }
 
 function addCounter( model : Model ) : Model {
-    const newCounter : CounterItem = { id: model.nextID, count: 0 };
+    const newCounter : CounterModel = { id: model.nextID, count: 0 };
     return {
-        counters: model.counters.concat(newCounter),
+        counters: model.counters.concat( newCounter ),
         nextID: model.nextID + 1
     };
 }
@@ -119,7 +119,7 @@ function resetCounters( model : Model ) : Model {
     return {
         nextID: model.nextID,
         counters: model.counters.map(
-            ( item : CounterItem ) => ({
+            ( item : CounterModel ) => ({
                 id: item.id,
                 count: 0
             })
