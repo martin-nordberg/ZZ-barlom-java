@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler, VNode, button, div, hr} from './infrastructure/snabbdom-wrapper'
+import {Handler, VNode, button, div, hr} from '../infrastructure/snabbdom-wrapper'
 import {
     view as viewCounter,
     update as updateCounter,

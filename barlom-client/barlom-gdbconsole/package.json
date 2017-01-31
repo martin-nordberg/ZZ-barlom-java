@@ -18,7 +18,7 @@
     "watchify": "^3.9.0"
   },
   "scripts": {
-    "build": "browserify webapp/scripts/main.ts -p [ tsify ] --outfile webapp/app.js --debug",
-    "watch": "watchify webapp/scripts/main.ts -p [ tsify ] --outfile webapp/app.js --debug --verbose"
+    "build": "browserify webapp/scripts/presentation/main/main.ts -p [ tsify ] --outfile webapp/app.js --debug",
+    "watch": "watchify webapp/scripts/presentation/main/main.ts -p [ tsify ] --outfile webapp/app.js --debug --verbose"
   }
 }

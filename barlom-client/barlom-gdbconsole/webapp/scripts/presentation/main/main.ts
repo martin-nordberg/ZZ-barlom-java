@@ -1,15 +1,13 @@
-
-
 "use strict";
 
-import {init as snabbdomInit} from './lib/snabbdom/src/snabbdom';
-import {classModule} from './lib/snabbdom/src/modules/class';
-import {propsModule} from './lib/snabbdom/src/modules/props';
-import {styleModule} from './lib/snabbdom/src/modules/style';
-import {eventListenersModule} from './lib/snabbdom/src/modules/eventlisteners';
-import {VNode} from "./lib/snabbdom/src/vnode";
+import {init as snabbdomInit} from '../../lib/snabbdom/src/snabbdom';
+import {classModule} from '../../lib/snabbdom/src/modules/class';
+import {propsModule} from '../../lib/snabbdom/src/modules/props';
+import {styleModule} from '../../lib/snabbdom/src/modules/style';
+import {eventListenersModule} from '../../lib/snabbdom/src/modules/eventlisteners';
+import {VNode} from "../../lib/snabbdom/src/vnode";
 
-import {Action, Model, initState, update, view} from './counterList';
+import {Action, Model, initState, update, view} from './main-window';
 
 // Get a Snabbdom patch function with the normal HTML modules.
 const patch = snabbdomInit(
@@ -26,7 +24,7 @@ const patch = snabbdomInit(
  * @param state the latest model state.
  * @param oldVnode the prior virtual DOM or the real DOM first time through.
  */
-function main( state: Model, oldVnode : VNode | Element ) : void {
+function main( state : Model, oldVnode : VNode | Element ) : void {
 
     let eventHandler = ( action : Action ) => {
         const newState = update( state, action );

@@ -6,7 +6,7 @@ import h from '../lib/snabbdom/src/h';
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** Re-export the Snabbdom type. */
-export { VNode };
+export {VNode};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,27 +39,36 @@ function makeVNode( elementName : string, a? : any, b? : any, c? : any ) : VNode
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+type Arg1Of3 = string | VNodeData | Array<VNode>;
+type Arg2Of3 = string | VNodeData | Array<VNode>;
+type Arg3Of3 = string | Array<VNode>
+
 /** Variably typed VNode constructor function. */
-export type VNodeBuilder = ( a? : string|VNodeData|Array<VNode>, b? : string|VNodeData|Array<VNode>, c? : string|Array<VNode> ) => VNode;
+export type VNodeBuilder = ( a? : Arg1Of3, b? : Arg2Of3, c? : Arg3Of3 ) => VNode;
 
 /** Curried VNode builder function. */
 function makeVNodeBuilder( elementName : string ) : VNodeBuilder {
-    return function( a? : string|VNodeData|Array<VNode>, b? : string|VNodeData|Array<VNode>, c? : string|Array<VNode> ) : VNode {
+    return function ( a? : Arg1Of3, b? : Arg2Of3, c? : Arg3Of3 ) : VNode {
         return makeVNode( elementName, a, b, c );
     }
 }
 
+type Arg1Of2 = string | VNodeData;
+type Arg2Of2 = VNodeData;
+
 /** Variably typed childless VNode constructor function. */
-export type ChildlessVNodeBuilder = ( a? : string|VNodeData, b? : VNodeData ) => VNode;
+export type ChildlessVNodeBuilder = ( a? : Arg1Of2, b? : Arg2Of2 ) => VNode;
 
 /** Curried childless VNode builder function. */
 function makeChildlessVNodeBuilder( elementName : string ) : ChildlessVNodeBuilder {
-    return function( a? : string|VNodeData, b? : VNodeData ) : VNode {
+    return function ( a? : Arg1Of2, b? : Arg2Of2 ) : VNode {
         return makeVNode( elementName, a, b );
     }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// TODO: Add many more element types as needed ...
 
 /** Constructs a button element. */
 export const button = makeVNodeBuilder( 'button' );
@@ -69,6 +78,12 @@ export const div = makeVNodeBuilder( 'div' );
 
 /** Constructs an hr element. */
 export const hr = makeChildlessVNodeBuilder( 'hr' );
+
+/** Constructs a main element. */
+export const main = makeVNodeBuilder( 'main' );
+
+/** Constructs a nav element. */
+export const nav = makeVNodeBuilder( 'nav' );
 
 /** Constructs a span element. */
 export const span = makeVNodeBuilder( 'span' );
