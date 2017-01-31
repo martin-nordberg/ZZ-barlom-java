@@ -1,18 +1,19 @@
 "use strict";
 
-import {Handler, VNode, div, main} from '../../infrastructure/snabbdom-wrapper'
+import {Handler} from '../../infrastructure/tselmenite/util'
+import {VNode, div, main} from '../../infrastructure/tselmenite/vdom'
 import {
-    view as viewCounterList,
-    update as updateCounterList,
     Action as CounterListAction,
     Model as CounterListModel,
-    initState as initCounterList
+    initState as initCounterList,
+    update as updateCounterList,
+    view as viewCounterList
 } from '../counter-list';
 import {
-    view as viewTopNavBar,
-    // update as updateTopNavBar,
     // Action as TopNavActionAction,
     // Model as TopNavModel
+    // update as updateTopNavBar,
+    view as viewTopNavBar
 } from '../navigation/top-navbar';
 
 

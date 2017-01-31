@@ -1,11 +1,12 @@
 "use strict";
 
-import {Handler, VNode, button, div, hr} from '../infrastructure/snabbdom-wrapper'
+import {Handler} from '../infrastructure/tselmenite/util'
+import {VNode, button, div, hr} from '../infrastructure/tselmenite/vdom'
 import {
-    view as viewCounter,
-    update as updateCounter,
     Action as CounterAction,
-    Model as CounterModel
+    Model as CounterModel,
+    update as updateCounter,
+    view as viewCounter
 } from './counter';
 
 

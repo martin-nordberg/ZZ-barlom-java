@@ -1,6 +1,7 @@
 "use strict";
 
-import {Handler, VNode, div, span, nav} from '../../infrastructure/snabbdom-wrapper'
+import {Handler} from '../../infrastructure/tselmenite/util'
+import {VNode, div, span, nav} from '../../infrastructure/tselmenite/vdom'
 
 
 // ACTIONS
