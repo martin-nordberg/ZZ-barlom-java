@@ -27,7 +27,7 @@ export interface Model {
 export function view( model : Model, handler : Handler<Action> ) : VNode {
     return nav(
         '.c-nav.c-nav--inline.c-nav--high', [
-            div( '.c-nav__content', "Barlom-GDB Console" ),
+            div( '.c-nav__content', [ "Barlom-GDB Console" ] ),
             viewNavItem( "Browse", handler ),
             viewNavItem( "Diagrams", handler ),
             viewExitNavItem( handler )

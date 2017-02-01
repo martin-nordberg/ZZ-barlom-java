@@ -32,14 +32,14 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
             button(
                 {
                     on: { click: () => handler( { kind: 'Action_Increment' } ) }
-                }, "+"
+                }, [ "+" ]
             ),
             button(
                 {
                     on: { click: () => handler( { kind: 'Action_Decrement' } ) }
-                }, "-"
+                }, [ "-" ]
             ),
-            div( `Count : ${model.count}` ),
+            div( [ `Count : ${model.count}` ] ),
         ]
     );
 }

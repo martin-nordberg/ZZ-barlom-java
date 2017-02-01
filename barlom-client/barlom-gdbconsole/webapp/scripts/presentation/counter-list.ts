@@ -16,7 +16,9 @@ export interface Action_Add {
     kind : 'Action_Add'
 }
 export interface Action_Update {
-    kind : 'Action_Update', id : number, counterAction : CounterAction
+    kind : 'Action_Update',
+    id : number,
+    counterAction : CounterAction
 }
 export interface Action_Remove {
     kind : 'Action_Remove', id : number
@@ -56,12 +58,12 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
             button(
                 {
                     on: { click: () => handler( { kind: 'Action_Add' } ) }
-                }, "Add"
+                }, [ "Add" ]
             ),
             button(
                 {
                     on: { click: () => handler( { kind: 'Action_Reset' } ) }
-                }, "Reset"
+                }, [ "Reset" ]
             ),
             hr(),
             div( '.counter-list', model.counters.map( item => counterItemView( item, handler ) ) )
@@ -80,7 +82,7 @@ function counterItemView( item : CounterModel, handler : Handler<Action> ) {
             button(
                 '.remove', {
                     on: { click: () => handler( { kind: 'Action_Remove', id: item.id } ) }
-                }, 'Remove'
+                }, [ 'Remove' ]
             ),
             viewCounter( item, a => handler( { kind: 'Action_Update', id: item.id, counterAction: a } ) ),
             hr()

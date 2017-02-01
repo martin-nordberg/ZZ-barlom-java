@@ -18,13 +18,13 @@ function makeVNode( elementName : string, a? : any, b? : any, c? : any ) : VNode
         return h( elementName + a, b, c );
     }
     else if ( b !== undefined ) {
-        if ( typeof a === 'string' && ( a.startsWith( '.' ) || a.startsWith( '#' ) ) ) {
+        if ( typeof a === 'string' ) {
             return h( elementName + a, b );
         }
         return h( elementName, a, b );
     }
     else if ( a != undefined ) {
-        if ( typeof a === 'string' && ( a.startsWith( '.' ) || a.startsWith( '#' ) ) ) {
+        if ( typeof a === 'string' ) {
             return h( elementName + a );
         }
         return h( elementName, a );
@@ -34,9 +34,9 @@ function makeVNode( elementName : string, a? : any, b? : any, c? : any ) : VNode
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Arg1Of3 = string | VNodeData | Array<VNode>;
-type Arg2Of3 = string | VNodeData | Array<VNode>;
-type Arg3Of3 = string | Array<VNode>
+type Arg1Of3 = string | VNodeData | Array<VNode|string>;
+type Arg2Of3 = VNodeData | Array<VNode|string>;
+type Arg3Of3 = Array<VNode|string>
 
 /** Variably typed VNode constructor function. */
 export type VNodeBuilder = ( a? : Arg1Of3, b? : Arg2Of3, c? : Arg3Of3 ) => VNode;
