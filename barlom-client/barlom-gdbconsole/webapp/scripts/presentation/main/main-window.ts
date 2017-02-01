@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler} from '../../infrastructure/tselmenite/util'
+import {Handler} from '../../infrastructure/tselmenite/core'
 import {VNode, div, main} from '../../infrastructure/tselmenite/vdom'
 import {
     Action as CounterListAction,
@@ -32,8 +32,10 @@ export type Action = Action_ListUpdate | Action_TopNav;
 
 // MODEL
 
-export interface Model {
-    readonly counterList : CounterListModel
+export class Model {
+    constructor(
+        readonly counterList : CounterListModel
+    ) {}
 }
 
 /**
@@ -70,15 +72,15 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
 
 // UPDATE
 
-export function update( model : Model, action : Action ) : Model {
+export function update( model : Model, action : Action ) : [ Model, null ] {
 
     switch ( action.kind ) {
         case 'Action_ListUpdate':
             const updateAction = <Action_ListUpdate>action;
-            return { counterList: updateCounterList( model.counterList, updateAction.counterListAction ) };
+            return [ new Model( updateCounterList( model.counterList, updateAction.counterListAction ) ), null ];
         case 'Action_TopNav':
             // const topNavAction = <Action_TopNav>action;
-            return model;
+            return [ model, null ];
     }
 
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler} from '../infrastructure/tselmenite/util'
+import {Handler} from '../infrastructure/tselmenite/core'
 import {VNode, button, div} from '../infrastructure/tselmenite/vdom'
 
 
