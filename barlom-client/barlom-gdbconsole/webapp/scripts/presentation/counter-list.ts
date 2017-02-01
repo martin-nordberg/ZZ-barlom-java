@@ -12,19 +12,32 @@ import {
 
 // ACTIONS
 
-export interface Action_Add {
-    kind : 'Action_Add'
+export class Action_Add {
+    constructor(
+        readonly kind : 'Action_Add' = 'Action_Add'
+    ) {
+    }
 }
-export interface Action_Update {
-    kind : 'Action_Update',
-    id : number,
-    counterAction : CounterAction
+export class Action_Update {
+    constructor(
+        readonly id : number,
+        readonly counterAction : CounterAction,
+        readonly kind : 'Action_Update' = 'Action_Update'
+    ) {
+    }
 }
-export interface Action_Remove {
-    kind : 'Action_Remove', id : number
+export class Action_Remove {
+    constructor(
+        readonly id : number,
+        readonly kind : 'Action_Remove' = 'Action_Remove'
+    ) {
+    }
 }
-export interface Action_Reset {
-    kind : 'Action_Reset'
+export class Action_Reset {
+    constructor(
+        readonly kind : 'Action_Reset' = 'Action_Reset'
+    ) {
+    }
 }
 
 export type Action = Action_Add | Action_Update | Action_Remove | Action_Reset;
@@ -32,9 +45,12 @@ export type Action = Action_Add | Action_Update | Action_Remove | Action_Reset;
 
 // MODEL
 
-export interface Model {
-    readonly nextID : number,
-    readonly counters : CounterModel[]
+export class Model {
+    constructor(
+        readonly nextID : number,
+        readonly counters : CounterModel[]
+    ) {
+    }
 }
 
 /**
@@ -56,17 +72,18 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
     return div(
         [
             button(
-                {
-                    on: { click: () => handler( { kind: 'Action_Add' } ) }
-                }, [ "Add" ]
+                { on: { click: () => handler( new Action_Add() ) } },
+                ["Add"]
             ),
             button(
-                {
-                    on: { click: () => handler( { kind: 'Action_Reset' } ) }
-                }, [ "Reset" ]
+                { on: { click: () => handler( new Action_Reset() ) } },
+                ["Reset"]
             ),
             hr(),
-            div( '.counter-list', model.counters.map( item => counterItemView( item, handler ) ) )
+            div(
+                '.counter-list',
+                model.counters.map( item => counterItemView( item, handler ) )
+            )
         ]
     );
 }
@@ -78,13 +95,15 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
  */
 function counterItemView( item : CounterModel, handler : Handler<Action> ) {
     return div(
-        '.counter-item', { key: item.id }, [
+        '.counter-item',
+        { key: item.id },
+        [
             button(
-                '.remove', {
-                    on: { click: () => handler( { kind: 'Action_Remove', id: item.id } ) }
-                }, [ 'Remove' ]
+                '.remove',
+                { on: { click: () => handler( new Action_Remove( item.id ) ) } },
+                ["Remove"]
             ),
-            viewCounter( item, a => handler( { kind: 'Action_Update', id: item.id, counterAction: a } ) ),
+            viewCounter( item, a => handler( new Action_Update( item.id, a ) ) ),
             hr()
         ]
     );
@@ -100,55 +119,44 @@ export function update( model : Model, action : Action ) : Model {
         case 'Action_Reset':
             return resetCounters( model );
         case 'Action_Remove':
-            const removeAction = <Action_Remove>action;
+            const removeAction = action as Action_Remove;
             return removeCounter( model, removeAction.id );
         case 'Action_Update':
-            const updateAction = <Action_Update>action;
+            const updateAction = action as Action_Update;
             return updateCounterRow( model, updateAction.id, updateAction.counterAction );
     }
 
 }
 
 function addCounter( model : Model ) : Model {
-    const newCounter : CounterModel = { id: model.nextID, count: 0 };
-    return {
-        counters: model.counters.concat( newCounter ),
-        nextID: model.nextID + 1
-    };
+    return new Model(
+        model.nextID + 1,
+        model.counters.concat( new CounterModel( model.nextID, 0 ) ),
+    );
 }
 
-
 function resetCounters( model : Model ) : Model {
-    return {
-        nextID: model.nextID,
-        counters: model.counters.map(
-            ( item : CounterModel ) => ({
-                id: item.id,
-                count: 0
-            })
+    return new Model(
+        model.nextID,
+        model.counters.map(
+            ( item : CounterModel ) => new CounterModel( item.id, 0 )
         )
-    };
+    );
 }
 
 function removeCounter( model : Model, id : number ) : Model {
-    return {
-        nextID: model.nextID,
-        counters: model.counters.filter( item => item.id !== id )
-    };
+    return new Model(
+        model.nextID,
+        model.counters.filter( item => item.id !== id )
+    );
 }
 
 function updateCounterRow( model : Model, id : number, action : CounterAction ) : Model {
-    return {
-        nextID: model.nextID,
-        counters: model.counters.map(
-            item =>
-                item.id !== id ?
-                    item
-                    : {
-                        id: item.id,
-                        count: updateCounter( item, action ).count
-                    }
+    return new Model(
+        model.nextID,
+        model.counters.map(
+            item => item.id !== id ? item : new CounterModel( item.id, updateCounter( item, action ).count )
         )
-    };
+    );
 }
 

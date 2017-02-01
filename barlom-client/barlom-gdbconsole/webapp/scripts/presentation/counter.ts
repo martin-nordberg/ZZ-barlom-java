@@ -6,11 +6,17 @@ import {VNode, button, div} from '../infrastructure/tselmenite/vdom'
 
 // ACTIONS
 
-export interface Action_Increment {
-    kind : 'Action_Increment'
+export class Action_Increment {
+    constructor(
+        readonly kind : 'Action_Increment' = 'Action_Increment'
+    ) {
+    }
 }
-export interface Action_Decrement {
-    kind : 'Action_Decrement'
+export class Action_Decrement {
+    constructor(
+        readonly kind : 'Action_Decrement' = 'Action_Decrement'
+    ) {
+    }
 }
 
 export type Action = Action_Increment | Action_Decrement;
@@ -18,9 +24,12 @@ export type Action = Action_Increment | Action_Decrement;
 
 // MODEL
 
-export interface Model {
-    readonly id : number,
-    readonly count : number
+export class Model {
+    constructor(
+        readonly id : number,
+        readonly count : number
+    ) {
+    }
 }
 
 
@@ -30,16 +39,14 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
     return div(
         '#counter-' + model.id, [
             button(
-                {
-                    on: { click: () => handler( { kind: 'Action_Increment' } ) }
-                }, [ "+" ]
+                { on: { click: () => handler( new Action_Increment() ) } },
+                ["+"]
             ),
             button(
-                {
-                    on: { click: () => handler( { kind: 'Action_Decrement' } ) }
-                }, [ "-" ]
+                { on: { click: () => handler( new Action_Decrement() ) } },
+                ["-"]
             ),
-            div( [ `Count : ${model.count}` ] ),
+            div( [`Count : ${model.count}`] ),
         ]
     );
 }
@@ -50,9 +57,9 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
 export function update( model : Model, action : Action ) : Model {
     switch ( action.kind ) {
         case 'Action_Increment':
-            return { id: model.id, count: model.count + 1 };
+            return new Model( model.id, model.count + 1 );
         case 'Action_Decrement':
-            return { id: model.id, count: model.count - 1 };
+            return new Model( model.id, model.count - 1 );
     }
 }
 
