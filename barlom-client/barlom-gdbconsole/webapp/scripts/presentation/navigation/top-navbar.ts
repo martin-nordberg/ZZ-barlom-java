@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler} from '../../infrastructure/tselmenite/core'
+import {Handler, Update} from '../../infrastructure/tselmenite/core'
 import {VNode, div, span, nav} from '../../infrastructure/tselmenite/vdom'
 
 
@@ -63,12 +63,12 @@ function viewNavItem( title : string, handler : Handler<Action> ) : VNode {
 
 // UPDATE
 
-export function update( model : Model, action : Action ) : Model {
+export function update( model : Model, action : Action ) : Update<Model,Action> {
     switch ( action.kind ) {
         case 'Action_ActivateBrowse':
-            return {};
+            return new Update( model );
         case 'Action_ActivateDiagrams':
-            return {};
+            return new Update( model );
     }
 }
 

@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler} from '../infrastructure/tselmenite/core'
+import {Handler, Update} from '../infrastructure/tselmenite/core'
 import {VNode, button, div} from '../infrastructure/tselmenite/vdom'
 
 
@@ -54,12 +54,12 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
 
 // UPDATE
 
-export function update( model : Model, action : Action ) : Model {
+export function update( model : Model, action : Action ) : Update<Model,Action> {
     switch ( action.kind ) {
         case 'Action_Increment':
-            return new Model( model.id, model.count + 1 );
+            return new Update( new Model( model.id, model.count + 1 ) );
         case 'Action_Decrement':
-            return new Model( model.id, model.count - 1 );
+            return new Update( new Model( model.id, model.count - 1 ) );
     }
 }
 

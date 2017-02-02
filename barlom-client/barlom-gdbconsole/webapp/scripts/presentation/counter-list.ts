@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler} from '../infrastructure/tselmenite/core'
+import {Handler, Update} from '../infrastructure/tselmenite/core'
 import {VNode, button, div, hr} from '../infrastructure/tselmenite/vdom'
 import {
     Action as CounterAction,
@@ -111,16 +111,16 @@ function counterItemView( item : CounterModel, handler : Handler<Action> ) {
 
 // UPDATE
 
-export function update( model : Model, action : Action ) : Model {
+export function update( model : Model, action : Action ) : Update<Model,Action> {
 
     switch ( action.kind ) {
         case 'Action_Add':
-            return addCounter( model );
+            return new Update( addCounter( model ) );
         case 'Action_Reset':
-            return resetCounters( model );
+            return new Update( resetCounters( model ) );
         case 'Action_Remove':
             const removeAction = action as Action_Remove;
-            return removeCounter( model, removeAction.id );
+            return new Update( removeCounter( model, removeAction.id ) );
         case 'Action_Update':
             const updateAction = action as Action_Update;
             return updateCounterRow( model, updateAction.id, updateAction.counterAction );
@@ -151,11 +151,13 @@ function removeCounter( model : Model, id : number ) : Model {
     );
 }
 
-function updateCounterRow( model : Model, id : number, action : CounterAction ) : Model {
-    return new Model(
-        model.nextID,
-        model.counters.map(
-            item => item.id !== id ? item : new CounterModel( item.id, updateCounter( item, action ).count )
+function updateCounterRow( model : Model, id : number, action : CounterAction ) : Update<Model,Action> {
+    return new Update(
+        new Model(
+            model.nextID,
+            model.counters.map(
+                item => item.id !== id ? item : updateCounter( item, action ).model
+            )
         )
     );
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-import {Handler} from '../../infrastructure/tselmenite/core'
+import {Handler, Command_Wrapper, Update} from '../../infrastructure/tselmenite/core'
 import {VNode, div, main} from '../../infrastructure/tselmenite/vdom'
 import {
     Action as CounterListAction,
@@ -10,21 +10,26 @@ import {
     view as viewCounterList
 } from '../counter-list';
 import {
-    // Action as TopNavActionAction,
-    // Model as TopNavModel
-    // update as updateTopNavBar,
+    Action as TopNavAction,
+    update as updateTopNavBar,
     view as viewTopNavBar
 } from '../navigation/top-navbar';
 
 
 // ACTIONS
 
-export interface Action_ListUpdate {
-    kind : 'Action_ListUpdate', counterListAction : CounterListAction
+export class Action_ListUpdate {
+    constructor(
+        readonly counterListAction : CounterListAction,
+        readonly kind : 'Action_ListUpdate' = 'Action_ListUpdate'
+    ) {}
 }
 
-export interface Action_TopNav {
-    kind : 'Action_TopNav'
+export class Action_TopNav {
+    constructor(
+        readonly topNavAction : TopNavAction,
+        readonly kind : 'Action_TopNav' = 'Action_TopNav'
+    ) {}
 }
 
 export type Action = Action_ListUpdate | Action_TopNav;
@@ -42,7 +47,7 @@ export class Model {
  * Initializes the application state.
  */
 export function initState() : Model {
-    return { counterList: initCounterList() };
+    return new Model( initCounterList() );
 }
 
 
@@ -59,7 +64,7 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
         [
             div(
                 '.o-grid__cell--width-100.o-panel-container', [
-                    viewTopNavBar( {}, a => handler( { kind: 'Action_TopNav', counterListAction: a } ) ),
+                    viewTopNavBar( {}, a => handler( new Action_TopNav( a ) ) ),
                     viewCounterList(
                         model.counterList,
                         a => handler( { kind: 'Action_ListUpdate', counterListAction: a } )
@@ -72,15 +77,16 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
 
 // UPDATE
 
-export function update( model : Model, action : Action ) : [ Model, null ] {
+export function update( model : Model, action : Action ) : Update<Model,Action> {
 
     switch ( action.kind ) {
         case 'Action_ListUpdate':
-            const updateAction = <Action_ListUpdate>action;
-            return [ new Model( updateCounterList( model.counterList, updateAction.counterListAction ) ), null ];
+            const updateAction = action as Action_ListUpdate;
+            return new Update( new Model( updateCounterList( model.counterList, updateAction.counterListAction ).model ) );
         case 'Action_TopNav':
-            // const topNavAction = <Action_TopNav>action;
-            return [ model, null ];
+            const topNavAction = action as Action_TopNav;
+            const u = updateTopNavBar(model,topNavAction.topNavAction);
+            return new Update( model, new Command_Wrapper( u.command, (a) => new Action_TopNav(a) ) );
     }
 
 }

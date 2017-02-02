@@ -7,7 +7,7 @@ import {styleModule} from '../../lib/snabbdom/src/modules/style';
 import {eventListenersModule} from '../../lib/snabbdom/src/modules/eventlisteners';
 import {VNode} from '../../lib/snabbdom/src/vnode'
 
-import {Command,Handler} from "./core";
+import {Handler, Update} from "./core";
 
 /**
  * Executes the main loop of a Tselmenite program.
@@ -20,7 +20,7 @@ export function main<Model,Action>(
     state : Model,
     appElement : Element,
     view : ( model : Model, handler : Handler<Action> ) => VNode,
-    update : ( model : Model, action : Action ) => [ Model, Command<Action>|null ]
+    update : ( model : Model, action : Action ) => Update<Model,Action>
 ) {
 
     // Get a Snabbdom patch function with the normal HTML modules.
@@ -42,11 +42,9 @@ export function main<Model,Action>(
 
         /** Execute one update cycle recursively. */
         let eventHandler = ( action : Action ) => {
-            let result : [ Model, Command<Action>|null ] = update( state, action );
-            if ( result[1] !== null ) {
-                result[1]!( eventHandler );
-            }
-            loop( result[0], newVnode );
+            let result = update( state, action );
+            result.command.execute( eventHandler );
+            loop( result.model, newVnode );
         };
 
         // Compute the next virtual DOM.
