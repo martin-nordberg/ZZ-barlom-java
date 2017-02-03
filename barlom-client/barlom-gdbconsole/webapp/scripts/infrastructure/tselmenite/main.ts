@@ -42,8 +42,14 @@ export function main<Model,Action>(
 
         /** Execute one update cycle recursively. */
         let eventHandler = ( action : Action ) => {
+
+            // Update the state from the latest action.
             let result = update( state, action );
+
+            // Fire off the command returned from the update (usually a NO-OP).
             result.command.execute( eventHandler );
+
+            // Recursively update the view.
             loop( result.model, newVnode );
         };
 
@@ -55,7 +61,7 @@ export function main<Model,Action>(
 
     }
 
-    // Fire up the recursive view/update loop.
+    // Fire up the recursive update/view loop.
     loop( state, appElement );
 
 }

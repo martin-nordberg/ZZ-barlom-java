@@ -12,9 +12,14 @@ import {
 
 // ACTIONS
 
+const ACTION_ADD : 'Action_Add' = 'Action_Add';
+const ACTION_REMOVE : 'Action_Remove' = 'Action_Remove';
+const ACTION_RESET : 'Action_Reset' = 'Action_Reset';
+const ACTION_UPDATE : 'Action_Update' = 'Action_Update';
+
 export class Action_Add {
     constructor(
-        readonly kind : 'Action_Add' = 'Action_Add'
+        readonly kind = ACTION_ADD
     ) {
     }
 }
@@ -22,20 +27,20 @@ export class Action_Update {
     constructor(
         readonly id : number,
         readonly counterAction : CounterAction,
-        readonly kind : 'Action_Update' = 'Action_Update'
+        readonly kind = ACTION_UPDATE
     ) {
     }
 }
 export class Action_Remove {
     constructor(
         readonly id : number,
-        readonly kind : 'Action_Remove' = 'Action_Remove'
+        readonly kind = ACTION_REMOVE
     ) {
     }
 }
 export class Action_Reset {
     constructor(
-        readonly kind : 'Action_Reset' = 'Action_Reset'
+        readonly kind = ACTION_RESET
     ) {
     }
 }
@@ -114,14 +119,14 @@ function counterItemView( item : CounterModel, handler : Handler<Action> ) {
 export function update( model : Model, action : Action ) : Update<Model,Action> {
 
     switch ( action.kind ) {
-        case 'Action_Add':
+        case ACTION_ADD:
             return new Update( addCounter( model ) );
-        case 'Action_Reset':
+        case ACTION_RESET:
             return new Update( resetCounters( model ) );
-        case 'Action_Remove':
+        case ACTION_REMOVE:
             const removeAction = action as Action_Remove;
             return new Update( removeCounter( model, removeAction.id ) );
-        case 'Action_Update':
+        case ACTION_UPDATE:
             const updateAction = action as Action_Update;
             return updateCounterRow( model, updateAction.id, updateAction.counterAction );
     }

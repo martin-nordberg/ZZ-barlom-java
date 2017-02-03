@@ -6,15 +6,18 @@ import {VNode, button, div} from '../infrastructure/tselmenite/vdom'
 
 // ACTIONS
 
+const ACTION_INCREMENT : 'Action_Increment' = 'Action_Increment';
+const ACTION_DECREMENT : 'Action_Decrement' = 'Action_Decrement';
+
 export class Action_Increment {
     constructor(
-        readonly kind : 'Action_Increment' = 'Action_Increment'
+        readonly kind = ACTION_INCREMENT
     ) {
     }
 }
 export class Action_Decrement {
     constructor(
-        readonly kind : 'Action_Decrement' = 'Action_Decrement'
+        readonly kind = ACTION_DECREMENT
     ) {
     }
 }
@@ -56,9 +59,9 @@ export function view( model : Model, handler : Handler<Action> ) : VNode {
 
 export function update( model : Model, action : Action ) : Update<Model,Action> {
     switch ( action.kind ) {
-        case 'Action_Increment':
+        case ACTION_INCREMENT:
             return new Update( new Model( model.id, model.count + 1 ) );
-        case 'Action_Decrement':
+        case ACTION_DECREMENT:
             return new Update( new Model( model.id, model.count - 1 ) );
     }
 }

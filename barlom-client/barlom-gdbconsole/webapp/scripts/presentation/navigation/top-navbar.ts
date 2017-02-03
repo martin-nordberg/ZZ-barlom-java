@@ -6,15 +6,18 @@ import {VNode, div, span, nav} from '../../infrastructure/tselmenite/vdom'
 
 // ACTIONS
 
+const ACTION_ACTIVATE_BROWSE : 'Action_ActivateBrowse' = 'Action_ActivateBrowse';
+const ACTION_ACTIVATE_DIAGRAMS : 'Action_ActivateDiagrams' = 'Action_ActivateDiagrams';
+
 export class Action_ActivateBrowse {
     constructor(
-        readonly kind : 'Action_ActivateBrowse' = 'Action_ActivateBrowse'
+        readonly kind = ACTION_ACTIVATE_BROWSE
     ) {
     }
 }
 export class Action_ActivateDiagrams {
     constructor(
-        readonly kind : 'Action_ActivateDiagrams' = 'Action_ActivateDiagrams'
+        readonly kind = ACTION_ACTIVATE_DIAGRAMS
     ) {
     }
 }
@@ -65,9 +68,9 @@ function viewNavItem( title : string, handler : Handler<Action> ) : VNode {
 
 export function update( model : Model, action : Action ) : Update<Model,Action> {
     switch ( action.kind ) {
-        case 'Action_ActivateBrowse':
+        case ACTION_ACTIVATE_BROWSE:
             return new Update( model );
-        case 'Action_ActivateDiagrams':
+        case ACTION_ACTIVATE_DIAGRAMS:
             return new Update( model );
     }
 }
