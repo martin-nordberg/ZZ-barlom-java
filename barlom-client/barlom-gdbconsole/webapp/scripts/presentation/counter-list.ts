@@ -1,7 +1,7 @@
 "use strict";
 
 import {Handler, Update} from '../infrastructure/tselmenite/core'
-import {VNode, button, div, hr} from '../infrastructure/tselmenite/vdom'
+import {VNode, button, div, hr} from '../infrastructure/webloop/vdom'
 import {
     Action as CounterAction,
     Model as CounterModel,

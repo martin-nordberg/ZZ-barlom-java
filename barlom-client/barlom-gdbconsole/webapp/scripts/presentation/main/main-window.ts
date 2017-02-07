@@ -1,7 +1,7 @@
 "use strict";
 
 import {Handler, Command_Wrapper, Update} from '../../infrastructure/tselmenite/core'
-import {VNode, div, main} from '../../infrastructure/tselmenite/vdom'
+import {VNode, div, main} from '../../infrastructure/webloop/vdom'
 import {
     Action as CounterListAction,
     Model as CounterListModel,

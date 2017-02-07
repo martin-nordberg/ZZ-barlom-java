@@ -1,7 +1,7 @@
 "use strict";
 
 import {Handler, Update} from '../infrastructure/tselmenite/core'
-import {VNode, button, div} from '../infrastructure/tselmenite/vdom'
+import {VNode, button, div} from '../infrastructure/webloop/vdom'
 
 
 // ACTIONS

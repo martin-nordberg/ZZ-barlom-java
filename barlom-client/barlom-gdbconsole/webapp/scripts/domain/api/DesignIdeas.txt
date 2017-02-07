@@ -1,0 +1,42 @@
+
+NOTES
+
+* UI state is immutable / updated per action cycle.
+* The domain model (a repository of entities) has controlled mutability.
+* Actions are immutable records of what to do next.
+* Revisions are immutable records of mutations to make to the domain model. Mutations can be:
+  - Create an entity.
+  - Mark an entity as deleted.
+  - Set an "unsaved" value for an attribute or relationship.
+  - Resolve an entity as having been successfully saved, thereby resolving its attributes and relationships.
+* Commands are immutable as far as their own data. They have an execute() method that does not touch the domain model
+  but can execute arbitrary I/O or side effects beyond the system. A command sends the handler an action when complete.
+* Subscriptions are sources of asynchronous inputs from outside the system (e.g. browser hashtag changes or
+  screen size changes). A subscription calls the handler with an action whenever an event of interest occurs.
+
+
+FIRST PROGRAM CYCLE
+
+1. The program calls init( handler ) returning ( uiState, domainModel, command );
+
+2. The command is queued to run asynchronously. When done it feeds in an action (step 1 below).
+
+3. The program calls view( uiState, domainModel, handler ) returning VNode.
+
+4. The DOM is patched using the empty target DOM element and the new VNode.
+
+
+SUBSEQUENT PROGRAM CYCLES
+
+1. A new action arrives for processing.
+
+2. Program calls update( uiState, domainModel, action ) returning ( uiState, domainModelRevisions[], commands[] );
+
+3. Isolated Mutation: The revisions are applied to the domain model.
+
+4. The commands are queued to run asynchronously. When a command completes it feeds in an action (step 1).
+
+5. The program calls view( uiState, domainModel, handler ) returning VNode.
+
+6. The DOM is patched using the old and new VNodes.
+
